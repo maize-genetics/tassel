@@ -2,11 +2,14 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jreleaser.model.Active
 import java.util.Locale
+import org.gradle.api.tasks.bundling.Zip
+import org.gradle.api.tasks.bundling.Tar
+import org.gradle.api.tasks.bundling.Jar
+import org.gradle.jvm.application.tasks.CreateStartScripts
 
 plugins {
     kotlin("jvm") version "2.1.20"
     id("org.jetbrains.dokka") version "2.0.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
     id("org.jreleaser") version "1.18.0"
 
@@ -20,16 +23,17 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
+    withSourcesJar()
+}
+
+kotlin {
+    jvmToolchain(21)
 }
 
 group = "net.maizegenetics"
 version = "5.2.96"
 description = "TASSEL is a software package to evaluate traits associations, evolutionary patterns, and linkage disequilibrium."
 val kotlinVersion = "2.1.21"
-
-repositories {
-    mavenCentral()
-}
 
 repositories {
     mavenCentral()
@@ -40,6 +44,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("org.apache.logging.log4j:log4j-api:2.21.1")
     implementation("org.apache.logging.log4j:log4j-core:2.21.1")
     implementation("com.google.guava:guava:22.0")
     implementation("org.apache.commons:commons-math3:3.4.1")
@@ -69,10 +74,36 @@ dependencies {
     implementation("it.unimi.dsi:fastutil:8.2.2")
 }
 
+// Application configuration
+application {
+    mainClass.set("net.maizegenetics.tassel.TASSELMainApp")
+}
+
+tasks.named<Zip>("distZip") {
+    dependsOn(tasks.named("jar"))
+}
+
+tasks.named<Tar>("distTar") {
+    dependsOn(tasks.named("jar"))
+}
+
+tasks.named<CreateStartScripts>("startScripts") {
+    dependsOn(tasks.named("jar"), tasks.named("sourcesJar"))
+}
+
+// General tasks
 tasks {
-    // Set JAR file name
+    // Set JAR file name and add to manifest along with classes
     withType<Jar> {
         archiveFileName.set("sTASSEL.jar")
+
+        manifest {
+            attributes(
+                "Main-Class" to application.mainClass.get(),
+                "Class-Path" to configurations.runtimeClasspath.get()
+                    .joinToString(" ") { "lib/${it.name}" }
+            )
+        }
     }
 
     // Copy runtime dependencies into build/libs/lib
@@ -169,6 +200,7 @@ tasks {
     }
 }
 
+// Kover (coverage) tasks
 kover {
     reports {
         verify {
@@ -182,9 +214,8 @@ kover {
     }
 }
 
-kotlin {
-    jvmToolchain(21)
-}
+
+
 
 /**
  * Generates HTML files based on Javadoc-style comments. Supports automatic insertion of Jupyter notebook tutorials,
@@ -192,13 +223,12 @@ kotlin {
  *
  * This was modified from the BioKotlin project.
  */
-val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class) {
-    dokkaSourceSets {
-        configureEach {
-            sourceRoot(file("src/main/java"))
-        }
-    }
+// configure Dokka’s HTML output directory so dokkaJar can find it
+tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml") {
+    outputDirectory.set(buildDir.resolve("dokka"))
 }
+
+val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
 
 val dokkaJar by tasks.registering(Jar::class) {
     dependsOn(dokkaHtml)
@@ -269,7 +299,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://github.com/maize-genetics/tassel.git")
                     developerConnection.set("scm:git:ssh://github.com/maize-genetics/tassel.git")
-                    url.set("https://github.com/maize-genetics/tassel")
+                    url.set("https://github.com/maize-genetis/tassel")
                 }
             }
         }
@@ -289,8 +319,15 @@ publishing {
     }
 }
 
+tasks.named("generateMetadataFileForMavenPublication") {
+    dependsOn(tasks.named("dokkaJar"))
+}
+
 signing {
-    useInMemoryPgpKeys(System.getenv("ORG_GPG_SIGNING_KEY"), System.getenv("ORG_GPG_SIGNING_PASSWORD"))
+    useInMemoryPgpKeys(
+        System.getenv("JRELEASER_GPG_SECRET_KEY"),
+        System.getenv("JRELEASER_GPG_PASSPHRASE")
+    )
     sign(publishing.publications["maven"])
 }
 

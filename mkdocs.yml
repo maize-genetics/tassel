@@ -83,5 +83,5 @@ nav:
   - Community:
       - Contributing: CONTRIBUTING.md
       - Code of Conduct: CODE_OF_CONDUCT.md
-  - Changelog: changelog.md
+  - Version History: changelog.md
 

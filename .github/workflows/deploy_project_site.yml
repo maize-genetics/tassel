@@ -1,6 +1,9 @@
 name: Site Builder and Deployment
 on:
-  push:
+  workflow_run:
+    workflows: ["jDeploy CI with Gradle"]
+    types:
+      - completed
     branches: [main, master]
 permissions:
   contents: write
@@ -26,4 +29,3 @@ jobs:
       - run: pip install mkdocs-material 
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
-
