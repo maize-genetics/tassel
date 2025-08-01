@@ -1,0 +1,34 @@
+{
+    "bin": {"sTASSEL": "jdeploy-bundle/jdeploy.js"},
+    "author": "bucklerlab",
+    "name": "tassel-5",
+    "description": "Trait Analysis by aSSociation, Evolution and Linkage",
+    "files": ["jdeploy-bundle"],
+    "main": "index.js",
+    "preferGlobal": true,
+    "repository": "https://www.github.com/btmonier/tassel/",
+    "scripts": {"test": "echo \"Error: no test specified\" && exit 1"},
+    "version": "0.0.0",
+    "jdeploy": {
+        "jdk": false,
+    "publishTargets": [
+      {
+        "type": "GITHUB",
+        "owner": "btmonier",
+        "repo": "tassel"
+      }
+    ],
+        "javaVersion": "21",
+        "files": [{"dir": "build/libs/lib", "dest": "lib"}],
+        "jar": "build/libs/sTASSEL.jar",
+        "javafx": false,
+        "title": "TASSEL 5"
+    },
+    "dependencies": {
+        "command-exists-promise": "^2.0.2",
+        "node-fetch": "2.6.7",
+        "tar": "^4.4.8",
+        "yauzl": "^2.10.0",
+        "shelljs": "^0.8.4"
+    }
+}

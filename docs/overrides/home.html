@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block site_meta %}
+  {{ super() }}
+  {% if page.url == "" %}
+    <title>Welcome - TASSEL 5</title>
+  {% endif %}
+{% endblock %}
+
+{% block extrahead %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+  <link rel="stylesheet" href="assets/stylesheets/extra.css" />
+{% endblock %}
+
+{% block tabs %}
+  {{ super() }}
+
+  <style>
+    .md-typeset h1,
+    .md-content__button {
+      display: none;
+    }
+    .md-ellipsis {
+      font-weight: 700;
+    }
+  </style>
+
+  <section class="tx-hero">
+    <div class="md-grid md-typeset">
+      <div class="tx-hero__content">
+        <img src="../images/tassel_logo.svg" alt="TASSEL Logo" class="hero-logo" style="max-width: 250px;" />
+        <h3><strong>TASSEL 5</strong> (<strong>T</strong>rait <strong>A</strong>nalysis by a<strong>SS</strong>ociation, <strong>E</strong>volution and <strong>L</strong>inkage)</h3>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section">
+    <div class="md-grid md-typeset">
+      <h2>About TASSEL 5</h2>
+      <p>
+        TASSEL is a software package to evaluate trait associations, evolutionary patterns, and linkage disequilibrium. Strengths of this software:
+      </p>
+
+      <ol>
+        <li>
+          It provides powerful statistical approaches for association mapping such as
+          <strong>General Linear Model (GLM)</strong> and <strong>Mixed Linear Model (MLM)</strong>.
+          MLM is a method described in a <em>Nature Genetics</em> paper -
+          <a href="https://tassel.bitbucket.io/unified-mixed-model">Unified Mixed-Model Method for Association Mapping</a> -
+          that reduces Type I error in complex pedigrees and population structures.
+        </li>
+        <li>
+          TASSEL supports a wide range of <strong>indels</strong> (insertions & deletions),
+          which are commonly ignored by other software. This is crucial in species like maize
+          where indels are a dominant form of polymorphism.
+        </li>
+      </ol>
+
+
+      <h2>Citation</h2>
+      <p>
+        <strong>Bradbury PJ, Zhang Z, Kroon DE, Casstevens TM, Ramdoss Y, Buckler ES.</strong> (2007)
+        <em>TASSEL: Software for association mapping of complex traits in diverse samples.</em>
+        <a href="https://doi.org/10.1093/bioinformatics/btm308" target="_blank">Bioinformatics 23:2633–2635</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="gallery-section">
+    <div class="md-typeset">
+      <h2>Gallery</h2>
+      <div class="image-gallery">
+
+        <figure>
+          <a href="#lightbox-1">
+            <img src="images/gui_screenshots/tassel_screen_shot1.jpg" alt="Screenshot 1" />
+          </a>
+          <figcaption>Alignment Viewer</figcaption>
+        </figure>
+
+        <div id="lightbox-1" class="lightbox-overlay">
+          <a href="#gallery" class="lightbox-close">&times;</a>
+          <img src="images/gui_screenshots/tassel_screen_shot1.jpg" alt="Screenshot 1" />
+          <p class="lightbox-caption">Alignment Viewer</p>
+        </div>
+
+        <figure>
+          <a href="#lightbox-2">
+            <img src="images/gui_screenshots/tassel_screen_shot2.jpg" alt="Screenshot 2" />
+          </a>
+          <figcaption>Linkage Disequilibrium</figcaption>
+        </figure>
+
+        <div id="lightbox-2" class="lightbox-overlay">
+          <a href="#gallery" class="lightbox-close">&times;</a>
+          <img src="images/gui_screenshots/tassel_screen_shot2.jpg" alt="Screenshot 2" />
+          <p class="lightbox-caption">Linkage Disequilibrium</p>
+        </div>
+
+        <figure>
+          <a href="#lightbox-3">
+            <img src="images/gui_screenshots/tassel_screen_shot3.jpg" alt="Screenshot 3" />
+          </a>
+          <figcaption>Manhattan Plot</figcaption>
+        </figure>
+
+        <div id="lightbox-3" class="lightbox-overlay">
+          <a href="#gallery" class="lightbox-close">&times;</a>
+          <img src="images/gui_screenshots/tassel_screen_shot3.jpg" alt="Screenshot 3" />
+          <p class="lightbox-caption">Manhattan Plot</p>
+        </div>
+
+        <figure>
+          <a href="#lightbox-4">
+            <img src="images/gui_screenshots/tassel_screen_shot4.jpg" alt="Screenshot 4" />
+          </a>
+          <figcaption>Genetic Distance Heat Map</figcaption>
+        </figure>
+
+        <div id="lightbox-4" class="lightbox-overlay">
+          <a href="#gallery" class="lightbox-close">&times;</a>
+          <img src="images/gui_screenshots/tassel_screen_shot4.jpg" alt="Screenshot 4" />
+          <p class="lightbox-caption">Genetic Distance Heat Map</p>
+        </div>
+
+        <figure>
+          <a href="#lightbox-5">
+            <img src="images/gui_screenshots/tassel_screen_shot5.jpg" alt="Screenshot 5" />
+          </a>
+          <figcaption>Phylogenetic Tree using Archaeopteryx</figcaption>
+        </figure>
+
+        <div id="lightbox-5" class="lightbox-overlay">
+          <a href="#gallery" class="lightbox-close">&times;</a>
+          <img src="images/gui_screenshots/tassel_screen_shot5.jpg" alt="Screenshot 5" />
+          <p class="lightbox-caption">Phylogenetic Tree using Archaeopteryx</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="md-typeset">
+      {% include "partials/featured_downloads.html" %}
+      {% include "partials/featured_docs.html" %}
+    </div>
+  </section>
+
+  <section class="about-section">
+    <div class="md-grid md-typeset">
+      <h2>Looking for older versions of TASSEL?</h2>
+      <p>Archived versions of TASSEL (versions 3 and 4) can be found on our <a href="https://tassel.bitbucket.io/TasselArchived.html">older site</a>.</p>
+
+      <h2>Looking for additional help?</h2>
+      <p>We recommend first searching the archives and posting questions on the <a href="http://groups.google.com/group/tassel">Google Discussion Group</a>. If you are on <a href="https://www.github.com">GitHub</a>, we also have a <a href="https://github.com/maize-genetics/tassel/discussions">discussion forum</a> on the TASSEL code repository.</p>
+
+      <h2>Acknowledgements</h2>
+      <p><em>TASSEL development has been generously supported by the <a href="https://www.ars.usda.gov/">USDA-ARS</a> and the <a href="https://www.nsf.gov/">NSF</a>.</em></p>
+    </div>
+  </section>
+{% endblock %}
+

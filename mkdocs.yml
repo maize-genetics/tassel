@@ -1,0 +1,87 @@
+# Project information
+site_name: TASSEL 5
+site_description: Trait Analysis by aSSociation, Evolution and Linkage
+site_author: Buckler Lab
+# site_url: https://www.maizegenetics.net/tassel
+
+# Repository configuration
+repo_name: tassel
+repo_url: https://github.com/maize-genetics/tassel
+
+# Theme configuration
+theme:
+  icon:
+    repo: fontawesome/brands/github
+  name: material
+  custom_dir: docs/overrides
+  logo: images/tassel_logo_white.svg
+  favicon: images/tassel_favicon.png
+  palette:
+      scheme: default
+      primary: custom
+      accent: custom
+  features:
+    - content.code.select
+    - content.code.copy
+    - content.code.annotate
+    - navigation.tabs
+    - navigation.top
+    - navigation.sections
+    - navigation.indexes
+    - navigation.expand
+    - search.highlight
+    - navigation.instant: false
+  language: en
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+# Copyright
+copyright: Copyright &copy; 2001 - 2025  <a href="https://www.maizegenetics.net "><b>Buckler Lab</b></a>
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/maize-genetics
+    - icon: fontawesome/brands/youtube
+      link: https://www.youtube.com/c/BucklerLab
+
+# Markdown extensions
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - tables
+  - admonition
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# Extra 
+extra_javascript:
+  - javascript/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+# Navigation
+nav:
+  - Home:
+      - index.md
+  - Community:
+      - Contributing: CONTRIBUTING.md
+      - Code of Conduct: CODE_OF_CONDUCT.md
+  - Version History: changelog.md
+

@@ -1,9 +1,0 @@
-image: maven:3.8.7-eclipse-temurin-11-focal
-
-pipelines:
-  default:
-    - step:
-        name: Clone TASSEL 5 test repository
-        script:
-          - git clone https://bitbucket.org/tasseladmin/tassel-5-test.git $BITBUCKET_CLONE_DIR/../tassel-5-test
-          - mvn -B -fae clean test

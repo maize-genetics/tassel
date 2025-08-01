@@ -1,0 +1,78 @@
+name: TASSEL 5 CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches: [main, master]
+    paths: 'src/**'
+
+jobs:
+  test_and_coverage:
+    name: TASSEL 5 CI
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install OpenBLAS
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libopenblas-dev
+
+      - name: Download and extract TASSEL test data
+        run: |
+          curl -L \
+            -o tassel_test_data_v1.tar.gz \
+            https://github.com/maize-genetics/tassel_test_data/releases/download/v1.0.0/tassel_test_data_v1.tar.gz
+
+          tar -xzvf tassel_test_data_v1.tar.gz
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle-
+
+      - name: Run tests & generate Kover coverage report
+        run: ./gradlew clean test koverXmlReport --continue
+        env:
+          JAVA_TOOL_OPTIONS: >
+            -Djava.library.path=/usr/lib/x86_64-linux-gnu
+
+      - name: Upload HTML test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-test-report
+          path: build/reports/tests/
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_GLOBAL_TOKEN }}
+          slug: maize-genetics/tassel
+          files: build/reports/kover/report.xml
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: success() || failure()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          check_name: TASSEL Test Report
+          job_summary: true
+          detailed_summary: true

@@ -1,0 +1,196 @@
+name: jDeploy CI with Gradle
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle-
+
+      - name: Read version from Gradle build file
+        id: read_version
+        run: |
+          RAW=$(./gradlew printVersion -q)
+          # tail -n1 will skip all those progress-bar lines
+          VERSION=$(echo "$RAW" | tail -n1)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test -x koverVerify
+
+      - name: Create TASSEL "Standalone" distribution
+        run: |
+          mkdir -p dist/tassel-5-standalone
+          cp -r build/libs/lib/ dist/tassel-5-standalone/
+          cp build/libs/sTASSEL.jar dist/tassel-5-standalone/
+          cp scripts/*.pl scripts/*.bat dist/tassel-5-standalone/
+
+          cd dist/tassel-5-standalone
+
+          for f in start_tassel.pl run_pipeline.pl; do
+            sed -i.bak 's|push(@fl, "\$top/dist/sTASSEL.jar");|push(@fl, "\$top/sTASSEL.jar");|' "$f"
+          done
+
+          for f in start_tassel.bat run_pipeline.bat; do
+            sed -i.bak 's|set CP=%TOP%\\dist\\sTASSEL.jar|set CP=%TOP%\\sTASSEL.jar|' "$f"
+          done
+
+          rm -f *.bak
+
+      - name: Archive TASSEL Standalone (ZIP and TAR.GZ)
+        run: |
+          cd dist/tassel-5-standalone/
+          zip -r ../tassel-5-standalone-v${VERSION}.zip .
+          tar -czf ../tassel-5-standalone-v${VERSION}.tar.gz .
+
+      - name: Extract changelog content from latest PR
+        id: extract_changelog
+        run: |
+          # Get the latest merged PR
+          LATEST_PR=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                     "https://api.github.com/repos/${{ github.repository }}/pulls?state=closed&sort=updated&direction=desc" | \
+                     jq -r '[.[] | select(.merged_at != null)][0]')
+
+          PR_NUMBER=$(echo "$LATEST_PR" | jq -r '.number')
+          PR_BODY=$(echo "$LATEST_PR" | jq -r '.body')
+
+          # Extract content between BEGIN CHANGELOG and END CHANGELOG tags
+          CHANGELOG_CONTENT=$(echo "$PR_BODY" | sed -n '/<!-- BEGIN CHANGELOG -->/,/<!-- END CHANGELOG -->/p' | grep -v "<!-- BEGIN CHANGELOG -->" | grep -v "<!-- END CHANGELOG -->")
+
+          # Remove leading/trailing whitespace and empty lines
+          CHANGELOG_CONTENT=$(echo "$CHANGELOG_CONTENT" | sed '/^$/d' | sed 's/^[ \t]*//')
+
+          # Check if content is not empty
+          if [ -z "$CHANGELOG_CONTENT" ]; then
+            echo "No changelog content found in PR description, using default message"
+            CHANGELOG_CONTENT="See commit history for changes in this release."
+          fi
+
+          # Export for template substitution
+          export NOTES="$CHANGELOG_CONTENT"
+          envsubst < .github/release_template.md > RELEASE_NOTES.md
+          
+          # Save content to a temporary file
+          echo "$CHANGELOG_CONTENT" > /tmp/changelog_content.txt
+
+      - name: Load processed release notes
+        id: read_notes
+        run: |
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          cat RELEASE_NOTES.md >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: v${{ env.VERSION }}
+          body: ${{ env.RELEASE_NOTES }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets using GitHub CLI
+        run: |
+          gh release upload "v${VERSION}" \
+            dist/tassel-5-standalone-v${VERSION}.zip \
+            dist/tassel-5-standalone-v${VERSION}.tar.gz \
+            --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare artifacts for jDeploy
+        run: |
+          cp build/libs/sTASSEL.jar .
+          cp -r build/libs/lib .
+
+      - name: Build App Installer Bundles
+        uses: shannah/jdeploy@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update release note download links
+        run: |
+          # Find the installer files and update the release notes
+          REL_LINUX=$(ls jdeploy/github-release-files/TASSEL.5.Installer-linux-x64-@main* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+          REL_MAC_SILICON=$(ls jdeploy/github-release-files/TASSEL.5.Installer-mac-arm64-@main* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+          REL_MAC_INTEL=$(ls jdeploy/github-release-files/TASSEL.5.Installer-mac-x64-@main* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+          REL_WINDOWS=$(ls jdeploy/github-release-files/TASSEL.5.Installer-win-x64-@main* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+
+          # Export variables for template substitution
+          export REL_LINUX
+          export REL_MAC_SILICON
+          export REL_MAC_INTEL
+          export REL_WINDOWS
+          export VERSION
+
+          # Re-generate the release notes with the updated download links
+          envsubst < .github/release_template.md > RELEASE_NOTES.md
+
+          # Update the featured_downloads.html file with the updated download links
+          envsubst < docs/templates/template_featured_downloads.html > docs/overrides/partials/featured_downloads.html.new
+          mv docs/overrides/partials/featured_downloads.html.new docs/overrides/partials/featured_downloads.html
+
+          # Update the GitHub release body
+          gh release edit "v${VERSION}" --notes-file RELEASE_NOTES.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get current date
+        id: date
+        run: echo "DATE=$(date +'%B %d, %Y')" >> $GITHUB_ENV
+
+      - name: Set up Git user
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Update changelog.md
+        run: |
+          # Check if changelog content exists
+          if [ ! -f /tmp/changelog_content.txt ]; then
+            echo "No changelog content to add"
+            exit 0
+          fi
+
+          CHANGELOG_CONTENT=$(cat /tmp/changelog_content.txt)
+
+          # Create new section with version and date
+          NEW_SECTION="## (V${{ env.VERSION }}) ${{ env.DATE }}\n\n$CHANGELOG_CONTENT\n"
+
+          # Insert new section after the header (line 5)
+          sed -i "5i\\$NEW_SECTION" docs/changelog.md
+
+      - name: Commit and push changes
+        run: |
+          # Check if there are changes to commit
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git add docs/changelog.md docs/overrides/partials/featured_downloads.html
+          git commit -m "Update changelog and links for version ${{ env.VERSION }}"
+          git push
