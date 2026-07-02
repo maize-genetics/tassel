@@ -49,6 +49,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("com.formdev:flatlaf:3.7.1") // modern flat Swing Look-and-Feel (light/dark, HiDPI, macOS)
     implementation("org.apache.logging.log4j:log4j-api:2.21.1")
     implementation("org.apache.logging.log4j:log4j-core:2.21.1")
     implementation("com.google.guava:guava:22.0")

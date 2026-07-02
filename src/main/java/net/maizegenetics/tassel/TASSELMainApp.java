@@ -34,12 +34,35 @@ public class TASSELMainApp {
     private TASSELMainApp() {
     }
 
+    /**
+     * Installs the FlatLaf Look-and-Feel, choosing the light or dark theme based on the
+     * persisted user preference. Safe to call again at runtime (e.g. from the Preferences
+     * dialog) followed by {@code FlatLaf.updateUI()} to switch themes live.
+     */
+    public static void setupLookAndFeel() {
+        try {
+            if (TasselPrefs.getDarkTheme()) {
+                com.formdev.flatlaf.FlatDarkLaf.setup();
+            } else {
+                com.formdev.flatlaf.FlatLightLaf.setup();
+            }
+        } catch (Exception e) {
+            myLogger.warn("Could not install FlatLaf look and feel; using default.", e);
+        }
+    }
+
     public static void main(String[] args) {
         TASSELMainFrame frame = null;
         try {
 
+            // Native macOS integration (must be set before the AWT toolkit initializes).
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("apple.awt.application.name", "TASSEL");
+
             TasselPrefs.setPersistPreferences(true);
             LoggingUtils.setupLogging();
+
+            setupLookAndFeel();
 
             frame = new TASSELMainFrame();
             frame.validate();
