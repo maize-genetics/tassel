@@ -177,7 +177,7 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
         mainPanelTextArea.setFont(new java.awt.Font("Monospaced", 0, 12));
         mainPanelTextArea.setToolTipText("Main Panel");
 
-        myStatusTextField.setBackground(Color.lightGray);
+        myStatusTextField.setBackground(UIManager.getColor("Panel.background"));
         myStatusTextField.setBorder(null);
 
         JSplitPane dataTreeReportMainPanelsSplitPanel = new JSplitPane();
@@ -432,7 +432,7 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
             }
             menuItem.setIconTextGap(pixels);
         }
-        menuItem.setBackground(Color.white);
+        menuItem.setBackground(UIManager.getColor("MenuItem.background"));
         menuItem.setMargin(new Insets(2, 2, 2, 2));
         menuItem.setToolTipText(theTP.getToolTipText());
         menuItem.addActionListener(this);
@@ -455,7 +455,7 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
             pixels /= 2;
         }
         menuItem.setIconTextGap(pixels);
-        menuItem.setBackground(Color.white);
+        menuItem.setBackground(UIManager.getColor("MenuItem.background"));
         menuItem.setMargin(new Insets(2, 2, 2, 2));
         menuItem.addActionListener(action);
         return menuItem;
@@ -468,7 +468,7 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
         if (adjustForIcon) {
             menuItem.setIconTextGap(ICON_WIDTH_PLUS_GAP);
         }
-        menuItem.setBackground(Color.white);
+        menuItem.setBackground(UIManager.getColor("MenuItem.background"));
         menuItem.setMargin(new Insets(2, 2, 2, 2));
         menuItem.setEnabled(false);
         return menuItem;

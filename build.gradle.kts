@@ -35,6 +35,13 @@ version = "5.2.96"
 description = "TASSEL is a software package to evaluate traits associations, evolutionary patterns, and linkage disequilibrium."
 val kotlinVersion = "2.1.21"
 
+// openchart:openchart:1.4.2 (a transitive dependency of forester / biojava-phylo) is no
+// longer resolvable in any public repo and is not referenced directly by TASSEL source.
+// Exclude it globally so the runtime classpath can be resolved.
+configurations.all {
+    exclude(group = "openchart", module = "openchart")
+}
+
 repositories {
     mavenCentral()
     maven {
@@ -44,6 +51,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("com.formdev:flatlaf:3.7.1") // modern flat Swing Look-and-Feel (light/dark, HiDPI, macOS)
     implementation("org.apache.logging.log4j:log4j-api:2.21.1")
     implementation("org.apache.logging.log4j:log4j-core:2.21.1")
     implementation("com.google.guava:guava:22.0")
