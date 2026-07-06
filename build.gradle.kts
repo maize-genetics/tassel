@@ -42,6 +42,13 @@ repositories {
     }
 }
 
+// openchart:openchart:1.4.2 (a transitive dependency of forester / biojava-phylo) is no
+// longer resolvable in any public repo and is not referenced directly by TASSEL source.
+// Exclude it globally so the runtime classpath can be resolved.
+configurations.all {
+    exclude(group = "openchart", module = "openchart")
+}
+
 dependencies {
     testImplementation(kotlin("test"))
     implementation("org.apache.logging.log4j:log4j-api:2.21.1")
@@ -80,11 +87,11 @@ application {
 }
 
 tasks.named<Zip>("distZip") {
-    dependsOn(tasks.named("jar"))
+    dependsOn(tasks.named("jar"), tasks.named("statisticsTest"))
 }
 
 tasks.named<Tar>("distTar") {
-    dependsOn(tasks.named("jar"))
+    dependsOn(tasks.named("jar"), tasks.named("statisticsTest"))
 }
 
 tasks.named<CreateStartScripts>("startScripts") {
@@ -115,6 +122,12 @@ tasks {
     // Ensure dependencies are copied after build
     named("build") {
         dependsOn("copyDependencies")
+    }
+
+    // statisticsTest is the required CI gate; wire it into `check` so
+    // `./gradlew check` enforces it without running the full non-blocking suite.
+    named("check") {
+        dependsOn("statisticsTest")
     }
 
     // Compile with Java 21 bytecode target
@@ -165,30 +178,160 @@ tasks {
         }
 
         exclude(
-            "**/analysis/gobii/*Test.class",
+            // GBS pipeline — need FASTQ/BAM inputs, SQLite/HDF5 DBs, and external aligners
             "**/analysis/gbs/*Test.class",
             "**/analysis/gbs/v2/*Test.class",
             "**/analysis/gbs/repgen/*Test.class",
+            // External database integration — need live Postgres / MonetDB instances
+            "**/analysis/gobii/*Test.class",
             "**/analysis/monetdb/*Test.class",
+            // HDF5 native library — need jhdf5 native lib + large fixture files
             "**/LowLevelCopyOfHDF5Test.class",
             "**/SplitHDF5ByChromosomePluginTest.class",
+            "**/TagsOnPhysMapHDF5Test.class",
+            "**/DistanceMatrixHDF5Test.class",
+            "**/BuildUnfinishedHDF5GenotypesPluginTest.class",
+            // RNA sequencing — need sequencing DB fixtures
+            "**/analysis/rna/*Test.class",
+            // Hardcoded paths / heavy fixtures (not in test data release)
             "**/ThinSitesByPositionPluginTest.class",
             "**/LDKNNiImputationPluginTest.class",
             "**/GenomeFeatureBuilderTest.class",
             "**/BasicGenotypeMergeRuleTest.class",
-            "**/DistanceMatrixHDF5Test.class",
-            "**/TagsOnPhysMapHDF5Test.class",
-            "**/FastMultithreadedAssociationPluginTest.class",
-            "**/BuildUnfinishedHDF5GenotypesPluginTest.class",
             "**/GenomeAnnosDBQueryToPositionListPluginTest.class",
-            "**/analysis/rna/*Test.class",
-            "**/CreateFastaOrFastqFiles.class", // hard coded file paths (LCJ)
+            // Performance variant with hardcoded /Volumes/... path; math covered by MLMTest
+            "**/FastMultithreadedAssociationPluginTest.class",
+            // Dev-only utility class with hardcoded file paths, not a runnable test
+            "**/CreateFastaOrFastqFiles.class",
         )
 
-        ignoreFailures = true // currently setting this to 'true' until we figure out failing tests
+        ignoreFailures = true // broad suite: keep non-blocking while pipeline/IO tests are fixed
         jvmArgs = baseArgs
 
         println(jvmArgs)
+    }
+
+    // ---------------------------------------------------------------------------
+    // fetchTestData — download and extract the tassel_test_data release archive
+    // into dataFiles/ (git-ignored). Run once after a clean checkout before
+    // executing tests locally. CI already does this in coverage.yml.
+    //
+    // Usage:  ./gradlew fetchTestData
+    // ---------------------------------------------------------------------------
+    register("fetchTestData") {
+        group = "verification"
+        description = "Downloads and extracts the TASSEL test data archive into dataFiles/ if absent."
+        doLast {
+            val dataDir = file("dataFiles")
+            if (dataDir.exists() && dataDir.list()?.isNotEmpty() == true) {
+                logger.lifecycle("dataFiles/ already present — skipping download.")
+                return@doLast
+            }
+            val tarball = file("tassel_test_data_v1.tar.gz")
+            logger.lifecycle("Downloading TASSEL test data archive…")
+            providers.exec {
+                commandLine(
+                    "curl", "-L", "--fail", "-o", tarball.absolutePath,
+                    "https://github.com/maize-genetics/tassel_test_data/releases/download/v1.0.0/tassel_test_data_v1.tar.gz"
+                )
+            }.result.get()
+            logger.lifecycle("Extracting TASSEL test data archive…")
+            providers.exec {
+                commandLine("tar", "-xzf", tarball.absolutePath)
+            }.result.get()
+            tarball.delete()
+            logger.lifecycle("Test data extracted to dataFiles/")
+        }
+    }
+
+    // ---------------------------------------------------------------------------
+    // statisticsTest — enforced CI gate for statistical-correctness tests.
+    //
+    // Runs only the classes that verify TASSEL's numeric results (kinship, MLM,
+    // GLM, PCA, LD, distance matrices, linear models) with ignoreFailures = false,
+    // so failures are visible and block CI. The broad `test` task remains
+    // non-blocking while pipeline/IO tests are still being fixed.
+    //
+    // Usage:  ./gradlew statisticsTest
+    // ---------------------------------------------------------------------------
+    val statisticsClasses = listOf(
+        // Association / GWAS
+        "net.maizegenetics.analysis.association.MLMTest",
+        "net.maizegenetics.analysis.association.ReferenceProbabilityFELMTest",
+        "net.maizegenetics.analysis.association.PhenotypeLMTest",
+        "net.maizegenetics.analysis.association.GenomicSelectionPluginTest",
+        "net.maizegenetics.analysis.association.EqtlAssociationPluginTest",
+        "net.maizegenetics.analysis.association.DiscreteSitesTest",
+        // Kinship / distance
+        "net.maizegenetics.analysis.distance.KinshipTest",
+        "net.maizegenetics.analysis.distance.CenteredIBSTest",
+        "net.maizegenetics.analysis.distance.NormalizedIBSTest",
+        "net.maizegenetics.analysis.distance.DominanceCenteredIBSTest",
+        "net.maizegenetics.analysis.distance.DominanceNormalizedIBSTest",
+        "net.maizegenetics.analysis.distance.IBSDistanceMatrixTest",
+        "net.maizegenetics.analysis.distance.AMatrixPluginTest",
+        // Linear models
+        "net.maizegenetics.stats.linearmodels.ModelEffectTest",
+        "net.maizegenetics.stats.linearmodels.SolveByOrtholgonalizingTest",
+        // PCA
+        "net.maizegenetics.stats.PCA.PrinCompTest",
+        // Statistics utilities
+        "net.maizegenetics.stats.statistics.FisherExactTest",
+        // Linkage disequilibrium
+        "net.maizegenetics.popgen.LinkageDisequilibriumTest",
+        // Model fitting
+        "net.maizegenetics.analysis.modelfitter.StepwiseAdditiveModelFitterTest",
+        "net.maizegenetics.analysis.modelfitter.AdditiveSiteTest",
+        // Matrix algebra
+        "net.maizegenetics.matrixalgebra.Matrix.DoubleMatrixTest",
+        // Numeric transforms
+        "net.maizegenetics.analysis.numericaltransform.ImputationByMeanTest",
+        "net.maizegenetics.analysis.numericaltransform.kNearestNeighborsTest",
+        "net.maizegenetics.analysis.numericaltransform.SubtractPhenotypeByTaxaPluginTest",
+        "net.maizegenetics.analysis.numericaltransform.AvgPhenotypeByTaxaPluginTest",
+        "net.maizegenetics.analysis.numericaltransform.TransformDataPluginTest",
+    )
+
+    register<Test>("statisticsTest") {
+        group = "verification"
+        description = "Runs the statistical-correctness test gate with ignoreFailures = false."
+        dependsOn("testClasses")
+        testClassesDirs = sourceSets["test"].output.classesDirs
+        classpath = sourceSets["test"].runtimeClasspath
+
+        val baseArgs = mutableListOf("-Xmx10g")
+        val overrideDir: String? = System.getenv("BLAS_LIB_PATH")
+        if (!overrideDir.isNullOrBlank()) {
+            baseArgs += "-Djava.library.path=$overrideDir"
+        } else {
+            val os = System.getProperty("os.name").lowercase(Locale.ROOT)
+            val nativeDir = when {
+                "mac" in os -> {
+                    val intel = "/usr/local/opt/openblas/lib"
+                    val silicon = "/opt/homebrew/opt/openblas/lib"
+                    when {
+                        file(intel).exists() -> intel
+                        file(silicon).exists() -> silicon
+                        else -> ""
+                    }
+                }
+                "linux" in os -> "/usr/lib/x86_64-linux-gnu"
+                else -> ""
+            }
+            if (nativeDir.isNotBlank()) baseArgs += "-Djava.library.path=$nativeDir"
+        }
+        jvmArgs = baseArgs
+
+        filter {
+            statisticsClasses.forEach { includeTestsMatching(it) }
+        }
+
+        ignoreFailures = false
+
+        reports {
+            html.outputLocation.set(layout.buildDirectory.dir("reports/tests/statisticsTest"))
+            junitXml.outputLocation.set(layout.buildDirectory.dir("test-results/statisticsTest"))
+        }
     }
 
     register("printVersion") {
@@ -205,9 +348,8 @@ kover {
     reports {
         verify {
             rule {
-                "Minimal line coverage rate as a percentage"
                 bound {
-                    minValue = 15
+                    minValue = 18
                 }
             }
         }
@@ -225,7 +367,7 @@ kover {
  */
 // configure Dokka’s HTML output directory so dokkaJar can find it
 tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml") {
-    outputDirectory.set(buildDir.resolve("dokka"))
+    outputDirectory.set(layout.buildDirectory.dir("dokka").get().asFile)
 }
 
 val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
