@@ -185,16 +185,24 @@ tasks {
         }
 
         exclude(
-            // GBS Bucket C — kept excluded by design. Bucket A/B GBS tests now self-generate their
-            // data via GBSSimData (no downloads/aligners) and run in this suite.
-            // -- jhdf5 native library required (read/write .h5); native lib assumed unavailable --
-            "**/analysis/gbs/SeqToTBTHDF5PluginTest.class",       // writes TBT HDF5
-            "**/analysis/gbs/ModifyTBTHDF5PluginTest.class",      // pivots/merges TBT HDF5
-            "**/analysis/gbs/DiscoverySNPCallerPluginTest.class", // v1 caller reads/writes HDF5 TOPM
-            "**/analysis/gbs/ProductionSNPCallerPluginTest.class",// v1 production writes HDF5 genos
-            "**/analysis/gbs/ProductionPipelineMainTest.class",   // full v1 pipeline via HDF5
-            "**/analysis/gbs/v2/ProductionSNPCallerPluginV2Test.class", // v2 production writes HDF5 genos
-            "**/analysis/gbs/v2/EvaluateSNPCallQualityOfPipelineTest.class", // needs HDF5 + large golden genos
+            // GBS Bucket C — kept excluded by design. Bucket A/B GBS tests (and now
+            // ProductionSNPCallerPluginV2Test) self-generate their data via GBSSimData
+            // (no downloads/aligners) and run in this suite.
+            //
+            // NOTE: the jhdf5 native library IS available — cisd:jhdf5:19.04.1 bundles
+            // natives for amd64-Linux and aarch64/x86_64-Mac, and non-excluded HDF5 tests
+            // (AlignmentBuilderTest, AddReferenceAlleleToHDF5PluginTest, PositionHDF5ListTest,
+            // MigrateHDF5FromT4T5Test) already write/read .h5 and pass. The tests below are
+            // excluded for their real blockers, not the native lib.
+            //
+            // -- legacy GBSv1 pipeline: byte-exact/MD5 golden fixtures (.h5/.topm/checksum) --
+            "**/analysis/gbs/SeqToTBTHDF5PluginTest.class",       // v1 TBT HDF5 vs golden fixture
+            "**/analysis/gbs/ModifyTBTHDF5PluginTest.class",      // v1 pivot/merge TBT vs golden fixture
+            "**/analysis/gbs/DiscoverySNPCallerPluginTest.class", // v1 caller: MD5 compare of golden TOPM
+            "**/analysis/gbs/ProductionSNPCallerPluginTest.class",// v1 production vs golden HDF5 genos
+            "**/analysis/gbs/ProductionPipelineMainTest.class",   // v1 pipeline vs hardcoded MD5 + golden TOPM
+            // -- needs large real-maize reference + biological golden data + hardcoded dev paths --
+            "**/analysis/gbs/v2/EvaluateSNPCallQualityOfPipelineTest.class", // real maize ref, bowtie2 SAM, HM3/conserved sites
             // -- byte-exact golden fixtures / pre-made SAM from v1 legacy (.cnt/.topm/.fq.gz) --
             "**/analysis/gbs/FastqToTagCountPluginTest.class",    // compares against golden .cnt
             "**/analysis/gbs/MergeMultipleTagCountPluginTest.class", // compares against golden .cnt
