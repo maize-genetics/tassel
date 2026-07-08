@@ -124,6 +124,13 @@ tasks {
         dependsOn("copyDependencies")
     }
 
+    // TASSEL stores a couple of non-Java resources (SQLite schema DDL) next to the
+    // sources in src/main/java. They must be on the runtime classpath so that
+    // TagDataSQLite / RepGenSQLite can create their schemas via getResourceAsStream().
+    processResources {
+        from("src/main/java") { include("**/*.sql") }
+    }
+
     // statisticsTest is the required CI gate; wire it into `check` so
     // `./gradlew check` enforces it without running the full non-blocking suite.
     named("check") {
@@ -178,10 +185,29 @@ tasks {
         }
 
         exclude(
-            // GBS pipeline — need FASTQ/BAM inputs, SQLite/HDF5 DBs, and external aligners
-            "**/analysis/gbs/*Test.class",
-            "**/analysis/gbs/v2/*Test.class",
-            "**/analysis/gbs/repgen/*Test.class",
+            // GBS Bucket C — kept excluded by design. Bucket A/B GBS tests now self-generate their
+            // data via GBSSimData (no downloads/aligners) and run in this suite.
+            // -- jhdf5 native library required (read/write .h5); native lib assumed unavailable --
+            "**/analysis/gbs/SeqToTBTHDF5PluginTest.class",       // writes TBT HDF5
+            "**/analysis/gbs/ModifyTBTHDF5PluginTest.class",      // pivots/merges TBT HDF5
+            "**/analysis/gbs/DiscoverySNPCallerPluginTest.class", // v1 caller reads/writes HDF5 TOPM
+            "**/analysis/gbs/ProductionSNPCallerPluginTest.class",// v1 production writes HDF5 genos
+            "**/analysis/gbs/ProductionPipelineMainTest.class",   // full v1 pipeline via HDF5
+            "**/analysis/gbs/v2/ProductionSNPCallerPluginV2Test.class", // v2 production writes HDF5 genos
+            "**/analysis/gbs/v2/EvaluateSNPCallQualityOfPipelineTest.class", // needs HDF5 + large golden genos
+            // -- byte-exact golden fixtures / pre-made SAM from v1 legacy (.cnt/.topm/.fq.gz) --
+            "**/analysis/gbs/FastqToTagCountPluginTest.class",    // compares against golden .cnt
+            "**/analysis/gbs/MergeMultipleTagCountPluginTest.class", // compares against golden .cnt
+            "**/analysis/gbs/TagCountToFastqPluginTest.class",    // compares against golden .fq.gz
+            "**/analysis/gbs/SAMConverterPluginTest.class",       // needs pre-made SAM + golden .topm
+            // -- no real assertions / heavy converted-text fixtures --
+            "**/analysis/gbs/v2/GBSv2BiologyCompareTest.class",   // comparison-only, needs large fixtures
+            // -- hardcoded dev-machine paths / external tools (PEAR/BWA, maize AGPv4, /Users/lcj34) --
+            "**/analysis/gbs/v2/RNADeMultiPlexSeqToDBPluginTest.class", // hardcoded dev paths + external tools
+            "**/analysis/gbs/repgen/RepGenLoadSeqToDBPluginTest.class", // hardcoded dev paths + external data
+            "**/analysis/gbs/repgen/RepGenAlignerPluginTest.class",     // hardcoded dev paths + external data
+            "**/analysis/gbs/repgen/RepGenLDAnalysisPluginTest.class",  // hardcoded dev paths + external data
+            "**/analysis/gbs/repgen/RampSeqAlignFromBlastTest.class",   // needs external BLAST output
             // External database integration — need live Postgres / MonetDB instances
             "**/analysis/gobii/*Test.class",
             "**/analysis/monetdb/*Test.class",

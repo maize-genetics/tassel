@@ -22,6 +22,18 @@ This downloads the `tassel_test_data_v1` release archive from GitHub, extracts
 it into `dataFiles/`, and deletes the archive.  The task is a no-op if
 `dataFiles/` already contains files.
 
+> **GBS tests self-generate their data.** The GBSv2 tests (e.g.
+> `GBSSeqToTagDBPluginTest`, `DiscoverySNPCallerPluginV2Test`,
+> `SNPQualityProfilerPluginTest`, `SNPCutPosTagVerificationPluginTest`,
+> `GetTagSequenceFromDBPluginTest`, `GetTagTaxaDistFromDBTest`,
+> `ParseBarcodeReadTest`) build their own deterministic reference FASTA, key
+> file, FASTQ, and (aligner-free) SAM at runtime via
+> `net.maizegenetics.analysis.gbs.v2.GBSSimData`. They need no `fetchTestData`
+> download and no external aligner (BWA/bowtie/PEAR). A small set of legacy GBS
+> tests remain excluded in `build.gradle.kts` (each with a one-line rationale):
+> they require the jhdf5 native library, byte-exact golden fixtures, or
+> hardcoded dev-machine paths.
+
 **2. Run the statistical-correctness gate**
 
 The statistics gate exercises kinship, MLM, GLM, PCA, LD, distance matrices,
