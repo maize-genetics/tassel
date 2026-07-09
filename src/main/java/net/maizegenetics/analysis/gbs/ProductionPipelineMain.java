@@ -297,11 +297,19 @@ public class ProductionPipelineMain {
      * @return Arguments to run ProductionSNPCallerPlugin
      */
         private String[] getPipelinePluginArgs(){
+            // ProductionSNPCallerPlugin's -o is an HDF5 genotypes file, not a directory. Per this
+            // class's contract the outputs are named after the key file (with "_key.txt" replaced),
+            // so derive a concrete .h5 file inside the configured output folder.
+            String keyName = new File(keyFile).getName();
+            String base = keyName.endsWith("_key.txt")
+                    ? keyName.substring(0, keyName.length() - "_key.txt".length())
+                    : FilenameUtils.removeExtension(keyName);
+            String outputGenotypesFile = outputFolder + File.separator + base + ".h5";
             String[] args = {
                     "-i", anInputFolder,
                     "-k", keyFile,
                     "-e", enzyme,
-                    "-o", outputFolder,
+                    "-o", outputGenotypesFile,
                     "-m", topmFile
             };
         return args;

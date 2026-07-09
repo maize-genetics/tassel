@@ -85,6 +85,9 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
         File possibleFile = new File(outputFile());
         if (possibleFile.exists() == false) {
             TagsByTaxaByteHDF5TaxaGroups theTBT = new TagsByTaxaByteHDF5TaxaGroups(myMasterTags, outputFile());
+            // Close the skeleton writer so matchTagsToTaxa() can reopen the file; leaving it open
+            // makes the reopen a second concurrent HDF5 writer and corrupts the output.
+            theTBT.closeWriter();
         }
         matchTagsToTaxa(myFastqFileS, keyFile(), enzyme(), myMasterTags, outputFile(), logFile());
         return null;

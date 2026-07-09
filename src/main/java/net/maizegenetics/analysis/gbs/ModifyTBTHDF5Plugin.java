@@ -85,6 +85,8 @@ public class ModifyTBTHDF5Plugin extends AbstractPlugin {
         }
         if ((pivotTBTHDF5File() != null) && !pivotTBTHDF5File().isEmpty()) {
             TagsByTaxaByteHDF5TagGroups tranTBT = new TagsByTaxaByteHDF5TagGroups(targetTBT, pivotTBTHDF5File());
+            // Release the writer so downstream readers don't collide with a still-open HDF5 writer.
+            tranTBT.closeWriter();
         }
         targetTBT.getFileReadyForClosing();
         targetTBT = null;
