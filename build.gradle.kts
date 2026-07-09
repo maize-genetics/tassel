@@ -219,12 +219,6 @@ tasks {
             // External database integration — need live Postgres / MonetDB instances
             "**/analysis/gobii/*Test.class",
             "**/analysis/monetdb/*Test.class",
-            // HDF5 native library — need jhdf5 native lib + large fixture files
-            "**/LowLevelCopyOfHDF5Test.class",
-            "**/SplitHDF5ByChromosomePluginTest.class",
-            "**/TagsOnPhysMapHDF5Test.class",
-            "**/DistanceMatrixHDF5Test.class",
-            "**/BuildUnfinishedHDF5GenotypesPluginTest.class",
             // RNA sequencing — need sequencing DB fixtures
             "**/analysis/rna/*Test.class",
             // Hardcoded paths / heavy fixtures (not in test data release)
