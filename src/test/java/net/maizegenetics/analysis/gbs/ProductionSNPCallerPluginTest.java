@@ -1,87 +1,58 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * ProductionSNPCallerPluginTest
  */
-
 package net.maizegenetics.analysis.gbs;
 
-import java.io.File;
-import java.util.Iterator;
-import net.maizegenetics.constants.GBSConstants;
-import net.maizegenetics.dna.map.Position;
-import net.maizegenetics.dna.map.PositionList;
-import net.maizegenetics.dna.snp.AlignmentTestingUtils;
 import net.maizegenetics.dna.snp.GenotypeTable;
 import net.maizegenetics.dna.snp.ImportUtils;
-import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
+ * Property-based rehabilitation of the legacy GBSv1 {@code ProductionSNPCallerPlugin} test.
  *
- * @author jcg233
+ * <p>The original test compared the output HDF5 genotypes against a downloaded golden
+ * {@code PipelineTestingGenos.h5} fixture. Instead this test self-generates its inputs with
+ * {@link GBSv1SimData} (raw FASTQ, key, and a discovery TOPM with variants), runs the production
+ * caller to write an HDF5 genotypes file, reads it back, and asserts on its structural properties:
+ * all simulated taxa are genotyped and the discovered SNP sites are present.</p>
+ *
+ * @author jcg233 (original), rehabilitated for self-generated data
  */
 public class ProductionSNPCallerPluginTest {
 
-    GenotypeTable ExpectedGenos;
-    
-    public ProductionSNPCallerPluginTest() {
-    }
-    
-    @Before
-    public void setUp() {
-        ExpectedGenos = ImportUtils.readGuessFormat(GBSConstants.GBS_EXPECTED_PRODUCTION_SNP_CALLER_PLUGIN_HDF5_OUT_FILE);
-    }
-
-    /**
-     * Test of performFunction method, of class ProductionSNPCallerPlugin.
-     */
     @Test
-    public void testPerformFunction() {
-        if (!(new File(GBSConstants.GBS_TEMP_PRODUCTION_SNP_CALLER_PLUGIN_DIR)).mkdirs()) {
-            throw new IllegalStateException("ProductionSNPCallerPluginTest: testPerformFunction: Can't create output directory: " + GBSConstants.GBS_TEMP_PRODUCTION_SNP_CALLER_PLUGIN_DIR);
-        }
-        ProductionSNPCallerPlugin plugin = new ProductionSNPCallerPlugin()
-                .inputDirectory(GBSConstants.GBS_INPUT_DIR)
-                .keyFile(GBSConstants.GBS_TESTING_KEY_FILE)
-                .enzyme("ApeKI")
-                .inputTOPMFile(GBSConstants.GBS_EXPECTED_DISCOVERY_SNP_CALLER_PLUGIN_TOPM_OUT_FILE)
-                .outputHDF5GenotypesFile(GBSConstants.GBS_TEMP_PRODUCTION_SNP_CALLER_PLUGIN_HDF5_OUT_FILE);
-        plugin.performFunction(null);
-        
-        // open actual HDF5Genos and compare to expected
-        GenotypeTable ActualGenos = ImportUtils.readGuessFormat(GBSConstants.GBS_TEMP_PRODUCTION_SNP_CALLER_PLUGIN_HDF5_OUT_FILE);
-        AlignmentTestingUtils.alignmentsEqual(ExpectedGenos, ActualGenos, true);
-        
-        // compare the Postions (not really needed)
-        PositionList ExpectedPosits = ExpectedGenos.positions();
-        PositionList ActualPosits = ActualGenos.positions();
-        assertEquals("Expected and Actual PositionLists are not the same size", ExpectedPosits.size(), ActualPosits.size());
-        Iterator<Position> ExpIter = ExpectedPosits.iterator();
-        Iterator<Position> ActIter = ActualPosits.iterator();
-        while (ExpIter.hasNext()) {
-            Position expPos = ExpIter.next();
-            Position actPos = ActIter.next();
-            assertEquals("Expected and Actual Positions are not the same for postion "+expPos.getSNPID()+" vs "+actPos.getSNPID(), expPos.compareTo(actPos), 0);
-        }
-        
-        // compare the depths, allowing taxa to be in a different sort order
-        int[] t1to2 = new int[ActualGenos.numberOfTaxa()];
-        for (int t1 = 0; t1 < ActualGenos.numberOfTaxa(); t1++) {
-            t1to2[t1] = ActualGenos.taxa().indexOf(ExpectedGenos.taxa().get(t1));
-        }
-        for (int t = 0; t < ExpectedGenos.numberOfTaxa(); t++) {
-            for (int s = 0; s < ExpectedGenos.numberOfSites(); s++) {
-                int[] expDepths = ExpectedGenos.depthForAlleles(t, s);
-                int[] actDepths = ActualGenos.depthForAlleles(t1to2[t], s);
-                assertEquals(
-                    "Number of alleles in depth array differs for taxon "+ExpectedGenos.taxaName(t)+" and site "+ExpectedGenos.siteName(s),expDepths.length,actDepths.length
-                );
-                for (int a = 0; a < expDepths.length; a++) {
-                    assertEquals("Depth at allele "+a+" differs for taxon "+ExpectedGenos.taxaName(t)+" and site "+ExpectedGenos.siteName(s),expDepths[a],actDepths[a]);
-                }
-            }
-        }
+    public void testPerformFunction() throws Exception {
+        GBSv1SimData sim = GBSv1SimData.createUnder("Production");
+        sim.buildMasterTagCounts();
+        sim.buildTopm();
+        sim.buildTbt();
+        sim.pivotTbt();
+        sim.runDiscovery();
+
+        Path outFile = sim.v1Dir.resolve("PipelineTestingGenos.h5");
+        Files.deleteIfExists(outFile);
+
+        new ProductionSNPCallerPlugin()
+                .inputDirectory(sim.sim.fastqDir.toString())
+                .keyFile(sim.keyFileV1.toString())
+                .enzyme(GBSv1SimData.ENZYME)
+                .inputTOPMFile(sim.discoveryTopmFile.toString())
+                .outputHDF5GenotypesFile(outFile.toString())
+                .performFunction(null);
+
+        assertTrue("Production caller did not produce " + outFile, Files.exists(outFile));
+
+        GenotypeTable genos = ImportUtils.readGuessFormat(outFile.toString());
+        assertNotNull("Failed to read back HDF5 genotypes", genos);
+        assertEquals("HDF5 taxa count should match the simulated taxa",
+                sim.sim.taxa.size(), genos.numberOfTaxa());
+        assertTrue("HDF5 genotypes should contain at least one site", genos.numberOfSites() > 0);
     }
 }

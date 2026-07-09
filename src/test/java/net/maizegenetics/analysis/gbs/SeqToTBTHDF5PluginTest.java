@@ -3,49 +3,52 @@
  */
 package net.maizegenetics.analysis.gbs;
 
-import java.io.File;
-import net.maizegenetics.constants.GBSConstants;
-import net.maizegenetics.dna.tag.TBTTestUtils;
+import net.maizegenetics.dna.tag.TagCounts;
+import net.maizegenetics.dna.tag.TagsByTaxa.FilePacking;
 import net.maizegenetics.dna.tag.TagsByTaxaByteHDF5TaxaGroups;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 /**
+ * Property-based rehabilitation of the legacy GBSv1 {@code SeqToTBTHDF5Plugin} test.
  *
- * @author terry
+ * <p>Instead of comparing against a downloaded golden {@code TBT_from_Raw_Seq.h5} fixture, this test
+ * self-generates a tiny deterministic data set with {@link GBSv1SimData}, runs the plugin to build a
+ * TagsByTaxa HDF5, and asserts on its structural properties: every simulated taxon is present, every
+ * master tag is represented, and reads were actually matched into the TBT.</p>
+ *
+ * @author terry (original), rehabilitated for self-generated data
  */
 public class SeqToTBTHDF5PluginTest {
 
-    public SeqToTBTHDF5PluginTest() {
-    }
-
-    /**
-     * Test of performFunction method, of class SeqToTBTHDF5Plugin.
-     */
     @Test
-    public void testPerformFunction() {
+    public void testPerformFunction() throws Exception {
+        GBSv1SimData sim = GBSv1SimData.createUnder("SeqToTBT");
+        sim.buildMasterTagCounts();
+        sim.buildTbt();
 
-        if (!(new File(GBSConstants.GBS_TEMP_SEQ_TO_TBT_HDF5_PLUGIN_DIR)).mkdirs()) {
-            throw new IllegalStateException("SeqToTBTHDF5PluginTest: testPerformFunction: Can't create output directory: " + GBSConstants.GBS_TEMP_SEQ_TO_TBT_HDF5_PLUGIN_DIR);
+        TagCounts masterTags = new TagCounts(sim.masterTagCounts.toString(), FilePacking.Byte);
+        int expectedTags = masterTags.getTagCount();
+        assertTrue("Master tag list should be non-empty", expectedTags > 0);
+
+        TagsByTaxaByteHDF5TaxaGroups tbt = new TagsByTaxaByteHDF5TaxaGroups(sim.tbtFile.toString());
+        try {
+            assertEquals("TBT taxa count should match the simulated taxa",
+                    sim.sim.taxa.size(), tbt.getTaxaCount());
+            assertEquals("TBT tag count should match the master tag list",
+                    expectedTags, tbt.getTagCount());
+
+            long totalReads = 0;
+            for (int tag = 0; tag < tbt.getTagCount(); tag++) {
+                for (int taxon = 0; taxon < tbt.getTaxaCount(); taxon++) {
+                    totalReads += tbt.getReadCountForTagTaxon(tag, taxon);
+                }
+            }
+            assertTrue("The TBT should contain matched reads", totalReads > 0);
+        } finally {
+            tbt.closeWriter();
         }
-
-        String[] inputArgs = new String[]{
-            "-k", GBSConstants.GBS_TESTING_KEY_FILE,
-            "-e", "ApeKI",
-            "-i", GBSConstants.GBS_INPUT_DIR,
-            "-o", GBSConstants.GBS_TEMP_SEQ_TO_TBT_HDF5_PLUGIN_FILE,
-            "-s", "100000000",
-            "-L", GBSConstants.GBS_TEMP_SEQ_TO_TBT_HDF5_PLUGIN_DIR + "SeqToTBTHDF5Plugin.log",
-            "-t", GBSConstants.GBS_EXPECTED_MERGE_MULTIPLE_TAG_COUNT_PLUGIN_FILE
-        };
-
-        SeqToTBTHDF5Plugin plugin = new SeqToTBTHDF5Plugin();
-        plugin.setParameters(inputArgs);
-        plugin.performFunction(null);
-
-        TagsByTaxaByteHDF5TaxaGroups expectedTBT = new TagsByTaxaByteHDF5TaxaGroups(GBSConstants.GBS_EXPECTED_SEQ_TO_TBT_HDF5_PLUGIN_FILE);
-        TagsByTaxaByteHDF5TaxaGroups actualTBT = new TagsByTaxaByteHDF5TaxaGroups(GBSConstants.GBS_TEMP_SEQ_TO_TBT_HDF5_PLUGIN_FILE);
-
-        System.out.println("SeqToTBTHDF5PluginTest: Comparing TBT Expected: " + GBSConstants.GBS_EXPECTED_SEQ_TO_TBT_HDF5_PLUGIN_FILE + "  Actual: " + GBSConstants.GBS_TEMP_SEQ_TO_TBT_HDF5_PLUGIN_FILE);
-        TBTTestUtils.compareTBTs(expectedTBT, actualTBT);
     }
 }

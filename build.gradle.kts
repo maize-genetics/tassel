@@ -195,12 +195,12 @@ tasks {
             // MigrateHDF5FromT4T5Test) already write/read .h5 and pass. The tests below are
             // excluded for their real blockers, not the native lib.
             //
-            // -- legacy GBSv1 pipeline: byte-exact/MD5 golden fixtures (.h5/.topm/checksum) --
-            "**/analysis/gbs/SeqToTBTHDF5PluginTest.class",       // v1 TBT HDF5 vs golden fixture
-            "**/analysis/gbs/ModifyTBTHDF5PluginTest.class",      // v1 pivot/merge TBT vs golden fixture
-            "**/analysis/gbs/DiscoverySNPCallerPluginTest.class", // v1 caller: MD5 compare of golden TOPM
-            "**/analysis/gbs/ProductionSNPCallerPluginTest.class",// v1 production vs golden HDF5 genos
-            "**/analysis/gbs/ProductionPipelineMainTest.class",   // v1 pipeline vs hardcoded MD5 + golden TOPM
+            // NOTE: the legacy GBSv1 pipeline tests (SeqToTBTHDF5PluginTest, ModifyTBTHDF5PluginTest,
+            // DiscoverySNPCallerPluginTest, ProductionSNPCallerPluginTest, ProductionPipelineMainTest)
+            // were rehabilitated to self-generate deterministic data via GBSv1SimData (built on the
+            // GBSSimData approach) and assert on pipeline properties instead of downloaded golden
+            // fixtures / MD5 hashes, so they now run in this suite.
+            //
             // -- needs large real-maize reference + biological golden data + hardcoded dev paths --
             "**/analysis/gbs/v2/EvaluateSNPCallQualityOfPipelineTest.class", // real maize ref, bowtie2 SAM, HM3/conserved sites
             // -- byte-exact golden fixtures / pre-made SAM from v1 legacy (.cnt/.topm/.fq.gz) --
