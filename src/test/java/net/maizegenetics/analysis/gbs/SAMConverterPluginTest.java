@@ -3,47 +3,51 @@
  */
 package net.maizegenetics.analysis.gbs;
 
-import java.io.File;
-import net.maizegenetics.constants.GBSConstants;
-import net.maizegenetics.util.CheckSum;
-import static org.junit.Assert.assertEquals;
+import java.util.HashSet;
+import java.util.Set;
+
+import net.maizegenetics.analysis.gbs.v2.GBSSimData;
+import net.maizegenetics.dna.map.TagsOnPhysicalMap;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 /**
+ * Property-based rehabilitation of the legacy GBSv1 {@code SAMConverterPlugin} test.
  *
- * @author terry
+ * <p>The original test needed a pre-made bowtie SAM and MD5-compared the resulting {@code .topm}
+ * against a downloaded golden fixture. Instead this test lets {@link GBSv1SimData} synthesize a
+ * perfect-alignment SAM directly from the known tag/reference positions (no external aligner) and run
+ * {@code SAMConverterPlugin}. It then asserts every tag was uniquely aligned to its known
+ * chromosome/position, dropping the byte-exact hash comparison.</p>
+ *
+ * @author terry (original), rehabilitated for self-generated data
  */
 public class SAMConverterPluginTest {
 
-    public SAMConverterPluginTest() {
-    }
-
-    /**
-     * Test of performFunction method, of class SAMConverterPlugin.
-     */
     @Test
-    public void testPerformFunction() {
+    public void testPerformFunction() throws Exception {
+        GBSv1SimData sim = GBSv1SimData.createUnder("SAMConverter");
+        sim.buildTagCountsAndTopm();
 
-        if (!(new File(GBSConstants.GBS_TEMP_SAM_CONVERTER_PLUGIN_DIR)).mkdirs()) {
-            throw new IllegalStateException("SAMConverterPluginTest: testPerformFunction: Can't create output directory: " + GBSConstants.GBS_TEMP_SAM_CONVERTER_PLUGIN_DIR);
+        Set<String> knownPositions = new HashSet<>();
+        for (GBSSimData.TagInfo info : sim.sim.tagInfos) {
+            knownPositions.add(info.chrom + ":" + info.cutPosition);
         }
 
-        String[] inputArgs = new String[]{
-            "-i", GBSConstants.GBS_EXPECTED_BOWTIE_SAM_FILE,
-            "-o", GBSConstants.GBS_TEMP_SAM_CONVERTER_PLUGIN_FILE
-        };
+        TagsOnPhysicalMap topm = new TagsOnPhysicalMap(sim.topmFile.toString(), true);
+        assertEquals("TOPM should contain one entry per synthesized SAM tag",
+                sim.sim.tagInfos.size(), topm.getSize());
 
-        SAMConverterPlugin plugin = new SAMConverterPlugin();
-        plugin.setParameters(inputArgs);
-        plugin.performFunction(null);
-
-        String actualMD5 = CheckSum.getMD5Checksum(GBSConstants.GBS_TEMP_SAM_CONVERTER_PLUGIN_FILE);
-        String expectedMD5 = CheckSum.getMD5Checksum(GBSConstants.GBS_EXPECTED_SAM_CONVERTER_PLUGIN_FILE);
-
-        System.out.println("Expected: " + GBSConstants.GBS_EXPECTED_SAM_CONVERTER_PLUGIN_FILE + ": " + expectedMD5);
-        System.out.println("Actual: " + GBSConstants.GBS_TEMP_SAM_CONVERTER_PLUGIN_FILE + ": " + actualMD5);
-
-        assertEquals("SAMConverterPluginTest Result MD5: " + GBSConstants.GBS_TEMP_SAM_CONVERTER_PLUGIN_FILE, expectedMD5, actualMD5);
-
+        for (int tag = 0; tag < topm.getSize(); tag++) {
+            int chromosome = topm.getChromosome(tag);
+            assertTrue("Every simulated tag should be uniquely aligned (have a chromosome)",
+                    chromosome != Integer.MIN_VALUE);
+            int startPosition = topm.getStartPosition(tag);
+            String key = chromosome + ":" + startPosition;
+            assertTrue("Aligned position " + key + " should be a known simulated cut site",
+                    knownPositions.contains(key));
+        }
     }
 }

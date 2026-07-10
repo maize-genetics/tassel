@@ -202,15 +202,14 @@ tasks {
             // GBSSimData approach) and assert on pipeline properties instead of downloaded golden
             // fixtures / MD5 hashes, so they now run in this suite.
             //
-            // -- needs large real-maize reference + biological golden data + hardcoded dev paths --
-            "**/analysis/gbs/v2/EvaluateSNPCallQualityOfPipelineTest.class", // real maize ref, bowtie2 SAM, HM3/conserved sites
-            // -- byte-exact golden fixtures / pre-made SAM from v1 legacy (.cnt/.topm/.fq.gz) --
-            "**/analysis/gbs/FastqToTagCountPluginTest.class",    // compares against golden .cnt
-            "**/analysis/gbs/MergeMultipleTagCountPluginTest.class", // compares against golden .cnt
-            "**/analysis/gbs/TagCountToFastqPluginTest.class",    // compares against golden .fq.gz
-            "**/analysis/gbs/SAMConverterPluginTest.class",       // needs pre-made SAM + golden .topm
-            // -- no real assertions / heavy converted-text fixtures --
-            "**/analysis/gbs/v2/GBSv2BiologyCompareTest.class",   // comparison-only, needs large fixtures
+            // NOTE: the GBSv1 tag-pipeline tests (FastqToTagCountPluginTest, MergeMultipleTagCountPluginTest,
+            // TagCountToFastqPluginTest, SAMConverterPluginTest) and the GBSv2 tests
+            // (GBSv2BiologyCompareTest, EvaluateSNPCallQualityOfPipelineTest) were likewise rehabilitated
+            // to self-generate deterministic data via GBSSimData/GBSv1SimData and assert on pipeline
+            // properties (tag-list sanity, distinct-tag counts, unique alignment positions, injected
+            // SNP-locus counts) instead of golden .cnt/.fq.gz/.topm hashes or real-maize biological
+            // fixtures, so they now run in this suite.
+            //
             // -- hardcoded dev-machine paths / external tools (PEAR/BWA, maize AGPv4, /Users/lcj34) --
             "**/analysis/gbs/v2/RNADeMultiPlexSeqToDBPluginTest.class", // hardcoded dev paths + external tools
             "**/analysis/gbs/repgen/RepGenLoadSeqToDBPluginTest.class", // hardcoded dev paths + external data
