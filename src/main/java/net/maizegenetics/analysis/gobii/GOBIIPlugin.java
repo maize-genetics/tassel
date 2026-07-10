@@ -21,6 +21,7 @@ import net.maizegenetics.prefs.TasselPrefs;
 import net.maizegenetics.taxa.TaxaList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -136,6 +137,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return Dataset Name
      */
+    @GeneratedGuiBoilerplate
     public String dataset() {
         return myDataset.value();
     }
@@ -147,6 +149,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GOBIIPlugin dataset(String value) {
         myDataset = new PluginParameter<>(myDataset, value);
         return this;
@@ -157,6 +160,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return Database Name
      */
+    @GeneratedGuiBoilerplate
     public String dBName() {
         return myDBName.value();
     }
@@ -168,6 +172,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GOBIIPlugin dBName(String value) {
         myDBName = new PluginParameter<>(myDBName, value);
         return this;
@@ -178,6 +183,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return User
      */
+    @GeneratedGuiBoilerplate
     public String user() {
         return myUser.value();
     }
@@ -189,6 +195,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GOBIIPlugin user(String value) {
         myUser = new PluginParameter<>(myUser, value);
         return this;
@@ -201,6 +208,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GOBIIPlugin password(String value) {
         myPassword = new PluginParameter<>(myPassword, value);
         return this;
@@ -211,6 +219,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return Database Name
      */
+    @GeneratedGuiBoilerplate
     public String bmsDBName() {
         return myBMSDBName.value();
     }
@@ -222,6 +231,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GOBIIPlugin bmsDBName(String value) {
         myBMSDBName = new PluginParameter<>(myBMSDBName, value);
         return this;
@@ -232,6 +242,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return BMS Host Name
      */
+    @GeneratedGuiBoilerplate
     public String bmsHost() {
         return myBMSHost.value();
     }
@@ -243,6 +254,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GOBIIPlugin bmsHost(String value) {
         myBMSHost = new PluginParameter<>(myBMSHost, value);
         return this;
@@ -253,6 +265,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return BMS User
      */
+    @GeneratedGuiBoilerplate
     public String bmsUser() {
         return myBMSUser.value();
     }
@@ -264,6 +277,7 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GOBIIPlugin bmsUser(String value) {
         myBMSUser = new PluginParameter<>(myBMSUser, value);
         return this;
@@ -276,22 +290,26 @@ public class GOBIIPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GOBIIPlugin bmsPassword(String value) {
         myBMSPassword = new PluginParameter<>(myBMSPassword, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "GOBII Plugin";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "GOBII Plugin";
     }

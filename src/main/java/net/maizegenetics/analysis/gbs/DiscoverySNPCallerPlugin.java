@@ -31,6 +31,7 @@ import java.util.HashMap;
 
 import static net.maizegenetics.dna.snp.NucleotideAlignmentConstants.*;
 import net.maizegenetics.plugindef.PluginParameter;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This class aligns tags at the same physical location against one another,
@@ -219,6 +220,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Input Tags by Taxa File
      */
+    @GeneratedGuiBoilerplate
     public String inputTagsByTaxaFile() {
         return myInputTagsByTaxa.value();
     }
@@ -231,6 +233,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin inputTagsByTaxaFile(String value) {
         myInputTagsByTaxa = new PluginParameter<>(myInputTagsByTaxa, value);
         return this;
@@ -241,6 +244,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Use Byte Format
      */
+    @GeneratedGuiBoilerplate
     public Boolean useByteFormat() {
         return myUseByteFormat.value();
     }
@@ -252,6 +256,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin useByteFormat(Boolean value) {
         myUseByteFormat = new PluginParameter<>(myUseByteFormat, value);
         return this;
@@ -262,6 +267,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Input TOPM File
      */
+    @GeneratedGuiBoilerplate
     public String inputTOPMFile() {
         return myInputTOPM.value();
     }
@@ -274,6 +280,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin inputTOPMFile(String value) {
         myInputTOPM = new PluginParameter<>(myInputTOPM, value);
         return this;
@@ -285,6 +292,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Output TOPM File
      */
+    @GeneratedGuiBoilerplate
     public String outputTOPMFile() {
         return myOutputTOPM.value();
     }
@@ -297,6 +305,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin outputTOPMFile(String value) {
         myOutputTOPM = new PluginParameter<>(myOutputTOPM, value);
         return this;
@@ -307,6 +316,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Log File
      */
+    @GeneratedGuiBoilerplate
     public String logFile() {
         return myLogFile.value();
     }
@@ -318,6 +328,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin logFile(String value) {
         myLogFile = new PluginParameter<>(myLogFile, value);
         return this;
@@ -328,6 +339,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Minimum F
      */
+    @GeneratedGuiBoilerplate
     public Double minimumF() {
         return myMinF.value();
     }
@@ -339,6 +351,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin minimumF(Double value) {
         myMinF = new PluginParameter<>(myMinF, value);
         return this;
@@ -352,6 +365,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Pedigree File
      */
+    @GeneratedGuiBoilerplate
     public String pedigreeFile() {
         return myPedigreeFile.value();
     }
@@ -366,6 +380,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin pedigreeFile(String value) {
         myPedigreeFile = new PluginParameter<>(myPedigreeFile, value);
         return this;
@@ -376,6 +391,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Min Minor Allele Freq
      */
+    @GeneratedGuiBoilerplate
     public Double minMinorAlleleFreq() {
         return myMinMinorAlleleFreq.value();
     }
@@ -387,6 +403,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin minMinorAlleleFreq(Double value) {
         myMinMinorAlleleFreq = new PluginParameter<>(myMinMinorAlleleFreq, value);
         return this;
@@ -397,6 +414,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Min Minor Allele Count
      */
+    @GeneratedGuiBoilerplate
     public Integer minMinorAlleleCount() {
         return myMinMinorAlleleCount.value();
     }
@@ -408,6 +426,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin minMinorAlleleCount(Integer value) {
         myMinMinorAlleleCount = new PluginParameter<>(myMinMinorAlleleCount, value);
         return this;
@@ -418,6 +437,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Min Locus Coverage
      */
+    @GeneratedGuiBoilerplate
     public Double minLocusCoverage() {
         return myMinLocusCoverage.value();
     }
@@ -430,6 +450,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin minLocusCoverage(Double value) {
         myMinLocusCoverage = new PluginParameter<>(myMinLocusCoverage, value);
         return this;
@@ -441,6 +462,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Ave Seq Error Rate
      */
+    @GeneratedGuiBoilerplate
     public Double aveSeqErrorRate() {
         return myAveSeqErrorRate.value();
     }
@@ -453,6 +475,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin aveSeqErrorRate(Double value) {
         myAveSeqErrorRate = new PluginParameter<>(myAveSeqErrorRate, value);
         return this;
@@ -467,6 +490,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Reference Genome File
      */
+    @GeneratedGuiBoilerplate
     public String referenceGenomeFile() {
         return myRefGenome.value();
     }
@@ -483,6 +507,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin referenceGenomeFile(String value) {
         myRefGenome = new PluginParameter<>(myRefGenome, value);
         return this;
@@ -493,6 +518,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Include Rare Alleles
      */
+    @GeneratedGuiBoilerplate
     public Boolean includeRareAlleles() {
         return myIncludeRareAlleles.value();
     }
@@ -505,6 +531,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin includeRareAlleles(Boolean value) {
         myIncludeRareAlleles = new PluginParameter<>(myIncludeRareAlleles, value);
         return this;
@@ -515,6 +542,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Include Gaps
      */
+    @GeneratedGuiBoilerplate
     public Boolean includeGaps() {
         return myIncludeGaps.value();
     }
@@ -526,6 +554,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin includeGaps(Boolean value) {
         myIncludeGaps = new PluginParameter<>(myIncludeGaps, value);
         return this;
@@ -537,6 +566,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Call Biallelic SNPs with Gap
      */
+    @GeneratedGuiBoilerplate
     public Boolean callBiallelicSNPsWithGap() {
         return myCallBiSNPsWGap.value();
     }
@@ -549,6 +579,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin callBiallelicSNPsWithGap(Boolean value) {
         myCallBiSNPsWGap = new PluginParameter<>(myCallBiSNPsWGap, value);
         return this;
@@ -559,6 +590,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return Start Chromosome
      */
+    @GeneratedGuiBoilerplate
     public Integer startChromosome() {
         return myStartChr.value();
     }
@@ -570,6 +602,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin startChromosome(Integer value) {
         myStartChr = new PluginParameter<>(myStartChr, value);
         return this;
@@ -580,6 +613,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return End Chromosome
      */
+    @GeneratedGuiBoilerplate
     public Integer endChromosome() {
         return myEndChr.value();
     }
@@ -591,22 +625,26 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPlugin endChromosome(Integer value) {
         myEndChr = new PluginParameter<>(myEndChr, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Discovery SNP Caller";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Discovery SNP Caller";
     }

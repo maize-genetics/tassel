@@ -22,6 +22,7 @@ import net.maizegenetics.util.Utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -152,14 +153,17 @@ public class MergeAlignmentsSameSitesPlugin extends AbstractPlugin {
         myOutputFile = filename;
     }
 
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Merge";
     }
 
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Merge Alignments Same Sites";
     }

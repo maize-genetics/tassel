@@ -17,6 +17,7 @@ import net.maizegenetics.dna.tag.TagCounts;
 import net.maizegenetics.dna.tag.TagsByTaxa.FilePacking;
 import static net.maizegenetics.dna.tag.TagsByTaxaByteHDF5TagGroups.encodeBySign;
 import net.maizegenetics.util.Tassel5HDF5Constants;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Split large TagsByTaxaByteHDF5TagGroup file into small sub TBTs. Designed to submit genetic mapping jobs in cluster
@@ -176,16 +177,19 @@ public class PanABuildPivotTBTPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

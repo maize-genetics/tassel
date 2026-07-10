@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin creates a table report of the key / value pairs stored in the @{@link ParameterCache}
@@ -78,6 +79,7 @@ public class ShowParameterCachePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = TasselLogging.class.getResource("/net/maizegenetics/analysis/images/properties.gif");
         if (imageURL == null) {
@@ -88,11 +90,13 @@ public class ShowParameterCachePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Show Parameter Cache";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Show Parameter Cache";
     }

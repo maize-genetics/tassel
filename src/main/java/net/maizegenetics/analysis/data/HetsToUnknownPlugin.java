@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -71,10 +72,12 @@ public class HetsToUnknownPlugin extends AbstractPlugin {
 
     }
 
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Change Heterozygous to Unknown";
     }
 
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = HetsToUnknownPlugin.class.getResource("/net/maizegenetics/analysis/images/homozygous.gif");
         if (imageURL == null) {
@@ -84,6 +87,7 @@ public class HetsToUnknownPlugin extends AbstractPlugin {
         }
     }
 
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Homozygous Genotype";
     }

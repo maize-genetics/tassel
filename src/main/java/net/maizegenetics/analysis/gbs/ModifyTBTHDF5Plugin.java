@@ -22,6 +22,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This pipeline modifies TagsByTaxa HDF5 file with data organized by taxa. It
@@ -153,53 +154,64 @@ public class ModifyTBTHDF5Plugin extends AbstractPlugin {
         return s[0] + ":MRG:" + cnt + ":" + s[3];
     }
 
+    @GeneratedGuiBoilerplate
     public String targetTBTHDF5File() {
         return myTargetTBT.value();
     }
 
+    @GeneratedGuiBoilerplate
     public ModifyTBTHDF5Plugin targetTBTHDF5File(String value) {
         myTargetTBT = new PluginParameter<>(myTargetTBT, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public String additionTaxaFile() {
         return myAdditionalTaxaFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public ModifyTBTHDF5Plugin additionTaxaFile(String value) {
         myAdditionalTaxaFile = new PluginParameter<>(myAdditionalTaxaFile, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean mergeTaxa() {
         return myCombineTaxa.value();
     }
 
+    @GeneratedGuiBoilerplate
     public ModifyTBTHDF5Plugin mergeTaxa(Boolean value) {
         myCombineTaxa = new PluginParameter<>(myCombineTaxa, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public String pivotTBTHDF5File() {
         return myTransposeFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public ModifyTBTHDF5Plugin pivotTBTHDF5File(String value) {
         myTransposeFile = new PluginParameter<>(myTransposeFile, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Modify TBT HDF5";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Modify TBT HDF5";
     }

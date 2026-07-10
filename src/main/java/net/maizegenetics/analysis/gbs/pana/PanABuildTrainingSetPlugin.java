@@ -14,6 +14,7 @@ import java.io.*;
 import java.util.logging.Level;
 import net.maizegenetics.dna.BaseEncoder;
 import net.maizegenetics.dna.map.TagGWASMap;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Build training data set from tagMap, including boxcox transformation and converting to ARFF format
@@ -224,16 +225,19 @@ public class PanABuildTrainingSetPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

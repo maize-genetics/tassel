@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 
 import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -37,14 +38,17 @@ public class FilterDataSetPlugin extends AbstractPlugin{
         return result;
     }
     
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "";
     }
     
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
     
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "";
     }

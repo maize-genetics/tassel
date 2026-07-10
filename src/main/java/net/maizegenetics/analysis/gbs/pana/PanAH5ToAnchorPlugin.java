@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import net.maizegenetics.analysis.gbs.SimpleGenotypeSBit;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Reformat HDF5 genotype to {@link SimpleGenotypeSBit} anchor.
@@ -81,16 +82,19 @@ public class PanAH5ToAnchorPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

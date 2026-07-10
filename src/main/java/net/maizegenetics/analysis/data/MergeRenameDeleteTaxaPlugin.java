@@ -26,6 +26,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author jcg233
@@ -250,6 +251,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = MergeRenameDeleteTaxaPlugin.class
                 .getResource("/net/maizegenetics/analysis/images/lowDepthToMissing.gif");
@@ -261,11 +263,13 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "MergeRenameTaxa";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Rename taxa, merging those with the same new name";
     }
@@ -298,6 +302,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return Taxa Rename Key
      */
+    @GeneratedGuiBoilerplate
     public String taxaRenameKey() {
         return taxaRenameKey.value();
     }
@@ -313,6 +318,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeRenameDeleteTaxaPlugin taxaRenameKey(String value) {
         taxaRenameKey = new PluginParameter<>(taxaRenameKey, value);
         return this;
@@ -323,6 +329,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return Output Genotypes
      */
+    @GeneratedGuiBoilerplate
     public String outputHDF5Genotypes() {
         return outputHDF5Genotypes.value();
     }
@@ -334,6 +341,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeRenameDeleteTaxaPlugin outputHDF5Genotypes(String value) {
         outputHDF5Genotypes = new PluginParameter<>(outputHDF5Genotypes, value);
         return this;
@@ -346,6 +354,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return Avg Seq Error Rate
      */
+    @GeneratedGuiBoilerplate
     public Double avgSeqErrorRate() {
         return avgSeqErrorRate.value();
     }
@@ -359,6 +368,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeRenameDeleteTaxaPlugin avgSeqErrorRate(Double value) {
         avgSeqErrorRate = new PluginParameter<>(avgSeqErrorRate, value);
         return this;
@@ -370,6 +380,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return No Depth Output
      */
+    @GeneratedGuiBoilerplate
     public Boolean noDepthOutput() {
         return noDepthOutput.value();
     }
@@ -383,6 +394,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeRenameDeleteTaxaPlugin noDepthOutput(Boolean value) {
         noDepthOutput = new PluginParameter<>(noDepthOutput, value);
         return this;
@@ -394,6 +406,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return Data set name
      */
+    @GeneratedGuiBoilerplate
     public String dataSetName() {
         return dataSetName.value();
     }
@@ -406,6 +419,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeRenameDeleteTaxaPlugin dataSetName(String value) {
         dataSetName = new PluginParameter<>(dataSetName, value);
         return this;
@@ -417,6 +431,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return Data set description
      */
+    @GeneratedGuiBoilerplate
     public String dataSetDescription() {
         return dataSetDescription.value();
     }
@@ -430,6 +445,7 @@ public class MergeRenameDeleteTaxaPlugin extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeRenameDeleteTaxaPlugin dataSetDescription(String value) {
         dataSetDescription = new PluginParameter<>(dataSetDescription, value);
         return this;

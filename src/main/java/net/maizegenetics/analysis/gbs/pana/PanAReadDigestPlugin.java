@@ -21,6 +21,7 @@ import net.maizegenetics.dna.tag.TagCounts;
 import net.maizegenetics.dna.tag.TagsByTaxa;
 import net.maizegenetics.dna.tag.TagsByTaxa.FilePacking;
 import net.maizegenetics.dna.tag.UTagCountMutable;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Digest Fastq/Qseq data with recognition sequence
@@ -390,16 +391,19 @@ public class PanAReadDigestPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

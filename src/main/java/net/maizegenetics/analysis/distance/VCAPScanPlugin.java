@@ -37,6 +37,7 @@ import net.maizegenetics.plugindef.ThreadedPluginListener;
 import net.maizegenetics.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -716,6 +717,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Scan method
      */
+    @GeneratedGuiBoilerplate
     public SCAN_METHOD method() {
         return myMethod.value();
     }
@@ -727,6 +729,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin method(SCAN_METHOD value) {
         myMethod = new PluginParameter<>(myMethod, value);
         return this;
@@ -737,6 +740,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Blocking Window Size
      */
+    @GeneratedGuiBoilerplate
     public Integer blockingWindowSize() {
         return myBlockingWindowSize.value();
     }
@@ -748,6 +752,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin blockingWindowSize(Integer value) {
         myBlockingWindowSize = new PluginParameter<>(myBlockingWindowSize, value);
         return this;
@@ -758,6 +763,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Num Sites Per Block
      */
+    @GeneratedGuiBoilerplate
     public Integer numSitesPerBlock() {
         return myNumSitesPerBlock.value();
     }
@@ -769,6 +775,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin numSitesPerBlock(Integer value) {
         myNumSitesPerBlock = new PluginParameter<>(myNumSitesPerBlock, value);
         return this;
@@ -779,6 +786,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Step Size
      */
+    @GeneratedGuiBoilerplate
     public Integer stepSize() {
         return myStepSize.value();
     }
@@ -790,6 +798,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin stepSize(Integer value) {
         myStepSize = new PluginParameter<>(myStepSize, value);
         return this;
@@ -801,6 +810,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Dir Of Files
      */
+    @GeneratedGuiBoilerplate
     public String dirOfFiles() {
         return myDirOfFiles.value();
     }
@@ -814,6 +824,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin dirOfFiles(String value) {
         myDirOfFiles = new PluginParameter<>(myDirOfFiles, value);
         return this;
@@ -824,6 +835,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Bed File
      */
+    @GeneratedGuiBoilerplate
     public String bedFile() {
         return myBedFile.value();
     }
@@ -835,6 +847,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin bedFile(String value) {
         myBedFile = new PluginParameter<>(myBedFile, value);
         return this;
@@ -846,6 +859,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Blocking Bed File
      */
+    @GeneratedGuiBoilerplate
     public String blockingBedFile() {
         return myBlockingBedFile.value();
     }
@@ -858,6 +872,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin blockingBedFile(String value) {
         myBlockingBedFile = new PluginParameter<>(myBlockingBedFile, value);
         return this;
@@ -868,6 +883,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Phenotype File
      */
+    @GeneratedGuiBoilerplate
     public String phenotypeFile() {
         return myPhenotypeFile.value();
     }
@@ -879,6 +895,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin phenotypeFile(String value) {
         myPhenotypeFile = new PluginParameter<>(myPhenotypeFile, value);
         return this;
@@ -889,6 +906,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Ldak Command
      */
+    @GeneratedGuiBoilerplate
     public String ldakCommand() {
         return myLDAKCommand.value();
     }
@@ -900,6 +918,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin ldakCommand(String value) {
         myLDAKCommand = new PluginParameter<>(myLDAKCommand, value);
         return this;
@@ -910,6 +929,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Output Dir
      */
+    @GeneratedGuiBoilerplate
     public String outputDir() {
         return myOutputDir.value();
     }
@@ -921,6 +941,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin outputDir(String value) {
         myOutputDir = new PluginParameter<>(myOutputDir, value);
         return this;
@@ -931,6 +952,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return Whole Matrix
      */
+    @GeneratedGuiBoilerplate
     public String wholeMatrix() {
         return myWholeMatrix.value();
     }
@@ -942,12 +964,14 @@ public class VCAPScanPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public VCAPScanPlugin wholeMatrix(String value) {
         myWholeMatrix = new PluginParameter<>(myWholeMatrix, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = VCAPScanPlugin.class.getResource("/net/maizegenetics/analysis/images/VCAP.png");
         if (imageURL == null) {
@@ -958,11 +982,13 @@ public class VCAPScanPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "VCAP Scan";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Variance Component Annotation Pipeline Scan";
     }

@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Derives a tagCount list for each fastq file in the input directory.
@@ -191,71 +192,86 @@ public class FastqToTagCountPlugin extends AbstractPlugin {
         }
     }
 
+    @GeneratedGuiBoilerplate
     public FastqToTagCountPlugin inputDir(String value) {
         myInputDir = new PluginParameter<>(myInputDir, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public String inputDir() {
         return myInputDir.value();
     }
 
+    @GeneratedGuiBoilerplate
     public FastqToTagCountPlugin keyFile(String value) {
         myKeyFile = new PluginParameter<>(myKeyFile, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public String keyFile() {
         return myKeyFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public FastqToTagCountPlugin enzyme(String value) {
         myEnzyme = new PluginParameter<>(myEnzyme, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public String enzyme() {
         return myEnzyme.value();
     }
 
+    @GeneratedGuiBoilerplate
     public FastqToTagCountPlugin maxGoodReads(Integer value) {
         myMaxGoodReads = new PluginParameter<>(myMaxGoodReads, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public Integer maxGoodReads() {
         return myMaxGoodReads.value();
     }
 
+    @GeneratedGuiBoilerplate
     public FastqToTagCountPlugin minTagCount(Integer value) {
         myMinTagCount = new PluginParameter<>(myMinTagCount, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public Integer minTagCount() {
         return myMinTagCount.value();
     }
 
+    @GeneratedGuiBoilerplate
     public FastqToTagCountPlugin outputDir(String value) {
         myOutputDir = new PluginParameter<>(myOutputDir, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public String outputDir() {
         return myOutputDir.value();
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Fastq to Tag Count";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Fastq to Tag Count";
     }

@@ -21,6 +21,7 @@ import net.maizegenetics.util.Utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /*
  * Converts a TagCounts binary (*.cnt) file (presumably a master tag list) to a fastq file that can be used as input
@@ -132,44 +133,53 @@ public class TagCountToFastqPlugin extends AbstractPlugin {
         }
     }
 
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return myInputFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public TagCountToFastqPlugin inputFile(String value) {
         myInputFile = new PluginParameter<>(myInputFile, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public TagCountToFastqPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public Integer minCount() {
         return myMinCount.value();
     }
 
+    @GeneratedGuiBoilerplate
     public TagCountToFastqPlugin minCount(Integer value) {
         myMinCount = new PluginParameter<>(myMinCount, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Tag Count to Fastq";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Tag Count to Fastq";
     }

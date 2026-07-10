@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 
 import net.maizegenetics.dna.snp.GenotypeTable;
 import net.maizegenetics.plugindef.*;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 
@@ -95,17 +96,20 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public ImageIcon getIcon() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getButtonName() {
 		return "Progeny States";
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getToolTipText() {
 		return "Impute progeny states from parent haplotypes.";
 	}
@@ -127,6 +131,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return Rephase Parents First
 	 */
+	@GeneratedGuiBoilerplate
 	public Boolean rephase() {
 		return rephase.value();
 	}
@@ -139,6 +144,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return this plugin
 	 */
+	@GeneratedGuiBoilerplate
 	public ImputeProgenyStatesPlugin rephase(Boolean value) {
 		rephase = new PluginParameter<>(rephase, value);
 		return this;
@@ -152,6 +158,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return Parentage Input File
 	 */
+	@GeneratedGuiBoilerplate
 	public String parentageFile() {
 		return parentageFile.value();
 	}
@@ -165,6 +172,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return this plugin
 	 */
+	@GeneratedGuiBoilerplate
 	public ImputeProgenyStatesPlugin parentageFile(String value) {
 		parentageFile = new PluginParameter<>(parentageFile, value);
 		return this;
@@ -176,6 +184,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return Parent Haplotypes Input File
 	 */
+	@GeneratedGuiBoilerplate
 	public String parentHaplotypeFilename() {
 		return parentHaplotypeFilename.value();
 	}
@@ -188,6 +197,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return this plugin
 	 */
+	@GeneratedGuiBoilerplate
 	public ImputeProgenyStatesPlugin parentHaplotypeFilename(String value) {
 		parentHaplotypeFilename = new PluginParameter<>(parentHaplotypeFilename, value);
 		return this;
@@ -200,6 +210,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return Progeny States Input File
 	 */
+	@GeneratedGuiBoilerplate
 	public String progenyFile() {
 		return progenyFile.value();
 	}
@@ -213,6 +224,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return this plugin
 	 */
+	@GeneratedGuiBoilerplate
 	public ImputeProgenyStatesPlugin progenyFile(String value) {
 		progenyFile = new PluginParameter<>(progenyFile, value);
 		return this;
@@ -224,6 +236,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return Imputed Genotypes Output File
 	 */
+	@GeneratedGuiBoilerplate
 	public String imputedFile() {
 		return imputedFile.value();
 	}
@@ -237,6 +250,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return this plugin
 	 */
+	@GeneratedGuiBoilerplate
 	public ImputeProgenyStatesPlugin imputedFile(String value) {
 		imputedFile = new PluginParameter<>(imputedFile, value);
 		return this;
@@ -248,6 +262,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return Progeny States Output File
 	 */
+	@GeneratedGuiBoilerplate
 	public String statesFile() {
 		return statesFile.value();
 	}
@@ -260,6 +275,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return this plugin
 	 */
+	@GeneratedGuiBoilerplate
 	public ImputeProgenyStatesPlugin statesFile(String value) {
 		statesFile = new PluginParameter<>(statesFile, value);
 		return this;
@@ -272,6 +288,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return Updated Haplotype Probabilities Output File
 	 */
+	@GeneratedGuiBoilerplate
 	public String hapProbFile() {
 		return hapProbFile.value();
 	}
@@ -286,6 +303,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return this plugin
 	 */
+	@GeneratedGuiBoilerplate
 	public ImputeProgenyStatesPlugin hapProbFile(String value) {
 		hapProbFile = new PluginParameter<>(hapProbFile, value);
 		return this;
@@ -296,6 +314,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return Write Breakpoints
 	 */
+	@GeneratedGuiBoilerplate
 	public Boolean writeBreakpoints() {
 		return writeBreakpoints.value();
 	}
@@ -308,6 +327,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return this plugin
 	 */
+	@GeneratedGuiBoilerplate
 	public ImputeProgenyStatesPlugin writeBreakpoints(Boolean value) {
 		writeBreakpoints = new PluginParameter<>(writeBreakpoints, value);
 		return this;
@@ -319,6 +339,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return Breakpoint Output File
 	 */
+	@GeneratedGuiBoilerplate
 	public String breakpointOutFile() {
 		return breakpointOutFile.value();
 	}
@@ -332,6 +353,7 @@ public class ImputeProgenyStatesPlugin extends AbstractPlugin {
 	 *
 	 * @return this plugin
 	 */
+	@GeneratedGuiBoilerplate
 	public ImputeProgenyStatesPlugin breakpointOutFile(String value) {
 		breakpointOutFile = new PluginParameter<>(breakpointOutFile, value);
 		return this;

@@ -20,6 +20,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -82,6 +83,7 @@ public class BinaryToTextPlugin extends AbstractPlugin {
      *
      * @return Input File
      */
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return myInputFile.value();
     }
@@ -93,6 +95,7 @@ public class BinaryToTextPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BinaryToTextPlugin inputFile(String value) {
         myInputFile = new PluginParameter<>(myInputFile, value);
         return this;
@@ -103,6 +106,7 @@ public class BinaryToTextPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
@@ -114,6 +118,7 @@ public class BinaryToTextPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BinaryToTextPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
@@ -124,6 +129,7 @@ public class BinaryToTextPlugin extends AbstractPlugin {
      *
      * @return File Type
      */
+    @GeneratedGuiBoilerplate
     public FILE_TYPES fileType() {
         return myFileType.value();
     }
@@ -135,22 +141,26 @@ public class BinaryToTextPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BinaryToTextPlugin fileType(FILE_TYPES value) {
         myFileType = new PluginParameter<>(myFileType, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Binary to Text";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Binary to Text";
     }

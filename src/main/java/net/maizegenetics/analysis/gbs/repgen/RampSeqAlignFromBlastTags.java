@@ -49,6 +49,7 @@ import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.Tuple;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This class takes a rAmpSeq database populated with tags,a reference Genome, a filtered
@@ -714,18 +715,21 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
 //     }
      
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -736,6 +740,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return Input DB
      */
+    @GeneratedGuiBoilerplate
     public String dBFile() {
         return myDBFile.value();
     }
@@ -748,6 +753,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RampSeqAlignFromBlastTags dBFile(String value) {
         myDBFile = new PluginParameter<>(myDBFile, value);
         return this;
@@ -758,6 +764,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return Reference Genome File
      */
+    @GeneratedGuiBoilerplate
     public String refGenome() {
         return refGenome.value();
     }
@@ -770,6 +777,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RampSeqAlignFromBlastTags refGenome(String value) {
         refGenome = new PluginParameter<>(refGenome, value);
         return this;
@@ -780,6 +788,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return Min Tag Count
      */
+    @GeneratedGuiBoilerplate
     public Integer minTagCount() {
         return minTagCount.value();
     }
@@ -792,6 +801,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RampSeqAlignFromBlastTags minTagCount(Integer value) {
         minTagCount = new PluginParameter<>(minTagCount, value);
         return this;
@@ -803,6 +813,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return Match Reward Amount
      */
+    @GeneratedGuiBoilerplate
     public Integer match_reward() {
         return match_reward.value();
     }
@@ -816,6 +827,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RampSeqAlignFromBlastTags match_reward(Integer value) {
         match_reward = new PluginParameter<>(match_reward, value);
         return this;
@@ -827,6 +839,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return Mismatch Penalty Amount
      */
+    @GeneratedGuiBoilerplate
     public Integer mismatch_penalty() {
         return mismatch_penalty.value();
     }
@@ -840,6 +853,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RampSeqAlignFromBlastTags mismatch_penalty(Integer value) {
         mismatch_penalty = new PluginParameter<>(mismatch_penalty, value);
         return this;
@@ -851,6 +865,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return Gap Penalty Amount
      */
+    @GeneratedGuiBoilerplate
     public Integer gap_penalty() {
         return gap_penalty.value();
     }
@@ -864,6 +879,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RampSeqAlignFromBlastTags gap_penalty(Integer value) {
         gap_penalty = new PluginParameter<>(gap_penalty, value);
         return this;
@@ -874,6 +890,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return Forward Primer
      */
+    @GeneratedGuiBoilerplate
     public String forwardp() {
         return forwardp.value();
     }
@@ -886,6 +903,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RampSeqAlignFromBlastTags forwardp(String value) {
         forwardp = new PluginParameter<>(forwardp, value);
         return this;
@@ -896,6 +914,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return Reverse Primer
      */
+    @GeneratedGuiBoilerplate
     public String reversep() {
         return reversep.value();
     }
@@ -908,6 +927,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RampSeqAlignFromBlastTags reversep(String value) {
         reversep = new PluginParameter<>(reversep, value);
         return this;
@@ -922,6 +942,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return Blast File
      */
+    @GeneratedGuiBoilerplate
     public String blastFile() {
         return blastFile.value();
     }
@@ -937,6 +958,7 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RampSeqAlignFromBlastTags blastFile(String value) {
         blastFile = new PluginParameter<>(blastFile, value);
         return this;

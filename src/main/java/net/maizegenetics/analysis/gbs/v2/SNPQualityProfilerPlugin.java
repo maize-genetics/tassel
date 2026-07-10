@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 
 /**
@@ -462,16 +463,19 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
 
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "SNP Quality Profiler";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "SNP Quality Profiler";
     }
@@ -486,6 +490,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public TagData runPlugin(DataSet input) {
         return (TagData) performFunction(input).getData(0).getData();
     }
@@ -495,6 +500,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return Taxa List File
      */
+    @GeneratedGuiBoilerplate
     public String taxaFile() {
         return myTaxaFile.value();
     }
@@ -507,6 +513,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPQualityProfilerPlugin taxaFile(String value) {
         myTaxaFile = new PluginParameter<>(myTaxaFile, value);
         return this;
@@ -517,6 +524,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return GBS DB File
      */
+    @GeneratedGuiBoilerplate
     public String dBFile() {
         return myDBFile.value();
     }
@@ -528,6 +536,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPQualityProfilerPlugin dBFile(String value) {
         myDBFile = new PluginParameter<>(myDBFile, value);
         return this;
@@ -538,6 +547,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return GBS DB File
      */
+    @GeneratedGuiBoilerplate
     public String statFile() {
         return statFileName.value();
     }
@@ -549,6 +559,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPQualityProfilerPlugin statFile(String value) {
         statFileName = new PluginParameter<>(statFileName, value);
         return this;
@@ -559,6 +570,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return Name for taxa set in DB
      */
+    @GeneratedGuiBoilerplate
     public String taxaListName() {
         return myTaxaListName.value();
     }
@@ -570,6 +582,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPQualityProfilerPlugin taxaListName(String value) {
         myTaxaListName = new PluginParameter<>(myTaxaListName, value);
         return this;
@@ -580,6 +593,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return deleteOldData
      */
+    @GeneratedGuiBoilerplate
     public Boolean deleteOldData() {
         return myDeleteOldData.value();
     }
@@ -592,6 +606,7 @@ public class SNPQualityProfilerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPQualityProfilerPlugin deleteOldData(Boolean value) {
         myDeleteOldData = new PluginParameter<>(myDeleteOldData, value);
         return this;

@@ -11,6 +11,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Training data with M5Rules model, generate model file and training report files
@@ -221,16 +222,19 @@ public class PanAModelTrainingPlugin extends AbstractPlugin {
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

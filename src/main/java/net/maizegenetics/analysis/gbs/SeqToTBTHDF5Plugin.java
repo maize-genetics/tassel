@@ -33,6 +33,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This pipeline converts a series of fastq or qseq files to a single TagsByTaxa
@@ -404,16 +405,19 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Seq to TBT HDF5";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Seq to TBT HDF5";
     }
@@ -429,6 +433,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return Input Directory
      */
+    @GeneratedGuiBoilerplate
     public String inputDirectory() {
         return myInputDir.value();
     }
@@ -440,6 +445,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SeqToTBTHDF5Plugin inputDirectory(String value) {
         myInputDir = new PluginParameter<>(myInputDir, value);
         return this;
@@ -450,6 +456,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return Key File
      */
+    @GeneratedGuiBoilerplate
     public String keyFile() {
         return myKeyFile.value();
     }
@@ -461,6 +468,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SeqToTBTHDF5Plugin keyFile(String value) {
         myKeyFile = new PluginParameter<>(myKeyFile, value);
         return this;
@@ -472,6 +480,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return Enzyme
      */
+    @GeneratedGuiBoilerplate
     public String enzyme() {
         return myEnzyme.value();
     }
@@ -484,6 +493,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SeqToTBTHDF5Plugin enzyme(String value) {
         myEnzyme = new PluginParameter<>(myEnzyme, value);
         return this;
@@ -494,6 +504,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
@@ -505,6 +516,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SeqToTBTHDF5Plugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
@@ -515,6 +527,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return Max Good Reads
      */
+    @GeneratedGuiBoilerplate
     public Integer maxGoodReads() {
         return myMaxGoodReads.value();
     }
@@ -526,6 +539,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SeqToTBTHDF5Plugin maxGoodReads(Integer value) {
         myMaxGoodReads = new PluginParameter<>(myMaxGoodReads, value);
         return this;
@@ -536,6 +550,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return Log File
      */
+    @GeneratedGuiBoilerplate
     public String logFile() {
         return myLogFile.value();
     }
@@ -547,6 +562,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SeqToTBTHDF5Plugin logFile(String value) {
         myLogFile = new PluginParameter<>(myLogFile, value);
         return this;
@@ -557,6 +573,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return Tag Count File
      */
+    @GeneratedGuiBoilerplate
     public String tagCountFile() {
         return myTagCountFile.value();
     }
@@ -568,6 +585,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SeqToTBTHDF5Plugin tagCountFile(String value) {
         myTagCountFile = new PluginParameter<>(myTagCountFile, value);
         return this;
@@ -578,6 +596,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return Physical Map File
      */
+    @GeneratedGuiBoilerplate
     public String physicalMapFile() {
         return myPhysicalMapFile.value();
     }
@@ -590,6 +609,7 @@ public class SeqToTBTHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SeqToTBTHDF5Plugin physicalMapFile(String value) {
         myPhysicalMapFile = new PluginParameter<>(myPhysicalMapFile, value);
         return this;

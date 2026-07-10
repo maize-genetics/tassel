@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import net.maizegenetics.analysis.gbs.TagAgainstAnchor;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Genetic mapping (GWAS) tags
@@ -140,16 +141,19 @@ public class PanATagGWASMappingPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

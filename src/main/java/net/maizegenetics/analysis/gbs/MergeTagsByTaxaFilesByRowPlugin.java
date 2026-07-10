@@ -24,6 +24,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Merges multiple TagsByTaxa files that are too large to fit in memory when
@@ -259,16 +260,19 @@ public class MergeTagsByTaxaFilesByRowPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "FilterErrorForBiparental";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "FilterErrorForBiparental";
     }

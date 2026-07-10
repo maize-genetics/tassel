@@ -17,6 +17,7 @@ import net.maizegenetics.taxa.distance.DistanceMatrixWithCounts;
 import net.maizegenetics.util.GeneralAnnotation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -97,16 +98,19 @@ public class AddDistanceMatrixPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Add Distance Matrix";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Add Distance Matrix";
     }

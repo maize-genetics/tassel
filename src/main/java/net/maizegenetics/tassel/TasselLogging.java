@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -182,6 +183,7 @@ public class TasselLogging extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = TasselLogging.class.getResource("/net/maizegenetics/analysis/images/log.gif");
         if (imageURL == null) {
@@ -192,11 +194,13 @@ public class TasselLogging extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Logging";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Logging";
     }

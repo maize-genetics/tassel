@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -157,16 +158,19 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return(null);
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return("Tag Pairs to TOPM");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Deprecated: Reference Pipeline is Better";
     }
@@ -183,6 +187,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return Start chromosome
      */
+    @GeneratedGuiBoilerplate
     public Integer startChromosome() {
         return chrom.value();
     }
@@ -195,6 +200,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UTagPairToTOPMPlugin startChromosome(Integer value) {
         chrom = new PluginParameter<>(chrom, value);
         return this;
@@ -205,6 +211,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return Pad distance
      */
+    @GeneratedGuiBoilerplate
     public Integer padDistance() {
         return distance.value();
     }
@@ -217,6 +224,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UTagPairToTOPMPlugin padDistance(Integer value) {
         distance = new PluginParameter<>(distance, value);
         return this;
@@ -227,6 +235,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return Input
      */
+    @GeneratedGuiBoilerplate
     public String input() {
         return infile.value();
     }
@@ -238,6 +247,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UTagPairToTOPMPlugin input(String value) {
         infile = new PluginParameter<>(infile, value);
         return this;
@@ -248,6 +258,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return To Text
      */
+    @GeneratedGuiBoilerplate
     public String toText() {
         return textOutputFile.value();
     }
@@ -259,6 +270,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UTagPairToTOPMPlugin toText(String value) {
         textOutputFile = new PluginParameter<>(textOutputFile, value);
         return this;
@@ -269,6 +281,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return To Binary
      */
+    @GeneratedGuiBoilerplate
     public String toBinary() {
         return binaryOutputFile.value();
     }
@@ -280,6 +293,7 @@ public class UTagPairToTOPMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UTagPairToTOPMPlugin toBinary(String value) {
         binaryOutputFile = new PluginParameter<>(binaryOutputFile, value);
         return this;

@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import org.jreleaser.model.Active
 import java.util.Locale
 import org.gradle.api.tasks.bundling.Zip
@@ -372,12 +373,45 @@ tasks {
 }
 
 // Kover (coverage) tasks
+//
+// Run coverage through the JaCoCo engine so that method-level boilerplate
+// exclusion works: JaCoCo automatically ignores any class OR method annotated
+// with an annotation whose simple name contains "Generated" (retention CLASS or
+// RUNTIME). Our @GeneratedGuiBoilerplate marker satisfies this, so the auto-
+// generated plugin accessors and GUI hook methods (getIcon/getButtonName/
+// getToolTipText) are dropped. Kover's own annotatedBy filter only excludes
+// whole classes (not methods) and does not function under JaCoCo, so we rely on
+// JaCoCo's built-in filter for methods and on classes()/packages() for GUI types.
 kover {
+    useJacoco()
+
     reports {
+        // Exclude GUI components so coverage reflects the exercised analysis/
+        // pipeline logic rather than Swing wiring.
+        filters {
+            excludes {
+                // Pure GUI / presentation packages.
+                packages(
+                    "net.maizegenetics.gui",
+                    "net.maizegenetics.tassel",
+                    "net.maizegenetics.progress",
+                    "net.maizegenetics.analysis.chart",
+                )
+
+                // Swing widgets scattered through the analysis packages.
+                classes("*Dialog", "*Panel", "*Component", "*DisplayPlugin")
+            }
+        }
+
+        // Measure BRANCH coverage (decision paths exercised) instead of raw line
+        // counting -- a far more meaningful signal for TASSEL's numeric and
+        // pipeline logic. Non-blocking: koverVerify is not wired into `check` or
+        // CI (CI runs koverXmlReport only), so this rule is informational.
         verify {
             rule {
                 bound {
                     minValue = 18
+                    coverageUnits = CoverageUnit.BRANCH
                 }
             }
         }

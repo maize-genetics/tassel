@@ -37,6 +37,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.prefs.TasselPrefs;
 import net.maizegenetics.util.TableReport;
 import net.maizegenetics.util.TableReportBuilder;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
     private static Logger myLogger = LogManager.getLogger(FastMultithreadedAssociationPlugin.class);
@@ -276,17 +277,20 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Fast-MT Association";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Multi-threaded version of Fast Association";
     }
@@ -483,6 +487,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public TableReport runPlugin(DataSet input) {
         return (TableReport) performFunction(input).getData(0).getData();
     }
@@ -492,6 +497,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return MaxPValue
      */
+    @GeneratedGuiBoilerplate
     public Double maxp() {
         return maxp.value();
     }
@@ -504,6 +510,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FastMultithreadedAssociationPlugin maxp(Double value) {
         maxp = new PluginParameter<>(maxp, value);
         return this;
@@ -515,6 +522,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return Genotype Component
      */
+    @GeneratedGuiBoilerplate
     public GENOTYPE_TABLE_COMPONENT genotypeTable() {
         return myGenotypeTable.value();
     }
@@ -528,6 +536,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FastMultithreadedAssociationPlugin genotypeTable(GENOTYPE_TABLE_COMPONENT value) {
         myGenotypeTable = new PluginParameter<>(myGenotypeTable, value);
         return this;
@@ -542,6 +551,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return Write to file
      */
+    @GeneratedGuiBoilerplate
     public Boolean saveAsFile() {
         return saveAsFile.value();
     }
@@ -557,6 +567,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FastMultithreadedAssociationPlugin saveAsFile(Boolean value) {
         saveAsFile = new PluginParameter<>(saveAsFile, value);
         return this;
@@ -568,6 +579,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String reportFilename() {
         return reportFilename.value();
     }
@@ -580,6 +592,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FastMultithreadedAssociationPlugin reportFilename(String value) {
         reportFilename = new PluginParameter<>(reportFilename, value);
         return this;
@@ -590,6 +603,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return Max Threads
      */
+    @GeneratedGuiBoilerplate
     public Integer maxThreads() {
         return maxThreads.value();
     }
@@ -602,6 +616,7 @@ public class FastMultithreadedAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FastMultithreadedAssociationPlugin maxThreads(Integer value) {
         maxThreads = new PluginParameter<>(maxThreads, value);
         return this;

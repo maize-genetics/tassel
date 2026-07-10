@@ -27,6 +27,7 @@ import net.maizegenetics.dna.snp.genotypecall.BasicGenotypeMergeRule;
 import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.taxa.TaxaListBuilder;
 import net.maizegenetics.taxa.Taxon;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Merge alignments into a single alignment containing all taxa and positions.
@@ -76,6 +77,7 @@ public class MergeGenotypeTablesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = MergeGenotypeTablesPlugin.class.getResource("/net/maizegenetics/analysis/images/Merge.gif");
         if (imageURL == null) {
@@ -86,11 +88,13 @@ public class MergeGenotypeTablesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Merge Genotype Tables";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Merge Genotype Tables";
     }

@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.*;
 import net.maizegenetics.dna.map.TagGWASMap;
 import net.maizegenetics.dna.map.TagsOnPhysicalMapV3;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Add alignment information from Bowtie2 to tagMap. Used to identify unique ref tags for model training
@@ -84,16 +85,19 @@ public class PanAAddPosToTagMapPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

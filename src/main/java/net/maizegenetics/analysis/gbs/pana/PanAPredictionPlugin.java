@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 import net.maizegenetics.dna.map.TagGWASMap;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Make predictions based on trained machine learning model. Write predicted values into tagMap file
@@ -192,16 +193,19 @@ public class PanAPredictionPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

@@ -35,6 +35,7 @@ import java.io.*;
 import java.util.*;
 import net.maizegenetics.taxa.TaxaListIOUtils;
 import net.maizegenetics.util.GeneralAnnotation;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin converts all of the fastq (and/or qseq) files in the input folder
@@ -727,16 +728,19 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
             + "in the supplied directory: ";
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Production SNP Caller";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Production SNP Caller";
     }
@@ -752,6 +756,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Input Directory
      */
+    @GeneratedGuiBoilerplate
     public String inputDirectory() {
         return myInputDirectory.value();
     }
@@ -763,6 +768,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionSNPCallerPlugin inputDirectory(String value) {
         myInputDirectory = new PluginParameter<>(myInputDirectory, value);
         return this;
@@ -773,6 +779,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Key File
      */
+    @GeneratedGuiBoilerplate
     public String keyFile() {
         return myKeyFile.value();
     }
@@ -784,6 +791,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionSNPCallerPlugin keyFile(String value) {
         myKeyFile = new PluginParameter<>(myKeyFile, value);
         return this;
@@ -794,6 +802,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Enzyme
      */
+    @GeneratedGuiBoilerplate
     public String enzyme() {
         return myEnzyme.value();
     }
@@ -805,6 +814,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionSNPCallerPlugin enzyme(String value) {
         myEnzyme = new PluginParameter<>(myEnzyme, value);
         return this;
@@ -816,6 +826,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Input TOPM File
      */
+    @GeneratedGuiBoilerplate
     public String inputTOPMFile() {
         return myProductionTOPM.value();
     }
@@ -828,6 +839,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionSNPCallerPlugin inputTOPMFile(String value) {
         myProductionTOPM = new PluginParameter<>(myProductionTOPM, value);
         return this;
@@ -839,6 +851,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Output HDF5 Genotypes File
      */
+    @GeneratedGuiBoilerplate
     public String outputHDF5GenotypesFile() {
         return myOutputGenotypes.value();
     }
@@ -851,6 +864,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionSNPCallerPlugin outputHDF5GenotypesFile(String value) {
         myOutputGenotypes = new PluginParameter<>(myOutputGenotypes, value);
         return this;
@@ -862,6 +876,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Ave Seq Error Rate
      */
+    @GeneratedGuiBoilerplate
     public Double aveSeqErrorRate() {
         return myAveSeqErrorRate.value();
     }
@@ -874,6 +889,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionSNPCallerPlugin aveSeqErrorRate(Double value) {
         myAveSeqErrorRate = new PluginParameter<>(myAveSeqErrorRate, value);
         return this;
@@ -907,6 +923,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Keep Genotypes Open
      */
+    @GeneratedGuiBoilerplate
     public Boolean keepGenotypesOpen() {
         return myKeepGenotypesOpen.value();
     }
@@ -919,6 +936,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionSNPCallerPlugin keepGenotypesOpen(Boolean value) {
         myKeepGenotypesOpen = new PluginParameter<>(myKeepGenotypesOpen, value);
         return this;
@@ -929,6 +947,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return No Depth to Output
      */
+    @GeneratedGuiBoilerplate
     public Boolean noDepthToOutput() {
         return myNoDepthOutput.value();
     }
@@ -941,6 +960,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionSNPCallerPlugin noDepthToOutput(Boolean value) {
         myNoDepthOutput = new PluginParameter<>(myNoDepthOutput, value);
         return this;

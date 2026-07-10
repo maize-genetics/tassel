@@ -26,6 +26,7 @@ import net.maizegenetics.dna.snp.GenotypeTableBuilder;
 import net.maizegenetics.dna.snp.genotypecall.BasicGenotypeMergeRule;
 import net.maizegenetics.taxa.Taxon;
 import net.maizegenetics.util.HDF5Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -214,6 +215,7 @@ public class MergeHDF5GenotypesSameSitesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = SeparatePlugin.class.getResource("/net/maizegenetics/analysis/images/Merge.gif");
         if (imageURL == null) {
@@ -224,11 +226,13 @@ public class MergeHDF5GenotypesSameSitesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Merge GenotypeTables";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Merge GenotypeTables";
     }

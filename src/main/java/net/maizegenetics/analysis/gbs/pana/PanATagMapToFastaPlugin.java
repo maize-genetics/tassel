@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import net.maizegenetics.dna.map.TagGWASMap;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Output sequence in tagMap (e.g. {@link TagGWASMap}) file in Fasta format, which is used in Bowtie2 alignment
@@ -81,16 +82,19 @@ public class PanATagMapToFastaPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

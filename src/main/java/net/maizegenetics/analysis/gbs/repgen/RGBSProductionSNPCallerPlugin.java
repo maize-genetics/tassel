@@ -40,6 +40,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.Collectors;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin converts all of the fastq (and/or qseq) files in the input folder
@@ -420,16 +421,19 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Production SNP Caller";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Production SNP Caller";
     }
@@ -445,6 +449,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public TagData runPlugin(DataSet input) {
         return (TagData) performFunction(input).getData(0).getData();
     }
@@ -454,6 +459,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Input Directory
      */
+    @GeneratedGuiBoilerplate
     public String inputDirectory() {
         return myInputDir.value();
     }
@@ -466,6 +472,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin inputDirectory(String value) {
         myInputDir = new PluginParameter<>(myInputDir, value);
         return this;
@@ -476,6 +483,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Key File
      */
+    @GeneratedGuiBoilerplate
     public String keyFile() {
         return myKeyFile.value();
     }
@@ -488,6 +496,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin keyFile(String value) {
         myKeyFile = new PluginParameter<>(myKeyFile, value);
         return this;
@@ -499,6 +508,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Input GBS Database
      */
+    @GeneratedGuiBoilerplate
     public String inputGBSDatabase() {
         return myInputDB.value();
     }
@@ -511,6 +521,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin inputGBSDatabase(String value) {
         myInputDB = new PluginParameter<>(myInputDB, value);
         return this;
@@ -522,6 +533,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Output file Genotypes File
      */
+    @GeneratedGuiBoilerplate
     public String outputGenotypesFile() {
         return myOutputGenotypes.value();
     }
@@ -535,6 +547,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin outputGenotypesFile(String value) {
         myOutputGenotypes = new PluginParameter<>(myOutputGenotypes, value);
         return this;
@@ -546,6 +559,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Ave Seq Error Rate
      */
+    @GeneratedGuiBoilerplate
     public Double aveSeqErrorRate() {
         return myAveSeqErrorRate.value();
     }
@@ -559,6 +573,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin aveSeqErrorRate(Double value) {
         myAveSeqErrorRate = new PluginParameter<>(myAveSeqErrorRate, value);
         return this;
@@ -571,6 +586,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Max Divergence
      */
+    @GeneratedGuiBoilerplate
     public Integer maxDivergence() {
         return myMaxDivergence.value();
     }
@@ -584,6 +600,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin maxDivergence(Integer value) {
         myMaxDivergence = new PluginParameter<>(myMaxDivergence, value);
         return this;
@@ -595,6 +612,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Depth to Output - true or false
      */
+    @GeneratedGuiBoilerplate
     public Boolean depthToOutput() {
         return myDepthOutput.value();
     }
@@ -608,6 +626,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin depthToOutput(Boolean value) {
         myDepthOutput = new PluginParameter<>(myDepthOutput, value);
         return this;
@@ -617,6 +636,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Maximum Tag Length
      */
+    @GeneratedGuiBoilerplate
     public Integer kmerLength() {
         return myKmerLength.value();
     }
@@ -632,6 +652,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin kmerLength(Integer value) {
         myKmerLength = new PluginParameter<>(myKmerLength, value);
         return this;
@@ -641,6 +662,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Minimum position quality score
      */
+    @GeneratedGuiBoilerplate
     public Double positionQualityScore() {
         return posQualityScore.value();
     }
@@ -655,6 +677,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin positionQualityScore(Double value) {
         posQualityScore = new PluginParameter<>(posQualityScore, value);
         return this;
@@ -665,6 +688,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return batchSize
      */
+    @GeneratedGuiBoilerplate
     public Integer batchSize() {
         return myBatchSize.value();
     }
@@ -673,6 +697,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      * @param value
      * @return
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin batchSize(Integer value) {
         myBatchSize = new PluginParameter<>(myBatchSize, value);
         return this;
@@ -683,6 +708,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return Minimum quality score
      */
+    @GeneratedGuiBoilerplate
     public Integer minimumQualityScore() {
         return myMinQualScore.value();
     }
@@ -695,6 +721,7 @@ public class RGBSProductionSNPCallerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RGBSProductionSNPCallerPlugin minimumQualityScore(Integer value) {
         myMinQualScore = new PluginParameter<>(myMinQualScore, value);
         return this;

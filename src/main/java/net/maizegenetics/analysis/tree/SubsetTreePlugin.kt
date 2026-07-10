@@ -11,6 +11,7 @@ import net.maizegenetics.taxa.tree.subsetTree
 import org.apache.logging.log4j.LogManager
 import java.awt.Frame
 import javax.swing.ImageIcon
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 private val myLogger = LogManager.getLogger(SubsetTreePlugin::class.java)
 
@@ -42,6 +43,7 @@ class SubsetTreePlugin(parentFrame: Frame? = null, isInteractive: Boolean = fals
      *
      * @return Name List
      */
+    @GeneratedGuiBoilerplate
     fun nameList(): TaxaList {
         return nameList.value()
     }
@@ -56,19 +58,23 @@ class SubsetTreePlugin(parentFrame: Frame? = null, isInteractive: Boolean = fals
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun nameList(value: TaxaList): SubsetTreePlugin {
         nameList = PluginParameter<TaxaList>(nameList, value)
         return this
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return "Subset Tree"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return "Subset Tree"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         val imageURL = FilterTaxaBuilderPlugin::class.java.getResource("/net/maizegenetics/analysis/images/FilterNew.gif")
         return imageURL?.let { ImageIcon(it) }

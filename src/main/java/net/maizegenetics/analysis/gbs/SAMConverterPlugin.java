@@ -20,6 +20,7 @@ import net.maizegenetics.util.Utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This class can read in a CBSU TagMapFile into the gbs.TagsOnPhysicalMap data
@@ -114,53 +115,64 @@ public final class SAMConverterPlugin extends AbstractPlugin {
         }
     }
 
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return myInputFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public SAMConverterPlugin inputFile(String value) {
         myInputFile = new PluginParameter<>(myInputFile, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public SAMConverterPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public boolean textOutputFormat() {
         return myTextOutputFormat.value();
     }
 
+    @GeneratedGuiBoilerplate
     public SAMConverterPlugin textOutputFormat(boolean value) {
         myTextOutputFormat = new PluginParameter<>(myTextOutputFormat, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public int tagLength() {
         return myTagLengthInNumLongs.value();
     }
 
+    @GeneratedGuiBoilerplate
     public SAMConverterPlugin tagLength(int value) {
         myTagLengthInNumLongs = new PluginParameter<>(myTagLengthInNumLongs, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "SAM to TOPM Converter";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "SAM to TOPM Converter";
     }

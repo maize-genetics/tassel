@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import net.maizegenetics.analysis.gbs.TagBlockPosition;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Split TagBlockPos {@link TagBlockPosition} file into subsets. Designed to submit genetic mapping jobs in cluster
@@ -115,16 +116,19 @@ public class PanASplitTagBlockPosPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

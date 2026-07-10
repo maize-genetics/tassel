@@ -12,6 +12,7 @@ import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.AbstractPlugin {
     private PluginParameter<String> myB4RDBName = new PluginParameter.Builder<>("b4rdb", null, String.class)
@@ -95,14 +96,17 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Phenotype From B4R";
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Pull a Study from B4R";
     }
@@ -126,6 +130,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public Phenotype runPlugin(DataSet input) {
         return (Phenotype) performFunction(input).getData(0).getData();
     }
@@ -135,6 +140,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return B4R Database Name
      */
+    @GeneratedGuiBoilerplate
     public String b4RDBName() {
         return myB4RDBName.value();
     }
@@ -146,6 +152,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetPhenotypeFromB4RPlugin b4RDBName(String value) {
         myB4RDBName = new PluginParameter<>(myB4RDBName, value);
         return this;
@@ -156,6 +163,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return B4R Host Name
      */
+    @GeneratedGuiBoilerplate
     public String b4RHost() {
         return myB4RHost.value();
     }
@@ -167,6 +175,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetPhenotypeFromB4RPlugin b4RHost(String value) {
         myB4RHost = new PluginParameter<>(myB4RHost, value);
         return this;
@@ -177,6 +186,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return B4R User
      */
+    @GeneratedGuiBoilerplate
     public String b4RUser() {
         return myB4RUser.value();
     }
@@ -188,6 +198,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetPhenotypeFromB4RPlugin b4RUser(String value) {
         myB4RUser = new PluginParameter<>(myB4RUser, value);
         return this;
@@ -198,6 +209,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return B4R Password
      */
+    @GeneratedGuiBoilerplate
     public String b4RPassword() {
         return myB4RPassword.value();
     }
@@ -209,6 +221,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetPhenotypeFromB4RPlugin b4RPassword(String value) {
         myB4RPassword = new PluginParameter<>(myB4RPassword, value);
         return this;
@@ -219,6 +232,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return Study Name
      */
+    @GeneratedGuiBoilerplate
     public String studyName() {
         return myStudyName.value();
     }
@@ -230,6 +244,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetPhenotypeFromB4RPlugin studyName(String value) {
         myStudyName = new PluginParameter<>(myStudyName, value);
         return this;
@@ -240,6 +255,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return Taxa Name
      */
+    @GeneratedGuiBoilerplate
     public String taxaName() {
         return myTaxaName.value();
     }
@@ -251,6 +267,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetPhenotypeFromB4RPlugin taxaName(String value) {
         myTaxaName = new PluginParameter<>(myTaxaName, value);
         return this;
@@ -261,6 +278,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return Variable Name
      */
+    @GeneratedGuiBoilerplate
     public String variableName() {
         return myVariableName.value();
     }
@@ -272,6 +290,7 @@ public class GetPhenotypeFromB4RPlugin extends net.maizegenetics.plugindef.Abstr
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetPhenotypeFromB4RPlugin variableName(String value) {
         myVariableName = new PluginParameter<>(myVariableName, value);
         return this;

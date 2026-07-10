@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -95,6 +96,7 @@ public class PreferencesDialog extends AbstractPlugin {
      *
      * @return Retain Rare Alleles
      */
+    @GeneratedGuiBoilerplate
     public Boolean retainRareAlleles() {
         return myRetainRareAlleles.value();
     }
@@ -106,6 +108,7 @@ public class PreferencesDialog extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PreferencesDialog retainRareAlleles(Boolean value) {
         myRetainRareAlleles = new PluginParameter<>(myRetainRareAlleles, value);
         return this;
@@ -116,6 +119,7 @@ public class PreferencesDialog extends AbstractPlugin {
      *
      * @return Send Log To Console
      */
+    @GeneratedGuiBoilerplate
     public Boolean sendLogToConsole() {
         return mySendLogToConsole.value();
     }
@@ -127,6 +131,7 @@ public class PreferencesDialog extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PreferencesDialog sendLogToConsole(Boolean value) {
         mySendLogToConsole = new PluginParameter<>(mySendLogToConsole, value);
         return this;
@@ -137,6 +142,7 @@ public class PreferencesDialog extends AbstractPlugin {
      *
      * @return Config File
      */
+    @GeneratedGuiBoilerplate
     public String configFile() {
         return myConfigFile.value();
     }
@@ -148,6 +154,7 @@ public class PreferencesDialog extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PreferencesDialog configFile(String value) {
         myConfigFile = new PluginParameter<>(myConfigFile, value);
         return this;
@@ -158,6 +165,7 @@ public class PreferencesDialog extends AbstractPlugin {
      *
      * @return Locale
      */
+    @GeneratedGuiBoilerplate
     public LocaleWrapper locale() {
         return myLocale.value();
     }
@@ -169,12 +177,14 @@ public class PreferencesDialog extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PreferencesDialog locale(LocaleWrapper value) {
         myLocale = new PluginParameter<>(myLocale, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = TasselLogging.class.getResource("/net/maizegenetics/analysis/images/preferences.gif");
         if (imageURL == null) {
@@ -185,11 +195,13 @@ public class PreferencesDialog extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Preferences";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Preferences";
     }

@@ -25,6 +25,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.taxa.Taxon;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class AdditiveSiteStorePlugin extends AbstractPlugin {
     private static Logger myLogger = LogManager.getLogger(AdditiveSiteStorePlugin.class);
@@ -120,16 +121,19 @@ public class AdditiveSiteStorePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Write additive site file";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Stores genotypes coded as additive sites";
     }

@@ -37,6 +37,7 @@ import net.maizegenetics.taxa.TaxaListIOUtils;
 import net.maizegenetics.taxa.Taxon;
 import net.maizegenetics.util.DirectoryCrawler;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Develops a discovery TBT file from a set of GBS sequence files.
@@ -501,6 +502,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return Input Directory
      */
+    @GeneratedGuiBoilerplate
     public String inputDirectory() {
         return myInputDir.value();
     }
@@ -516,6 +518,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin inputDirectory(String value) {
         myInputDir = new PluginParameter<>(myInputDir, value);
         return this;
@@ -526,6 +529,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return Key File
      */
+    @GeneratedGuiBoilerplate
     public String keyFile() {
         return myKeyFile.value();
     }
@@ -538,6 +542,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin keyFile(String value) {
         myKeyFile = new PluginParameter<>(myKeyFile, value);
         return this;
@@ -549,6 +554,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return Enzyme
      */
+    @GeneratedGuiBoilerplate
     public String enzyme() {
         return myEnzyme.value();
     }
@@ -561,6 +567,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin enzyme(String value) {
         myEnzyme = new PluginParameter<>(myEnzyme, value);
         return this;
@@ -571,6 +578,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return Maximum Tag Length
      */
+    @GeneratedGuiBoilerplate
     public Integer kmerLength() {
         return myKmerLength.value();
     }
@@ -582,6 +590,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin kmerLength(Integer value) {
         myKmerLength = new PluginParameter<>(myKmerLength, value);
         return this;
@@ -592,6 +601,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return Minimum Tag Length
      */
+    @GeneratedGuiBoilerplate
     public Integer minimumKmerLength() {
         return myMinKmerLength.value();
     }
@@ -603,6 +613,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin minimumKmerLength(Integer value) {
         myMinKmerLength = new PluginParameter<>(myMinKmerLength, value);
         return this;
@@ -613,6 +624,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return Min Tag Count
      */
+    @GeneratedGuiBoilerplate
     public Integer minKmerCount() {
         return myMinKmerCount.value();
     }
@@ -624,6 +636,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin minKmerCount(Integer value) {
         myMinKmerCount = new PluginParameter<>(myMinKmerCount, value);
         return this;
@@ -634,6 +647,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return Output Database File
      */
+    @GeneratedGuiBoilerplate
     public String outputDatabaseFile() {
         return myOutputDB.value();
     }
@@ -645,6 +659,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin outputDatabaseFile(String value) {
         myOutputDB = new PluginParameter<>(myOutputDB, value);
         return this;
@@ -656,6 +671,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return Minimum quality score
      */
+    @GeneratedGuiBoilerplate
     public Integer minimumQualityScore() {
         return myMinQualScore.value();
     }
@@ -668,6 +684,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin minimumQualityScore(Integer value) {
         myMinQualScore = new PluginParameter<>(myMinQualScore, value);
         return this;
@@ -678,6 +695,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      * @param value
      * @return 
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin maximumKmerNumber(Integer value) {
         myMaxKmerNumber = new PluginParameter<>(myMaxKmerNumber, value);
         return this;
@@ -688,6 +706,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      * @param value
      * @return 
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin batchSize(Integer value) {
         myBatchSize = new PluginParameter<>(myBatchSize, value);
         return this;
@@ -697,6 +716,7 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return deleteOldData
      */
+    @GeneratedGuiBoilerplate
     public Boolean deleteOldData() {
         return myDeleteOldData.value();
     }
@@ -709,21 +729,25 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GBSSeqToTagDBPlugin deleteOldData(Boolean value) {
         myDeleteOldData = new PluginParameter<>(myDeleteOldData, value);
         return this;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Sequence to Tag/Taxa DB";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Input GBS Sequence to Tag/Taxa tables in DB";
     }

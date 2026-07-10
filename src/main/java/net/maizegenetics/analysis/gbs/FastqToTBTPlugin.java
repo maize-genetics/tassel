@@ -22,6 +22,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This pipeline converts a series of fastq files to TagsByTaxa files (one per fastq file).
@@ -364,16 +365,19 @@ public class FastqToTBTPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

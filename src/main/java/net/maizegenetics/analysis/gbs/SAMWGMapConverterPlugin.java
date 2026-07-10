@@ -17,6 +17,7 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This class reads in SAM mapping results tests them against an anchor map 
@@ -143,16 +144,19 @@ public final class SAMWGMapConverterPlugin extends AbstractPlugin{
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Ed Buckler
@@ -666,6 +667,7 @@ public class FileLoadPlugin extends AbstractPlugin {
      *
      * @return Format
      */
+    @GeneratedGuiBoilerplate
     public TasselFileType fileType() {
         return myFileType.value();
     }
@@ -678,6 +680,7 @@ public class FileLoadPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FileLoadPlugin fileType(TasselFileType value) {
         myFileType = new PluginParameter<>(myFileType, value);
         return this;
@@ -696,6 +699,7 @@ public class FileLoadPlugin extends AbstractPlugin {
      *
      * @return Sort Positions
      */
+    @GeneratedGuiBoilerplate
     public Boolean sortPositions() {
         return mySortPositions.value();
     }
@@ -708,6 +712,7 @@ public class FileLoadPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FileLoadPlugin sortPositions(Boolean value) {
         mySortPositions = new PluginParameter<>(mySortPositions, value);
         return this;
@@ -718,6 +723,7 @@ public class FileLoadPlugin extends AbstractPlugin {
      *
      * @return Keep Depth
      */
+    @GeneratedGuiBoilerplate
     public Boolean keepDepth() {
         return myKeepDepth.value();
     }
@@ -729,6 +735,7 @@ public class FileLoadPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FileLoadPlugin keepDepth(Boolean value) {
         myKeepDepth = new PluginParameter<>(myKeepDepth, value);
         return this;
@@ -740,6 +747,7 @@ public class FileLoadPlugin extends AbstractPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = FileLoadPlugin.class.getResource("/net/maizegenetics/analysis/images/LoadFile.gif");
         if (imageURL == null) {
@@ -755,6 +763,7 @@ public class FileLoadPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Open As...";
     }
@@ -765,6 +774,7 @@ public class FileLoadPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Open data from filesystem.";
     }

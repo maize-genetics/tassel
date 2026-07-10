@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -76,16 +77,19 @@ public class UTagCountToTagPairPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Tag Counts to Tag Pairs";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Deprecated: Reference Pipeline is Better";
     }
@@ -103,6 +107,7 @@ public class UTagCountToTagPairPlugin extends AbstractPlugin {
      *
      * @return Error tolerance
      */
+    @GeneratedGuiBoilerplate
     public Double errorTolerance() {
         return errorTolerance.value();
     }
@@ -115,6 +120,7 @@ public class UTagCountToTagPairPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UTagCountToTagPairPlugin errorTolerance(Double value) {
         errorTolerance = new PluginParameter<>(errorTolerance, value);
         return this;
@@ -125,6 +131,7 @@ public class UTagCountToTagPairPlugin extends AbstractPlugin {
      *
      * @return Input file
      */
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return infile.value();
     }
@@ -136,6 +143,7 @@ public class UTagCountToTagPairPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UTagCountToTagPairPlugin inputFile(String value) {
         infile = new PluginParameter<>(infile, value);
         return this;
@@ -146,6 +154,7 @@ public class UTagCountToTagPairPlugin extends AbstractPlugin {
      *
      * @return Output file
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return outfile.value();
     }
@@ -157,6 +166,7 @@ public class UTagCountToTagPairPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UTagCountToTagPairPlugin outputFile(String value) {
         outfile = new PluginParameter<>(outfile, value);
         return this;

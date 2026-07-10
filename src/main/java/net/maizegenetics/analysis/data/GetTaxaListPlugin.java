@@ -20,6 +20,7 @@ import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -65,10 +66,12 @@ public class GetTaxaListPlugin extends AbstractPlugin {
 
     }
 
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Get Taxa List";
     }
 
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = GetTaxaListPlugin.class.getResource("/net/maizegenetics/analysis/images/lists.gif");
         if (imageURL == null) {
@@ -78,6 +81,7 @@ public class GetTaxaListPlugin extends AbstractPlugin {
         }
     }
 
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Get Taxa List";
     }

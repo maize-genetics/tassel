@@ -23,6 +23,7 @@ import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -220,16 +221,19 @@ public class ProductionPipeline extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Production Pipeline";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Production Pipeline";
     }
@@ -245,6 +249,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return Input Directory
      */
+    @GeneratedGuiBoilerplate
     public String inputDirectory() {
         return myInputDirectory.value();
     }
@@ -257,6 +262,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionPipeline inputDirectory(String value) {
         myInputDirectory = new PluginParameter<>(myInputDirectory, value);
         return this;
@@ -267,6 +273,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return Enzyme
      */
+    @GeneratedGuiBoilerplate
     public String enzyme() {
         return myEnzyme.value();
     }
@@ -278,6 +285,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionPipeline enzyme(String value) {
         myEnzyme = new PluginParameter<>(myEnzyme, value);
         return this;
@@ -289,6 +297,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return Production T O P M
      */
+    @GeneratedGuiBoilerplate
     public String productionTOPM() {
         return myProductionTOPM.value();
     }
@@ -301,6 +310,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionPipeline productionTOPM(String value) {
         myProductionTOPM = new PluginParameter<>(myProductionTOPM, value);
         return this;
@@ -312,6 +322,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return Output Genotype File
      */
+    @GeneratedGuiBoilerplate
     public String outputGenotypeFile() {
         return myOutputGenotypeFile.value();
     }
@@ -324,6 +335,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionPipeline outputGenotypeFile(String value) {
         myOutputGenotypeFile = new PluginParameter<>(myOutputGenotypeFile, value);
         return this;
@@ -334,6 +346,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return Archive Directory
      */
+    @GeneratedGuiBoilerplate
     public String archiveDirectory() {
         return myArchiveDirectory.value();
     }
@@ -345,6 +358,7 @@ public class ProductionPipeline extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProductionPipeline archiveDirectory(String value) {
         myArchiveDirectory = new PluginParameter<>(myArchiveDirectory, value);
         return this;

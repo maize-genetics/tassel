@@ -25,6 +25,7 @@ import net.maizegenetics.util.DirectoryCrawler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /*
  * Implements an external mergesort to combine multiple tag-count files.
@@ -286,53 +287,64 @@ public class MergeMultipleTagCountPlugin extends AbstractPlugin {
         }
     }
 
+    @GeneratedGuiBoilerplate
     public String inputDirectory() {
         return myInputDir.value();
     }
 
+    @GeneratedGuiBoilerplate
     public MergeMultipleTagCountPlugin inputDirectory(String value) {
         myInputDir = new PluginParameter<>(myInputDir, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public MergeMultipleTagCountPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public Integer minCount() {
         return myMinCount.value();
     }
 
+    @GeneratedGuiBoilerplate
     public MergeMultipleTagCountPlugin minCount(Integer value) {
         myMinCount = new PluginParameter<>(myMinCount, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean textOutput() {
         return myIsTextOutput.value();
     }
 
+    @GeneratedGuiBoilerplate
     public MergeMultipleTagCountPlugin textOutput(Boolean value) {
         myIsTextOutput = new PluginParameter<>(myIsTextOutput, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Merge Multiple Tag Count Files";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Merge Multiple Tag Count Files";
     }

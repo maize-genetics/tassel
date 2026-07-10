@@ -25,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class ImputationPlugin extends AbstractPlugin {
 
@@ -240,42 +241,51 @@ public class ImputationPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Numerical Impute";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Numerical Impute";
     }
 
+    @GeneratedGuiBoilerplate
     public distanceChoice distance_choice() {
         return distance.value();
     }
 
+    @GeneratedGuiBoilerplate
     public ImputationPlugin distance_choice(distanceChoice value) {
         distance = new PluginParameter<>(distance, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean by_mean() {
         return byMean.value();
     }
 
+    @GeneratedGuiBoilerplate
     public ImputationPlugin by_mean(Boolean value) {
         byMean = new PluginParameter<>(byMean, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public Integer nearest_neighbors() {
         return nearestNeighbors.value();
     }
 
+    @GeneratedGuiBoilerplate
     public ImputationPlugin nearest_neighbors(Integer value) {
         nearestNeighbors = new PluginParameter<>(nearestNeighbors, value);
         return this;

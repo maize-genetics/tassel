@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class RidgeRegressionEmmaPlugin extends AbstractPlugin {
 
@@ -187,6 +188,7 @@ public class RidgeRegressionEmmaPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = RidgeRegressionEmmaPlugin.class.getResource("/net/maizegenetics/analysis/images/LinearAssociation.gif");
         if (imageURL == null) {
@@ -197,11 +199,13 @@ public class RidgeRegressionEmmaPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Genomic Selection";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Predict Phenotypes using Ridge Regression for Genomic Selection";
     }

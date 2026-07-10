@@ -32,6 +32,7 @@ import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.taxa.TaxaListBuilder;
 import net.maizegenetics.taxa.TaxaListIOUtils;
 import net.maizegenetics.taxa.Taxon;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin takes a single fastq or a directory of fastq files
@@ -503,17 +504,20 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
 //     }
      
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {       
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return ("ConvertOldFastqToModernFormat");
         
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {       
         return ("Fastq files formatted with multiple taxa and bar codes are transformed into Illumina format with 1 taxa per file and no bar codes in the read sequence");
     }
@@ -525,6 +529,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return Input Directory
      */
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return inputFile.value();
     }
@@ -538,6 +543,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ConvertOldFastqToModernFormatPlugin inputFile(String value) {
         inputFile = new PluginParameter<>(inputFile, value);
         return this;
@@ -548,6 +554,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return Key File
      */
+    @GeneratedGuiBoilerplate
     public String keyFile() {
         return keyFile.value();
     }
@@ -560,6 +567,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ConvertOldFastqToModernFormatPlugin keyFile(String value) {
         keyFile = new PluginParameter<>(keyFile, value);
         return this;
@@ -571,6 +579,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return Project File
      */
+    @GeneratedGuiBoilerplate
     public String projectName() {
         return projectName.value();
     }
@@ -583,6 +592,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ConvertOldFastqToModernFormatPlugin projectName(String value) {
         projectName = new PluginParameter<>(projectName, value);
         return this;
@@ -593,6 +603,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return Output Directory
      */
+    @GeneratedGuiBoilerplate
     public String outputDir() {
         return outputDir.value();
     }
@@ -605,6 +616,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ConvertOldFastqToModernFormatPlugin outputDir(String value) {
         outputDir = new PluginParameter<>(outputDir, value);
         return this;
@@ -615,6 +627,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return Enzyme
      */
+    @GeneratedGuiBoilerplate
     public String enzyme() {
         return myEnzyme.value();
     }
@@ -626,6 +639,7 @@ public class ConvertOldFastqToModernFormatPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ConvertOldFastqToModernFormatPlugin enzyme(String value) {
         myEnzyme = new PluginParameter<>(myEnzyme, value);
         return this;

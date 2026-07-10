@@ -38,6 +38,7 @@ import net.maizegenetics.util.Utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
     private static final Logger myLogger = LogManager.getLogger(RNADeMultiPlexSeqToDBPlugin.class);
@@ -354,18 +355,21 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
         super(parentFrame, isInteractive);
     }
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -379,6 +383,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return Input Directory
      */
+    @GeneratedGuiBoilerplate
     public String inputDirectory() {
         return myInputDir.value();
     }
@@ -394,6 +399,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiPlexSeqToDBPlugin inputDirectory(String value) {
         myInputDir = new PluginParameter<>(myInputDir, value);
         return this;
@@ -404,6 +410,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return Key File
      */
+    @GeneratedGuiBoilerplate
     public String keyFile() {
         return myKeyFile.value();
     }
@@ -416,6 +423,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiPlexSeqToDBPlugin keyFile(String value) {
         myKeyFile = new PluginParameter<>(myKeyFile, value);
         return this;
@@ -427,6 +435,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return Minimum Tag Length
      */
+    @GeneratedGuiBoilerplate
     public Integer minimumKmerLength() {
         return myMinKmerLength.value();
     }
@@ -438,6 +447,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiPlexSeqToDBPlugin minimumKmerLength(Integer value) {
         myMinKmerLength = new PluginParameter<>(myMinKmerLength, value);
         return this;
@@ -448,6 +458,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return Min Tag Count
      */
+    @GeneratedGuiBoilerplate
     public Integer minKmerCount() {
         return myMinKmerCount.value();
     }
@@ -459,6 +470,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiPlexSeqToDBPlugin minKmerCount(Integer value) {
         myMinKmerCount = new PluginParameter<>(myMinKmerCount, value);
         return this;
@@ -469,6 +481,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return Output Database File
      */
+    @GeneratedGuiBoilerplate
     public String outputDatabaseFile() {
         return myOutputDB.value();
     }
@@ -480,6 +493,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiPlexSeqToDBPlugin outputDatabaseFile(String value) {
         myOutputDB = new PluginParameter<>(myOutputDB, value);
         return this;
@@ -491,6 +505,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return Minimum quality score
      */
+    @GeneratedGuiBoilerplate
     public Integer minimumQualityScore() {
         return myMinQualScore.value();
     }
@@ -503,6 +518,7 @@ public class RNADeMultiPlexSeqToDBPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiPlexSeqToDBPlugin minimumQualityScore(Integer value) {
         myMinQualScore = new PluginParameter<>(myMinQualScore, value);
         return this;

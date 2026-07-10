@@ -14,6 +14,7 @@ import java.io.*;
 import net.maizegenetics.analysis.gbs.AnnotateTOPM;
 import net.maizegenetics.dna.map.TagGWASMap;
 import net.maizegenetics.dna.map.TagsOnPhysicalMapV3;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Split large TagsByTaxaByteHDF5TagGroup file into small sub TBTs. Designed to submit genetic mapping jobs in cluster
@@ -98,16 +99,19 @@ public class PanASamToMultiPositionTOPMPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

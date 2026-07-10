@@ -14,6 +14,7 @@ import java.io.*;
 import net.maizegenetics.dna.BaseEncoder;
 import net.maizegenetics.dna.map.TagGWASMap;
 import net.maizegenetics.dna.map.TagGWASMapInfo;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /** 
  * Filtering high quality mapped tag and write them into a file, based on the predicted distance
@@ -120,16 +121,19 @@ public class PanAFilteringTagMapPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
