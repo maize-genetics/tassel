@@ -75,6 +75,67 @@ java -classpath 'build/libs/sTASSEL.jar:build/libs/lib/*' \
 
 Increase the heap for large datasets by adding a `-Xmx` flag, e.g. `-Xmx10g`.
 
+## Standalone Version
+
+Prebuilt standalone distributions of TASSEL are available from the
+[Latest Builds](http://www.maizegenetics.net/tassel/) page. A standalone
+distribution bundles `dist/sTASSEL.jar` together with all runtime dependencies in
+`lib/`, and includes convenience launcher scripts in the same directory:
+
+* `start_tassel.pl` - launches the graphical interface.
+* `run_pipeline.pl` / `run_pipeline.bat` - runs the command-line pipeline
+  (`net.maizegenetics.pipeline.TasselPipeline`) for scripting and batch analyses.
+
+These scripts build the Java classpath automatically from `lib/` and
+`dist/sTASSEL.jar`, so you do not need to construct it by hand.
+
+### Using `run_pipeline` in scripts
+
+`run_pipeline.pl` (macOS/Linux) and `run_pipeline.bat` (Windows) accept TASSEL
+pipeline arguments directly. Any `-Xms`/`-Xmx` arguments are pulled out and passed
+to the JVM, while all other arguments are forwarded to the pipeline. If no memory
+flags are given, the scripts default to `-Xms512m -Xmx1536m`.
+
+Show pipeline help:
+
+```bash
+./run_pipeline.pl
+```
+
+A typical analysis - load a HapMap genotype file and a phenotype file, run an MLM
+association, and write the results - chains plugins together with `-fork`,
+`-input`, and `-combine` directives:
+
+```bash
+./run_pipeline.pl -Xmx8g \
+  -fork1 -h mydata.hmp.txt \
+  -fork2 -r mytraits.txt \
+  -combine3 -input1 -input2 -intersect \
+  -mlm -export mlm_results
+```
+
+On Windows, invoke the batch launcher instead:
+
+```bat
+run_pipeline.bat -Xmx8g -fork1 -h mydata.hmp.txt -fork2 -r mytraits.txt -combine3 -input1 -input2 -intersect -mlm -export mlm_results
+```
+
+Because `run_pipeline` is a plain command-line invocation, it can be embedded in
+shell scripts, cron jobs, or workflow managers to batch-process many datasets. For
+example, to run the same pipeline over several genotype files:
+
+```bash
+#!/bin/bash
+for geno in genotypes/*.hmp.txt; do
+  name=$(basename "$geno" .hmp.txt)
+  ./run_pipeline.pl -Xmx8g \
+    -fork1 -h "$geno" \
+    -fork2 -r mytraits.txt \
+    -combine3 -input1 -input2 -intersect \
+    -mlm -export "results/${name}_mlm"
+done
+```
+
 ## Development
 
 ### Project layout
