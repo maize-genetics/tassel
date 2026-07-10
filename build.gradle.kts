@@ -42,6 +42,12 @@ repositories {
     }
 }
 
+configurations.all {
+    // openchart:openchart:1.4.2 (transitive of biojava forester) is not published to any
+    // reachable repo. It is only used by forester's charting UI, which tests do not touch.
+    exclude(group = "openchart", module = "openchart")
+}
+
 dependencies {
     testImplementation(kotlin("test"))
     implementation("org.apache.logging.log4j:log4j-api:2.21.1")
@@ -189,6 +195,23 @@ tasks {
         jvmArgs = baseArgs
 
         println(jvmArgs)
+    }
+
+    // Runs the GBS (legacy) and GBSv2 test suites, which the main `test` task excludes.
+    // Requires a `dataFiles/` dir in the project root (see notes/gbs-tests/).
+    register<Test>("gbsTest") {
+        description = "Runs GBS and GBSv2 tests."
+        group = "verification"
+        testClassesDirs = sourceSets["test"].output.classesDirs
+        classpath = sourceSets["test"].runtimeClasspath
+        useJUnit()
+        include("**/analysis/gbs/*Test.class", "**/analysis/gbs/v2/*Test.class")
+        jvmArgs = listOf("-Xmx10g")
+        ignoreFailures = true
+        testLogging {
+            events("passed", "skipped", "failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
+        }
     }
 
     register("printVersion") {
