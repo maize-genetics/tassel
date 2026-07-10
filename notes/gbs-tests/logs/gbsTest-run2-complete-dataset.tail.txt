@@ -1,0 +1,120 @@
+            rowData[columnCount++] = new Double(errorSSdf[1]);
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/association/ReferenceProbabilityFELM.java:72: warning: [removal] Double(double) in Double has been deprecated and marked for removal
+            rowData[columnCount++] = new Double(errorSSdf[0] / errorSSdf[1]);
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/association/ReferenceProbabilityFELM.java:73: warning: [removal] Double(double) in Double has been deprecated and marked for removal
+            rowData[columnCount++] = new Double(modelSSdf[1]);
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/association/ReferenceProbabilityFELM.java:74: warning: [removal] Double(double) in Double has been deprecated and marked for removal
+            rowData[columnCount++] = new Double(modelSSdf[0] / modelSSdf[1]);
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/chart/QQDisplayPlugin.java:101: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+                    indexes.add(new Integer(i));
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/chart/QQDisplayPlugin.java:104: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+                        indexes.add(new Integer(i));
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/chart/QQDisplayPlugin.java:107: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+                    indexes.add(new Integer(i));
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/chart/QQDisplayPlugin.java:108: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+                    indexes.add(new Integer(i + 1));
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/chart/QQDisplayPlugin.java:113: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+        indexes.add(new Integer(numRows));
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/chart/TableReportBoxWhiskerCatDataset.java:45: warning: [removal] Double(String) in Double has been deprecated and marked for removal
+        try {d=new Double(theTable.getValueAt(i,seriesY[x]).toString());
+/Users/esb33/Developer/tassel/src/main/java/net/maizegenetics/analysis/chart/TableReportStatCategoryDataset.java:53: warning: [removal] Double(String) in Double has been deprecated and marked for removal
+        try {d=new Double(currentRow[seriesY[x]].toString());
+100 warnings
+
+> Task :classes
+> Task :jar
+> Task :compileTestKotlin NO-SOURCE
+
+> Task :compileTestJava
+
+> Task :testClasses
+> Task :gbsTest
+
+DiscoverySNPCallerPluginTest > testPerformFunction PASSED
+
+FastqToTagCountPluginTest > testPerformFunction PASSED
+
+MergeMultipleTagCountPluginTest > testPerformFunction PASSED
+
+ModifyTBTHDF5PluginTest > testPerformFunctionPOption PASSED
+
+ParseBarcodeReadTest > testParseBarcodeRead PASSED
+
+ProductionPipelineMainTest > testProductionPipelineMain FAILED
+    java.lang.AssertionError at ProductionPipelineMainTest.java:76
+
+ProductionSNPCallerPluginTest > testPerformFunction FAILED
+    java.lang.AssertionError at ProductionSNPCallerPluginTest.java:55
+
+SAMConverterPluginTest > testPerformFunction PASSED
+
+SeqToTBTHDF5PluginTest > testPerformFunction PASSED
+
+TagCountToFastqPluginTest > testPerformFunction PASSED
+
+BarcodeTrieTest > testBarcodeParsing PASSED
+
+DiscoverySNPCallerPluginV2Test > testFullSNPCaller PASSED
+
+DiscoverySNPCallerPluginV2Test > testFilterAlignedTags PASSED
+
+DiscoverySNPCallerPluginV2Test > testCreateReferenceTag PASSED
+
+DiscoverySNPCallerPluginV2Test > testChromPosition PASSED
+
+DiscoverySNPCallerPluginV2Test > testSinglePositionFiltering PASSED
+
+DiscoverySNPCallerPluginV2Test > testNumTagsWithReference FAILED
+    java.lang.NullPointerException at DiscoverySNPCallerPluginV2Test.java:377
+
+DiscoverySNPCallerPluginV2Test > testAlignTags PASSED
+
+EvaluateSNPCallQualityOfPipelineTest > pipeLineWithVariableSitesTest FAILED
+    java.lang.NullPointerException at EvaluateSNPCallQualityOfPipelineTest.java:340
+
+EvaluateSNPCallQualityOfPipelineTest > agpv2WithVariableSitesTest FAILED
+    java.lang.NullPointerException at EvaluateSNPCallQualityOfPipelineTest.java:340
+
+EvaluateSNPCallQualityOfPipelineTest > agpv2IncludingInvariantSites FAILED
+    java.lang.NullPointerException at EvaluateSNPCallQualityOfPipelineTest.java:340
+
+EvaluateSNPCallQualityOfPipelineTest > testBiologyOfDiscoveryTBT PASSED
+
+EvaluateSNPCallQualityOfPipelineTest > pipelineIncludingInvariantSites FAILED
+    java.lang.NullPointerException at EvaluateSNPCallQualityOfPipelineTest.java:340
+
+GBSSeqToTagDBPluginTest > testKeepOldData FAILED
+    java.lang.NullPointerException at GBSSeqToTagDBPluginTest.java:114
+
+GBSSeqToTagDBPluginTest > testTagExportPlugin PASSED
+
+GBSSeqToTagDBPluginTest > testSAMImportPlugin SKIPPED
+
+26 tests completed, 8 failed, 1 skipped
+
+> Task :gbsTest FAILED
+
+[Incubating] Problems report is available at: file:///Users/esb33/Developer/tassel/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':gbsTest'.
+> Process 'Gradle Test Executor 4' finished with non-zero exit value 1
+  This problem might be caused by incorrect test process configuration.
+  For more on test execution, please refer to https://docs.gradle.org/8.13/userguide/java_testing.html#sec:test_execution in the Gradle documentation.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 1h 21m 19s
+6 actionable tasks: 6 executed

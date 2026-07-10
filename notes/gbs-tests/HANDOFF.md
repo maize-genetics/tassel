@@ -66,5 +66,9 @@ All large non-git files live in `/Users/esb33/Developer/gbs-test-data/` (≈ 1.0
 - 2026-07-10 — recovered raw fastqs; ran `gbsTest` baseline (26 tests, 9 v2 NPEs from an
   empty tag DB caused by the then-missing 20 MB `C08`). See `test-run-baseline.md`.
 - 2026-07-10 — obtained complete `C08` (+ full tar) from lab file server; assembled the
-  `gbs-test-data/` handoff bundle with all 4 fastqs valid. Re-run of `gbsTest` with the
-  complete 20 MB dataset is the next step.
+  `gbs-test-data/` handoff bundle with all 4 fastqs valid.
+- 2026-07-10 — ran `gbsTest` on the complete 20 MB dataset (1h 21m): 26 tests, 8 failed,
+  1 skipped. Valid `C08` fixed only 1 test — the v2 NPEs are a real code/test issue, not a
+  data gap. Full results + root causes + timing/perf recommendations in
+  `test-run-2-results-and-timing.md`. Headline: switch the suite to the 200 KB dataset
+  (minutes→seconds), isolate per-test DBs, and remove `System.exit` from legacy plugins.
