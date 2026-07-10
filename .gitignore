@@ -46,3 +46,6 @@ bin/
 dataFiles/
 tempDir/
 production_pipeline.properties
+
+### MkDocs ###
+site/

@@ -173,14 +173,6 @@
   }
 }
 
-@media screen and (min-width: 76.25em) {
-  .md-sidebar--primary,
-  .md-sidebar--secondary {
-    display: none;
-  }
-}
-
-
 /* Gallery section */
 .gallery-section {
   padding: 2rem 1rem;
