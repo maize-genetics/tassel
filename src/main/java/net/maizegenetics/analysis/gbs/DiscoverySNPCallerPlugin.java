@@ -1021,7 +1021,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
     private void catchLocusLogException(Exception e) {
         System.out.println("ERROR: Unable to write to locus log file: " + e);
         e.printStackTrace();
-        System.exit(1);
+        throw new IllegalStateException("DiscoverySNPCallerPlugin: unable to write to locus log file.", e);
     }
 
     private byte[] filterCallsForInbreds(byte[] calls) {
@@ -1146,7 +1146,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
         } catch (Exception e) {
             myLogger.error("Exception caught while reading the reference genome fasta file at line.  Error=" + e);
             e.printStackTrace();
-            System.exit(1);
+            throw new IllegalStateException("DiscoverySNPCallerPlugin: error reading the reference genome fasta file.", e);
         }
         return refGenomeChrAsLongs;
     }
@@ -1173,10 +1173,9 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
                     try {
                         currChr = Integer.parseInt(chrS);
                     } catch (NumberFormatException e) {
-                        myLogger.error("\n\nTagsToSNPByAlignment detected a non-numeric chromosome name in the reference genome sequence fasta file: " + chrS
-                                + "\n\nPlease change the FASTA headers in your reference genome sequence to integers "
-                                + "(>1, >2, >3, etc.) OR to 'chr' followed by an integer (>chr1, >chr2, >chr3, etc.)\n\n");
-                        System.exit(1);
+                        throw new IllegalStateException("DiscoverySNPCallerPlugin: detected a non-numeric chromosome name in the "
+                                + "reference genome fasta file: " + chrS + ". Please change the FASTA headers to integers "
+                                + "(>1, >2, >3, ...) OR 'chr' followed by an integer (>chr1, >chr2, ...).", e);
                     }
                     myLogger.info("Currently reading chromosome " + currChr + " (target chromosome = " + targetChr + ")");
                 } else if (currChr == targetChr) {
@@ -1194,7 +1193,7 @@ public class DiscoverySNPCallerPlugin extends AbstractPlugin {
             } else {
                 myLogger.error("Exception caught while reading the reference genome fasta file at line " + line + "\n   e=" + e);
                 e.printStackTrace();
-                System.exit(1);
+                throw new IllegalStateException("DiscoverySNPCallerPlugin: error reading the reference genome fasta file at line " + line, e);
             }
         }
         return nBases;
@@ -1320,17 +1319,17 @@ class CustomSNPLog {
         } catch (IOException e) {
             System.out.println("\n\nERROR: problem creating custom SNP log file: " + e + "\n\n");
             e.printStackTrace();
-            System.exit(1);
+            throw new IllegalStateException("DiscoverySNPCallerPlugin: problem creating custom SNP log file.", e);
         }
     }
-    
+
     public void writeEntry(String entry) {
         try {
             myWriter.append(entry);
         } catch (IOException e) {
             System.out.println("\n\nERROR: problem writing to custom SNP log file: " + e + "\n\n");
             e.printStackTrace();
-            System.exit(1);
+            throw new IllegalStateException("DiscoverySNPCallerPlugin: problem writing to custom SNP log file.", e);
         }
     }
 

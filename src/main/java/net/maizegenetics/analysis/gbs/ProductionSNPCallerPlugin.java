@@ -252,7 +252,8 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
             myLogger.error("Catch in readRawSequencesAndRecordDepth() at nReads=" + counters[0] + " e=" + e);
             myLogger.error("Last line read: " + temp);
             e.printStackTrace();
-            System.exit(1);
+            throw new IllegalStateException("ProductionSNPCallerPlugin: error in readRawSequencesAndRecordDepth() at nReads="
+                    + counters[0] + ", last line read: " + temp, e);
         }
     }
 
@@ -299,7 +300,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
             myLogger.error("Couldn't read key file: " + e);
             myLogger.error("Last line read from key file: " + inputLine);
             e.printStackTrace();
-            System.exit(1);
+            throw new IllegalStateException("ProductionSNPCallerPlugin: couldn't read key file. Last line read: " + inputLine, e);
         }
     }
 
@@ -373,12 +374,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
                 + "   \"DNASample\" or \"Sample\"    (column D)\n"
                 + "   \"LibraryPrepID\"            (column H)\n"
                 + "\n\n";
-        try {
-            throw new IllegalStateException(badKeyFileMessage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        throw new IllegalStateException(badKeyFileMessage);
     }
 
     private void populateKeyFileFields(String keyFileLine) {
@@ -400,13 +396,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
         if (prevSample == null) {
             libraryPrepIDToSampleName.put(libPrepID, sample);
         } else if (!prevSample.contentEquals(sample)) {
-            try {
-                throw new IllegalStateException("\nThe key file contains different Sample names (\"" + prevSample + "\" and \"" + sample + "\") for the sample LibraryPrepID (" + libPrepID + ")\n\n");
-            } catch (Exception e) {
-                myLogger.error("Error in key file: " + e);
-                e.printStackTrace();
-                System.exit(1);
-            }
+            throw new IllegalStateException("\nThe key file contains different Sample names (\"" + prevSample + "\" and \"" + sample + "\") for the sample LibraryPrepID (" + libPrepID + ")\n\n");
         }
     }
 
@@ -671,7 +661,7 @@ public class ProductionSNPCallerPlugin extends AbstractPlugin {
         } catch (Exception e) {
             myLogger.error("Couldn't write to ReadsPerSample log file: " + e);
             e.printStackTrace();
-            System.exit(1);
+            throw new IllegalStateException("ProductionSNPCallerPlugin: couldn't write to ReadsPerSample log file.", e);
         }
         myLogger.info("   ...done\n");
     }

@@ -538,7 +538,7 @@ public class ProductionSNPCallerPluginV2 extends AbstractPlugin {
         } catch (Exception e) {
             myLogger.error("Couldn't write to ReadsPerSample log file: " + e);
             e.printStackTrace();
-            System.exit(1);
+            throw new IllegalStateException("ProductionSNPCallerPluginV2: couldn't write to ReadsPerSample log file.", e);
         }
         myLogger.info("\n\nTotal number of SNPs processed with minimum quality score " + minimumQualityScore() + " was " + tagsProcessed + ".\n");
         myLogger.info("   ...done\n");

@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -53,6 +54,18 @@ public class EvaluateSNPCallQualityOfPipelineTest {
 
     // temp storage place when running bowtie2 below with "very-sensitive-local" - this matches V1 setting
     public static String samFileAGPv2_local = "dataFiles/CandidateTests/tagsForAlign910_agpv2_local.sam";
+
+    @Before
+    public void setUp() throws IOException {
+        // This whole pipeline is 20 MB-only: it consumes the bowtie-aligned SAM
+        // (tagsForAlign910auto.sam) and asserts SNP counts specific to that dataset. Neither
+        // exists for the 200 KB dataset, so self-skip there instead of aborting mid-pipeline.
+        Assume.assumeTrue(GBSConstants.RAW_SEQ_CURRENT_TEST.equals(GBSConstants.RAW_SEQ_CHR_9_10_20000000));
+        // The GBS plugins reject a -db (or output file) whose parent directory is missing,
+        // which trips AbstractPlugin.printUsage()+System.exit(1) and kills the test JVM.
+        Files.createDirectories(Paths.get(GBSConstants.GBS_TEMP_DIR));
+    }
+
     @Test
     public void testBiologyOfDiscoveryTBT() throws Exception {
         //TODO implement this code

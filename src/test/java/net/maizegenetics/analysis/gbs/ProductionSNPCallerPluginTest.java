@@ -14,6 +14,7 @@ import net.maizegenetics.dna.map.PositionList;
 import net.maizegenetics.dna.snp.AlignmentTestingUtils;
 import net.maizegenetics.dna.snp.GenotypeTable;
 import net.maizegenetics.dna.snp.ImportUtils;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -31,6 +32,9 @@ public class ProductionSNPCallerPluginTest {
     
     @Before
     public void setUp() {
+        // Production expected results (the HDF5 genotypes and input TOPM) only exist for the
+        // 20 MB dataset, and the genotype assertions are specific to it; self-skip otherwise.
+        Assume.assumeTrue(GBSConstants.RAW_SEQ_CURRENT_TEST.equals(GBSConstants.RAW_SEQ_CHR_9_10_20000000));
         ExpectedGenos = ImportUtils.readGuessFormat(GBSConstants.GBS_EXPECTED_PRODUCTION_SNP_CALLER_PLUGIN_HDF5_OUT_FILE);
     }
 

@@ -30,6 +30,21 @@ kotlin {
     jvmToolchain(21)
 }
 
+sourceSets {
+    main {
+        // Many runtime resources (SQL schemas like dna/tag/TagSchema.sql, plus GUI icons,
+        // .xml/.html) live co-located with the sources under src/main/java rather than in
+        // src/main/resources. The default build only copies src/main/resources, so these
+        // were missing from the classpath at runtime (getResourceAsStream returned null,
+        // e.g. TagDataSQLite could not create its schema). Treat src/main/java as an
+        // additional resource root, excluding the actual source files.
+        resources {
+            srcDir("src/main/java")
+            exclude("**/*.java", "**/*.kt", "**/*.c", "**/*.h")
+        }
+    }
+}
+
 group = "net.maizegenetics"
 version = "5.2.96"
 description = "TASSEL is a software package to evaluate traits associations, evolutionary patterns, and linkage disequilibrium."
@@ -199,20 +214,35 @@ tasks {
 
     // Runs the GBS (legacy) and GBSv2 test suites, which the main `test` task excludes.
     // Requires a `dataFiles/` dir in the project root (see notes/gbs-tests/).
-    register<Test>("gbsTest") {
-        description = "Runs GBS and GBSv2 tests."
-        group = "verification"
-        testClassesDirs = sourceSets["test"].output.classesDirs
-        classpath = sourceSets["test"].runtimeClasspath
-        useJUnit()
-        include("**/analysis/gbs/*Test.class", "**/analysis/gbs/v2/*Test.class")
-        jvmArgs = listOf("-Xmx10g")
-        ignoreFailures = true
-        testLogging {
-            events("passed", "skipped", "failed")
-            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
+    //
+    // The suite can run against either raw-sequence dataset; the choice is passed to the
+    // test JVM as -Dgbs.test.dataset and read by GBSConstants.RAW_SEQ_CURRENT_TEST:
+    //   * gbsTestSmall -> Chr9_10-200000   (~200 KB, fast; use for iterative work/CI)
+    //   * gbsTestLarge -> Chr9_10-20000000 (~20 MB, slow; nightly / full validation)
+    // `gbsTest` is kept as a back-compat alias for the large dataset.
+    // The two profiles differ only by which dataset they point at (-Dgbs.test.dataset).
+    // Tests that need inputs only present in the 20 MB dataset (the bowtie-aligned SAM and
+    // the ProductionSNPCaller/imputation expected results) self-skip on the small dataset
+    // via JUnit Assume guards keyed on GBSConstants.RAW_SEQ_CURRENT_TEST — see those tests.
+    fun registerGbsTest(taskName: String, dataset: String, taskDescription: String) =
+        register<Test>(taskName) {
+            description = taskDescription
+            group = "verification"
+            testClassesDirs = sourceSets["test"].output.classesDirs
+            classpath = sourceSets["test"].runtimeClasspath
+            useJUnit()
+            include("**/analysis/gbs/*Test.class", "**/analysis/gbs/v2/*Test.class")
+            jvmArgs = listOf("-Xmx10g", "-Dgbs.test.dataset=$dataset")
+            ignoreFailures = true
+            testLogging {
+                events("passed", "skipped", "failed")
+                exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
+            }
         }
-    }
+
+    registerGbsTest("gbsTestSmall", "Chr9_10-200000/", "Runs GBS and GBSv2 tests on the small 200 KB dataset (fast; 20 MB-only tests self-skip).")
+    registerGbsTest("gbsTestLarge", "Chr9_10-20000000/", "Runs the full GBS and GBSv2 test suite on the 20 MB dataset (slow).")
+    registerGbsTest("gbsTest", "Chr9_10-20000000/", "Alias for gbsTestLarge (full 20 MB dataset).")
 
     register("printVersion") {
         group = "help"

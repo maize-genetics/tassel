@@ -42,6 +42,10 @@ public class ProductionPipelineMainTest {
     @Test
     public void testProductionPipelineMain(){
 
+            // The expected output checksum and the input TOPM are specific to the 20 MB
+            // dataset (GBS_INPUT_TOPM is pinned to Chr9_10-20000000); self-skip otherwise.
+            Assume.assumeTrue(GBSConstants.RAW_SEQ_CURRENT_TEST.equals(GBSConstants.RAW_SEQ_CHR_9_10_20000000));
+
             // create or use a temp dir
             File aTempDir = new File(tempDir);
             if(aTempDir.exists()) aTempDir.delete();

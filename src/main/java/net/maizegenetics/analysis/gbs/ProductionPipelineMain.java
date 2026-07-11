@@ -129,7 +129,7 @@ public class ProductionPipelineMain {
             System.out.println("Exiting program.");
             sendAlertNotification(emailSubjectBase + "- Error", "Could not find directory: " + dir.getAbsolutePath() +
                     " on  server " + applicationHost);
-            System.exit(1);
+            throw new IllegalStateException("ProductionPipelineMain: could not find the directory containing .run files: " + dir.getPath());
         }
 
         // get all property files in the directory
@@ -332,7 +332,7 @@ public class ProductionPipelineMain {
         if(!loaded){
             sendAlertNotification(emailSubjectBase + "- Error", "Properties file could not be loaded: " +
                     aFileIn + " on server " + applicationHost);
-            System.exit(1);
+            throw new IllegalStateException("ProductionPipelineMain: properties file could not be loaded: " + aFileIn);
         }
 
         String configurationElement =  "runFileSuffix";

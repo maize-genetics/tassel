@@ -431,10 +431,10 @@ public class SimpleGenotypeSBit {
         }
         catch (Exception e) {
             System.out.println(e.toString());
-            System.exit(1);
+            throw new IllegalStateException("SimpleGenotypeSBit: error writing binary file.", e);
         }
     }
-    
+
     public void readBinaryFile (String inputFileS) {
         try {
             DataInputStream dis = new DataInputStream(new BufferedInputStream(new FileInputStream(inputFileS), 65536));
@@ -467,7 +467,7 @@ public class SimpleGenotypeSBit {
         }
         catch (Exception e) {
             System.out.println(e.toString());
-            System.exit(1);
+            throw new IllegalStateException("SimpleGenotypeSBit: error reading binary file: " + inputFileS, e);
         }
     }
     

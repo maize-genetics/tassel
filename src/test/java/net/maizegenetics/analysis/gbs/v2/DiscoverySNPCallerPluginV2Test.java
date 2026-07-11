@@ -24,6 +24,7 @@ import net.maizegenetics.dna.tag.TaxaDistribution;
 import net.maizegenetics.util.LoggingUtils;
 import net.maizegenetics.util.Tuple;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,6 +53,10 @@ public class DiscoverySNPCallerPluginV2Test {
     @Before
     public void setUp() throws Exception {
         LoggingUtils.setupLogging();
+        // testNumTagsWithReference builds a DB via GBSSeqToTagDBPlugin, which rejects a -db
+        // whose parent directory is missing (tripping AbstractPlugin.printUsage()+System.exit
+        // and killing the test JVM). Ensure the temp output dir exists up front.
+        Files.createDirectories(Paths.get(GBSConstants.GBS_TEMP_DIR));
         // WIth changes made to alignTags from TAS-1001, the sequences below are changes
         // to all be forward sequences.  alignTags previously looked at the strand direction
         // and converted reverse oriented strands to forward, then aligned.  
@@ -350,6 +355,10 @@ public class DiscoverySNPCallerPluginV2Test {
     
     @Test
     public void testNumTagsWithReference() throws Exception {
+        // This method runs the full pipeline through SAMToGBSdbPlugin, which needs the
+        // bowtie-aligned SAM that only exists for the 20 MB dataset; self-skip otherwise.
+        // (The other tests in this class are pure unit tests and run on any dataset.)
+        Assume.assumeTrue(GBSConstants.RAW_SEQ_CURRENT_TEST.equals(GBSConstants.RAW_SEQ_CHR_9_10_20000000));
         // run the pipeline from GBSSeqToTagPlugin through Discovery.
         // Verify at the end of Discovery the number of tags in the DB
         // has not increased, nor descreased from what GBSSeqToTagDBPlugin stored.

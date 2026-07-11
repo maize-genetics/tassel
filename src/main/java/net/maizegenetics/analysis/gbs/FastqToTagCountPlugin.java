@@ -136,7 +136,8 @@ public class FastqToTagCountPlugin extends AbstractPlugin {
                 } catch (OutOfMemoryError e) {
                     myLogger.error("Your system doesn't have enough memory to store the number of sequences"
                             + "you specified.  Try using a smaller value for the minimum number of reads.");
-                    System.exit(1);
+                    throw new IllegalStateException("FastqToTagCountPlugin: not enough memory to store the "
+                            + "specified number of sequences. Try a smaller value for the minimum number of reads.", e);
                 }
 
                 int currLine = 0;
@@ -169,7 +170,8 @@ public class FastqToTagCountPlugin extends AbstractPlugin {
                     } catch (NullPointerException e) {
                         myLogger.error("Unable to correctly parse the sequence and: " + sequence
                                 + " and quality score: " + qualityScore + " from fastq file.  Your fastq file may have been corrupted.");
-                        System.exit(1);
+                        throw new IllegalStateException("FastqToTagCountPlugin: unable to parse sequence \"" + sequence
+                                + "\" / quality score \"" + qualityScore + "\" from fastq file. The fastq file may be corrupted.", e);
                     }
                     temp = br.readLine();
                 }
