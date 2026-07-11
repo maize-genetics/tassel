@@ -187,8 +187,7 @@ tasks {
 
         exclude(
             "**/analysis/gobii/*Test.class",
-            "**/analysis/gbs/*Test.class",
-            "**/analysis/gbs/v2/*Test.class",
+            "**/analysis/gbs/v2/*Test.class",     // run via the gbsTest* tasks (need dataFiles/ + -Dgbs.test.dataset)
             "**/analysis/gbs/repgen/*Test.class",
             "**/analysis/monetdb/*Test.class",
             "**/LowLevelCopyOfHDF5Test.class",
@@ -200,7 +199,6 @@ tasks {
             "**/DistanceMatrixHDF5Test.class",
             "**/TagsOnPhysMapHDF5Test.class",
             "**/FastMultithreadedAssociationPluginTest.class",
-            "**/BuildUnfinishedHDF5GenotypesPluginTest.class",
             "**/GenomeAnnosDBQueryToPositionListPluginTest.class",
             "**/analysis/rna/*Test.class",
             "**/CreateFastaOrFastqFiles.class", // hard coded file paths (LCJ)
@@ -212,7 +210,7 @@ tasks {
         println(jvmArgs)
     }
 
-    // Runs the GBS (legacy) and GBSv2 test suites, which the main `test` task excludes.
+    // Runs the GBSv2 test suite, which the main `test` task excludes.
     // Requires a `dataFiles/` dir in the project root (see notes/gbs-tests/).
     //
     // The suite can run against either raw-sequence dataset; the choice is passed to the
@@ -231,7 +229,7 @@ tasks {
             testClassesDirs = sourceSets["test"].output.classesDirs
             classpath = sourceSets["test"].runtimeClasspath
             useJUnit()
-            include("**/analysis/gbs/*Test.class", "**/analysis/gbs/v2/*Test.class")
+            include("**/analysis/gbs/v2/*Test.class")
             jvmArgs = listOf("-Xmx10g", "-Dgbs.test.dataset=$dataset")
             ignoreFailures = true
             testLogging {
@@ -240,8 +238,8 @@ tasks {
             }
         }
 
-    registerGbsTest("gbsTestSmall", "Chr9_10-200000/", "Runs GBS and GBSv2 tests on the small 200 KB dataset (fast; 20 MB-only tests self-skip).")
-    registerGbsTest("gbsTestLarge", "Chr9_10-20000000/", "Runs the full GBS and GBSv2 test suite on the 20 MB dataset (slow).")
+    registerGbsTest("gbsTestSmall", "Chr9_10-200000/", "Runs the GBSv2 tests on the small 200 KB dataset (fast; 20 MB-only tests self-skip).")
+    registerGbsTest("gbsTestLarge", "Chr9_10-20000000/", "Runs the full GBSv2 test suite on the 20 MB dataset (slow).")
     registerGbsTest("gbsTest", "Chr9_10-20000000/", "Alias for gbsTestLarge (full 20 MB dataset).")
 
     register("printVersion") {
