@@ -233,6 +233,22 @@ So roughly half the alignment cost is this lookup, not the DP recursion (`setSco
 Prototype **L1** (custom O(1) substitution scorer for `alignTags`) and re-profile + diff SNP calls;
 report before touching L2.
 
+### ✅ L1 DONE (2026-07-11) — commit `513ef9fb`
+`IndexedNucleotideSubstitutionMatrix` wraps nuc-4.4 with a precomputed dense score table +
+`IdentityHashMap` compound index (IdentityHashMap avoids `NucleotideCompound.hashCode()`/`equals()`,
+which are `toString()`-based — a `HashMap` first attempt just moved the cost into `String.hashCode`).
+Passed to `Alignments.getMultipleSequenceAlignment(lst, FAST_NUC_4_4)`.
+- **Correctness:** scores byte-identical → SNP calls unchanged; `DiscoverySNPCallerPluginV2Test`
+  (incl. `testAlignTags`, `testFullSNPCaller`) and `gbsTestSmall` green.
+- **Measured (Evaluate, 20 MB, JFR):** linear compound lookup 709→0; alignment 59%→49% of pipeline;
+  total samples 2553→2046 (~20% overall, ~33% off the alignment phase).
+- **Honest caveat:** end-to-end test **wall time flat** (38s→37s) — alignment CPU is not this
+  test's wall-clock bottleneck. Remaining alignment cost is BioJava's O(n²) profile-profile DP
+  (`AlignerHelper.setScorePoint`, the per-cell compound loop) — only removable by **L2** (replace the
+  aligner), which is high-risk (SNP-call equivalence) for an uncertain wall-time payoff on this test.
+- **Recommendation:** keep L1 (correct, low-risk CPU win). **Hold L2** unless production profiling on
+  a many-cut-site dataset shows alignment dominates wall time.
+
 ---
 
 ## Suggested tomorrow order
