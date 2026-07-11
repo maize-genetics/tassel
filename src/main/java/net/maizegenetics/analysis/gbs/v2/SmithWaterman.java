@@ -1,4 +1,4 @@
-package net.maizegenetics.analysis.gbs;
+package net.maizegenetics.analysis.gbs.v2;
 
 /**
  * Created by IntelliJ IDEA.

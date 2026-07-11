@@ -10,6 +10,7 @@ import java.util.TreeMap;
 
 import net.maizegenetics.dna.tag.Tags;
 import net.maizegenetics.dna.BaseEncoder;
+import net.maizegenetics.analysis.gbs.v2.SmithWaterman;
 
 /**
  * Very simple but fast homology finder.  Very similar to BLAT, with long word searches.
