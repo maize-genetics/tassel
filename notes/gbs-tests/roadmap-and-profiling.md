@@ -192,6 +192,49 @@ JAVA_TOOL_OPTIONS="-XX:StartFlightRecording=filename=/tmp/gbs-%p.jfr,settings=pr
 
 ---
 
+## 5. Alignment-phase profile + `seqDifferences` (2026-07-11)
+
+**Done:** `BaseEncoder.seqDifferences` family rewritten to the correct 2-bit-parallel popcount
+(`(diff | diff>>>1) & 0x5555…`, then `Long.bitCount`) with randomized equivalence tests — commit
+`ef86af8f`. Note it is **legacy-only today** (callers `TagMatchFinder`, `ParseBarcodeRead`); kept in
+`dna/BaseEncoder` as a correct/fast primitive for the aligner idea below.
+
+### Alignment-phase profile (Evaluate `pipelineIncludingInvariantSites`, 20 MB, 2553 samples)
+Per-sample attribution:
+| share | area |
+|---:|---|
+| **59.2%** | **BioJava ClustalW MSA** (`Alignments.getMultipleSequenceAlignment` in `DiscoverySNPCallerPluginV2.alignTags`) |
+| 20.3% | GBS DB build (fastq parse / BarcodeTrie) |
+| 8.9% | Discovery (non-biojava) |
+| 7.4% | TagDataSQLite I/O |
+
+**Key finding inside the 59%:** the single hottest leaf (~28% of the *whole* pipeline) is
+`SimpleSubstitutionMatrix.getValue → getIndexOfCompound → ArrayList.indexOf` — BioJava does a
+**linear list scan to map each nucleotide compound to its matrix row/col index, on every DP cell**.
+So roughly half the alignment cost is this lookup, not the DP recursion (`setScorePoint`,
+`getSubstitutionScoreVector` ≈ the other ~31%).
+
+### Two levers (recommendation)
+- **(L1) Low-risk, same output — fix the substitution-matrix lookup.** Give the aligner a
+  substitution matrix / compound-set with O(1) compound→index (array/`EnumMap`-style) instead of
+  `List.indexOf`, or a DNA-specialized scorer. Produces **identical scores → identical alignments →
+  identical SNP calls**, so it's verifiable against `ExpectedResults` with low risk, and could
+  reclaim a large chunk of the ~28%. Feasibility depends on what BioJava's
+  `Alignments.getMultipleSequenceAlignment(lst)` lets us inject (it's currently called with all
+  defaults in `alignTags`). **Recommended first step.**
+- **(L2) High-value, gated — 2-bit fast path replacing ClustalW for the common case.** Tags at a cut
+  site that are equal-length and indel-free need only columnar/Hamming comparison (the new
+  `seqDifferences` is the primitive); fall back to ClustalW only when lengths differ / indels are
+  needed. Requires: (a) instrument `alignTags` to measure how often a cut site's tags are uniform
+  length (fast-path hit rate), and (b) a SNP-call equivalence harness vs `ExpectedResults` before any
+  swap. Bigger win, higher risk — do after L1 and only with sign-off.
+
+### Next action
+Prototype **L1** (custom O(1) substitution scorer for `alignTags`) and re-profile + diff SNP calls;
+report before touching L2.
+
+---
+
 ## Suggested tomorrow order
 1. Fill in §1 timing + §4 JFR profile (data-gathering, machine now free).
 2. Try **4a** (`seqDifferences` POPCNT) — smallest, safest, add an equivalence unit test.
