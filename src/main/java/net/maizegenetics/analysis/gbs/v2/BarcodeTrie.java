@@ -119,8 +119,12 @@ public class BarcodeTrie{
                 ch=Character.toUpperCase(ch);
                 if(ch<'A' || ch>'T') return null;
             }
-            TrieNode child = crawl.getNode(ch);  //Get the Node reprsenting the character.
-            if (crawl.containsKey(ch)){
+            TrieNode child = crawl.getNode(ch);  //Get the Node representing the character.
+            // child != null is equivalent to the old crawl.containsKey(ch): a child is stored at
+            // index ch-'A' with .character == ch. The old containsKey allocated a fresh ArrayList
+            // and linear-scanned every children slot on every read character (profiled as ~40% of
+            // the DB-build time and a top allocator); this is an O(1) array null-check instead.
+            if (child != null){
                 result += ch;
                 crawl = child;
                 if (crawl.isWord)
