@@ -378,13 +378,15 @@ public class GBSSeqToTagDBPlugin extends AbstractPlugin {
             }             
         }
         int indexOfReadEnd = -1;
-        String shortSeq = seq.substring(20);
+        // Search from position 20 without allocating seq.substring(20) per read: the old
+        // shortSeq.indexOf(readEnd) offset equals seq.indexOf(readEnd, 20) - 20 (same occurrence).
         for (String readEnd: likelyReadEndStrings){
-            int indx = shortSeq.indexOf(readEnd);
+            int found = seq.indexOf(readEnd, 20);
+            int indx = (found < 0) ? -1 : found - 20;
             if (indx > 0 ) {
                 if (indexOfReadEnd < 0 || indx < indexOfReadEnd) {
                     indexOfReadEnd = indx;
-                } 
+                }
             }
         }
         
