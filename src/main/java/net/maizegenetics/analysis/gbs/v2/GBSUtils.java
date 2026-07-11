@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.maizegenetics.analysis.gbs.Barcode;
 import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.taxa.TaxaListIOUtils;
 import net.maizegenetics.taxa.Taxon;

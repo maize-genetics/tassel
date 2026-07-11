@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.maizegenetics.analysis.gbs.Barcode;
+import net.maizegenetics.analysis.gbs.v2.Barcode;
 import net.maizegenetics.analysis.gbs.v2.BarcodeTrie;
 import net.maizegenetics.analysis.gbs.v2.EnzymeList;
 import net.maizegenetics.analysis.gbs.v2.GBSUtils;

@@ -6,7 +6,7 @@ package net.maizegenetics.analysis.gbs.repgen;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import net.maizegenetics.analysis.gbs.Barcode;
+import net.maizegenetics.analysis.gbs.v2.Barcode;
 import net.maizegenetics.analysis.gbs.v2.GBSUtils;
 import net.maizegenetics.dna.BaseEncoder;
 import net.maizegenetics.dna.map.PositionList;

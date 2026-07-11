@@ -1,5 +1,5 @@
 
-package net.maizegenetics.analysis.gbs;
+package net.maizegenetics.analysis.gbs.v2;
 
 import java.util.Arrays;
 

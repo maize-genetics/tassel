@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.LongAdder;
 
 import javax.swing.ImageIcon;
 
-import net.maizegenetics.analysis.gbs.Barcode;
 import net.maizegenetics.dna.BaseEncoder;
 import net.maizegenetics.dna.map.PositionList;
 import net.maizegenetics.dna.snp.Allele;

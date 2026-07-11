@@ -1,6 +1,5 @@
 package net.maizegenetics.analysis.gbs.v2;
 
-import net.maizegenetics.analysis.gbs.Barcode;
 import java.util.*;
 
 /**

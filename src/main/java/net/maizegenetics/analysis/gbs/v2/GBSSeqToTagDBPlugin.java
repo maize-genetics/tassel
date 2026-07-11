@@ -20,7 +20,6 @@ import org.ahocorasick.trie.Trie;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.maizegenetics.analysis.gbs.Barcode;
 import net.maizegenetics.dna.BaseEncoder;
 import net.maizegenetics.dna.tag.Tag;
 import net.maizegenetics.dna.tag.TagBuilder;
