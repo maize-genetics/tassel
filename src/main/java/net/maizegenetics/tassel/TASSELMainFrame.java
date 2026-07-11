@@ -45,7 +45,6 @@ import net.maizegenetics.analysis.filter.FilterSiteNamePlugin;
 import net.maizegenetics.analysis.filter.FilterTaxaBuilderPlugin;
 import net.maizegenetics.analysis.filter.FilterTaxaPropertiesPlugin;
 import net.maizegenetics.analysis.filter.FilterTraitsPlugin;
-import net.maizegenetics.analysis.gbs.*;
 import net.maizegenetics.analysis.gbs.v2.DiscoverySNPCallerPluginV2;
 import net.maizegenetics.analysis.gbs.v2.GBSSeqToTagDBPlugin;
 import net.maizegenetics.analysis.gbs.v2.GetTagSequenceFromDBPlugin;
@@ -234,7 +233,6 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
         jMenuBar.add(getAnalysisMenu());
         jMenuBar.add(getResultsMenu());
         jMenuBar.add(getGBSv2Menu());
-        jMenuBar.add(getGBSMenu());
         jMenuBar.add(getWorkflowMenu());
         addThirdPartyMenus(jMenuBar);
         jMenuBar.add(Box.createHorizontalGlue());
@@ -696,58 +694,6 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
         result.add(createMenuItem(new SNPCutPosTagVerificationPlugin(this, true), false));
 
         return result;
-    }
-
-    private JMenu getGBSMenu() {
-
-        JMenu result = new JMenu("GBS");
-        Map attributes = result.getFont().getAttributes();
-        attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
-        result.setFont(new Font(attributes));
-
-        addMenuItemDeprecated(result, createMenuItem(new BinaryToTextPlugin(this, true), false));
-        addMenuItemDeprecated(result, createMenuItem(new FastqToTagCountPlugin(this, true), false));
-        addMenuItemDeprecated(result, createMenuItem(new MergeMultipleTagCountPlugin(this, true), false));
-        result.addSeparator();
-        addMenuItemDeprecated(result, getGBSReferenceMenu());
-        result.addSeparator();
-        addMenuItemDeprecated(result, getUNEAKMenu());
-        result.addSeparator();
-        addMenuItemDeprecated(result, createMenuItem(new SeqToTBTHDF5Plugin(this, true), false));
-        addMenuItemDeprecated(result, createMenuItem(new ModifyTBTHDF5Plugin(this, true), false));
-        addMenuItemDeprecated(result, createMenuItem(new DiscoverySNPCallerPlugin(this, true), false));
-        addMenuItemDeprecated(result, createMenuItem(new ProductionSNPCallerPlugin(this, true), false));
-
-        return result;
-    }
-
-    private JMenu getGBSReferenceMenu() {
-        JMenu result = new JMenu("Reference Genome");
-        addMenuItemDeprecated(result, createMenuItem(new TagCountToFastqPlugin(this, true), false));
-        addMenuItemDeprecated(result, createMenuItem("Align to Reference", false));
-        addMenuItemDeprecated(result, createMenuItem(new SAMConverterPlugin(this, true), false));
-        return result;
-    }
-
-    private JMenu getUNEAKMenu() {
-        JMenu result = new JMenu("UNEAK (No Reference)");
-        addMenuItemDeprecated(result, createMenuItem(new UTagCountToTagPairPlugin(this, true), false));
-        addMenuItemDeprecated(result, createMenuItem(new UTagPairToTOPMPlugin(this, true), false));
-        return result;
-    }
-
-    private void addMenuItemDeprecated(JMenu menu, JMenuItem item) {
-        Map attributes = item.getFont().getAttributes();
-        attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
-        item.setFont(new Font(attributes));
-        menu.add(item);
-    }
-
-    private void addMenuItemDeprecated(JMenu menu, JMenu item) {
-        Map attributes = item.getFont().getAttributes();
-        attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
-        item.setFont(new Font(attributes));
-        menu.add(item);
     }
 
     private JMenu getWorkflowMenu() {
