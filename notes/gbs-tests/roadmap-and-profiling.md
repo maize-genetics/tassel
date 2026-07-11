@@ -192,6 +192,35 @@ JAVA_TOOL_OPTIONS="-XX:StartFlightRecording=filename=/tmp/gbs-%p.jfr,settings=pr
 
 ---
 
+## 6. Post-legacy re-baseline (2026-07-11, branch `remove-gbs-legacy`)
+
+After removing GBSv1 + PanA and the dead build.gradle globs:
+- **`gbsTestSmall` (dev default): 1m42s, 23 pass / 0 fail / 8 skip.**
+- **`gbsTestLarge` (full/nightly): 6m30s, 36 pass / 0 fail / 3 skip** (was 54 min with legacy; the
+  2 old legacy Production failures are gone).
+
+Per-class time on the 20 MB run (sum ≈ 347 s; remainder is JVM/compile):
+| sec | class |
+|----:|---|
+| **175.5** | `EvaluateSNPCallQualityOfPipelineTest` |
+| 64.2 | `SNPQualityProfilerPluginTest` |
+| 43.7 | `GBSSeqToTagDBPluginTest` |
+| 36.2 | `DiscoverySNPCallerPluginV2Test` |
+| 25.6 | `GBSv2BiologyCompareTest` |
+| <2 | the other 6 classes |
+
+### On the §3 Evaluate build-once fixture — recommend NOT doing it
+`Evaluate` is 50% of the large run, and its 4 pipeline methods each rebuild an identical
+(reference-independent) tag DB, so a build-once template + per-method copy would cut it to ~80 s
+(save ~90 s → large ≈ 5 min). **But:**
+- `Evaluate` **self-skips on the small dataset** (its `@Before` `Assume` is 20 MB-only), so the
+  fixture gives **zero** benefit to the dev default (`gbsTestSmall`, 1m42s).
+- It only shaves the nightly/full profile 6.5 → ~5 min — already reasonable — while adding a
+  template-copy refactor + correctness risk to the most important integration test.
+
+Legacy removal already achieved "reasonable speed" (54 min → 6.5 min full, 1.7 min dev). Deferring
+§3 unless the nightly profile specifically needs to be faster.
+
 ## 5. Alignment-phase profile + `seqDifferences` (2026-07-11)
 
 **Done:** `BaseEncoder.seqDifferences` family rewritten to the correct 2-bit-parallel popcount
