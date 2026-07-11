@@ -45,9 +45,12 @@ import net.maizegenetics.util.Tuple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.biojava.nbio.alignment.Alignments;
+import org.biojava.nbio.core.alignment.matrices.SubstitutionMatrixHelper;
 import org.biojava.nbio.core.alignment.template.AlignedSequence;
 import org.biojava.nbio.core.alignment.template.Profile;
+import org.biojava.nbio.core.alignment.template.SubstitutionMatrix;
 import org.biojava.nbio.core.sequence.DNASequence;
+import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.util.ConcurrencyTools;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
@@ -71,6 +74,14 @@ import com.google.common.collect.TreeBasedTable;
 public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
 
     private static final Logger myLogger = LogManager.getLogger(DiscoverySNPCallerPluginV2.class);
+
+    // BioJava's default DNA substitution matrix (nuc-4.4) does a linear compound->index lookup on
+    // every alignment DP cell (~28% of the alignment phase, per profiling). Wrap it in an O(1)
+    // lookup with byte-identical scores, over the DNACompoundSet that new DNASequence(String) uses
+    // (so it passes the compound-set check in Alignments.getMultipleSequenceAlignment). Built once.
+    private static final SubstitutionMatrix<NucleotideCompound> FAST_NUC_4_4 =
+            new IndexedNucleotideSubstitutionMatrix(SubstitutionMatrixHelper.getNuc4_4(),
+                    DNACompoundSet.getDNACompoundSet());
 
     private PluginParameter<String> myInputDB = new PluginParameter.Builder<>("db", null, String.class).guiName("Input GBS Database").required(true).inFile()
             .description("Input Database file if using SQLite").build();
@@ -516,7 +527,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
         }
         // Alignments.getmultipleSequenceAlignment aligns the tags against each other using
         // the ClustalW algorithm
-        Profile<DNASequence, NucleotideCompound> profile = Alignments.getMultipleSequenceAlignment(lst);
+        Profile<DNASequence, NucleotideCompound> profile = Alignments.getMultipleSequenceAlignment(lst, FAST_NUC_4_4);
         if(printDebug) System.out.printf("Clustalw:%n%s%n", profile);
         for (AlignedSequence<DNASequence, NucleotideCompound> compounds : profile) {
             ImmutableList tagList=(ImmutableList)compounds.getOriginalSequence().getUserCollection();
