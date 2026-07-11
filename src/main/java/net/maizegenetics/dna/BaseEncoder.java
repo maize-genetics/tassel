@@ -461,21 +461,14 @@ public class BaseEncoder {
      * @return count of the divergence (above the maxDivergence, chunkSize is returned)
      */
     public static byte seqDifferences(long seq1, long seq2, int maxDivergence) {
-        long mask = 3;
-        byte cnt = 0;
+        // Bit-parallel base-difference count (see the 2-arg overload); return chunkSize once the
+        // count exceeds maxDivergence, matching the old early-exit loop's result.
         long diff = seq1 ^ seq2;
-        for (int x = 0; x < chunkSize && cnt <= maxDivergence; x++) {
-            if ((diff & mask) > 0) {
-                cnt++;
-            }
-            diff = diff >> 2;
-            // System.out.println("v = " + v);
-        }
+        int cnt = Long.bitCount((diff | (diff >>> 1)) & 0x5555555555555555L);
         if (cnt > maxDivergence) {
-            cnt = (byte) chunkSize;
+            cnt = chunkSize;
         }
-        // if(x<(chunkSize-1)) cnt=(byte)chunkSize;  //if didn't get to the end of the sequence set to maximum
-        return cnt;
+        return (byte) cnt;
     }
 
     
@@ -486,17 +479,12 @@ public class BaseEncoder {
      * @return count of the divergence 
      */
     public static byte seqDifferences(long seq1, long seq2) {
-        long mask = 3;
-        byte cnt = 0;
+        // Count the 2-bit groups (bases) that differ. XOR gives per-base difference bits, but a
+        // differing base can set 1 OR 2 bits (A^T = 11), so a plain Long.bitCount would overcount.
+        // Collapse each 2-bit pair to a single "differs" bit at its even position, then popcount.
+        // Must be >>> (logical): base 31 occupies bits 62-63, so an arithmetic >> would sign-extend.
         long diff = seq1 ^ seq2;
-        for (int x = 0; x < chunkSize; x++) {
-            if ((diff & mask) > 0) {
-                cnt++;
-            }
-            diff = diff >> 2;
-            // System.out.println("v = " + v);
-        }
-        return cnt;
+        return (byte) Long.bitCount((diff | (diff >>> 1)) & 0x5555555555555555L);
     }
     /**
      * Returns the number of sequencing differences between two 2-bit encoded longs.
@@ -509,17 +497,19 @@ public class BaseEncoder {
      * @return count of the divergence (above the maxDivergence, chunkSize is returned)
      */
     public static byte seqDifferencesForSubset(long seq1, long seq2, int lengthOfComp, int maxDivergence) {
-        long mask = 3;
-        byte cnt = 0;
-        long diff = seq1 ^ seq2;
-        diff = diff >> (2 * (chunkSize - lengthOfComp));  //shift to 5' end of sequence
-        for (int x = 0; x < lengthOfComp && cnt < maxDivergence; x++) {
-            if ((diff & mask) > 0) {
-                cnt++;
-            }
-            diff = diff >> 2;
+        if (lengthOfComp <= 0) {
+            return 0;
         }
-        return cnt;
+        // Compare only the first lengthOfComp bases (5' end = high bits). Logical-shift them down so
+        // the unused high bits are zero (>>> so the sign bit is not extended, and because we popcount
+        // the whole word), collapse each differing 2-bit pair to one bit, then popcount. The old loop
+        // capped the count at maxDivergence (no chunkSize sentinel), so cap here too.
+        long diff = (seq1 ^ seq2) >>> (2 * (chunkSize - lengthOfComp));
+        int cnt = Long.bitCount((diff | (diff >>> 1)) & 0x5555555555555555L);
+        if (cnt > maxDivergence) {
+            cnt = maxDivergence;
+        }
+        return (byte) cnt;
     }
 
     /**
