@@ -11,12 +11,10 @@ import java.util.*;
  **/
 public class BarcodeTrie{
     private TrieNode root;
-    private Map<String, Barcode> barcodeInformation;
 
     /** Constructor */
     public BarcodeTrie() {
         root = new TrieNode();
-        barcodeInformation = new HashMap<>();
     }
 
     /** Adds a Barcode to the trie
@@ -26,9 +24,7 @@ public class BarcodeTrie{
         // Store both barcode and initial cut site
         String[] barcodeWOverhang = barcode.getBarWOverHang();
         for (String word: barcodeWOverhang) {
-            root.addWord(word.toUpperCase());
-            String bcode = word;
-            barcodeInformation.put(bcode, barcode);
+            root.addWord(word.toUpperCase()).barcode = barcode;
         }
     }
     
@@ -38,10 +34,7 @@ public class BarcodeTrie{
     public void addBarcodeNoOverhang(Barcode barcode){
         // Store only barcode, NOT initial cut site
         String barcodeAlone = barcode.getBarcodeString();
-        root.addWord(barcodeAlone.toUpperCase());
-        String bcode = barcodeAlone;
-        barcodeInformation.put(bcode, barcode);
- 
+        root.addWord(barcodeAlone.toUpperCase()).barcode = barcode;
     }
 
     /**
@@ -106,35 +99,30 @@ public class BarcodeTrie{
      * @param input
      */
     public Barcode longestPrefix(String input){
-        String result = "";
-        if(input==null) {
-            System.out.println("stop");
-        }
+        if(input==null) return null;
         int length = input.length();
         TrieNode crawl = root;
-        int level, prevMatch = 0;
-        for (level = 0; level < length-1; level++){
+        // Track the barcode of the deepest word-node reached along the walk; that is the
+        // longest matched barcode prefix. Storing the Barcode on the terminal node lets us
+        // return it directly instead of rebuilding the matched String per read (result += ch)
+        // and looking it up in a HashMap — both showed up in the profile after the containsKey fix.
+        Barcode longest = null;
+        for (int level = 0; level < length-1; level++){
             char ch = input.charAt(level);
             if(ch<'A' || ch>'T') {
                 ch=Character.toUpperCase(ch);
                 if(ch<'A' || ch>'T') return null;
             }
-            TrieNode child = crawl.getNode(ch);  //Get the Node representing the character.
             // child != null is equivalent to the old crawl.containsKey(ch): a child is stored at
-            // index ch-'A' with .character == ch. The old containsKey allocated a fresh ArrayList
-            // and linear-scanned every children slot on every read character (profiled as ~40% of
-            // the DB-build time and a top allocator); this is an O(1) array null-check instead.
+            // index ch-'A' with .character == ch, so this is an O(1) array null-check.
+            TrieNode child = crawl.getNode(ch);
             if (child != null){
-                result += ch;
                 crawl = child;
-                if (crawl.isWord)
-                    prevMatch = level + 1;
+                if (crawl.isWord) longest = crawl.barcode;
             }
             else break;
         }
-        if (!crawl.isWord) result = result.substring(0,prevMatch);
-        else result = result;
-        return barcodeInformation.get(result);
+        return longest;
     }
 
 
@@ -147,6 +135,7 @@ public class BarcodeTrie{
         public boolean isLeaf; // Quick way to check if any children exist
         public boolean isWord; // does this node represent teh last character
         public char character; //character the node represents
+        public Barcode barcode; // the Barcode terminating at this node (set when isWord)
 
 
         /**
@@ -176,7 +165,7 @@ public class BarcodeTrie{
          * therefore recursive calls will be made with partial words.
          * @param word - the word to add
          */
-        protected void addWord(String word){
+        protected TrieNode addWord(String word){
             isLeaf = false;
             int charPos = word.charAt(0) - 'A';
             if (children[charPos] == null){
@@ -184,10 +173,11 @@ public class BarcodeTrie{
                 children[charPos].parent = this;
             }
             if (word.length() > 1){
-                children[charPos].addWord(word.substring(1));
+                return children[charPos].addWord(word.substring(1));
             }
             else{
                 children[charPos].isWord = true;
+                return children[charPos];
             }
 
         }
