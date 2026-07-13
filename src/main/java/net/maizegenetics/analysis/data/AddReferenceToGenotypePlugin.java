@@ -18,6 +18,7 @@ import net.maizegenetics.util.Utils;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens Created November 09, 2018
@@ -73,6 +74,7 @@ public class AddReferenceToGenotypePlugin extends AbstractPlugin {
      *
      * @return Reference
      */
+    @GeneratedGuiBoilerplate
     public String reference() {
         return myReference.value();
     }
@@ -84,22 +86,26 @@ public class AddReferenceToGenotypePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AddReferenceToGenotypePlugin reference(String value) {
         myReference = new PluginParameter<>(myReference, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Add Reference to Genotype";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Add Reference to Genotype";
     }

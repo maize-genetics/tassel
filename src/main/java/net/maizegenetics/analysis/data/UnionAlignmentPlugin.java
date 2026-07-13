@@ -24,6 +24,7 @@ import javax.swing.*;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -131,6 +132,7 @@ public class UnionAlignmentPlugin extends AbstractPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = UnionAlignmentPlugin.class.getResource("/net/maizegenetics/analysis/images/UnionJoin.gif");
         if (imageURL == null) {
@@ -146,6 +148,7 @@ public class UnionAlignmentPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Union Join";
     }
@@ -156,6 +159,7 @@ public class UnionAlignmentPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Join Datasets by Union of Taxa";
     }

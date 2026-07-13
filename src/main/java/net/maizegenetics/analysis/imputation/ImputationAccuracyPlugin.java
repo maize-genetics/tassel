@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This evaluates the accuracy of an imputed genotype. First input genotype
@@ -155,16 +156,19 @@ public class ImputationAccuracyPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Evaluate Imputation Accuracy";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Evaluate Imputation Accuracy";
     }
@@ -172,6 +176,7 @@ public class ImputationAccuracyPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public TableReport runPlugin(DataSet input) {
         return (TableReport) performFunction(input).getData(0).getData();
     }

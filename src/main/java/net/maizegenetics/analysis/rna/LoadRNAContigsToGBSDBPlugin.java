@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 
 /**
@@ -133,6 +134,7 @@ public class LoadRNAContigsToGBSDBPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public String runPlugin(DataSet input) {
         return (String) performFunction(input).getData(0).getData();
     }
@@ -143,6 +145,7 @@ public class LoadRNAContigsToGBSDBPlugin extends AbstractPlugin {
      *
      * @return Input Fasta Contig File
      */
+    @GeneratedGuiBoilerplate
     public String contigFile() {
         return myContigFile.value();
     }
@@ -156,6 +159,7 @@ public class LoadRNAContigsToGBSDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public LoadRNAContigsToGBSDBPlugin contigFile(String value) {
         myContigFile = new PluginParameter<>(myContigFile, value);
         return this;
@@ -166,6 +170,7 @@ public class LoadRNAContigsToGBSDBPlugin extends AbstractPlugin {
      *
      * @return Output Database File
      */
+    @GeneratedGuiBoilerplate
     public String outputDB() {
         return myOutputDB.value();
     }
@@ -177,6 +182,7 @@ public class LoadRNAContigsToGBSDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public LoadRNAContigsToGBSDBPlugin outputDB(String value) {
         myOutputDB = new PluginParameter<>(myOutputDB, value);
         return this;
@@ -187,6 +193,7 @@ public class LoadRNAContigsToGBSDBPlugin extends AbstractPlugin {
      *
      * @return Delete Old Data
      */
+    @GeneratedGuiBoilerplate
     public Boolean deleteOldData() {
         return myDeleteOldData.value();
     }
@@ -199,6 +206,7 @@ public class LoadRNAContigsToGBSDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public LoadRNAContigsToGBSDBPlugin deleteOldData(Boolean value) {
         myDeleteOldData = new PluginParameter<>(myDeleteOldData, value);
         return this;
@@ -206,16 +214,19 @@ public class LoadRNAContigsToGBSDBPlugin extends AbstractPlugin {
 
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return null;
     }

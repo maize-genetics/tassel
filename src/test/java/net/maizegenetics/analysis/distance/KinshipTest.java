@@ -38,17 +38,11 @@ public class KinshipTest {
         //remove the marker with 4 alleles
         filteredGeno = FilterGenotypeTable.getInstanceRemoveSiteNames(filteredGeno, new String[]{"PZB00063.1"});
 
-        //export this alignment for validation (run once)
-        //ExportUtils.writeToHapmap(filteredGeno, "/Users/pbradbury/Documents/projects/tassel/validation/kinshipTestData.hmp.txt");
         System.out.println("Testing Endelman method.");
         DistanceMatrix kin = EndelmanDistanceMatrix.getInstance(filteredGeno);
 
         String saveFilename = GeneralConstants.EXPECTED_RESULTS_DIR + "KinshipTestDistanceMatrix.txt";
 
-        //File expectedEndelmanResults = new File(saveFilename);
-        //export the kinship matrix for validation (run once)
-        //TableReportUtils.saveDelimitedTableReport(kin.getDm(), "\t", expectedEndelmanResults);
-        //import the table report for comparing with the expected results (which have been validated in R)
         TableReport expectedResults = TableReportUtils.readDelimitedTableReport(saveFilename, "\t");
         TableReport actualResults = kin;
 
@@ -85,18 +79,11 @@ public class KinshipTest {
         GenotypeTable filteredGeno = GenotypeTableUtils.removeSitesBasedOnFreqIgnoreMissing(inputAlign, 0.01, 1, 250);
         //remove the marker with 4 alleles
         filteredGeno = FilterGenotypeTable.getInstanceRemoveSiteNames(filteredGeno, new String[]{"PZB00063.1"});
-
-        //export this alignment for validation (run once)
-        //ExportUtils.writeToHapmap(filteredGeno, "/Users/pbradbury/Documents/projects/tassel/validation/kinshipTestData.hmp.txt");
         System.out.println("Testing Endelman method.");
         DistanceMatrix kin = EndelmanDistanceMatrix.getInstance(filteredGeno);
 
         String saveFilename = GeneralConstants.EXPECTED_RESULTS_DIR + "KinshipTestDistanceMatrix.txt";
-        
-        //File expectedEndelmanResults = new File(saveFilename);
-        //export the kinship matrix for validation (run once)
-        //TableReportUtils.saveDelimitedTableReport(kin.getDm(), "\t", expectedEndelmanResults);
-        //import the table report for comparing with the expected results (which have been validated in R)
+
         TableReport expectedResults = TableReportUtils.readDelimitedTableReport(saveFilename, "\t");
         TableReport actualResults = kin;
 

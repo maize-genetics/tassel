@@ -17,6 +17,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.taxa.Taxon;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Set genotypes below a minimum depth to missing. Set each genotype in the
@@ -132,6 +133,7 @@ public class SetLowDepthGenosToMissingPlugin extends net.maizegenetics.plugindef
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = SetLowDepthGenosToMissingPlugin.class
                 .getResource("/net/maizegenetics/analysis/images/lowDepthToMissing.gif");
@@ -143,11 +145,13 @@ public class SetLowDepthGenosToMissingPlugin extends net.maizegenetics.plugindef
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "SetLowDepthGenosToMissing";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Set genotypes below a minimum depth to missing";
     }
@@ -187,6 +191,7 @@ public class SetLowDepthGenosToMissingPlugin extends net.maizegenetics.plugindef
      *
      * @return Min Depth
      */
+    @GeneratedGuiBoilerplate
     public Integer minDepth() {
         return minDepth.value();
     }
@@ -198,6 +203,7 @@ public class SetLowDepthGenosToMissingPlugin extends net.maizegenetics.plugindef
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SetLowDepthGenosToMissingPlugin minDepth(Integer value) {
         minDepth = new PluginParameter<>(minDepth, value);
         return this;

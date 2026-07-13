@@ -16,7 +16,6 @@ import java.util.Random;
  */
 public class TBTCompressionTest {
     private String testInTBT= GBSConstants.GBS_TEMP_SEQ_TO_TBT_HDF5_PLUGIN_FILE;
-    //private String testInTBT= "/Users/edbuckler/SolexaAnal/GBS27/tbt/node11_ZM_c10_TBT_20120623.h5";
     private static final String outName= GeneralConstants.TEMP_DIR+"RANDcompTest.h5";
     private static String outFile;
 

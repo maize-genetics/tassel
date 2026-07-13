@@ -9,6 +9,7 @@ import net.maizegenetics.plugindef.Datum
 import net.maizegenetics.util.ColumnMatrix
 import java.awt.Frame
 import javax.swing.ImageIcon
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 /**
  * @author Terry Casstevens
@@ -55,14 +56,17 @@ class GenotypeToAdditiveValuesPlugin(parentFrame: Frame?, isInteractive: Boolean
         return performFunction(DataSet.getDataSet(genotype)).getDataOfType(ColumnMatrix::class.java)[0].data as ColumnMatrix
     }
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         return null
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return "Convert Genotype to Additive Values"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return "Convert Genotype to Additive Values"
     }

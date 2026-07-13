@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import org.jreleaser.model.Active
 import java.util.Locale
 import org.gradle.api.tasks.bundling.Zip
@@ -57,9 +58,10 @@ repositories {
     }
 }
 
+// openchart:openchart:1.4.2 (a transitive dependency of forester / biojava-phylo) is no
+// longer resolvable in any public repo and is not referenced directly by TASSEL source.
+// Exclude it globally so the runtime classpath can be resolved.
 configurations.all {
-    // openchart:openchart:1.4.2 (transitive of biojava forester) is not published to any
-    // reachable repo. It is only used by forester's charting UI, which tests do not touch.
     exclude(group = "openchart", module = "openchart")
 }
 
@@ -101,11 +103,11 @@ application {
 }
 
 tasks.named<Zip>("distZip") {
-    dependsOn(tasks.named("jar"))
+    dependsOn(tasks.named("jar"), tasks.named("statisticsTest"))
 }
 
 tasks.named<Tar>("distTar") {
-    dependsOn(tasks.named("jar"))
+    dependsOn(tasks.named("jar"), tasks.named("statisticsTest"))
 }
 
 tasks.named<CreateStartScripts>("startScripts") {
@@ -136,6 +138,17 @@ tasks {
     // Ensure dependencies are copied after build
     named("build") {
         dependsOn("copyDependencies")
+    }
+
+    // NOTE: the SQLite schema DDL (and other non-Java resources) under src/main/java are
+    // already placed on the runtime classpath by the main sourceSet resources config above
+    // (srcDir("src/main/java") excluding source files), so no extra processResources copy is
+    // needed here — adding one duplicates net/maizegenetics/dna/tag/*.sql at build time.
+
+    // statisticsTest is the required CI gate; wire it into `check` so
+    // `./gradlew check` enforces it without running the full non-blocking suite.
+    named("check") {
+        dependsOn("statisticsTest")
     }
 
     // Compile with Java 21 bytecode target
@@ -186,39 +199,67 @@ tasks {
         }
 
         exclude(
+            // GBS Bucket C — kept excluded by design. Bucket A/B GBS tests (and now
+            // ProductionSNPCallerPluginV2Test) self-generate their data via GBSSimData
+            // (no downloads/aligners) and run in this suite.
+            //
+            // NOTE: the jhdf5 native library IS available — cisd:jhdf5:19.04.1 bundles
+            // natives for amd64-Linux and aarch64/x86_64-Mac, and non-excluded HDF5 tests
+            // (AlignmentBuilderTest, AddReferenceAlleleToHDF5PluginTest, PositionHDF5ListTest,
+            // MigrateHDF5FromT4T5Test) already write/read .h5 and pass. The tests below are
+            // excluded for their real blockers, not the native lib.
+            //
+            // NOTE: the legacy GBSv1 pipeline tests (SeqToTBTHDF5PluginTest, ModifyTBTHDF5PluginTest,
+            // DiscoverySNPCallerPluginTest, ProductionSNPCallerPluginTest, ProductionPipelineMainTest)
+            // were rehabilitated to self-generate deterministic data via GBSv1SimData (built on the
+            // GBSSimData approach) and assert on pipeline properties instead of downloaded golden
+            // fixtures / MD5 hashes, so they now run in this suite.
+            //
+            // NOTE: the GBSv1 tag-pipeline tests (FastqToTagCountPluginTest, MergeMultipleTagCountPluginTest,
+            // TagCountToFastqPluginTest, SAMConverterPluginTest) and the GBSv2 tests
+            // (GBSv2BiologyCompareTest, EvaluateSNPCallQualityOfPipelineTest) were likewise rehabilitated
+            // to self-generate deterministic data via GBSSimData/GBSv1SimData and assert on pipeline
+            // properties (tag-list sanity, distinct-tag counts, unique alignment positions, injected
+            // SNP-locus counts) instead of golden .cnt/.fq.gz/.topm hashes or real-maize biological
+            // fixtures, so they now run in this suite.
+            //
+            // -- hardcoded dev-machine paths / external tools (PEAR/BWA, maize AGPv4, /Users/lcj34) --
+            "**/analysis/gbs/repgen/RepGenLoadSeqToDBPluginTest.class", // hardcoded dev paths + external data
+            "**/analysis/gbs/repgen/RepGenAlignerPluginTest.class",     // hardcoded dev paths + external data
+            "**/analysis/gbs/repgen/RepGenLDAnalysisPluginTest.class",  // hardcoded dev paths + external data
+            "**/analysis/gbs/repgen/RampSeqAlignFromBlastTest.class",   // needs external BLAST output
+            // External database integration — need live Postgres / MonetDB instances
             "**/analysis/gobii/*Test.class",
-            "**/analysis/gbs/v2/*Test.class",     // run via the gbsTest* tasks (need dataFiles/ + -Dgbs.test.dataset)
-            "**/analysis/gbs/repgen/*Test.class",
             "**/analysis/monetdb/*Test.class",
-            "**/LowLevelCopyOfHDF5Test.class",
-            "**/SplitHDF5ByChromosomePluginTest.class",
+            // RNA sequencing — need sequencing DB fixtures
+            "**/analysis/rna/*Test.class",
+            // Hardcoded paths / heavy fixtures (not in test data release)
             "**/ThinSitesByPositionPluginTest.class",
             "**/LDKNNiImputationPluginTest.class",
             "**/GenomeFeatureBuilderTest.class",
             "**/BasicGenotypeMergeRuleTest.class",
-            "**/DistanceMatrixHDF5Test.class",
-            "**/TagsOnPhysMapHDF5Test.class",
-            "**/FastMultithreadedAssociationPluginTest.class",
             "**/GenomeAnnosDBQueryToPositionListPluginTest.class",
-            "**/analysis/rna/*Test.class",
-            "**/CreateFastaOrFastqFiles.class", // hard coded file paths (LCJ)
+            // Performance variant with hardcoded /Volumes/... path; math covered by MLMTest
+            "**/FastMultithreadedAssociationPluginTest.class",
+            // Dev-only utility class with hardcoded file paths, not a runnable test
+            "**/CreateFastaOrFastqFiles.class",
         )
 
-        ignoreFailures = true // currently setting this to 'true' until we figure out failing tests
+        ignoreFailures = true // broad suite: keep non-blocking while pipeline/IO tests are fixed
         jvmArgs = baseArgs
 
         println(jvmArgs)
     }
 
-    // Runs the GBSv2 test suite, which the main `test` task excludes.
-    // Requires a `dataFiles/` dir in the project root (see notes/gbs-tests/).
+    // Runs the GBSv2 test suite against real Chr9 datasets in dataFiles/ (see notes/gbs-tests/).
+    // The rehabilitated GBSv2 tests self-generate their data via GBSSimData and also run in the
+    // main `test` suite; these tasks additionally exercise them against the downloaded datasets.
     //
-    // The suite can run against either raw-sequence dataset; the choice is passed to the
-    // test JVM as -Dgbs.test.dataset and read by GBSConstants.RAW_SEQ_CURRENT_TEST:
+    // The dataset is passed to the test JVM as -Dgbs.test.dataset and read by
+    // GBSConstants.RAW_SEQ_CURRENT_TEST:
     //   * gbsTestSmall -> Chr9_10-200000   (~200 KB, fast; use for iterative work/CI)
     //   * gbsTestLarge -> Chr9_10-20000000 (~20 MB, slow; nightly / full validation)
     // `gbsTest` is kept as a back-compat alias for the large dataset.
-    // The two profiles differ only by which dataset they point at (-Dgbs.test.dataset).
     // Tests that need inputs only present in the 20 MB dataset (the bowtie-aligned SAM and
     // the ProductionSNPCaller/imputation expected results) self-skip on the small dataset
     // via JUnit Assume guards keyed on GBSConstants.RAW_SEQ_CURRENT_TEST — see those tests.
@@ -242,6 +283,129 @@ tasks {
     registerGbsTest("gbsTestLarge", "Chr9_10-20000000/", "Runs the full GBSv2 test suite on the 20 MB dataset (slow).")
     registerGbsTest("gbsTest", "Chr9_10-20000000/", "Alias for gbsTestLarge (full 20 MB dataset).")
 
+    // ---------------------------------------------------------------------------
+    // fetchTestData — download and extract the tassel_test_data release archive
+    // into dataFiles/ (git-ignored). Run once after a clean checkout before
+    // executing tests locally. CI already does this in coverage.yml.
+    //
+    // Usage:  ./gradlew fetchTestData
+    // ---------------------------------------------------------------------------
+    register("fetchTestData") {
+        group = "verification"
+        description = "Downloads and extracts the TASSEL test data archive into dataFiles/ if absent."
+        doLast {
+            val dataDir = file("dataFiles")
+            if (dataDir.exists() && dataDir.list()?.isNotEmpty() == true) {
+                logger.lifecycle("dataFiles/ already present — skipping download.")
+                return@doLast
+            }
+            val tarball = file("tassel_test_data_v1.tar.gz")
+            logger.lifecycle("Downloading TASSEL test data archive…")
+            providers.exec {
+                commandLine(
+                    "curl", "-L", "--fail", "-o", tarball.absolutePath,
+                    "https://github.com/maize-genetics/tassel_test_data/releases/download/v1.0.0/tassel_test_data_v1.tar.gz"
+                )
+            }.result.get()
+            logger.lifecycle("Extracting TASSEL test data archive…")
+            providers.exec {
+                commandLine("tar", "-xzf", tarball.absolutePath)
+            }.result.get()
+            tarball.delete()
+            logger.lifecycle("Test data extracted to dataFiles/")
+        }
+    }
+
+    // ---------------------------------------------------------------------------
+    // statisticsTest — enforced CI gate for statistical-correctness tests.
+    //
+    // Runs only the classes that verify TASSEL's numeric results (kinship, MLM,
+    // GLM, PCA, LD, distance matrices, linear models) with ignoreFailures = false,
+    // so failures are visible and block CI. The broad `test` task remains
+    // non-blocking while pipeline/IO tests are still being fixed.
+    //
+    // Usage:  ./gradlew statisticsTest
+    // ---------------------------------------------------------------------------
+    val statisticsClasses = listOf(
+        // Association / GWAS
+        "net.maizegenetics.analysis.association.MLMTest",
+        "net.maizegenetics.analysis.association.ReferenceProbabilityFELMTest",
+        "net.maizegenetics.analysis.association.PhenotypeLMTest",
+        "net.maizegenetics.analysis.association.GenomicSelectionPluginTest",
+        "net.maizegenetics.analysis.association.EqtlAssociationPluginTest",
+        "net.maizegenetics.analysis.association.DiscreteSitesTest",
+        // Kinship / distance
+        "net.maizegenetics.analysis.distance.KinshipTest",
+        "net.maizegenetics.analysis.distance.CenteredIBSTest",
+        "net.maizegenetics.analysis.distance.NormalizedIBSTest",
+        "net.maizegenetics.analysis.distance.DominanceCenteredIBSTest",
+        "net.maizegenetics.analysis.distance.DominanceNormalizedIBSTest",
+        "net.maizegenetics.analysis.distance.IBSDistanceMatrixTest",
+        "net.maizegenetics.analysis.distance.AMatrixPluginTest",
+        // Linear models
+        "net.maizegenetics.stats.linearmodels.ModelEffectTest",
+        "net.maizegenetics.stats.linearmodels.SolveByOrtholgonalizingTest",
+        // PCA
+        "net.maizegenetics.stats.PCA.PrinCompTest",
+        // Statistics utilities
+        "net.maizegenetics.stats.statistics.FisherExactTest",
+        // Linkage disequilibrium
+        "net.maizegenetics.popgen.LinkageDisequilibriumTest",
+        // Model fitting
+        "net.maizegenetics.analysis.modelfitter.StepwiseAdditiveModelFitterTest",
+        "net.maizegenetics.analysis.modelfitter.AdditiveSiteTest",
+        // Matrix algebra
+        "net.maizegenetics.matrixalgebra.Matrix.DoubleMatrixTest",
+        // Numeric transforms
+        "net.maizegenetics.analysis.numericaltransform.ImputationByMeanTest",
+        "net.maizegenetics.analysis.numericaltransform.kNearestNeighborsTest",
+        "net.maizegenetics.analysis.numericaltransform.SubtractPhenotypeByTaxaPluginTest",
+        "net.maizegenetics.analysis.numericaltransform.AvgPhenotypeByTaxaPluginTest",
+        "net.maizegenetics.analysis.numericaltransform.TransformDataPluginTest",
+    )
+
+    register<Test>("statisticsTest") {
+        group = "verification"
+        description = "Runs the statistical-correctness test gate with ignoreFailures = false."
+        dependsOn("testClasses")
+        testClassesDirs = sourceSets["test"].output.classesDirs
+        classpath = sourceSets["test"].runtimeClasspath
+
+        val baseArgs = mutableListOf("-Xmx10g")
+        val overrideDir: String? = System.getenv("BLAS_LIB_PATH")
+        if (!overrideDir.isNullOrBlank()) {
+            baseArgs += "-Djava.library.path=$overrideDir"
+        } else {
+            val os = System.getProperty("os.name").lowercase(Locale.ROOT)
+            val nativeDir = when {
+                "mac" in os -> {
+                    val intel = "/usr/local/opt/openblas/lib"
+                    val silicon = "/opt/homebrew/opt/openblas/lib"
+                    when {
+                        file(intel).exists() -> intel
+                        file(silicon).exists() -> silicon
+                        else -> ""
+                    }
+                }
+                "linux" in os -> "/usr/lib/x86_64-linux-gnu"
+                else -> ""
+            }
+            if (nativeDir.isNotBlank()) baseArgs += "-Djava.library.path=$nativeDir"
+        }
+        jvmArgs = baseArgs
+
+        filter {
+            statisticsClasses.forEach { includeTestsMatching(it) }
+        }
+
+        ignoreFailures = false
+
+        reports {
+            html.outputLocation.set(layout.buildDirectory.dir("reports/tests/statisticsTest"))
+            junitXml.outputLocation.set(layout.buildDirectory.dir("test-results/statisticsTest"))
+        }
+    }
+
     register("printVersion") {
         group = "help"
         description = "Prints the current project.version"
@@ -252,13 +416,45 @@ tasks {
 }
 
 // Kover (coverage) tasks
+//
+// Run coverage through the JaCoCo engine so that method-level boilerplate
+// exclusion works: JaCoCo automatically ignores any class OR method annotated
+// with an annotation whose simple name contains "Generated" (retention CLASS or
+// RUNTIME). Our @GeneratedGuiBoilerplate marker satisfies this, so the auto-
+// generated plugin accessors and GUI hook methods (getIcon/getButtonName/
+// getToolTipText) are dropped. Kover's own annotatedBy filter only excludes
+// whole classes (not methods) and does not function under JaCoCo, so we rely on
+// JaCoCo's built-in filter for methods and on classes()/packages() for GUI types.
 kover {
+    useJacoco()
+
     reports {
+        // Exclude GUI components so coverage reflects the exercised analysis/
+        // pipeline logic rather than Swing wiring.
+        filters {
+            excludes {
+                // Pure GUI / presentation packages.
+                packages(
+                    "net.maizegenetics.gui",
+                    "net.maizegenetics.tassel",
+                    "net.maizegenetics.progress",
+                    "net.maizegenetics.analysis.chart",
+                )
+
+                // Swing widgets scattered through the analysis packages.
+                classes("*Dialog", "*Panel", "*Component", "*DisplayPlugin")
+            }
+        }
+
+        // Measure BRANCH coverage (decision paths exercised) instead of raw line
+        // counting -- a far more meaningful signal for TASSEL's numeric and
+        // pipeline logic. Non-blocking: koverVerify is not wired into `check` or
+        // CI (CI runs koverXmlReport only), so this rule is informational.
         verify {
             rule {
-                "Minimal line coverage rate as a percentage"
                 bound {
-                    minValue = 15
+                    minValue = 18
+                    coverageUnits = CoverageUnit.BRANCH
                 }
             }
         }
@@ -276,7 +472,7 @@ kover {
  */
 // configure Dokka’s HTML output directory so dokkaJar can find it
 tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml") {
-    outputDirectory.set(buildDir.resolve("dokka"))
+    outputDirectory.set(layout.buildDirectory.dir("dokka").get().asFile)
 }
 
 val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)

@@ -22,6 +22,7 @@ import net.maizegenetics.stats.PCA.ClassicMds;
 import net.maizegenetics.taxa.distance.DistanceMatrix;
 import net.maizegenetics.util.OpenBitSet;
 import net.maizegenetics.util.TableReportBuilder;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class MultiDimensionalScalingPlugin extends AbstractPlugin {
 
@@ -93,6 +94,7 @@ public class MultiDimensionalScalingPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = MultiDimensionalScalingPlugin.class.getResource("/net/maizegenetics/analysis/images/pca.gif");
         if (imageURL == null) {
@@ -103,11 +105,13 @@ public class MultiDimensionalScalingPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "MDS";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Perform classic multidimensional scaling (principal coordinate analysis)";
     }
@@ -128,6 +132,7 @@ public class MultiDimensionalScalingPlugin extends AbstractPlugin {
      *
      * @return Number of Axes
      */
+    @GeneratedGuiBoilerplate
     public Integer numberOfAxes() {
         return numberOfAxes.value();
     }
@@ -140,6 +145,7 @@ public class MultiDimensionalScalingPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MultiDimensionalScalingPlugin numberOfAxes(Integer value) {
         numberOfAxes = new PluginParameter<>(numberOfAxes, value);
         return this;
@@ -150,6 +156,7 @@ public class MultiDimensionalScalingPlugin extends AbstractPlugin {
      *
      * @return Remove NaNs
      */
+    @GeneratedGuiBoilerplate
     public Boolean removeNaN() {
         return removeNaN.value();
     }
@@ -161,6 +168,7 @@ public class MultiDimensionalScalingPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MultiDimensionalScalingPlugin removeNaN(Boolean value) {
         removeNaN = new PluginParameter<>(removeNaN, value);
         return this;

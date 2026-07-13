@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import net.maizegenetics.dna.snp.FilterGenotypeTable;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -375,6 +376,7 @@ public class FilterAlignmentPlugin extends AbstractPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = FilterAlignmentPlugin.class.getResource("/net/maizegenetics/analysis/images/Filter.gif");
         if (imageURL == null) {
@@ -389,6 +391,7 @@ public class FilterAlignmentPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Sites";
     }
@@ -398,6 +401,7 @@ public class FilterAlignmentPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Filter and Process Alignment";
     }

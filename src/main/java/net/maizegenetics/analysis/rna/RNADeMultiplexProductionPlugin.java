@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import net.maizegenetics.analysis.gbs.v2.EnzymeList;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 
 public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
@@ -225,16 +226,19 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
     
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "RNA Production Counter";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "RNA Production Counter";
     }
@@ -250,6 +254,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public String runPlugin(DataSet input) {
         return (String) performFunction(input).getData(0).getData();
     }
@@ -259,6 +264,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return Input Directory
      */
+    @GeneratedGuiBoilerplate
     public String inputDir() {
         return myInputDir.value();
     }
@@ -271,6 +277,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiplexProductionPlugin inputDir(String value) {
         myInputDir = new PluginParameter<>(myInputDir, value);
         return this;
@@ -281,6 +288,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return Key File
      */
+    @GeneratedGuiBoilerplate
     public String keyFile() {
         return myKeyFile.value();
     }
@@ -293,6 +301,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiplexProductionPlugin keyFile(String value) {
         myKeyFile = new PluginParameter<>(myKeyFile, value);
         return this;
@@ -303,6 +312,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return Input GBS Database
      */
+    @GeneratedGuiBoilerplate
     public String inputDB() {
         return myInputDB.value();
     }
@@ -315,6 +325,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiplexProductionPlugin inputDB(String value) {
         myInputDB = new PluginParameter<>(myInputDB, value);
         return this;
@@ -325,6 +336,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return Matching approach
      */
+    @GeneratedGuiBoilerplate
     public FindMatchByWordHash.MatchType matchingType() {
         return myMatchingType.value();
     }
@@ -337,6 +349,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiplexProductionPlugin matchingType(FindMatchByWordHash.MatchType value) {
         myMatchingType = new PluginParameter<>(myMatchingType, value);
         return this;
@@ -347,6 +360,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return Word size used by match
      */
+    @GeneratedGuiBoilerplate
     public Integer wordSizeMatching() {
         return myWordSizeMatching.value();
     }
@@ -359,6 +373,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiplexProductionPlugin wordSizeMatching(Integer value) {
         myWordSizeMatching = new PluginParameter<>(myWordSizeMatching, value);
         return this;
@@ -369,6 +384,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return Maximum repeats of word
      */
+    @GeneratedGuiBoilerplate
     public Integer maxWordRepeats() {
         return myMaxWordRepeats.value();
     }
@@ -381,6 +397,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiplexProductionPlugin maxWordRepeats(Integer value) {
         myMaxWordRepeats = new PluginParameter<>(myMaxWordRepeats, value);
         return this;
@@ -392,6 +409,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return Search reverse complement
      */
+    @GeneratedGuiBoilerplate
     public Boolean searchReverseComplement() {
         return mySearchReverseComplement.value();
     }
@@ -404,6 +422,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiplexProductionPlugin searchReverseComplement(Boolean value) {
         mySearchReverseComplement = new PluginParameter<>(mySearchReverseComplement, value);
         return this;
@@ -414,6 +433,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return Batch size of fastq files
      */
+    @GeneratedGuiBoilerplate
     public Integer batchSize() {
         return myBatchSize.value();
     }
@@ -426,6 +446,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiplexProductionPlugin batchSize(Integer value) {
         myBatchSize = new PluginParameter<>(myBatchSize, value);
         return this;
@@ -437,6 +458,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return Minimum quality score
      */
+    @GeneratedGuiBoilerplate
     public Integer minQualScore() {
         return myMinQualScore.value();
     }
@@ -449,6 +471,7 @@ public class RNADeMultiplexProductionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RNADeMultiplexProductionPlugin minQualScore(Integer value) {
         myMinQualScore = new PluginParameter<>(myMinQualScore, value);
         return this;

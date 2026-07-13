@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -145,6 +146,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = FilterTaxaBuilderPlugin.class.getResource("/net/maizegenetics/analysis/images/FilterNew.gif");
         if (imageURL == null) {
@@ -155,11 +157,13 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Filter Genotype Table Taxa";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Filter Genotype Table Taxa";
     }
@@ -184,14 +188,17 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxa runPlugin() {
         return (FilterTaxa) performFunction(null).getData(0).getData();
     }
 
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(DataSet input) {
         return (GenotypeTable) performFunction(input).getDataOfType(GenotypeTable.class).get(0).getData();
     }
 
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(GenotypeTable input) {
         return (GenotypeTable) performFunction(DataSet.getDataSet(input)).getDataOfType(GenotypeTable.class).get(0).getData();
     }
@@ -201,6 +208,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return Filter Name
      */
+    @GeneratedGuiBoilerplate
     public String filterName() {
         return myFilterName.value();
     }
@@ -212,6 +220,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxaBuilderPlugin filterName(String value) {
         myFilterName = new PluginParameter<>(myFilterName, value);
         return this;
@@ -222,6 +231,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return Min Proportion of Sites Present
      */
+    @GeneratedGuiBoilerplate
     public Double minNotMissing() {
         return myMinNotMissing.value();
     }
@@ -233,6 +243,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxaBuilderPlugin minNotMissing(Double value) {
         myMinNotMissing = new PluginParameter<>(myMinNotMissing, value);
         return this;
@@ -243,6 +254,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return Min Heterozygous Proportion
      */
+    @GeneratedGuiBoilerplate
     public Double minHeterozygous() {
         return myMinHeterozygous.value();
     }
@@ -254,6 +266,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxaBuilderPlugin minHeterozygous(Double value) {
         myMinHeterozygous = new PluginParameter<>(myMinHeterozygous, value);
         return this;
@@ -264,6 +277,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return Max Heterozygous Proportion
      */
+    @GeneratedGuiBoilerplate
     public Double maxHeterozygous() {
         return myMaxHeterozygous.value();
     }
@@ -275,6 +289,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxaBuilderPlugin maxHeterozygous(Double value) {
         myMaxHeterozygous = new PluginParameter<>(myMaxHeterozygous, value);
         return this;
@@ -285,6 +300,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return Include Taxa
      */
+    @GeneratedGuiBoilerplate
     public Boolean includeTaxa() {
         return myIncludeTaxa.value();
     }
@@ -296,6 +312,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxaBuilderPlugin includeTaxa(Boolean value) {
         myIncludeTaxa = new PluginParameter<>(myIncludeTaxa, value);
         return this;
@@ -306,6 +323,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return Position List
      */
+    @GeneratedGuiBoilerplate
     public TaxaList taxaList() {
         return myTaxaList.value();
     }
@@ -317,6 +335,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxaBuilderPlugin taxaList(TaxaList value) {
         myTaxaList = new PluginParameter<>(myTaxaList, value);
         return this;

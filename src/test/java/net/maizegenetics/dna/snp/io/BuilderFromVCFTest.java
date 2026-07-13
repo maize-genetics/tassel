@@ -23,7 +23,6 @@ import org.apache.commons.io.FileUtils;
 
 public class BuilderFromVCFTest {
 
-	//String directoryName = "/Users/zrm22/Desktop/VCFTestData/VCF_files/TestFiles/";
 	String directoryName = GeneralConstants.DATA_DIR+"CandidateTests/VCFFiles/";
 	
 	@Rule

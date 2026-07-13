@@ -25,6 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -144,6 +145,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(DataSet input) {
         return (GenotypeTable) performFunction(input).getData(0).getData();
     }
@@ -153,6 +155,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
      *
      * @return Min Proportion of Sites Present
      */
+    @GeneratedGuiBoilerplate
     public Double minProportionOfSitesPresent() {
         return myMinNotMissing.value();
     }
@@ -164,6 +167,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxaPropertiesPlugin minProportionOfSitesPresent(Double value) {
         myMinNotMissing = new PluginParameter<>(myMinNotMissing, value);
         return this;
@@ -174,6 +178,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
      *
      * @return Min Heterozygous Proportion
      */
+    @GeneratedGuiBoilerplate
     public Double minHeterozygousProportion() {
         return myMinHeterozygous.value();
     }
@@ -185,6 +190,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxaPropertiesPlugin minHeterozygousProportion(Double value) {
         myMinHeterozygous = new PluginParameter<>(myMinHeterozygous, value);
         return this;
@@ -195,6 +201,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
      *
      * @return Max Heterozygous Proportion
      */
+    @GeneratedGuiBoilerplate
     public Double maxHeterozygousProportion() {
         return myMaxHeterozygous.value();
     }
@@ -206,6 +213,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterTaxaPropertiesPlugin maxHeterozygousProportion(Double value) {
         myMaxHeterozygous = new PluginParameter<>(myMaxHeterozygous, value);
         return this;
@@ -216,6 +224,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = FilterTaxaPropertiesPlugin.class.getResource("/net/maizegenetics/analysis/images/Filter_horizontal.gif");
         if (imageURL == null) {
@@ -230,6 +239,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Taxa";
     }
@@ -239,6 +249,7 @@ public class FilterTaxaPropertiesPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Filter Alignment Based Taxa Properties";
     }

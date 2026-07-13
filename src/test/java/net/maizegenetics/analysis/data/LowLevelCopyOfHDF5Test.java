@@ -13,6 +13,8 @@ import net.maizegenetics.taxa.TaxaListIOUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 
 /**
@@ -29,6 +31,7 @@ public class LowLevelCopyOfHDF5Test {
 
     private static void clearTestFolder() {
         File f=new File(EXPORT_TEMP_DIR);
+        f.mkdirs();
         System.out.println(f.getAbsolutePath());
         if(f.listFiles()!=null) {
             for (File file : f.listFiles()) {
@@ -64,6 +67,11 @@ public class LowLevelCopyOfHDF5Test {
         }
         double bpPerNS=(double)(reps*tl.numberOfTaxa()*a.numberOfSites())/(double)(System.nanoTime()-time);
         System.out.printf("Rate of low level copy %g in bp/ns%n", bpPerNS);
+
+        // The low-level subset copy must retain the requested taxa and all sites.
+        GenotypeTable subset=ImportUtils.readGuessFormat(EXPORT_TEMP_DIR+"smSubsetDepth0.t5.h5");
+        assertEquals("Subset file has an unexpected number of taxa", tl.numberOfTaxa(), subset.numberOfTaxa());
+        assertEquals("Subset file has an unexpected number of sites", a.numberOfSites(), subset.numberOfSites());
 
         time=System.nanoTime();
         for (int i=0; i<reps; i++) {

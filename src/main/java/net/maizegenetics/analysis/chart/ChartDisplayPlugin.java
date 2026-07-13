@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -174,6 +175,7 @@ public class ChartDisplayPlugin extends AbstractDisplayPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = ChartDisplayPlugin.class.getResource("BarChart.gif");
         if (imageURL == null) {
@@ -188,6 +190,7 @@ public class ChartDisplayPlugin extends AbstractDisplayPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Chart";
     }
@@ -197,6 +200,7 @@ public class ChartDisplayPlugin extends AbstractDisplayPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Charting Tools";
     }

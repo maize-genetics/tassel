@@ -166,7 +166,11 @@ public final class Utils {
 
             if (path.trim().length() != 0) {
                 File file = new File(path);
-                if (file.exists()) {
+                if (file.isDirectory()) {
+                    // Classpath entry is a directory of resources (e.g. when running
+                    // from Gradle / an IDE). Walk the tree instead of treating it as a zip.
+                    addMatchingResourcesFromDirectory(file, file, filename, result);
+                } else if (file.isFile()) {
 
                     try (ZipFile zFile = new ZipFile(file.getAbsolutePath());) {
 
@@ -190,6 +194,31 @@ public final class Utils {
 
         return result;
 
+    }
+
+    /**
+     * Recursively searches a directory classpath entry for resources whose path ends
+     * with the given filename, adding matches as absolute resource names (relative to
+     * the classpath root) to the result set.
+     *
+     * @param root     the classpath root directory (used to compute resource names)
+     * @param current  the directory currently being searched
+     * @param filename filename to match
+     * @param result   set to collect matching resource names
+     */
+    private static void addMatchingResourcesFromDirectory(File root, File current, String filename, Set<String> result) {
+        File[] children = current.listFiles();
+        if (children == null) {
+            return;
+        }
+        for (File child : children) {
+            if (child.isDirectory()) {
+                addMatchingResourcesFromDirectory(root, child, filename, result);
+            } else if (child.getName().endsWith(filename)) {
+                String name = root.toURI().relativize(child.toURI()).getPath();
+                result.add("/" + name);
+            }
+        }
     }
 
     public static List<String> getFullyQualifiedClassNames(String simpleName) {

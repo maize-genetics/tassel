@@ -183,7 +183,10 @@ public class TagsByTaxaByteHDF5TaxaGroups extends AbstractTagsByTaxa {
     }
 
     public static byte[] encodeBySign(byte[] source) {
-        ByteBuffer dest = ByteBuffer.allocate(source.length);
+        // Capacity must cover the 4-byte length header plus the encoded body. For dense (mostly
+        // non-zero) distributions the body is up to source.length bytes, so allocate source.length + 4
+        // to avoid a BufferOverflowException (sparse real GBS data hid this; tiny test data exposes it).
+        ByteBuffer dest = ByteBuffer.allocate(source.length + 4);
         dest.putInt(source.length);
         byte runLength = 0;
         for (int i = 0; i < source.length; i++) {
@@ -343,6 +346,18 @@ public class TagsByTaxaByteHDF5TaxaGroups extends AbstractTagsByTaxa {
     public void getFileReadyForClosing() {
         bufferTagDist(0, 0);
         h5.close();
+    }
+
+    /**
+     * Releases the underlying HDF5 writer without flushing the tag-distribution buffer. Use this to
+     * close an instance that was only created to build the file skeleton or that was opened read-only,
+     * where {@link #getFileReadyForClosing()} would fail (it reads chunk "c0", which need not exist).
+     */
+    public void closeWriter() {
+        if (h5 != null) {
+            h5.close();
+            h5 = null;
+        }
     }
 
     @Override

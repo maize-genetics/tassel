@@ -29,6 +29,7 @@ import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.taxa.Taxon;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class RandomGenotypeImputationPlugin extends AbstractPlugin {
     private static final Logger myLogger = LogManager.getLogger(RandomGenotypeImputationPlugin.class);
@@ -215,16 +216,19 @@ public class RandomGenotypeImputationPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Random Imputation";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Replace missing genotypes with a value drawn from the site genotype distribution.";
     }

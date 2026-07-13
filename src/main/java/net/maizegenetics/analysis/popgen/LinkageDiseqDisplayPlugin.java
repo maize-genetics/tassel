@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.List;
 import net.maizegenetics.analysis.chart.AbstractDisplayPlugin;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 
 /**
@@ -120,6 +121,7 @@ public class LinkageDiseqDisplayPlugin extends AbstractDisplayPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = LinkageDiseqDisplayPlugin.class.getResource("/net/maizegenetics/analysis/images/LDPlot.gif");
         if (imageURL == null) {
@@ -134,6 +136,7 @@ public class LinkageDiseqDisplayPlugin extends AbstractDisplayPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "LD Plot";
     }
@@ -143,6 +146,7 @@ public class LinkageDiseqDisplayPlugin extends AbstractDisplayPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Display Linkage Disequilibrium";
     }

@@ -12,6 +12,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class AvgPhenotypeByTaxaPlugin extends AbstractPlugin{
     
@@ -61,14 +62,17 @@ public class AvgPhenotypeByTaxaPlugin extends AbstractPlugin{
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Average Phenotypes By Taxa";
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Averages Phenotypes for Duplicate Taxa.";
     }
@@ -96,6 +100,7 @@ public class AvgPhenotypeByTaxaPlugin extends AbstractPlugin{
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public Phenotype runPlugin(DataSet input) {
         return (Phenotype) performFunction(input).getData(0).getData();
     }
@@ -105,6 +110,7 @@ public class AvgPhenotypeByTaxaPlugin extends AbstractPlugin{
      *
      * @return Add Small Value
      */
+    @GeneratedGuiBoilerplate
     public Boolean addSmallValue() {
         return addSmallValue.value();
     }
@@ -116,6 +122,7 @@ public class AvgPhenotypeByTaxaPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AvgPhenotypeByTaxaPlugin addSmallValue(Boolean value) {
         addSmallValue = new PluginParameter<>(addSmallValue, value);
         return this;
@@ -126,6 +133,7 @@ public class AvgPhenotypeByTaxaPlugin extends AbstractPlugin{
      *
      * @return Random Seed
      */
+    @GeneratedGuiBoilerplate
     public Long randomSeed() {
         return randomSeed.value();
     }
@@ -137,6 +145,7 @@ public class AvgPhenotypeByTaxaPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AvgPhenotypeByTaxaPlugin randomSeed(Long value) {
         randomSeed = new PluginParameter<>(randomSeed, value);
         return this;

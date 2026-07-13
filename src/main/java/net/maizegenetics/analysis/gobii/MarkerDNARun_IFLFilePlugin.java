@@ -32,6 +32,7 @@ import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.DirectoryCrawler;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * BEWARE:  Whenever you "pull" to update the GOBII projects, there could be
@@ -165,18 +166,21 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
 
     }
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -839,6 +843,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return dbConfigFile
      */
+    @GeneratedGuiBoilerplate
     public String dbConfigFile() {
         return dbConfigFile.value();
     }
@@ -850,6 +855,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin dbConfigFile(String value) {
         dbConfigFile = new PluginParameter<>(dbConfigFile, value);
         return this;
@@ -861,6 +867,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return inputFile
      */
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return inputFile.value();
     }
@@ -874,6 +881,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin inputFile(String value) {
         inputFile = new PluginParameter<>(inputFile, value);
         return this;
@@ -884,6 +892,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return outputFileDir
      */
+    @GeneratedGuiBoilerplate
     public String outputFileDir() {
         return outputFileDir.value();
     }
@@ -896,6 +905,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin outputFileDir(String value) {
         outputFileDir = new PluginParameter<>(outputFileDir, value);
         return this;
@@ -907,6 +917,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return Reference File
      */
+    @GeneratedGuiBoilerplate
     public String refFile() {
         return refFile.value();
     }
@@ -919,6 +930,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin refFile(String value) {
         refFile = new PluginParameter<>(refFile, value);
         return this;
@@ -931,6 +943,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return mappingFile
      */
+    @GeneratedGuiBoilerplate
     public String mappingFile() {
         return mappingFile.value();
     }
@@ -944,6 +957,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin mappingFile(String value) {
         mappingFile = new PluginParameter<>(mappingFile, value);
         return this;
@@ -955,6 +969,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return mapsetId
      */
+    @GeneratedGuiBoilerplate
     public String mapsetName() {
         return mapsetName.value();
     }
@@ -966,6 +981,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin mapsetName(String value) {
         mapsetName = new PluginParameter<>(mapsetName, value);
         return this;
@@ -978,6 +994,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return Experiment Name
      */
+    @GeneratedGuiBoilerplate
     public String expName() {
         return expName.value();
     }
@@ -991,6 +1008,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin expName(String value) {
         expName = new PluginParameter<>(expName, value);
         return this;
@@ -1002,6 +1020,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return Platform Name
      */
+    @GeneratedGuiBoilerplate
     public String platformName() {
         return platformName.value();
     }
@@ -1015,6 +1034,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin platformName(String value) {
         platformName = new PluginParameter<>(platformName, value);
         return this;
@@ -1026,6 +1046,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return Reference Name
      */
+    @GeneratedGuiBoilerplate
     public String refName() {
         return refName.value();
     }
@@ -1038,6 +1059,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin refName(String value) {
         refName = new PluginParameter<>(refName, value);
         return this;
@@ -1049,6 +1071,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return Dataset Name
      */
+    @GeneratedGuiBoilerplate
     public String datasetName() {
         return datasetName.value();
     }
@@ -1062,6 +1085,7 @@ public class MarkerDNARun_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MarkerDNARun_IFLFilePlugin datasetName(String value) {
         datasetName = new PluginParameter<>(datasetName, value);
         return this;

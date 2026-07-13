@@ -1,312 +1,134 @@
 /*
- * FastqToTagCountPluginTest
+ * GBSSeqToTagDBPluginTest
  */
 package net.maizegenetics.analysis.gbs.v2;
 
-import net.maizegenetics.constants.GBSConstants;
-import net.maizegenetics.constants.GeneralConstants;
-import net.maizegenetics.dna.map.*;
 import net.maizegenetics.dna.tag.Tag;
-import net.maizegenetics.dna.tag.TagBuilder;
 import net.maizegenetics.dna.tag.TagData;
 import net.maizegenetics.dna.tag.TagDataSQLite;
-import net.maizegenetics.dna.tag.TaxaDistribution;
 import net.maizegenetics.util.LoggingUtils;
-import net.maizegenetics.util.Tuple;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 
 /**
+ * Property-based tests for {@link GBSSeqToTagDBPlugin} that build their own tiny GBSv2 database
+ * from {@link GBSSimData} (deterministic simulated FASTQ/key/reference) rather than relying on
+ * large downloaded fixtures. Assertions check invariants (distinct tag counts, append/keep-old-data
+ * stability) instead of byte-exact golden files.
  *
- * @author Ed Buckler
+ * @author Ed Buckler (original), rewritten for simulated data
  */
 public class GBSSeqToTagDBPluginTest {
-    private final static String outTagFasta=GBSConstants.GBS_TEMP_DIR + "tagsForAlign.fa.gz";
-    private final static String inTagSAM=GBSConstants.GBS_TEMP_DIR + "tagsForAlign910auto.sam";
 
     public GBSSeqToTagDBPluginTest() {
     }
 
-    /**
-     * Build the tag DB once for the whole class rather than re-parsing the raw fastqs in
-     * every test. The read-only tests (testGBSSeqToTagDBPlugin, testTagExportPlugin) share
-     * this DB; the mutating tests (testKeepOldData, GBSSeqToTagDBPluginAppendTest) still
-     * delete and rebuild it themselves, because verifying that build/append behavior is
-     * exactly what they exercise.
-     */
-    @BeforeClass
-    public static void buildSharedTagDB() throws IOException {
-        LoggingUtils.setupDebugLogging();
-        // The GBS plugins reject a -db whose parent directory is missing (which trips
-        // AbstractPlugin.printUsage()+System.exit and kills the test JVM), so make it first.
-        Files.createDirectories(Paths.get(GBSConstants.GBS_TEMP_DIR));
-        long time = System.nanoTime();
-        new GBSSeqToTagDBPlugin()
-                .enzyme("ApeKI")
-                .inputDirectory(GBSConstants.GBS_INPUT_DIR)
-                .outputDatabaseFile(GBSConstants.GBS_GBS2DB_FILE)
-                .keyFile(GBSConstants.GBS_TESTING_KEY_FILE)
-                .kmerLength(64)
-                .minKmerCount(5)
-                .minimumQualityScore(20)
-                .deleteOldData(true)
-                .performFunction(null);
-        System.out.printf("Shared tag DB build time %g sec%n", (double) (System.nanoTime() - time) / 1e9);
-    }
-
-    @Before
-    public void setUp() throws IOException {
-        // Defensive: mutating tests may run before read-only ones; keep the output dir present.
-        Files.createDirectories(Paths.get(GBSConstants.GBS_TEMP_DIR));
-    }
-
-    /**
-     * Verifies GBSSeqToTagDBPlugin produced a populated tag DB (built once in @BeforeClass).
-     */
     @Test
-    public void testGBSSeqToTagDBPlugin() {
-        TagData tagData = new TagDataSQLite(GBSConstants.GBS_GBS2DB_FILE);
-        try {
-            assertTrue("GBSSeqToTagDBPlugin produced an empty tag DB", tagData.getTags().size() > 0);
-        } finally {
-            try {
-                ((TagDataSQLite) tagData).close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    @Test
-    public void testKeepOldData() {
-        // THis should be committed against tas 1120
+    public void testGBSSeqToTagDBPlugin() throws Exception {
         LoggingUtils.setupDebugLogging();
-        System.out.println(Paths.get(GBSConstants.GBS_GBS2DB_FILE).toAbsolutePath().toString());
-        // start with a clean db
-        try{
-            Files.deleteIfExists(Paths.get(GBSConstants.GBS_GBS2DB_FILE));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        long time=System.nanoTime();
-        System.out.println();
+        GBSSimData sim = GBSSimData.createUnder("GBSSeqToTagDB_basic");
+        sim.buildTagDB();
 
+        assertEquals("DB should contain exactly the simulated distinct tags",
+                sim.expectedDistinctTags, sim.dbTagCount());
+    }
+
+    @Test
+    public void testKeepOldData() throws Exception {
+        LoggingUtils.setupDebugLogging();
+        GBSSimData sim = GBSSimData.createUnder("GBSSeqToTagDB_keepOld");
+
+        // First run: clean build.
+        sim.buildTagDB();
+        int firstCount = sim.dbTagCount();
+        assertEquals(sim.expectedDistinctTags, firstCount);
+
+        // Second run over the same files WITHOUT deleting old data. This exercises the append
+        // path (TAS-1120): depths are maintained so removeTagsWithoutReplication does not drop tags.
         new GBSSeqToTagDBPlugin()
-                .enzyme("ApeKI")
-                .inputDirectory(GBSConstants.GBS_INPUT_DIR)
-                .outputDatabaseFile(GBSConstants.GBS_GBS2DB_FILE)
-                .keyFile(GBSConstants.GBS_TESTING_KEY_FILE)
-                .kmerLength(64)
-                .minKmerCount(5)
+                .enzyme(GBSSimData.ENZYME)
+                .inputDirectory(sim.fastqDir.toString())
+                .outputDatabaseFile(sim.dbFile.toString())
+                .keyFile(sim.keyFile.toString())
+                .kmerLength(GBSSimData.TAG_LENGTH)
+                .minKmerCount(GBSSimData.MIN_KMER_COUNT)
                 .minimumQualityScore(20)
-                .deleteOldData(true)
+                .deleteOldData(false)
                 .performFunction(null);
-        System.out.printf("TotalTime %g sec%n", (double) (System.nanoTime() - time) / 1e9);
-        //String outName= GeneralConstants.TEMP_DIR+"TaxaTest.db";
-        //TagsByTaxaHDF5Builder.create(, (Map<Tag,TaxaDistribution>)ds.getData(0).getData(),null);
-        
-        
-     // Verify total number of tags:
-        TagData tagData =new TagDataSQLite(GBSConstants.GBS_GBS2DB_FILE);
-        Set<Tag> gbsv2Tags1 = tagData.getTags();
-        try {
-            ((TagDataSQLite) tagData).close();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        System.out.println("\nRunning GBSSeqToTagDBPLugin second time, do NOT delete data: ... ");
-        // LCJ - then re-run and verify the size of the tags in the table
-        new GBSSeqToTagDBPlugin()
-        .enzyme("ApeKI")
-        .inputDirectory(GBSConstants.GBS_INPUT_DIR)
-        .outputDatabaseFile(GBSConstants.GBS_GBS2DB_FILE)
-        .keyFile(GBSConstants.GBS_TESTING_KEY_FILE)
-        .kmerLength(64)
-        .minKmerCount(5)
-        .minimumQualityScore(20)
-        .deleteOldData(false)
-        .performFunction(null);
-        System.out.printf("TotalTime %g sec%n", (double) (System.nanoTime() - time) / 1e9);
-        
-        Set<Tag> gbsv2Tags2 = tagData.getTags();
-        // Number of tags should be the same
-        // The actual test performed was to run the plugin once.
-        // Then run again with delete-old-data = false.  In the plugin code,
-        // after the existing tags/taxadist were pulled from the db, run
-        // "removeTagsWithoutReplication(tagCntMap);", then return.  Verify
-        // the number of tags in the DB matches the number of tags existing after
-        // the first run.  This verified that depths were maintained.  A previous
-        // bug created the new tag/taxadist map without correct depths, and
-        // the "removeTagsWithoutReplication() method deleted them.
-        // Those test lines are preserved in the source file, but are commented out.
-        assertEquals(gbsv2Tags1.size(),gbsv2Tags2.size());
 
+        assertEquals("Tag count must be stable after keep-old-data append", firstCount, sim.dbTagCount());
     }
 
     @Test
     public void testTagExportPlugin() throws Exception {
         LoggingUtils.setupDebugLogging();
-        System.out.println("Running testTagExportPlugin");
-        new TagExportToFastqPlugin()
-                .inputDB(GBSConstants.GBS_GBS2DB_FILE)
-                .outputFile(outTagFasta)
-                .performFunction(null);
+        GBSSimData sim = GBSSimData.createUnder("GBSSeqToTagDB_export");
+        sim.buildTagDB();
+        sim.exportAndAlign();
 
+        // Every distinct tag should be exported (as an @tagSeq= FASTQ record).
+        long exported = java.nio.file.Files.lines(java.nio.file.Paths.get(sim.samFile.toString()))
+                .filter(l -> l.startsWith("tagSeq=")).count();
+        assertEquals(sim.expectedDistinctTags, exported);
     }
 
     @Test
-    @Ignore("Requires tagsForAlign910auto.sam, produced by running bowtie2 externally on the "
-            + "exported tag fastq. That alignment step is not run in the test environment, so the "
-            + "input never exists and SAMToGBSdbPlugin aborts. Re-enable once a bowtie SAM is staged.")
     public void testSAMImportPlugin() throws Exception {
         LoggingUtils.setupDebugLogging();
-        System.out.println("Running testTagExportPlugin");
-        new SAMToGBSdbPlugin()
-                .gBSDBFile(GBSConstants.GBS_GBS2DB_FILE)
-                //.sAMInputFile(GBSConstants.GBS_EXPECTED_BOWTIE_SAM_FILE)
-                .sAMInputFile(inTagSAM)
-                .performFunction(null);
+        GBSSimData sim = GBSSimData.createUnder("GBSSeqToTagDB_sam");
+        sim.buildDatabaseThroughSam();
+
+        // Importing the (aligner-free) SAM must not change the number of tags, and cut positions
+        // should now be present for every simulated locus.
+        assertEquals(sim.expectedDistinctTags, sim.dbTagCount());
+        TagData tagData = new TagDataSQLite(sim.dbFile.toString());
+        int cutPositions = tagData.getTagCutPositions(true).size();
+        ((TagDataSQLite) tagData).close();
+        assertEquals("Each simulated locus should yield one cut position", sim.numLoci, cutPositions);
     }
 
     @Test
     public void GBSSeqToTagDBPluginAppendTest() throws Exception {
-        // Testing duplicate tagTagIDMap when GBSSEq run twice in a row (run this test twice in a row!)
-        System.out.println(Paths.get(GBSConstants.GBS_GBS2DB_FILE).toAbsolutePath().toString());
-        try{
-            Files.deleteIfExists(Paths.get(GBSConstants.GBS_GBS2DB_FILE));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        long time=System.nanoTime();
-        System.out.println("Running GBSSeqToTagDBPluginAppendTest");
+        GBSSimData sim = GBSSimData.createUnder("GBSSeqToTagDB_append");
 
-        new GBSSeqToTagDBPlugin()
-        .enzyme("ApeKI")
-        .inputDirectory(GBSConstants.GBS_INPUT_DIR)
-        .outputDatabaseFile(GBSConstants.GBS_GBS2DB_FILE)
-        .keyFile(GBSConstants.GBS_TESTING_KEY_FILE)
-        .kmerLength(64)
-        .minKmerCount(5)
-        .minimumQualityScore(20)
-        .performFunction(null);
-
-        // Grab existing data from db, append to tagCntMap
-        TagData tdw =new TagDataSQLite(GBSConstants.GBS_GBS2DB_FILE);
+        sim.buildTagDB();
+        TagData tdw = new TagDataSQLite(sim.dbFile.toString());
         Set<Tag> firstRunTags = tdw.getTags();
-        Map<Tag, TaxaDistribution> firstTDM = tdw.getAllTagsTaxaMap(); 
-        ((TagDataSQLite)tdw).close();
+        int firstDepth = tdw.getAllTagsTaxaMap().values().stream()
+                .mapToInt(td -> td.totalDepth()).sum();
+        ((TagDataSQLite) tdw).close();
 
-        BufferedWriter fileWriter = null;
-        try { 
-            fileWriter = new BufferedWriter(new FileWriter(GBSConstants.GBS_TEMP_DIR + "dbTagsFirstRun.txt"));
-            String headers = "sequence\ttotalDepth\tTaxaDist_ToString";
-            fileWriter.write(headers);
-            for (Map.Entry<Tag, TaxaDistribution> entry : firstTDM.entrySet()) {
-                fileWriter.write("\n");
-                Tag tag = entry.getKey();
-                TaxaDistribution td = entry.getValue();
-                fileWriter.write(tag.sequence());
-                fileWriter.write("\t");
-                String totalDepth = "totalDepth=" + td.totalDepth(); // This prints depth correctly
-                //fileWriter.write(td.totalDepth()); // gave weird output in file
-                fileWriter.write(totalDepth);
-                fileWriter.write("\t");
-                fileWriter.write(td.toString());
-            }
-            fileWriter.close();
-        }catch(IOException e) {
-            System.out.println(e);
-        }
-        fileWriter.close();
-
-        System.out.println("Calling GBSSeqToTagDBPlugin 2nd time to append data.");
-        // Run again, this time append tags.  This uses the same fastq files, so
-        // we expect the same tags, but with increased total depth at all kept positions
+        // Append the same reads again (no delete). Same tags, but greater total depth.
         new GBSSeqToTagDBPlugin()
-        .enzyme("ApeKI")
-        .inputDirectory(GBSConstants.GBS_INPUT_DIR)
-        .outputDatabaseFile(GBSConstants.GBS_GBS2DB_FILE)
-        .keyFile(GBSConstants.GBS_TESTING_KEY_FILE)
-        .kmerLength(64)
-        .minKmerCount(5)
-        .minimumQualityScore(20)
-        .performFunction(null);
+                .enzyme(GBSSimData.ENZYME)
+                .inputDirectory(sim.fastqDir.toString())
+                .outputDatabaseFile(sim.dbFile.toString())
+                .keyFile(sim.keyFile.toString())
+                .kmerLength(GBSSimData.TAG_LENGTH)
+                .minKmerCount(GBSSimData.MIN_KMER_COUNT)
+                .minimumQualityScore(20)
+                .deleteOldData(false)
+                .performFunction(null);
 
-        // Grab existing data from db, store in map
-        tdw =new TagDataSQLite(GBSConstants.GBS_GBS2DB_FILE);
+        tdw = new TagDataSQLite(sim.dbFile.toString());
         Set<Tag> secondRunTags = tdw.getTags();
-        Map<Tag, TaxaDistribution> secondTDM = tdw.getAllTagsTaxaMap(); 
-        ((TagDataSQLite)tdw).close();  //todo autocloseable should do this but it is not working.
+        int secondDepth = tdw.getAllTagsTaxaMap().values().stream()
+                .mapToInt(td -> td.totalDepth()).sum();
+        ((TagDataSQLite) tdw).close();
 
-        // Verify number of tags are the same.  BEcause we are using the
-        // same files it will have the same tags.  The tags/taxa are the same,
-        // the depths at each tag should be greater after the second run that appends.
-        assertEquals(firstRunTags.size(),secondRunTags.size());
-
-        // Write files to the database so tags can be compared between files
-        // and differences analysed.
-        try { 
-            fileWriter = new BufferedWriter(new FileWriter(GBSConstants.GBS_TEMP_DIR + "dbTagsAfterAppendRun.txt"));
-            String headers = "sequence\ttotalDepth\tTaxaDist_ToString";
-            fileWriter.write(headers);
-            for (Map.Entry<Tag, TaxaDistribution> entry : secondTDM.entrySet()) {
-                fileWriter.write("\n");
-                Tag tag = entry.getKey();
-                TaxaDistribution td = entry.getValue();
-                fileWriter.write(tag.sequence());
-                fileWriter.write("\t");
-                String totalDepth = "totalDepth=" + td.totalDepth(); 
-                fileWriter.write(totalDepth);
-                fileWriter.write("\t");
-                fileWriter.write(td.toString());
-            }
-            fileWriter.close();
-        }catch(IOException e) {
-            System.out.println(e);
-        }
-        fileWriter.close();
-
-        // LCJ - I found "short" tags (ie tags with length < maxTagL size) never
-        // increased their tag depths value.  Need to understand why this is.  The
-        // values were always the same before and after append, the counts were
-        // often greater than minTagCount so that wasn't the issue.
-
-        //      Set<Tag> firstTags = firstTDM.keySet();
-        //        for (Map.Entry<Tag, TaxaDistribution> secondEntry : secondTDM.entrySet()) {                    
-        //            Tag secondTag = secondEntry.getKey();
-        //            if (firstTags.contains(secondTag)) {
-        //                System.out.printf("Assert Tag %s depths2 %d greater than depths1 %d\n",
-        //                        secondTag.sequence(), secondEntry.getValue().totalDepth(),firstTDM.get(secondTag).totalDepth());
-        //                assertTrue(secondEntry.getValue().totalDepth() > firstTDM.get(secondTag).totalDepth());
-        //            }                    
-        //        }
-        System.out.println("Finished GBSSeqToTagDBPluginAppendTest.");
+        assertEquals(firstRunTags.size(), secondRunTags.size());
+        assertTrue("Appending identical reads should increase total depth", secondDepth > firstDepth);
     }
+
     @Test
     public void testRemoveSecondCutSiteIndexOf() {
-        
+
         GBSSeqToTagDBPlugin GBSSeqToTagdb = new GBSSeqToTagDBPlugin();
         Class GBSSeqClass = GBSSeqToTagdb.getClass();
         Method removeSecondCutSiteIndexOf;
@@ -320,84 +142,30 @@ public class GBSSeqToTagDBPluginTest {
             String seq1 = "TAGGAACAGCGCTAGGGGAATGCTAAATTGCTAGCGCCATATGCAAGATAGGAACAGCGCTAGGGGAATG";
             String seq2 = "TAGGAACAGCGCTAGGGGAATGCTAAATTGCTAGCGCCATATGCATGATAGGAACAGCGCTAGGGGAATG";
             String expectedTag = "TAGGAACAGCGCTAGGGGAATGCTAAATTGCTAGCGCCATATGCA";
-            // Test string with second cut site = likelyReadEndString[1] 
+            // Test string with second cut site = likelyReadEndString[1]
             // ATGCAAGAT at position 41 in string
             Tag tag = (Tag) removeSecondCutSiteIndexOf.invoke(GBSSeqToTagdb, (Object)seq1,55);
-          // System.out.println("\nLCJ - tag sequence from seq1 is: " + tag.sequence());
-          // System.out.println("LCJ - expecated tag sequence :   " + "TAGGAACAGCGCTAGGGGAATGCTAAATTGCTAGCGCCATATGCA");
             assertTrue(expectedTag.equals(tag.sequence()));
-            
+
             // Test string with 2nd cut site = likelyReadEndString[0]
             // ATGCAT at position 41 in string
             tag = (Tag) removeSecondCutSiteIndexOf.invoke(GBSSeqToTagdb, (Object)seq2,55);
-           // System.out.println("\nLCJ - tag sequence from seq2 is: " + tag.sequence());
-           // System.out.println("LCJ - expecated tag sequence :   " + "TAGGAACAGCGCTAGGGGAATGCTAAATTGCTAGCGCCATATGCA");
             assertTrue(expectedTag.equals(tag.sequence()));
-            
-            // Test sequence with NO second cut site appearing 
+
+            // Test sequence with NO second cut site appearing
             expectedTag = "TAGGAACAGCGCTAGGGGAATGCTAAATTGCTAGCGCCATATTCATGATAGGAAC";
             String seq3 = "TAGGAACAGCGCTAGGGGAATGCTAAATTGCTAGCGCCATATTCATGATAGGAACAGCGCTAGGGGAATG";
             tag = (Tag) removeSecondCutSiteIndexOf.invoke(GBSSeqToTagdb, (Object)seq3,55);
-            //tag = removeSecondCutSiteIndexOf(seq3,55);
             assertTrue(expectedTag.equals(tag.sequence()));
         } catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SecurityException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (InvocationTargetException ite) {
-            System.out.println("LCJ - ite cause:");
             ite.getCause();
-            System.out.println("LCJ - ite stackback");
             ite.printStackTrace();
         } catch (Exception exc)  {
-            exc.printStackTrace();;
-            
+            exc.printStackTrace();
         }
     }
-
-//    private Tag removeSecondCutSiteIndexOf(String seq, int preferredLength ) {
-//        Tag tag = null;
-//        String[] likelyReadEndStrings = new String[]{"ATGCAT", "ATGCAAGAT"};
-//        int readEndCutSiteRemnantLength = 5;
-//
-//        // handle overlapping cutsite for ApeKI enzyme
-////        if (enzyme().equalsIgnoreCase("ApeKI")) {
-////            if (seq.startsWith("CAGCTGC") || seq.startsWith("CTGCAGC")) {
-////                seq = seq.substring(3,seq.length());
-////            }             
-////        }
-//        int indexOfReadEnd = -1;
-//        String shortSeq = seq.substring(20);
-//        System.out.println("LCJ - shortSeq is:" + shortSeq);
-//        for (String readEnd: likelyReadEndStrings){
-//            int indx = shortSeq.indexOf(readEnd);
-//            System.out.println("LCJ - checking for readEnd:" + readEnd + " indx is:" + indx);
-//            if (indx > 0 ) {
-//                if (indexOfReadEnd < 0 || indx < indexOfReadEnd) {
-//                    System.out.println("LCJ - indexOfReadEnd now set to: " + indx);
-//                    indexOfReadEnd = indx;
-//                } 
-//            }
-//        }
-//
-//        System.out.println("LCJ - indexOfReadEnd: " + indexOfReadEnd + " preferredLength: " + preferredLength);
-//        if (indexOfReadEnd > 0 &&
-//                (indexOfReadEnd + 20 + readEndCutSiteRemnantLength < preferredLength)) {
-//            // trim tag to sequence up to & including the cut site
-//            tag = TagBuilder.instance(seq.substring(0, indexOfReadEnd + 20 + readEndCutSiteRemnantLength)).build();
-//           // System.out.println("\nLCJ - tag sequence from IF is: " + tag.sequence());
-//           // System.out.println("LCJ - expecated tag sequence : " + "TAGGAACAGCGCTAGGGGAATGCTAAATTGCTAGCGCCATATGCA");
-// 
-//        } else {
-//            int seqEnd = (byte) Math.min(seq.length(), preferredLength);
-//            tag = TagBuilder.instance(seq.substring(0,seqEnd)).build();
-//           // System.out.println("\nLCJ - tag sequence from ELSE is: " + tag.sequence());
-//            //System.out.println("LCJ - expecated tag sequence   : " + "TAGGAACAGCGCTAGGGGAATGCTAAATTGCTAGCGCCATATGCA");
-//        }
-//        return tag;
-//    }
-    // full pipeline and biology evaluation helper methods moved
-    // to EvaluateSNPCallQualityOfPipelineTest.java
 }

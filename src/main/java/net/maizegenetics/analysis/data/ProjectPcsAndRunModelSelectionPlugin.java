@@ -33,6 +33,7 @@ import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.util.OpenBitSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -94,6 +95,7 @@ public class ProjectPcsAndRunModelSelectionPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(DataSet input) {
         return (GenotypeTable) performFunction(input).getData(0).getData();
     }
@@ -103,6 +105,7 @@ public class ProjectPcsAndRunModelSelectionPlugin extends AbstractPlugin {
      *
      * @return Recombination Breakpoints
      */
+    @GeneratedGuiBoilerplate
     public String recombinationBreakpoints() {
         return myRecombinationBreakpoints.value();
     }
@@ -114,6 +117,7 @@ public class ProjectPcsAndRunModelSelectionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ProjectPcsAndRunModelSelectionPlugin recombinationBreakpoints(String value) {
         myRecombinationBreakpoints = new PluginParameter<>(myRecombinationBreakpoints, value);
         return this;
@@ -124,6 +128,7 @@ public class ProjectPcsAndRunModelSelectionPlugin extends AbstractPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
@@ -133,6 +138,7 @@ public class ProjectPcsAndRunModelSelectionPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Load Projection Alignment";
     }
@@ -142,6 +148,7 @@ public class ProjectPcsAndRunModelSelectionPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Load Projection Alignments";
     }

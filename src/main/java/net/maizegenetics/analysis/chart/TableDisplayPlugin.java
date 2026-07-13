@@ -26,6 +26,7 @@ import java.net.URL;
 
 import java.util.Iterator;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 
 /**
@@ -101,6 +102,7 @@ public class TableDisplayPlugin extends AbstractDisplayPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = TableDisplayPlugin.class.getResource("/net/maizegenetics/analysis/images/Table.gif");
         if (imageURL == null) {
@@ -115,6 +117,7 @@ public class TableDisplayPlugin extends AbstractDisplayPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Table";
     }
@@ -124,6 +127,7 @@ public class TableDisplayPlugin extends AbstractDisplayPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Present data in table";
     }

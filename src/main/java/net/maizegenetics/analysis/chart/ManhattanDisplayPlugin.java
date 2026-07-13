@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import net.maizegenetics.analysis.association.AssociationConstants;
 import net.maizegenetics.util.TableReport;
 import net.maizegenetics.plugindef.Datum;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -144,6 +145,7 @@ public class ManhattanDisplayPlugin extends AbstractDisplayPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = ManhattanDisplayPlugin.class.getResource("/net/maizegenetics/analysis/images/ManhattanPlot.gif");
         if (imageURL == null) {
@@ -159,6 +161,7 @@ public class ManhattanDisplayPlugin extends AbstractDisplayPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Manhattan Plot";
     }
@@ -169,6 +172,7 @@ public class ManhattanDisplayPlugin extends AbstractDisplayPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Display Manhattan Plot";
     }

@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens Created June 01, 2017
@@ -43,11 +44,13 @@ public class IndelsToUnknownPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Change Indels to Unknown";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = HetsToUnknownPlugin.class.getResource("/net/maizegenetics/analysis/images/homozygous.gif");
         if (imageURL == null) {
@@ -57,6 +60,7 @@ public class IndelsToUnknownPlugin extends AbstractPlugin {
         }
     }
 
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Change Indels to Unknown";
     }
