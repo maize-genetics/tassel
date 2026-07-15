@@ -9,7 +9,8 @@
 
 {% block extrahead %}
   {{ super() }}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="assets/stylesheets/extra.css" />
 {% endblock %}
 
@@ -38,8 +39,18 @@
         <img src="../images/tassel_logo.svg" alt="TASSEL Logo" class="hero-logo" style="max-width: 250px;" />
         <h3><strong>TASSEL 5</strong> (<strong>T</strong>rait <strong>A</strong>nalysis by a<strong>SS</strong>ociation, <strong>E</strong>volution and <strong>L</strong>inkage)</h3>
         <div class="download-links">
-          <a href="getting_started/" class="md-button md-button--primary">Get Started</a>
-          <a href="#downloads" class="md-button md-button--secondary">Download</a>
+          <a href="getting_started/" class="md-button md-button--primary">
+            <span class="material-symbols-outlined hero-btn-icon" aria-hidden="true">rocket_launch</span>
+            Get Started
+          </a>
+          <a href="#downloads" class="md-button md-button--secondary">
+            <span class="material-symbols-outlined hero-btn-icon" aria-hidden="true">download</span>
+            Download
+          </a>
+          <a href="https://github.com/maize-genetics/tassel" class="md-button md-button--secondary" target="_blank" rel="noopener noreferrer">
+            <i class="fa fa-github hero-btn-icon" aria-hidden="true"></i>
+            GitHub
+          </a>
         </div>
       </div>
     </div>

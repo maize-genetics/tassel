@@ -66,6 +66,22 @@
   gap: 0.75rem;
 }
 
+.download-links .md-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hero-btn-icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.hero-btn-icon.fa {
+  width: 1.125rem;
+  text-align: center;
+}
+
 /* About section */
 .about-section {
   padding: 2rem 1rem;
