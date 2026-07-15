@@ -29,18 +29,18 @@ Launch the pipeline with `./run_pipeline.pl` (UNIX / macOS) or
 ## Source Code
 
 ```bash
-git clone https://bitbucket.org/tasseladmin/tassel-5-source.git
+git clone https://github.com/maize-genetics/tassel.git
 ```
 
 ## Install
 
 ```bash
-git clone https://bitbucket.org/tasseladmin/tassel-5-standalone.git
+git clone https://github.com/maize-genetics/tassel.git
 ```
 
 **OR**
 
-<https://bitbucket.org/tasseladmin/tassel-5-standalone/downloads/?tab=tags>
+<https://github.com/maize-genetics/tassel/releases>
 
 ## Execute
 
@@ -176,7 +176,7 @@ _If the filename to be imported begins with “http”, it will be treated as an
 | `-subsetSites <num>` | This filters an alignment to include a random subset of sites. If &lt;num&gt; is &gt;=1, it specifies the total number of sites to keep. If it is a decimal, it specifies the fraction of sites to keep. Adding the flag "-step" immediately after &lt;num&gt; tells the plugin to space the selected sites evenly instead of randomly. |
 | `-subsetTaxa <num>` | This filters an alignment to include a random subset of taxa. If &lt;num&gt; is &gt;=1, it specifies the total number of taxa to keep. If it is a decimal, it specifies the fraction of taxa to keep. Adding flag "-step" immediately after &lt;num&gt; tells the plugin to space the selected taxa evenly instead of randomly. |
 | `-step` | This tells the previously specified -subsetTaxa or -subsetSites plugin to select sites/taxa evenly across the alignment instead of randomly. |
-| `-numericalGenoTransform <type>` | **(Deprecated)** https://bitbucket.org/tasseladmin/tassel-5-source /wiki/UserManual/NumericalGenotype/NumericalGenot ype ./run_pipeline.pl -h mdp_genotype.hmp.txt -NumericalGenotypePlugin -endPlugin -export output-exportType ReferenceProbability |
+| `-numericalGenoTransform <type>` | **(Deprecated)** https://maize-genetics.github.io/tassel/user_manual/numericalgenotype/ ./run_pipeline.pl -h mdp_genotype.hmp.txt -NumericalGenotypePlugin -endPlugin -export output-exportType ReferenceProbability |
 | `-newCoordinates <map filename>` | This converts alignment to new coordinates specified in given map file. |
 | `-synonymizer` | Runs the Synonymizer using the input dataset. |
 

@@ -6,7 +6,7 @@ Once the final model is determined, TASSEL runs a confidence interval scan. Each
 
 To run a stepwise regression, click on a data set of numeric data joined to genotype data, and then select Analysis -> Stepwise. This will bring up a dialog box with options:
 
-![snip1.PNG](https://bitbucket.org/repo/bRpKEG/images/3131987804-snip1.PNG)
+![Stepwise dialog](snip1.png)
 
 * Model type: The model selection criteria used to determine which terms enter the model and how many. Options are p-value, Bayesian information criterion (BIC), modified Bayesian information criterion (mBIC), or Akaike information criterion (AIC).
 * Entry limit : The maximum p-value for which a term can enter the model (between 0.0 and 1.0).

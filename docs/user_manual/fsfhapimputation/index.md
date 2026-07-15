@@ -12,7 +12,7 @@ The results can be output in a few different ways. After the Viterbi algorithm i
 
 To run FSFHap from the TASSEL GUI, select a genotype data set and choose Impute/Impute By FSFHap from the menu. The following dialog appears:
 
-![Screen Shot 2014-12-02 at 10.56.12 AM.png](https://bitbucket.org/repo/bRpKEG/images/583650269-Screen%20Shot%202014-12-02%20at%2010.56.12%20AM.png)
+![FSFHap Imputation dialog](fsfhap_imputation_dialog.png)
 
 The Pedigrees must be filled in by clicking Browse and navigating to a pedigree file, the format of which is described later. It is recommended that a Logfile name also be supplied for messages that will be written about the results. If the filename provided does not already exist it will be created. If it exists, new messages will be appended.
 

@@ -106,7 +106,7 @@ TASSEL is written in Java, thereby enabling its use with virtually any operating
 
 ## Getting Started
 
-A quick way to get started using TASSEL is to load the [tutorial data](https://tassel.bitbucket.io/docs/TASSELTutorialData5.zip) and try performing analyses. However, because some of the necessary steps may not be intuitive, we recommend that new users follow the tutorial at the end of this manual. The objective of this section is to provide information necessary to install and start TASSEL software and to provide a brief overview of the interface.
+A quick way to get started using TASSEL is to load the [tutorial data](https://github.com/maize-genetics/tassel_test_data/releases/download/v1.0.0/tassel_test_data_v1.tar.gz) and try performing analyses. However, because some of the necessary steps may not be intuitive, we recommend that new users follow the tutorial at the end of this manual. The objective of this section is to provide information necessary to install and start TASSEL software and to provide a brief overview of the interface.
 
 ![Tassel_Sequence_Viewer.png](Tassel_Sequence_Viewer.png)
 
@@ -116,7 +116,7 @@ A quick way to get started using TASSEL is to load the [tutorial data](https://t
 
 ## Open Source Code
 
-Open source code for TASSEL is available at the [TASSEL 5 source repository](https://bitbucket.org/tasseladmin/tassel-5-source). The package also bundles several third-party libraries:
+Open source code for TASSEL is available at the [TASSEL 5 source repository](https://github.com/maize-genetics/tassel). The package also bundles several third-party libraries:
 
 | Library | Description |
 |---|---|

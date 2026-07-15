@@ -4,15 +4,15 @@ This conducts association analysis via a mixed linear model (MLM).
 
 A mixed model is one which includes both fixed and random effects. Including random effects gives MLM the ability to incorporate information about relationships among individuals. When a genetic marker based kinship matrix (K) is used jointly with population structure (Q), the “Q+K” approach improves statistical power compared to “Q” only (9). MLM can be described in Henderson’s matrix notation (22) as follows:
 
-![MLM Formula 1.png](https://bitbucket.org/repo/bRpKEG/images/2823040849-MLM%20Formula%201.png)
+![MLM Formula 1](mlm_formula_1.png)
 
 where y is the vector of observations; β is an unknown vector containing fixed effects, including genetic marker and population structure (Q); u is an unknown vector of random additive genetic effects from multiple background QTL for individuals/lines; X and Z are the known design matrices; and e is the unobserved vector of random residual. The u and e vectors are assumed to be normally distributed with null mean and variance of σ^2_a and
 
-![MLM Formula 2.png](https://bitbucket.org/repo/bRpKEG/images/2669361344-MLM%20Formula%202.png)
+![MLM Formula 2](mlm_formula_2.png)
 
 where G = (σ^2_a)K with as the additive genetic variance and (σ^2_a)K as the kinship matrix. Homogeneous variance is assumed for the residual effect which means R=I(σ^2_e), where σ^2_e is the residual variance. The proportion of genetic variance over the total variance is defined as heritability (h^2).
 
-![MLM Formula 3.png](https://bitbucket.org/repo/bRpKEG/images/1447864891-MLM%20Formula%203.png)
+![MLM Formula 3](mlm_formula_3.png)
 
 When K is derived from pedigrees, the elements of K equal 2*Probability(IBD), where IBD means that two alleles drawn at random are identical by descent. Generally, K calculated from markers is an IBS matrix. The resulting multiplier is then not σ^2_a but some unknown constant times σ^2_a. Some methods for calculating K, such as those implemented in SPaGEDI, actually use markers to develop an estimate of the IBD relationship matrix. For those values of K, the resulting variance estimate can be considered an estimate of σ^2_a as long as the assumptions of the method used to derive K are not violated for the population being analyzed. One implication is that two different K matrices may give very different estimates of σ_a and heritability yet produce the same model fit and test of marker association.
 
@@ -26,15 +26,15 @@ Using MLM is very similar to using GLM. The difference is that in addition to ch
 
 All MLM analyses create two output tables, model statistics and model effects. If compression is used, the analysis creates three tables.
 
-![MLM output 3.png](https://bitbucket.org/repo/bRpKEG/images/1382986900-MLM%20output%203.png)
+![MLM output 3](mlm_output_3.png)
 
 The statistics table shows the results of the tests for each trait. The first line is for the model with no markers. Following that is a single line for each marker tested. The columns labeled “df”, “F”, and “p” are the degrees of freedom, F, and p-value from the F distribution for the test of the marker. The columns with “add_” are the degrees of freedom, F, and p-value from the F-test on the additive model, and the ones with “dom_” are the degrees of freedom, F, and p-value from the F-test of dominance after the additive model has been fitted. The column “errordf” is the degrees of freedom used for the denominator of the F-test. The column labeled “markerR2” is the R^2 for the marker calculated based on a formula for R^2 for a generalized least squares (GLS) model as shown here.
 
-![MLM Formula 4.png](https://bitbucket.org/repo/bRpKEG/images/2003925505-MLM%20Formula%204.png)
+![MLM Formula 4](mlm_formula_4.png)
 
 The columns “Genetic Var”, Residual Var”, and “-2LnLikelihood” list σ^2_a, σ^2_e, and minus two times the model likelihood, respectively. When the P3D option is used, all of the values are the same for a given trait because they are only calculated once. A second table lists the estimated effects of each allele for each marker similar to the output for GLM. The compression results table shown below shows the likelihood, genetic variance, and error variance for each compression level tested during the optimization process. The meaning of groups and compression is discussed above in the description of the compression method. The compression level with the lowest value of -2LnLk is used for testing markers.
 
-![MLM output 4.png](https://bitbucket.org/repo/bRpKEG/images/1205894737-MLM%20output%204.png)
+![MLM output 4](mlm_output_4.png)
 
 ## Command
 

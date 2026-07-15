@@ -10,11 +10,11 @@ To run GLM, select a data set and then click the GLM button. A dialog box will p
 
 The following table shows an example of the Marker Test output as viewed with Results/Table:
 
-![GLM output 1.png](https://bitbucket.org/repo/bRpKEG/images/2836584079-GLM%20output%201.png)
+![GLM output 1](glm_output_1.png)
 
 The table shows the F-statistics and p-values for the requested F-tests for the main and additive models, and for the F-test for dominance after fitting the additive model. It also contains marker_Rsq, mean squares (MS) and degrees of freedom (DF) for the marker effect, for the model (corrected for the mean), and for error. If taxa are replicated (across reps or environments), then the markers are tested using the taxa within marker mean square. If taxa are unreplicated, then the residual mean square is used. Marker_Rsq is the marginal R-squared for the marker calculated as SS Marker (after fitting all other model terms) / SS Total, where SS stands for sum of squares. The following table shows an example of the Allele Estimates output as viewed with Results/Table:
 
-![GLM output 3.png](https://bitbucket.org/repo/bRpKEG/images/1366794734-GLM%20output%203.png)
+![GLM output 3](glm_output_3.png)
 
 For each marker and trait combination, each marker allele is listed along with the chromosome and locus position of that marker, number of observations for taxa carrying that allele (Obs), the allele, and the estimate of the effect of that allele. Because of the way that GLM codes alleles, the last allele estimate for a marker is always zero and the other allele estimates are relative to that.
 

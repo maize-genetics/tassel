@@ -16,7 +16,7 @@ Flowering time = Population structure + Marker effect + residual
 
 One of the reports added to data tree is labeled “GLM_Stats_” followed by the name of the joint data. The following table shows an example of the GLM Stats output as viewed with Results/Table:
 
-![GLM output 1.png](https://bitbucket.org/repo/bRpKEG/images/686848184-GLM%20output%201.png)
+![GLM output 1](glm_output_1.png)
 
 In addition to the information for traits and markers, the data set contains the following statistics:
 
@@ -38,4 +38,4 @@ Clicking “marker_p” will sort the table by P value. The smallest P value is 
 
 The other data added to the data tree is labeled “GLM_Genotypes_” followed by the name of the joint data. For the most significant SNP (highlighted in the figure below), there were two genotypes (AA and GG). There are 220 lines with genotype AA and 41 lines with allele GG. For the trait dpoll (days to pollination), the difference between the two homozygotes was 3.86 days.
 
-![GLM output 2.png](https://bitbucket.org/repo/bRpKEG/images/2398513383-GLM%20output%202.png)
+![GLM output 2](glm_output_2.png)

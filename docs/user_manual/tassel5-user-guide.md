@@ -70,7 +70,7 @@ The  command--line  version  of  TASSEL,  called  the  Pipeline,  provides  user
 
 #### _1.2 Open  Source  Code_
 
-Open  source  code  for  TASSEL  is  available  at:  https://bitbucket.org/tasseladmin/tassel--5--source.  The  package  uses a  number  of  other  libraries  that  are  included  in  the  TASSEL  distribution.  These  include  a  modified  version  of  the PAL  library  (http://www.cebl.auckland.ac.nz/pal--project/),  the  COLT  library  (http://dsd.lbl.gov/~hoschek/colt/), jFreeChart  (http://www.jfree.org/jfreechart/),  Guava  (Google  Core  Libraries)
+Open  source  code  for  TASSEL  is  available  at:  https://github.com/maize-genetics/tassel.  The  package  uses a  number  of  other  libraries  that  are  included  in  the  TASSEL  distribution.  These  include  a  modified  version  of  the PAL  library  (http://www.cebl.auckland.ac.nz/pal--project/),  the  COLT  library  (http://dsd.lbl.gov/~hoschek/colt/), jFreeChart  (http://www.jfree.org/jfreechart/),  Guava  (Google  Core  Libraries)
 
 (https://code.google.com/p/guava--libraries),  JUnit  (http://junit.org),  Archaeopteryx (https://sites.google.com/site/cmzmasek/home/software/archaeopteryx),  and  BioJava  (http://www.biojava.org).
 

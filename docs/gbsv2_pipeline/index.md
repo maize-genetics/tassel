@@ -38,10 +38,10 @@ GBSSeqToTagDBPlugin() is the first step in the pipeline.  It identifies tags fro
 
 ### Enzymes
 
-The list of enzymes currently supported can be seen in the [enzymes.ini](https://bitbucket.org/tasseladmin/tassel-5-standalone/src/master/lib/enzymes.ini) file.  If you would like to use an enzyme that is not currently supported, you can easily add that with these steps:
+The list of enzymes currently supported can be seen in the [EnzymeList](https://github.com/maize-genetics/tassel/blob/main/src/main/java/net/maizegenetics/analysis/gbs/v2/EnzymeList.java) source file.  If you would like to use an enzyme that is not currently supported, you can easily add that with these steps:
 
-1. git clone https://bitbucket.org/tasseladmin/tassel-5-standalone.git
-2. Edit file tassel-5-standalone/lib/enzymes.ini :  add your new enzymes
+1. Download and extract the TASSEL Standalone distribution from the [GitHub Releases page](https://github.com/maize-genetics/tassel/releases).
+2. Edit file `tassel-5-standalone/lib/enzymes.ini` :  add your new enzymes
 
 * name - name of enzyme
 * initialCutSiteRemnant - should be the only forward/first enzyme remnant sequence.

@@ -6,7 +6,7 @@ _Two requirements for FastAssociation are (1) that phenotypes have no missing da
 
 To run a FastAssociation analysis, choose a merged genotype-phenotype data set and click "Analysis/Fast Association" on the menu bar. The following dialog box will be displayed:
 
-![Screen Shot 2015-02-18 at 1.34.10 PM.png](https://bitbucket.org/repo/bRpKEG/images/3043304264-Screen%20Shot%202015-02-18%20at%201.34.10%20PM.png)
+![Fast Association dialog](fast_association_dialog.png)
 
 MaxPValue : The maximum p-value that will be output by the analysis. (Default: 0.001)
 

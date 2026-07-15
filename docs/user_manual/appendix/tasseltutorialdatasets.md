@@ -1,6 +1,6 @@
 # TASSEL Tutorial Data sets
 
-https://tassel.bitbucket.io/docs/TASSELTutorialData5.zip
+https://github.com/maize-genetics/tassel_test_data/releases/download/v1.0.0/tassel_test_data_v1.tar.gz
 
 File name | Type | Format | Description
 :-----:|:-----:|:-----:|:-----:

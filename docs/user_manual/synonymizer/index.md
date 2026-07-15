@@ -14,22 +14,22 @@ You can skip Step 2. if you wish, however it is recommended that you double chec
 
 To begin the Plugin simply click 'Data'->'Synonymizer' as viewed in the screenshot below:
 
-![SynonymizerMenu.png](https://bitbucket.org/repo/bRpKEG/images/3807480441-SynonymizerMenu.png)
+![Synonymizer menu](synonymizer_menu.png)
 
 A popup window will appear asking if you would like to run the Full Synonymizer Pipeline.
 
-![FullSynonymizer.png](https://bitbucket.org/repo/bRpKEG/images/992883072-FullSynonymizer.png)
+![Full Synonymizer](full_synonymizer.png)
 
 If you already know what Similarity Measurement you wish to use or just the Synonymized file quickly, this option is best.  The Full Synonymizer Pipeline will simply guide you through the three steps outlined above automatically.  However, if you are unsure of what Similarity Measurement best suites the data, it is best to click the 'No' option.
 
 If you selected 'No', the following window will pop up asking which of the 3 steps you wish to do.  Because you are likely needing to generate a Synonym List, chose the first(top) option.
 
-![SynonymizerModeChoose.png](https://bitbucket.org/repo/bRpKEG/images/3218397114-SynonymizerModeChoose.png)
+![Synonymizer mode choose](synonymizer_mode_choose.png)
 
 ## Step 1: Create Synonym List
 Upon either selecting the 'Yes' Option on the full Pipeline prompt or the first option in the 3 Step Chooser prompt, the following dialog box will pop up.
 
-![SynonymizerStep1_1.png](https://bitbucket.org/repo/bRpKEG/images/4218037934-SynonymizerStep1_1.png)
+![Synonymizer step 1](synonymizer_step1_1.png)
 
 As can be seen in the above screenshot, TASSEL is asking for 3 items.  The first item is the file to be referenced when finding Synonyms.  In other words, this is the file which contains the set of Taxa Names you wish to use with the second file.  The second item is the file which you wish to eventually overwrite the names of the taxa for.  The third item which needs to be specified is the Similarity Technique.  Currently TASSEL has 8 similarity techniques implemented.  They are as follows:
 
@@ -60,11 +60,11 @@ To generate the Synonym List, simply click the 'Ok' button, and the Synonym List
 
 After the Synonym List has been created, the next step is to double check and manually edit the Synonym List.  This can be done by clicking on the Synonymizer Plugin from the menu, click 'No' for the full pipeline prompt then click the second option on the Synonymizer Step Chooser.  This will bring up a prompt asking which Synonym List object you wish to look at and then a Window will appear.  Please note that if you are running the full Synonymizer Pipeline TASSEL will select the list you just created automatically.
 
-![SynonymizerStep2_1.png](https://bitbucket.org/repo/bRpKEG/images/353395940-SynonymizerStep2_1.png)
+![Synonymizer step 2](synonymizer_step2_1.png)
 
 This window allows you to modify the Synonym List.  Note that some taxa may have multiple synonyms.  This is due to the fact that multiple names have had the same score when creating the synonym list.  Tassel will only use the first synonym when applying the synonyms to the original files.  This window allows you to manipulate the synonyms.  For instance, say you would like to ignore any synonyms with less than .50 similarity.  Simply enter in .5 into the text field(denoted by a red box in the screenshot below) and click on the 'Apply Threshold' button.  This will set all of the taxa with Similarity Scores below .5 to have no synonym.
 
-![Screen Shot 2015-03-31 at 2.38.00 PM.png](https://bitbucket.org/repo/bRpKEG/images/2996825388-Screen%20Shot%202015-03-31%20at%202.38.00%20PM.png)
+![Synonymizer step 2 detail](synonymizer_step2_2.png)
 
 One can also manually edit which synonym is should correspond to a given taxa.  To do this, simply click on the taxa you need to edit from the left table.  A set of similar synonyms will be displayed on the right table. Select the taxa you wish to use and then click on the button which has the left arrow character located between the two tables.  This will associate the change.  If the needed taxa name is not in the list, you can add your own synonym by selecting the name you wish to change in the left table, entering in the new name in the text field labeled as 'Add a new Synonym' then clicking the 'Add Synonym' Button.  You can also set a single taxa to not have any synonym by selecting the taxa from the left table and then clicking on the 'No Synonym' button.  Once you are done, click the 'Ok' button to record your changes.
 
@@ -72,7 +72,7 @@ One can also manually edit which synonym is should correspond to a given taxa.  
 
 Once the Synonym List has been manually edited/validated, it is time to apply the Synonym List to the original dataset.  To do this, open up the Synonymizer Plugin as before, but select the third and final option from the Synonymizer Step Chooser.  This will bring up a window which will allow you to select which File to be Synonymized and which file to use which contains the Synonym List.
 
-![SynonymizerStep3.png](https://bitbucket.org/repo/bRpKEG/images/508864684-SynonymizerStep3.png)
+![Synonymizer step 3](synonymizer_step3.png)
 
 Please note that if you are using the full Synonymizer Pipeline, this window will not show up and the application of the synonym list will happen automatically.
 

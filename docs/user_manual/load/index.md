@@ -4,7 +4,7 @@ Open provides options to import files for genotypes, phenotypes, populations str
 
 The tutorial data can be downloaded from the TASSEL website at this link:
 
-https://tassel.bitbucket.io/docs/TASSELTutorialData5.zip
+https://github.com/maize-genetics/tassel_test_data/releases/download/v1.0.0/tassel_test_data_v1.tar.gz
 
 To use the data, the zip file must be uncompressed and saved on your local machine. These tutorial files will load correctly with the “Make Best Guess” option. Multiple files can be imported simultaneously by highlighting them first (holding Shift or Control key while clicking) and then clicking the Open button.
 

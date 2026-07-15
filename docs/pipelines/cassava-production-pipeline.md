@@ -12,7 +12,7 @@ Must  have  Java  7  installed.  Check  using  this  command... java  --version
 
 ## To  Initially  Download  Tassel  5  Standalone  Code...
 
-git  clone  https://bitbucket.org/tasseladmin/tassel--5--standalone.git
+git  clone  https://github.com/maize-genetics/tassel.git
 
 ## To  Update  Packages  to  Latest  Source  Code...
 
