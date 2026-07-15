@@ -1,5 +1,3 @@
 # GBS Menu
 
-## [GBSv2](../../gbsv2_pipeline/index.md) is recommended over this pipeline.
-
-[Gbs Pipeline](../../pipelines/gbs-pipeline.md)
+See the [GBSv2 Pipeline](../../gbsv2_pipeline/index.md) documentation for the recommended GBS workflow.

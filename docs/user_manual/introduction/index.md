@@ -94,10 +94,6 @@ TASSEL is organized into four main panels with menus for the functions at the to
 [Tassel5 Pipeline Cli](../../pipelines/tassel5-pipeline-cli.md)
 
 # GBS Pipeline
-The GBSv2 pipeline is the latest GBS pipeline and its use is recommended.  The GBSv2 pipeline is faster and more efficient than the original GBSv1 version.
+The GBSv2 pipeline is the recommended GBS pipeline in TASSEL 5.
 
-[GBSv2]( ../../gbsv2_pipeline/index.md )
-
-The GBSv1 pipeline remains available in TASSEL 5, but GBSv2 is the recommended version to use.
-
-[Tassel GBSv1 Pipeline](../../pipelines/gbs-pipeline.md)
+[GBSv2](../../gbsv2_pipeline/index.md)
