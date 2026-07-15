@@ -163,6 +163,78 @@
   color: #fff;
 }
 
+/* Getting Started section cards */
+.gs-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.md-typeset .gs-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 8px;
+  color: var(--md-typeset-color);
+  background-color: var(--md-default-bg-color);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.md-typeset .gs-card:hover,
+.md-typeset .gs-card:focus-within {
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+}
+
+.md-typeset .gs-card > p {
+  margin: 0 0 0.5rem;
+}
+
+.md-typeset .gs-card .gs-card__icon {
+  color: var(--md-primary-fg-color);
+}
+
+.md-typeset .gs-card .gs-card__icon svg {
+  width: 2.25rem;
+  height: 2.25rem;
+  fill: currentColor;
+}
+
+.md-typeset .gs-card .gs-card__title {
+  font-size: 1.15rem;
+  margin: 0.4rem 0 0.5rem;
+}
+
+.md-typeset .gs-card .gs-card__cta {
+  margin-top: auto;
+  padding-top: 1rem;
+  font-weight: 600;
+  color: var(--md-primary-fg-color);
+  transition: color 0.2s ease;
+}
+
+/* Stretched link: make the whole card clickable via the CTA */
+.md-typeset .gs-card .gs-card__cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+}
+
+.md-typeset .gs-card .gs-card__cta svg {
+  vertical-align: text-bottom;
+}
+
+.md-typeset .gs-card:hover .gs-card__cta,
+.md-typeset .gs-card:focus-within .gs-card__cta {
+  color: var(--md-accent-fg-color);
+}
+
 @media screen and (max-width: 30em) {
   .tx-hero__content h1 {
     font-size: 1.4rem;
