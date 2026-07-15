@@ -1,4 +1,4 @@
-# ![Tassel_Logo64.png](Tassel_Logo64.png "Tassel 5 User Manual") TASSEL 5 User Manual
+# ![TASSEL Logo](../images/tassel_logo.svg){ style="height:1em; vertical-align:middle" } TASSEL 5 User Manual
 
 ## [Introduction](introduction/index.md)
 
