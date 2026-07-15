@@ -16,7 +16,7 @@ TASSEL is written primarily in **Java** (with some **Kotlin**) and built with
 | Understand how the code is organized                       | [Project Architecture](architecture.md)         |
 | Add a new analysis, filter, or data operation             | [Developing Plugins](plugin-development.md)      |
 | Run the test suite and check statistical correctness       | [Testing](testing.md)                           |
-| Submit a change through a pull request                     | [Contributing Code](contributing.md)            |
+| Submit a change through a pull request                     | [Contributing](../CONTRIBUTING.md)              |
 | Cut a release and publish artifacts                        | [Releasing](releasing.md)                       |
 
 ## Toolchain at a glance

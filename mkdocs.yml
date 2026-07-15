@@ -170,7 +170,6 @@ nav:
       - Project Architecture: developer/architecture.md
       - Developing Plugins: developer/plugin-development.md
       - Testing: developer/testing.md
-      - Contributing Code: developer/contributing.md
       - Releasing: developer/releasing.md
   - Community:
       - Contributing: CONTRIBUTING.md
