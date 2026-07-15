@@ -2,22 +2,8 @@
 
 **Authors:** Fei Lu, Jeff Glaubitz, James Harriman, Terry Casstevens, Rob Elshire
 
-_Please note that this is an unfinished work in progress…_
+_Please note that this is an unfinished work in progress..._
 
-## April 1<sup>st</sup> , 2012
-
-## Table of Contents
-
-|Introduction .............................................................................................................................................................. 1|
-|---|
-|UCreatWorkingDirPlugin........................................................................................................................................ 3|
-|UQseqToTagCountPlugin....................................................................................................................................... 3|
-|UMergeTaxaTagCountPlugin.................................................................................................................................. 4|
-|UTagCountToTagPairPlugin................................................................................................................................... 5|
-|UTagPairToTBTPlugin........................................................................................................................................... 6|
-|UTBTToMapInfoPlugin .......................................................................................................................................... 6|
-|UMapInfoToHapMapPlugin.................................................................................................................................... 7|
-|Appendix 1:  Key file example.............................................................................................................................. 8|
 
 ## Introduction
 
@@ -35,21 +21,22 @@ Please see http://www.maizegenetics.net/tassel/docs/TasselPipelineCLI.pdf for ge
 /programs
 ```
 
-and then renamed the directory
+...and then renamed the directory:
 
 ```
 /programs/tassel3.0_standalone
 ```
 
-to
+...to:
 
-## `/programs/tassel`
+```
+/programs/tassel
+```
 
 If not, you will have to edit the example commands appropriately ( _e.g._ , replace “ `tassel` ” with “ `tassel3.0_standalone` ”).
 
 If you have more memory available on your machine than 1.5GB, then you can increase the amount of memory available to TASSEL by opening `run_pipeline.pl` (or `run_pipeline.bat` ) in a text editor and modifying “ `-Xms512m –Xmx1536m` ” to (for example) “ `-Xms4g` ” (the `-Xms` option controls the amount of
 
-1
 
 ![](img/uneak-pipeline/TasselPipelineUNEAK.pdf-0002-00.png)
 

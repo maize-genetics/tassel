@@ -10,11 +10,11 @@ TASSEL supports several command-line pipelines for genotyping, association analy
 ## Genotyping Pipelines
 
 - [GBSv2 Pipeline](../gbsv2_pipeline/index.md) — GBS discovery and production pipeline (recommended)
-- [UNEAK Pipeline](uneak-pipeline.md) — UNEAK genotyping pipeline
-- [Pan-genome Atlas (PanA)](pangenome-atlas-pipeline.md) — pan-genome atlas pipeline
-- [Cassava Production Pipeline](cassava-production-pipeline.md) — cassava production pipeline
 
 ## Archived
 
+- [UNEAK Pipeline](uneak-pipeline.md) — UNEAK genotyping pipeline
+- [Pan-genome Atlas (PanA)](pangenome-atlas-pipeline.md) — pan-genome atlas pipeline
+- [Cassava Production Pipeline](cassava-production-pipeline.md) — cassava production pipeline
 - [Pipeline CLI (v3 / v4)](tassel-pipeline-cli-v3-v4.md)
 - [Pipeline Tutorial (2011)](pipeline-tutorial-2011.md)

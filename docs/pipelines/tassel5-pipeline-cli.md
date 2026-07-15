@@ -1,28 +1,28 @@
-# TASSEL 5.0 Pipeline Command Line Interface: _Guide to using Tassel Pipeline_
+# TASSEL 5 Pipeline Command Line Interface: _Guide to using Tassel Pipeline_
 
-### Terry Casstevens (tmc46@cornell.edu)
+## Overview
 
-Institute for Genomic Diversity, Cornell University, Ithaca, NY 14853-2703
+The TASSEL pipeline is the command-line interface for running TASSEL analyses
+without the GUI. It chains analysis steps for loading data, filtering, running
+analyses, and exporting results into a single reproducible command, which makes
+it well suited for scripting, batch jobs, and running on servers or clusters.
 
-_July 31, 2019_
+!!! info
 
-## Contents
+    This page is the **complete flag reference** for the pipeline. It covers
+    installation and execution, runtime options, and every supported flag grouped by
+    function. If you are new to the pipeline, start with the
+    [Pipeline Tutorial](pipeline-tutorial.md), which explains the core concepts
+    (plugins, forks, and combining data) before diving into individual flags.
 
-- [Prerequisites](#prerequisites)
-- [Source Code](#source-code)
-- [Install](#install)
-- [Execute](#execute)
-- [Increasing Heap Size](#increasing-heap-size)
-- [Setting Logging to Debug or Standard (With optional filename)](#setting-logging-to-debug-or-standard-with-optional-filename)
-- [Examples](#examples)
-- [Examples (XML Configuration Files)](#examples-xml-configuration-files)
-- [Setting Global Plugin Parameter Values (-configParameters)](#setting-global-plugin-parameter-values-configparameters)
-- [Usage](#usage)
-    - [Pipeline Controls](#pipeline-controls)
-    - [Data](#data)
-    - [Filter](#filter)
-    - [Analysis](#analysis)
-    - [Results](#results)
+| Section | What it covers |
+|---|---|
+| [Prerequisites](#prerequisites) through [Execute](#execute) | Java requirements, installation, and how to launch the pipeline |
+| [Increasing Heap Size](#increasing-heap-size) through [Setting Global Plugin Parameter Values](#setting-global-plugin-parameter-values-configparameters) (`-configParameters`) | Memory, logging, examples, XML configs, and global defaults |
+| [Usage](#usage) | Full flag reference tables for pipeline controls, data I/O, filtering, analysis, and results |
+
+Launch the pipeline with `./run_pipeline.pl` (UNIX / macOS) or
+`run_pipeline.bat` (Windows).
 
 ## Prerequisites
 
@@ -100,12 +100,12 @@ This command translates the specified XML configuration file back into the origi
 ./run_pipeline.pl -translateXML config.xml
 ```
 
-## Setting Global Plugin Parameter Values _(-configParameters)_
+## Setting Global Plugin Parameter Values (`-configParameters`)
 
 This flag defines plugin parameter values to be used during a TASSEL execution.  Values are used in the following priority (highest to lowest).
 
 1. User specified value (i.e. -method Dominance_Centered_IBS)
-2. Specified by -configParameters &lt;filename&gt;
+2. Specified by `-configParameters <filename>`
 3. Plugin default value
 
 **Example (i.e. config.txt)...**

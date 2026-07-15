@@ -1,14 +1,13 @@
-# Tassel 5 GBS v2 Pipeline
-
-## NOTE on sqlite jar compatibility
-
-In October, 2022 the sqlite jar that ships with tassel-5-standalone was updated to a version that supports the Apple M1 chip.  If you experience problems with the DiscoverySNPCallerPluginV2 code hanging without error in the log file, it may be the new jar.  We have found that only the 3.8.5-pre1 version of this jar works with large databases.
-
-If you are not running on a machine with the M1 chip, and you have issues, please replace the sqlite jar in the tassel-5-standalone/lib folder with the jar found at https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.8.5-pre1
-
-## Introduction
+# TASSEL 5 GBSv2 Pipeline
 
 This document describes the GBSv2 pipeline available in TASSEL 5 for species with a reference genome.
+
+!!! note "SQLite jar compatibility"
+
+    In October, 2022 the sqlite jar that ships with tassel-5-standalone was updated to a version that supports the Apple M1 chip. If you experience problems with the `DiscoverySNPCallerPluginV2` code hanging without error in the log file, it may be the new jar. We have found that only the 3.8.5-pre1 version of this jar works with large databases.
+
+    If you are not running on a machine with the M1 chip, and you have issues, please replace the sqlite jar in the `tassel-5-standalone/lib` folder with the jar found at <https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.8.5-pre1>
+
 
 ## GBSv2 Discovery/Production Pipeline Overview
 
