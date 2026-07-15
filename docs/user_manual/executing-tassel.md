@@ -1,89 +1,116 @@
 # Executing TASSEL
 
-![](img/executing-tassel/ExecutingTassel.pdf-0001-00.png)
+This page describes how to launch TASSEL, adjust the Java heap size for the GUI
+and command line, and troubleshoot common startup errors. For the full
+command-line flag reference, see the
+[Pipeline Reference](../pipelines/tassel5-pipeline-cli.md) and the
+[GBSv2 Pipeline](../gbsv2_pipeline/index.md).
 
-# Change Heap for GUI on MAC
+## Change Heap Size (GUI)
 
-- In Applications Folder, Double click “TASSEL 5”
+TASSEL runs on the Java Virtual Machine, which reserves a fixed range of memory
+called the heap. Increase the maximum heap (`-Xmx`) if you run out of memory on
+large datasets.
 
-- Right click on “Tassel 5” application, and choose “Show Package Contents”
+### macOS
 
-- Double click on “Contents”
+1. In the Applications folder, double-click `TASSEL 5`.
+2. Right-click the `TASSEL 5` application and choose **Show Package Contents**.
+3. Open the `Contents` folder.
+4. Edit the file `vmoptions.txt`.
+5. Change `-Xms` (minimum heap, e.g. `-Xms512m`) and `-Xmx` (maximum heap, e.g. `-Xmx5g`) as appropriate.
 
-- Edit file vmoptions.txt
+### Windows
 
-- Change -Xms (minimum heap, i.e. -Xms 512m) and -Xmx (maximum heap, i.e. -Xmx 5g) as appropriate.
+1. Go to the TASSEL installation directory (default: `C:\Program Files\TASSEL5`).
+2. Edit the file `Tassel 5.vmoptions`.
+3. Change `-Xms` (minimum heap, e.g. `-Xms512m`) and `-Xmx` (maximum heap, e.g. `-Xmx5g`) as appropriate.
 
-# Change Heap for GUI on Windows
+!!! note
 
-- In Tassel Installation Directory (default: C:\Program Files\TASSEL5)
+    If User Account Control (UAC) is enabled, start your text editor with
+    **Run as administrator** before editing `Tassel 5.vmoptions`.
 
-- Edit file “Tassel 5.vmoptions” (NOTE: If you have User Account Control (UAC) enabled, start the editor with “Run as administrator”)
+## Command Line (macOS / Linux / Windows Bash)
 
-- Change -Xms (minimum heap, i.e. -Xms 512m) and -Xmx (maximum heap, i.e. -Xmx 5g) as appropriate.
+Add the TASSEL directory to your `PATH` so you can run the scripts from any
+location, for example in `.bash_profile`:
 
-# Command Line on MAC / Linux / Windows (bash shell)
+```bash
+PATH=$PATH:/analysis_tools/tassel5.0_standalone
+```
 
-## You can run these from any location if you have the Tassel directory on your PATH.
+Then use these commands:
 
-PATH=$PATH:/analysis_tools/tassel5.0_standalone (For example in .bash_profile)
+```bash
+./start_tassel.pl -Xmx4g   # Start the GUI with a 4 GB max heap size
+./run_pipeline.pl -Xmx5g   # Run the command line with a 5 GB max heap size
+```
 
-## Use these commands
+## Command Line (Windows)
 
-- ./start_tassel.pl -Xmx4g (Example to start GUI with 4 GB Max Heap size)
+```bat
+start_tassel.bat   :: Start the GUI
+run_pipeline.bat   :: Run the command line
+```
 
-- ./run_pipeline.pl -Xmx5g (Example to execute command line with 5 GB Max Heap size)
+!!! note
 
-https://bitbucket.org/tasseladmin/tassel-5-source/wiki/docs/Tassel5PipelineCLI.pdf https://bitbucket.org/tasseladmin/tassel-5-source/wiki/Tassel5GBSv2Pipeline
+    To increase the heap size, edit the `.bat` file you are using and change the
+    `-Xmx` parameter.
 
-# Command Line on Windows
+## Troubleshooting
 
-**To increase heap size, you need to edit the .bat you are using.  Change the -Xmx parameter.**
+!!! warning "Could not create the Java Virtual Machine"
 
-## Use these commands
+    If you get an error message containing `Error: Could not create the Java
+    Virtual Machine`, `The specified size exceeds the maximum representable
+    size`, or `Could not reserve enough space for 2097152KB object heap`, you
+    most likely have a mismatch between your Java installation and operating
+    system: one is 32-bit and the other is 64-bit.
 
-- ./start_tassel.bat (To start GUI)
+    Run `java -version` to check whether your Java matches your operating system.
+    Note that there may be multiple Java installations on your machine, and your
+    web browser may use a different one than your command line. Run
+    `java -d64 -version` to see if your installation supports 64-bit.
 
-- ./run_pipeline.bat (To execute command line)
+    See the
+    [Oracle HotSpot heap FAQ](https://www.oracle.com/technetwork/java/hotspotfaq-138619.html#gc_heap_32bit)
+    for details.
 
-https://bitbucket.org/tasseladmin/tassel-5-source/wiki/docs/Tassel5PipelineCLI.pdf https://bitbucket.org/tasseladmin/tassel-5-source/wiki/Tassel5GBSv2Pipeline
+!!! warning "Invalid maximum heap size"
 
-© > @ J tassel.bitbucket.org/TasselArchived.htm|
+    ```text
+    Invalid maximum heap size: -Xmx4g
+    The specified size exceeds the maximum representable size.
+    Error: Could not create the Java Virtual Machine.
+    ```
 
-![](img/executing-tassel/ExecutingTassel.pdf-0003-01.png)
+    This may be due to a limit on the maximum heap, which is system dependent.
+    Try reducing the `-Xmx` setting.
 
-![](img/executing-tassel/ExecutingTassel.pdf-0003-02.png)
+!!! warning "UnsupportedClassVersionError"
 
-# Troubleshooting...
+    ```text
+    Exception in thread "main" java.lang.UnsupportedClassVersionError:
+    net/maizegenetics/pipeline/TasselPipeline : Unsupported major.minor version 51.0
+    ```
 
-## **- If you get an error message containing “Error: Could not create the Java Virtual Machine** ” or
+    You need a higher version of Java. TASSEL 5 requires Java 1.8.
 
-## “ **The specified size exceeds the maximum representable size** ” or “ **Could not reserve enough space for 2097152KB object heap** “...
+!!! warning "Could not find or load main class"
 
-- http://www.oracle.com/technetwork/java/hotspotfaq 138619.html#gc_heap_32bit
+    If you get `Error: Could not find or load main class
+    net.maizegenetics.tassel.TASSELMainApp` while running `start_tassel.pl` or
+    `run_pipeline.pl` in the Bash shell on Windows, change the following line to
+    use a `;` instead of a `:`.
 
-Most likely, you have a mismatching in your Java Installation and Operating System.  One will be 32-Bit and the other 64-Bit.  Type the command “java -version ” to see if it matches your Operating System.  Notice there may be multiple Java installations on your machine.  Your web browser may be using a different installation than your command line.  Try the command “java -d64 -v ersion” to see if your installation supports 64-Bit.
+    ```perl
+    my $CP = join(":", @fl);
+    ```
 
-## - If you get this error message...
+!!! note "macOS Gatekeeper"
 
-Invalid maximum heap size: -Xmx4g
-
-The specified size exceeds the maximum representable size. Error: Could not create the Java Virtual Machine.
-
-This might be due to a limit in the maximum heap, but it is system dependent.  Try reducing the -Xmx setting.
-
-## - If you get an error message like this… Exception in thread "main"
-
-## java.lang.UnsupportedClassVersionError: net/maizegenetics/pipeline/TasselPipeline : Unsupported major.minor version 51.0
-
-You need a higher level of Java.  Tassel 5 requires Java 1.8.
-
-## - If you get this error… “Error: Could not find or load main class
-
-**net.maizegenetics.tassel.TASSELMainApp” while running start_tassel.pl or run_pipeline.pl in the bash shell on Windows.**
-
-Change the following line to use a ; instead of a :. my $CP = join(":", @fl);
-
-**- Tassel does not have an Apple signature, you may need to adjust gatekeeper to install the program.**
-
-https://support.apple.com/en-us/HT202491
+    TASSEL does not have an Apple signature, so you may need to adjust Gatekeeper
+    to install the program. See
+    [Apple's instructions](https://support.apple.com/en-us/HT202491).

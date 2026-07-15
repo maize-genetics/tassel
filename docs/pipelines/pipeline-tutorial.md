@@ -1,9 +1,11 @@
 # TASSEL 5 Pipeline Tutorial
 
-This tutorial explains how the TASSEL command-line pipeline works and walks
-through building your own analyses. It focuses on the *concepts* of plugins,
-forks, and how data flows between them, so that the individual flags in the
-[TASSEL 5 Pipeline (CLI)](tassel5-pipeline-cli.md) reference make sense.
+!!! info
+
+    This tutorial explains how the TASSEL command-line pipeline works and walks
+    through building your own analyses. It focuses on the *concepts* of plugins,
+    forks, and how data flows between them, so that the individual flags in the
+    [TASSEL 5 Pipeline (CLI)](tassel5-pipeline-cli.md) reference make sense.
 
 ## What is the pipeline?
 

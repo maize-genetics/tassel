@@ -1,6 +1,8 @@
 # TASSEL 5 GBSv2 Pipeline
 
-This document describes the GBSv2 pipeline available in TASSEL 5 for species with a reference genome.
+!!! info
+
+    This document describes the GBSv2 pipeline available in TASSEL 5 for species with a reference genome.
 
 !!! note "SQLite jar compatibility"
 

@@ -154,14 +154,13 @@ nav:
   - Pipelines:
       - Overview: pipelines/index.md
       - Pipeline Tutorial: pipelines/pipeline-tutorial.md
-      - TASSEL 5 Pipeline (CLI): pipelines/tassel5-pipeline-cli.md
+      - Pipeline Reference: pipelines/tassel5-pipeline-cli.md
       - GBSv2 Pipeline: gbsv2_pipeline/index.md
       - Archived:
           - UNEAK Pipeline: pipelines/uneak-pipeline.md
           - Pan-genome Atlas (PanA): pipelines/pangenome-atlas-pipeline.md
           - Cassava Production Pipeline: pipelines/cassava-production-pipeline.md
           - Pipeline CLI (v3 / v4): pipelines/tassel-pipeline-cli-v3-v4.md
-          - Pipeline Tutorial (2011): pipelines/pipeline-tutorial-2011.md
   - Developer:
       - Overview: developer/index.md
       - Building from Source: developer/building-from-source.md

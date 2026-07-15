@@ -1,13 +1,11 @@
-# TASSEL 5 Pipeline Command Line Interface: _Guide to using Tassel Pipeline_
-
-## Overview
-
-The TASSEL pipeline is the command-line interface for running TASSEL analyses
-without the GUI. It chains analysis steps for loading data, filtering, running
-analyses, and exporting results into a single reproducible command, which makes
-it well suited for scripting, batch jobs, and running on servers or clusters.
+# TASSEL 5 Pipeline Reference Guide
 
 !!! info
+
+    The TASSEL pipeline is the command-line interface for running TASSEL analyses
+    without the GUI. It chains analysis steps for loading data, filtering, running
+    analyses, and exporting results into a single reproducible command, which makes
+    it well suited for scripting, batch jobs, and running on servers or clusters.
 
     This page is the **complete flag reference** for the pipeline. It covers
     installation and execution, runtime options, and every supported flag grouped by

@@ -1,6 +1,8 @@
 # Introduction
 
-**Disclaimer: While the Buckler Lab at Cornell University has performed extensive testing and results are, in general, reliable, correct or appropriate. Results are not guaranteed for any specific set of data. It is strongly recommended that users validate TASSEL results with other software.**
+!!! note "Disclaimer"
+
+    While the Buckler Lab at Cornell University has performed extensive testing and results are, in general, reliable, correct or appropriate. Results are not guaranteed for any specific set of data. It is strongly recommended that users validate TASSEL results with other software.
 
 While TASSEL has changed considerably since its initial public release in 2001, its primary function continues to be providing tools to investigate the relationship between phenotypes and genotypes (Bradbury et al 2007).  TASSEL has functionality for association study, evaluating evolutionary relationships, analysis of linkage disequilibrium, principal component analysis, cluster analysis, missing data imputation and data visualization.  TASSEL development has been led by a group focused on maize genetics and genomics, and for these reasons that software has design and computational optimizations that account for the biology found in many plants and breeding situations.  Compared to human genetics, many crops are highly diverse both at the nucleotide level and structural variations (10-50X greater than humans), inbreeding is common, large families are common, and whole genome prediction is being applied daily to real world problems.  These biological differences lead to some different optimizations that are of use to many biological systems outside of crops.
 
@@ -19,81 +21,130 @@ The command-line version of TASSEL, called the Pipeline, provides users the abil
 
 TASSEL is written in Java, thereby enabling its use with virtually any operating system. It can be installed using Java Web Start technology by simply clicking on a link at www.maizegenetics.net/tassel. A stand-alone version of TASSEL can also be downloaded to use in pipeline mode or in any situation where the user wishes to start the software from a command line.
 
-# Contributors
-Ed Buckler, Terry Casstevens, Peter Bradbury, Zhiwu Zhang, Dallas Kroon, Jeff Glaubitz, Kelly Swarts, Jason Wallace, Fei Lu, Alberto Romero, Cinta Romay, Eli Rodgers-Melnick, Alexander Lipka, Sara Miller, James Harriman, Yogesh Ramdoss, Michael Oak, Karin Holmberg, Natalie Stevens, Yang Zhang, Lynn Johnson, Zack Miller, Ramu Punna, and Janu Verma.
+## Contributors
 
-# Citations
+- Ed Buckler
+- Peter Bradbury
+- Terry Casstevens
+- Jeff Glaubitz
+- James Harriman
+- Lynn Johnson
+- Dallas Kroon
+- Fei Lu
+- Alexander Lipka
+- Karin Holmberg
+- Zack Miller
+- Sara Miller
+- Michael Oak
+- Ramu Punna
+- Alberto Romero
+- Cinta Romay
+- Eli Rodgers-Melnick
+- Yogesh Ramdoss
+- Natalie Stevens
+- Kelly Swarts
+- Janu Verma
+- Jason Wallace
+- Yang Zhang
+- Zhiwu Zhang
 
-### Overall Package:
-Bradbury PJ, Zhang Z, Kroon DE, Casstevens TM, Ramdoss Y, Buckler ES. (2007) [TASSEL: Software for association mapping of complex traits in diverse samples.](http://www.panzea.org/pdf/Bradbury_etal_2007_Bioinformatics_23_2633.pdf) Bioinformatics 23:2633-2635.
+## Citations
 
-### Genotyping by Sequencing:
-Glaubitz JC, Casstevens TM, Lu F, Harriman J, Elshire RJ, Sun Q, Buckler ES. (2014) [TASSEL-GBS: A High Capacity Genotyping by Sequencing Analysis Pipeline.](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0090346) PLoS ONE 9(2): e90346
+!!! info "Overall Package"
 
-### Mixed Model GWAS:
-Zhang Z, Ersoz E, Lai C-Q, Todhunter RJ, Tiwari HK, Gore MA, Bradbury PJ, Yu J, Arnett DK, Ordovas JM, Buckler ES. (2010) [Mixed linear model approach adapted for genome-wide association studies.](http://media.wix.com/ugd/fe9228_35b4d3d599f641f29ddaa58e67c04f74.pdf) Nature Genetics 42:355-360.
+    Bradbury PJ, Zhang Z, Kroon DE, Casstevens TM, Ramdoss Y, Buckler ES. (2007) [TASSEL: Software for association mapping of complex traits in diverse samples.](https://academic.oup.com/bioinformatics/article/23/19/2633/185151) Bioinformatics 23:2633-2635.
 
-# Getting Started
+    ```bibtex
+    @article{Bradbury2007,
+      author  = {Bradbury, Peter J. and Zhang, Zhiwu and Kroon, Dallas E. and Casstevens, Terry M. and Ramdoss, Yogesh and Buckler, Edward S.},
+      title   = {{TASSEL}: Software for association mapping of complex traits in diverse samples},
+      journal = {Bioinformatics},
+      volume  = {23},
+      number  = {19},
+      pages   = {2633--2635},
+      year    = {2007},
+      doi     = {10.1093/bioinformatics/btm311},
+      url     = {https://academic.oup.com/bioinformatics/article/23/19/2633/185151}
+    }
+    ```
+
+!!! info "Genotyping by Sequencing"
+
+    Glaubitz JC, Casstevens TM, Lu F, Harriman J, Elshire RJ, Sun Q, Buckler ES. (2014) [TASSEL-GBS: A High Capacity Genotyping by Sequencing Analysis Pipeline.](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0090346) PLoS ONE 9(2): e90346
+
+    ```bibtex
+    @article{Glaubitz2014,
+      author  = {Glaubitz, Jeffrey C. and Casstevens, Terry M. and Lu, Fei and Harriman, James and Elshire, Robert J. and Sun, Qi and Buckler, Edward S.},
+      title   = {{TASSEL-GBS}: A High Capacity Genotyping by Sequencing Analysis Pipeline},
+      journal = {PLOS ONE},
+      volume  = {9},
+      number  = {2},
+      pages   = {e90346},
+      year    = {2014},
+      doi     = {10.1371/journal.pone.0090346},
+      url     = {http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0090346}
+    }
+    ```
+
+!!! info "Mixed Model GWAS"
+
+    Zhang Z, Ersoz E, Lai C-Q, Todhunter RJ, Tiwari HK, Gore MA, Bradbury PJ, Yu J, Arnett DK, Ordovas JM, Buckler ES. (2010) [Mixed linear model approach adapted for genome-wide association studies.](https://www.nature.com/articles/ng.546) Nature Genetics 42:355-360.
+
+    ```bibtex
+    @article{Zhang2010,
+      author  = {Zhang, Zhiwu and Ersoz, Elhan and Lai, Ching-Qi and Todhunter, Rory J. and Tiwari, Hemant K. and Gore, Michael A. and Bradbury, Peter J. and Yu, Jianming and Arnett, Donna K. and Ordovas, Jose M. and Buckler, Edward S.},
+      title   = {Mixed linear model approach adapted for genome-wide association studies},
+      journal = {Nature Genetics},
+      volume  = {42},
+      number  = {4},
+      pages   = {355--360},
+      year    = {2010},
+      doi     = {10.1038/ng.546},
+      url     = {https://www.nature.com/articles/ng.546}
+    }
+    ```
+
+## Getting Started
 
 A quick way to get started using TASSEL is to load the [tutorial data](https://tassel.bitbucket.io/docs/TASSELTutorialData5.zip) and try performing analyses. However, because some of the necessary steps may not be intuitive, we recommend that new users follow the tutorial at the end of this manual. The objective of this section is to provide information necessary to install and start TASSEL software and to provide a brief overview of the interface.
 
 ![Tassel_Sequence_Viewer.png](Tassel_Sequence_Viewer.png)
 
-# Executing TASSEL
+## Executing TASSEL
 
 [Executing Tassel](../executing-tassel.md)
 
-# Open Source Code
+## Open Source Code
 
-Open source code for TASSEL is available at: https://bitbucket.org/tasseladmin/tassel-5-source. The package uses a number of other libraries that are included in the TASSEL distribution.
+Open source code for TASSEL is available at the [TASSEL 5 source repository](https://bitbucket.org/tasseladmin/tassel-5-source). The package also bundles several third-party libraries:
 
-Modified version of the PAL library (http://www.cebl.auckland.ac.nz/pal-project/)
+| Library | Description |
+|---|---|
+| [PAL](http://www.cebl.auckland.ac.nz/pal-project/) | Phylogenetic Analysis Library providing classes for molecular evolution, phylogenetics, and population genetics (modified version). |
+| [COLT](http://dsd.lbl.gov/~hoschek/colt/) | High-performance library for scientific and technical computing, including data structures, linear algebra, and statistics. |
+| [jFreeChart](http://www.jfree.org/jfreechart/) | Charting library used to generate the plots and graphs displayed in TASSEL results. |
+| [Guava](https://code.google.com/p/guava-libraries) | Google's core Java libraries, offering utilities for collections, caching, and general-purpose programming. |
+| [JUnit](http://junit.org) | Framework for writing and running the unit tests that validate TASSEL's code. |
+| [Archaeopteryx](https://sites.google.com/site/cmzmasek/home/software/archaeopteryx) | Java tool for visualizing, analyzing, and editing phylogenetic trees. |
+| [BioJava](http://www.biojava.org) | Open-source framework for processing biological data such as sequences and alignments. |
 
-COLT library (http://dsd.lbl.gov/~hoschek/colt/)
 
-jFreeChart (http://www.jfree.org/jfreechart/)
+## Graphical Interface
 
-Guava (Google Core Libraries) (https://code.google.com/p/guava-libraries)
+TASSEL is organized into four main panels with menus for the functions at the top. 1) The Data Tree at 
+the top left organizes data sets and results. Data set(s) displayed in the Data Tree must first be 
+selected before a desired function or analysis can be performed. To select multiple data sets, press 
+the CTRL (or Command for Mac) key while selecting the data sets. 2) The Report Panel is located below 
+the Data Tree. It displays information about a selected data set from the Data Tree, such as the type of 
+data and how it was created. 3) The Progress Monitoring Panel below the Report Panel shows the progress of 
+running tasks and has buttons that can cancel tasks. 4) The Main Panel occupies the right side of the viewing 
+area, and displays the content of the selected data set from the Data Tree.
 
-JUnit (http://junit.org)
-
-Archaeopteryx (https://sites.google.com/site/cmzmasek/home/software/archaeopteryx)
-
-BioJava (http://www.biojava.org).
-
-# Software Development Tools
-
-jProfiler (http://www.ej-technologies.com/products/jprofiler/overview.html)
-
-install4j (http://www.ej-technologies.com/products/install4j/overview.html)
-
-NetBeans IDE (https://netbeans.org)
-
-Eclipse (http://www.eclipse.org)
-
-IntelliJ (http://www.jetbrains.com/idea)
-
-Structure101 (http://structure101.com)
-
-TeamViewer (http://www.teamviewer.com)
-
-Bitbucket (https://bitbucket.org)
-
-sourceforge (http://sourceforge.net)
-
-JIRA (https://www.atlassian.com/software/jira)
-
-Tower (http://www.git-tower.com)
-
-# Graphical Interface
-
-TASSEL is organized into four main panels with menus for the functions at the top. 1) The Data Tree at the top left organizes data sets and results. Data set(s) displayed in the Data Tree must first be selected before a desired function or analysis can be performed. To select multiple data sets, press the CTRL (or Command for Mac) key while selecting the data sets. 2) The Report Panel is located below the Data Tree. It displays information about a selected data set from the Data Tree, such as the type of data and how it was created. 3) The Progress Monitoring Panel below the Report Panel shows the progress of running tasks and has buttons that can cancel tasks. 4) The Main Panel occupies the right side of the viewing area, and displays the content of the selected data set from the Data Tree.
-
-# Pipeline (Command Line Interface)
+## Pipeline (Command Line Interface)
 
 [Tassel5 Pipeline Cli](../../pipelines/tassel5-pipeline-cli.md)
 
-# GBS Pipeline
+## GBS Pipeline
 The GBSv2 pipeline is the recommended GBS pipeline in TASSEL 5.
 
 [GBSv2](../../gbsv2_pipeline/index.md)
