@@ -37,6 +37,10 @@
       <div class="tx-hero__content">
         <img src="../images/tassel_logo.svg" alt="TASSEL Logo" class="hero-logo" style="max-width: 250px;" />
         <h3><strong>TASSEL 5</strong> (<strong>T</strong>rait <strong>A</strong>nalysis by a<strong>SS</strong>ociation, <strong>E</strong>volution and <strong>L</strong>inkage)</h3>
+        <div class="download-links">
+          <a href="user_manual/" class="md-button md-button--primary">Get Started</a>
+          <a href="#downloads" class="md-button md-button--secondary">Download</a>
+        </div>
       </div>
     </div>
   </section>
@@ -61,6 +65,16 @@
           which are commonly ignored by other software. This is crucial in species like maize
           where indels are a dominant form of polymorphism.
         </li>
+        <li>
+          <strong>Bit level encoding</strong> of nucleotides so <strong>genetic distance</strong>
+          and <strong>linkage disequilibrium</strong> estimates can be made very quickly
+          (20-50X speed increases).
+        </li>
+        <li>
+          Tools for extracting and calling <strong>SNPs</strong> from extensive
+          <strong>Genotyping-by-Sequencing</strong> data (tested for 60,000 samples by over
+          2.5 million SNPs and 96 million sequence alleles).
+        </li>
       </ol>
 
 
@@ -76,73 +90,54 @@
   <section class="gallery-section">
     <div class="md-typeset">
       <h2>Gallery</h2>
-      <div class="image-gallery">
+      <div class="image-gallery" id="gallery">
 
-        <figure>
-          <a href="#lightbox-1">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Alignment Viewer">
             <img src="images/gui_screenshots/tassel_screen_shot1.jpg" alt="Screenshot 1" />
-          </a>
+          </button>
           <figcaption>Alignment Viewer</figcaption>
         </figure>
 
-        <div id="lightbox-1" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot1.jpg" alt="Screenshot 1" />
-          <p class="lightbox-caption">Alignment Viewer</p>
-        </div>
-
-        <figure>
-          <a href="#lightbox-2">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Linkage Disequilibrium">
             <img src="images/gui_screenshots/tassel_screen_shot2.jpg" alt="Screenshot 2" />
-          </a>
+          </button>
           <figcaption>Linkage Disequilibrium</figcaption>
         </figure>
 
-        <div id="lightbox-2" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot2.jpg" alt="Screenshot 2" />
-          <p class="lightbox-caption">Linkage Disequilibrium</p>
-        </div>
-
-        <figure>
-          <a href="#lightbox-3">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Manhattan Plot">
             <img src="images/gui_screenshots/tassel_screen_shot3.jpg" alt="Screenshot 3" />
-          </a>
+          </button>
           <figcaption>Manhattan Plot</figcaption>
         </figure>
 
-        <div id="lightbox-3" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot3.jpg" alt="Screenshot 3" />
-          <p class="lightbox-caption">Manhattan Plot</p>
-        </div>
-
-        <figure>
-          <a href="#lightbox-4">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Genetic Distance Heat Map">
             <img src="images/gui_screenshots/tassel_screen_shot4.jpg" alt="Screenshot 4" />
-          </a>
+          </button>
           <figcaption>Genetic Distance Heat Map</figcaption>
         </figure>
 
-        <div id="lightbox-4" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot4.jpg" alt="Screenshot 4" />
-          <p class="lightbox-caption">Genetic Distance Heat Map</p>
-        </div>
-
-        <figure>
-          <a href="#lightbox-5">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Phylogenetic Tree using Archaeopteryx">
             <img src="images/gui_screenshots/tassel_screen_shot5.jpg" alt="Screenshot 5" />
-          </a>
+          </button>
           <figcaption>Phylogenetic Tree using Archaeopteryx</figcaption>
         </figure>
 
-        <div id="lightbox-5" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot5.jpg" alt="Screenshot 5" />
-          <p class="lightbox-caption">Phylogenetic Tree using Archaeopteryx</p>
-        </div>
+      </div>
 
+      <div class="lightbox-overlay" id="gallery-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image gallery viewer">
+        <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+        <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous image">&#10094;</button>
+        <figure class="lightbox-content">
+          <img class="lightbox-img" src="" alt="" />
+          <figcaption class="lightbox-caption"></figcaption>
+          <span class="lightbox-counter"></span>
+        </figure>
+        <button type="button" class="lightbox-nav lightbox-next" aria-label="Next image">&#10095;</button>
       </div>
     </div>
   </section>
