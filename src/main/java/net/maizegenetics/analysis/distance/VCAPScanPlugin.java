@@ -969,7 +969,7 @@ public class VCAPScanPlugin extends AbstractPlugin {
 
     @Override
     public String pluginUserManualURL() {
-        return "https://bitbucket.org/tasseladmin/tassel-5-source/wiki/UserManual/VCAPScan/VCAPScan";
+        return "https://maize-genetics.github.io/tassel/user_manual/vcapscan/";
     }
 
 }

@@ -227,7 +227,7 @@ public class CreateHybridGenotypesPlugin extends AbstractPlugin {
 
     @Override
     public String pluginUserManualURL() {
-        return "https://bitbucket.org/tasseladmin/tassel-5-source/wiki/UserManual/CreateHybridGenotypes/CreateHybridGenotypes";
+        return "https://maize-genetics.github.io/tassel/user_manual/createhybridgenotypes/";
     }
 
 }

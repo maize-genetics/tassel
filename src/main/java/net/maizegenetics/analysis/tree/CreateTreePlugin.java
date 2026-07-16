@@ -115,7 +115,7 @@ public class CreateTreePlugin extends AbstractPlugin {
 
     @Override
     public String pluginUserManualURL() {
-        return "https://bitbucket.org/tasseladmin/tassel-5-source/wiki/UserManual/Cladogram/Cladogram";
+        return "https://maize-genetics.github.io/tassel/user_manual/cladogram/";
     }
 
     /**

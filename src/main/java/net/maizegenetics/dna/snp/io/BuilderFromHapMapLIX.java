@@ -123,7 +123,7 @@ public class BuilderFromHapMapLIX {
             currLine = reader.readLine();
             String[] tokens = WHITESPACE_PATTERN.split(currLine, NUM_HAPMAP_NON_TAXA_HEADERS + 1);
             if (tokens.length <= NUM_HAPMAP_NON_TAXA_HEADERS) {
-                throw new IllegalStateException("BuilderFromHapMapLIX: Header Incorrectly Formatted: See:\nhttps://bitbucket.org/tasseladmin/tassel-5-source/wiki/UserManual/Load/Load#markdown-header-hapmap");
+                throw new IllegalStateException("BuilderFromHapMapLIX: Header Incorrectly Formatted: See:\nhttps://maize-genetics.github.io/tassel/user_manual/load/");
             }
             double avg = (double) (tokens[NUM_HAPMAP_NON_TAXA_HEADERS].length() + 1) / (double) numTaxa;
             if ((avg > 1.99) && (avg < 2.01)) {
