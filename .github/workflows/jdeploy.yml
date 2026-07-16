@@ -69,8 +69,11 @@ jobs:
           PR_NUMBER=$(echo "$LATEST_PR" | jq -r '.number')
           PR_BODY=$(echo "$LATEST_PR" | jq -r '.body')
 
-          # Extract content between BEGIN CHANGELOG and END CHANGELOG tags
-          CHANGELOG_CONTENT=$(echo "$PR_BODY" | sed -n '/<!-- BEGIN CHANGELOG -->/,/<!-- END CHANGELOG -->/p' | grep -v "<!-- BEGIN CHANGELOG -->" | grep -v "<!-- END CHANGELOG -->")
+          # Extract content between BEGIN CHANGELOG and END CHANGELOG tags.
+          # The grep -v filters exit non-zero on empty input, which would abort
+          # the step under `set -e` before the empty-content fallback below runs,
+          # so tolerate a non-zero status here.
+          CHANGELOG_CONTENT=$(echo "$PR_BODY" | sed -n '/<!-- BEGIN CHANGELOG -->/,/<!-- END CHANGELOG -->/p' | grep -v "<!-- BEGIN CHANGELOG -->" | grep -v "<!-- END CHANGELOG -->" || true)
 
           # Remove leading/trailing whitespace and empty lines
           CHANGELOG_CONTENT=$(echo "$CHANGELOG_CONTENT" | sed '/^$/d' | sed 's/^[ \t]*//')
