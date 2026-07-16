@@ -111,8 +111,8 @@ import java.util.Map;
 public class TASSELMainFrame extends JFrame implements ActionListener {
 
     private static final Logger myLogger = LogManager.getLogger(TASSELMainFrame.class);
-    public static final String version = "5.2.96";
-    public static final String versionDate = "March 31, 2025";
+    public static final String version = "5.2.97";
+    public static final String versionDate = "July 16, 2026";
     private DataTreePanel myDataTreePanel;
     //a variable to control when the progress bar was last updated
     private JFileChooser filerSave = new JFileChooser();
@@ -777,7 +777,7 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                final String html = "https://bitbucket.org/tasseladmin/tassel-5-source/wiki/Home";
+                final String html = "https://maize-genetics.github.io/tassel/";
                 try {
                     Desktop desktop = Desktop.getDesktop();
                     URI uri = new URI(html);

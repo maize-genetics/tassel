@@ -10,7 +10,7 @@ Maven Central is a separate, manually-triggered workflow.
 The project version is declared in `build.gradle.kts`:
 
 ```kotlin
-version = "5.2.96"
+version = "5.2.97"
 ```
 
 Bump this value when cutting a new release. You can confirm the current version
