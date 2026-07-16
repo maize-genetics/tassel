@@ -6,7 +6,7 @@
     "files": ["jdeploy-bundle"],
     "main": "index.js",
     "preferGlobal": true,
-    "repository": "https://www.github.com/btmonier/tassel/",
+    "repository": "https://www.github.com/maize-genetics/tassel/",
     "scripts": {"test": "echo \"Error: no test specified\" && exit 1"},
     "version": "0.0.0",
     "jdeploy": {
@@ -14,7 +14,7 @@
     "publishTargets": [
       {
         "type": "GITHUB",
-        "owner": "btmonier",
+        "owner": "maize-genetics",
         "repo": "tassel"
       }
     ],

@@ -49,8 +49,8 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
-      - name: Run tests & generate Kover coverage report
-        run: ./gradlew clean test koverXmlReport --continue
+      - name: Run tests, generate Kover report & verify coverage gate
+        run: ./gradlew clean test koverXmlReport koverVerify --continue
         env:
           JAVA_TOOL_OPTIONS: >
             -Djava.library.path=/usr/lib/x86_64-linux-gnu

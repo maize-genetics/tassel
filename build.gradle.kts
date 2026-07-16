@@ -40,6 +40,11 @@ repositories {
     maven {
         url = uri("https://maven.scijava.org/content/repositories/public/") // needed for JHDF5
     }
+    maven {
+        // Gradle ignores repositories declared in dependency POMs, so declare the JBoss
+        // repo here to resolve 'openchart', a transitive dependency of forester.
+        url = uri("https://repository.jboss.org/maven2/")
+    }
 }
 
 dependencies {
@@ -299,7 +304,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://github.com/maize-genetics/tassel.git")
                     developerConnection.set("scm:git:ssh://github.com/maize-genetics/tassel.git")
-                    url.set("https://github.com/maize-genetis/tassel")
+                    url.set("https://github.com/maize-genetics/tassel")
                 }
             }
         }
