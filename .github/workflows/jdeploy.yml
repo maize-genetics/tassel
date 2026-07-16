@@ -114,7 +114,12 @@ jobs:
           cp -r build/libs/lib .
 
       - name: Build App Installer Bundles
-        uses: shannah/jdeploy@v6.1.5
+        # Pinned to a master commit SHA rather than the latest tag (v6.1.5):
+        # v6.1.5 sets up Node 20 then runs `npm install -g npm@latest`, and the
+        # current npm@latest dropped Node 20 support, so the tagged action fails
+        # with EBADENGINE. This commit contains the fix (Node 22 + pinned npm@11)
+        # which is not yet in a released tag. Revisit once a fixed tag ships.
+        uses: shannah/jdeploy@6257b2d7815b5c127fd530932e7bab8de9c696d2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           jdeploy_version: '6.1.1'
