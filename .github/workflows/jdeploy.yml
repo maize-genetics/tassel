@@ -20,15 +20,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-gradle-
+          cache: gradle
 
       - name: Read version from Gradle build file
         id: read_version
@@ -119,9 +111,10 @@ jobs:
           cp -r build/libs/lib .
 
       - name: Build App Installer Bundles
-        uses: shannah/jdeploy@master
+        uses: shannah/jdeploy@v6.1.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          jdeploy_version: '6.1.1'
 
       - name: Update release note download links
         run: |
