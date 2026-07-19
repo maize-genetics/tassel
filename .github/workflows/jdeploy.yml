@@ -168,13 +168,19 @@ jobs:
             exit 0
           fi
 
-          CHANGELOG_CONTENT=$(cat /tmp/changelog_content.txt)
-
-          # Create new section with version and date
-          NEW_SECTION="## (V${{ env.VERSION }}) ${{ env.DATE }}\n\n$CHANGELOG_CONTENT\n"
-
-          # Insert new section after the header (line 5)
-          sed -i "5i\\$NEW_SECTION" docs/changelog.md
+          # Insert the new section after the header (line 4) without sed:
+          # the changelog content is multi-line markdown (bullets starting with
+          # "-"), which breaks `sed i\` because each line is parsed as a new
+          # command. Rebuild the file with head/cat/tail instead so arbitrary
+          # text is inserted verbatim.
+          {
+            head -n 4 docs/changelog.md
+            printf '## (V%s) %s\n\n' "${{ env.VERSION }}" "${{ env.DATE }}"
+            cat /tmp/changelog_content.txt
+            printf '\n'
+            tail -n +5 docs/changelog.md
+          } > docs/changelog.md.new
+          mv docs/changelog.md.new docs/changelog.md
 
       - name: Commit and push changes
         run: |
