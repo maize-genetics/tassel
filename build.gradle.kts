@@ -31,7 +31,7 @@ kotlin {
 }
 
 group = "net.maizegenetics"
-version = "5.2.96"
+version = "5.2.97"
 description = "TASSEL is a software package to evaluate traits associations, evolutionary patterns, and linkage disequilibrium."
 val kotlinVersion = "2.1.21"
 
@@ -39,6 +39,11 @@ repositories {
     mavenCentral()
     maven {
         url = uri("https://maven.scijava.org/content/repositories/public/") // needed for JHDF5
+    }
+    maven {
+        // Gradle ignores repositories declared in dependency POMs, so declare the JBoss
+        // repo here to resolve 'openchart', a transitive dependency of forester.
+        url = uri("https://repository.jboss.org/maven2/")
     }
 }
 
@@ -299,7 +304,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://github.com/maize-genetics/tassel.git")
                     developerConnection.set("scm:git:ssh://github.com/maize-genetics/tassel.git")
-                    url.set("https://github.com/maize-genetis/tassel")
+                    url.set("https://github.com/maize-genetics/tassel")
                 }
             }
         }

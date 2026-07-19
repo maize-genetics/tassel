@@ -1,0 +1,5 @@
+# MDS #
+
+The MDS method performs classical multidimensional scaling as adapted from the R code for cmdscale(). An alternate name for this analysis is principal coordinate analysis. It produces results that are very similar to PCA (principal components analysis) but starts with a distance matrix and results in coordinate axes that are scaled differently. To use MDS, create a distance matrix from a genotype using Analysis/Distance Matrix in TASSEL or import a distance matrix. Then, select the distance matrix, choose Analysis/MDS, and enter the number of coordinate axes and associated eigenvalues to be reported.
+
+MDS and PCA will handle missing data differently. PCA imputes missing data to the mean allele frequency. The distance matrix calculation computes pairwise distances between taxa, using only sites with non-missing data for each taxon in a pair. There is no theoretical reason to prefer one method over the other. The axes produced by either MDS or PCA can be used as covariates in GLM or MLM models to correct for population structure.

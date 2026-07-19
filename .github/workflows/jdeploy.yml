@@ -5,27 +5,22 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
-
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-gradle-
+          cache: gradle
 
       - name: Read version from Gradle build file
         id: read_version
@@ -74,8 +69,11 @@ jobs:
           PR_NUMBER=$(echo "$LATEST_PR" | jq -r '.number')
           PR_BODY=$(echo "$LATEST_PR" | jq -r '.body')
 
-          # Extract content between BEGIN CHANGELOG and END CHANGELOG tags
-          CHANGELOG_CONTENT=$(echo "$PR_BODY" | sed -n '/<!-- BEGIN CHANGELOG -->/,/<!-- END CHANGELOG -->/p' | grep -v "<!-- BEGIN CHANGELOG -->" | grep -v "<!-- END CHANGELOG -->")
+          # Extract content between BEGIN CHANGELOG and END CHANGELOG tags.
+          # The grep -v filters exit non-zero on empty input, which would abort
+          # the step under `set -e` before the empty-content fallback below runs,
+          # so tolerate a non-zero status here.
+          CHANGELOG_CONTENT=$(echo "$PR_BODY" | sed -n '/<!-- BEGIN CHANGELOG -->/,/<!-- END CHANGELOG -->/p' | grep -v "<!-- BEGIN CHANGELOG -->" | grep -v "<!-- END CHANGELOG -->" || true)
 
           # Remove leading/trailing whitespace and empty lines
           CHANGELOG_CONTENT=$(echo "$CHANGELOG_CONTENT" | sed '/^$/d' | sed 's/^[ \t]*//')
@@ -93,24 +91,13 @@ jobs:
           # Save content to a temporary file
           echo "$CHANGELOG_CONTENT" > /tmp/changelog_content.txt
 
-      - name: Load processed release notes
-        id: read_notes
-        run: |
-          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-          cat RELEASE_NOTES.md >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
       - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
+        run: |
+          gh release create "v${VERSION}" \
+            --title "v${VERSION}" \
+            --notes-file RELEASE_NOTES.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ env.VERSION }}
-          release_name: v${{ env.VERSION }}
-          body: ${{ env.RELEASE_NOTES }}
-          draft: false
-          prerelease: false
 
       - name: Upload Release Assets using GitHub CLI
         run: |
@@ -127,9 +114,15 @@ jobs:
           cp -r build/libs/lib .
 
       - name: Build App Installer Bundles
-        uses: shannah/jdeploy@master
+        # Pinned to a master commit SHA rather than the latest tag (v6.1.5):
+        # v6.1.5 sets up Node 20 then runs `npm install -g npm@latest`, and the
+        # current npm@latest dropped Node 20 support, so the tagged action fails
+        # with EBADENGINE. This commit contains the fix (Node 22 + pinned npm@11)
+        # which is not yet in a released tag. Revisit once a fixed tag ships.
+        uses: shannah/jdeploy@6257b2d7815b5c127fd530932e7bab8de9c696d2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          jdeploy_version: '6.1.1'
 
       - name: Update release note download links
         run: |

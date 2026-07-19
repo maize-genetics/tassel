@@ -1998,7 +1998,7 @@ abstract public class AbstractPlugin implements Plugin {
 
     @Override
     public String pluginUserManualURL() {
-        return "https://bitbucket.org/tasseladmin/tassel-5-source/wiki/UserManual";
+        return "https://maize-genetics.github.io/tassel/user_manual/";
     }
 
     //
