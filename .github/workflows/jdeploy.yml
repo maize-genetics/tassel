@@ -93,9 +93,19 @@ jobs:
 
       - name: Create GitHub Release
         run: |
-          gh release create "v${VERSION}" \
-            --title "v${VERSION}" \
-            --notes-file RELEASE_NOTES.md
+          # Idempotent: a release for this version may already exist from a
+          # previous (possibly failed) run on the same version. Update it
+          # instead of failing with "tag_name already exists".
+          if gh release view "v${VERSION}" >/dev/null 2>&1; then
+            echo "Release v${VERSION} already exists; updating it."
+            gh release edit "v${VERSION}" \
+              --title "v${VERSION}" \
+              --notes-file RELEASE_NOTES.md
+          else
+            gh release create "v${VERSION}" \
+              --title "v${VERSION}" \
+              --notes-file RELEASE_NOTES.md
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
