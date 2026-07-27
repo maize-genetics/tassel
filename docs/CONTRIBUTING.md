@@ -42,15 +42,18 @@ If you have an idea for an enhancement, please create a new issue with the enhan
 To submit a code change, you first will need to fork the TASSEL repository, make your changes on a branch of your fork, and then submit a Pull Request to the TASSEL repository. The sections below describe the Git workflow, pull request expectations, and the checks your change must pass.
 
 ## The Git Workflow
-TASSEL uses a branch-and-pull-request model. In short:
+TASSEL uses a `develop` integration branch: everyday work is merged into
+`develop` first, and `main` always reflects the latest released version. Normal
+contributions branch off `develop` and are merged back into `develop`. In short:
 
 1. **Fork** the repository (external contributors) or create a branch (team members).
-2. **Branch** off `main` for your change. Branches are cheap — use one per logical piece of work and keep `main` clean.
+2. **Branch** off `develop` for your change, using a `feature/*` name. Branches
+   are cheap — use one per logical piece of work.
 
     ```bash
-    git checkout main
+    git switch develop
     git pull
-    git checkout -b my-feature
+    git switch -c feature/my-change
     ```
 
 3. **Commit** focused, well-described changes.
@@ -63,25 +66,28 @@ TASSEL uses a branch-and-pull-request model. In short:
 4. **Push** your branch.
 
     ```bash
-    git push -u origin my-feature
+    git push -u origin feature/my-change
     ```
 
-5. **Open a pull request** against `main`.
+5. **Open a pull request** against `develop`.
 
 ### Keeping your branch current
-Pull the latest `main` into your branch periodically to reduce merge conflicts:
+Pull the latest `develop` into your branch periodically to reduce merge conflicts:
 
 ```bash
-git checkout main
+git switch develop
 git pull
-git checkout my-feature
-git merge main
+git switch feature/my-change
+git merge develop
 ```
 
 ## Opening a Pull Request
 When you open a PR:
 
 - Fill out the PR template with a clear description of *what* changed and *why*.
+  Normal work uses the default (feature) template with `develop` as the base
+  branch. Critical fixes to an already-released version instead use the **hotfix**
+  template with `main` as the base branch (see [Releasing](developer/releasing.md#hotfixes)).
 - Reference any related issue (e.g. "Closes #123").
 - Keep PRs focused. Smaller, single-purpose PRs are reviewed faster.
 - Add reviewers from the TASSEL team. If you are unsure who should review, add **@zrm22** and additional reviewers will be assigned.
@@ -119,9 +125,9 @@ The statistical tests exercise native BLAS routines, so you will need OpenBLAS i
 For full details on the test layout, coverage reports, what CI runs, and how to add an enforced test, see the [Testing guide](developer/testing.md).
 
 ## Code Review
-A member of the TASSEL team will review your Pull Request and may request changes. Push follow-up commits to the same branch to update the PR. Once approved, the change is merged into `main`.
+A member of the TASSEL team will review your Pull Request and may request changes. Push follow-up commits to the same branch to update the PR. Once approved, the change is merged into `develop`.
 
-Merges to `main` trigger the build-and-release automation, which produces a new build and standalone distribution — so a merged PR generally results in a new released build. See [Releasing](developer/releasing.md).
+Merging to `develop` does **not** publish a release. Releases happen when `develop` is promoted to `main` through a separate promotion PR, and merges to `main` trigger the build-and-release automation. See [Releasing](developer/releasing.md).
 
 ## Coding Tips
 - Match the style and structure of the surrounding code.

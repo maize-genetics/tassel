@@ -5,6 +5,26 @@ TASSEL releases are largely **automated through GitHub Actions**. Merging to
 standalone distribution, and redeploys the documentation site. Publishing to
 Maven Central is a separate, manually-triggered workflow.
 
+## Branching model
+
+TASSEL uses a `develop` integration branch and reserves `main` for released
+code:
+
+```
+feature/*  --PR-->  develop  --promotion PR-->  main  --> release
+hotfix/*   ------------------------PR------------------->  main  --> release (then backport to develop)
+```
+
+* `develop` — the default branch and integration target for all normal work
+  (features, enhancements, non-urgent bug fixes). See
+  [Contributing](../CONTRIBUTING.md).
+* `main` — released code only. A push here triggers the release automation
+  described below.
+
+A release is cut by opening a **promotion PR** from `develop` into `main`.
+Because `main` is where the automation fires, everything on this page keys off
+that promotion merge.
+
 ## Versioning
 
 The project version is declared in `build.gradle.kts`:
@@ -13,8 +33,8 @@ The project version is declared in `build.gradle.kts`:
 version = "5.2.97"
 ```
 
-Bump this value when cutting a new release. You can confirm the current version
-with:
+Bump this value on `develop` before opening the promotion PR. You can confirm
+the current version with:
 
 ```bash
 ./gradlew printVersion
@@ -69,19 +89,43 @@ Publishing the library to Maven Central is handled by a separate workflow and is
 - JReleaser deploys the staged repository (`build/staging-deploy`) to Sonatype /
   Maven Central.
 
+## Nightly dev builds
+
+Every night, `.github/workflows/nightly.yml` builds `develop` and publishes an
+unstable standalone **prerelease** tagged `dev-YYYYMMDD` — but only when
+`develop` has new commits since the last nightly. These builds are for testing
+only and never publish to Maven Central. The nightly also runs the full test
+suite, so a red nightly means `develop` is broken.
+
 ## Cutting a release: checklist
 
-1. Ensure `main` is green (the statistics gate passes).
-2. Update `version` in `build.gradle.kts`.
-3. Make sure the merging PR's description contains the changelog block (between
-   the `<!-- BEGIN CHANGELOG -->` / `<!-- END CHANGELOG -->` markers) so release
-   notes and `docs/changelog.md` are generated correctly.
-4. Merge to `main`. The build/release and site-deploy workflows run
-   automatically.
+Releases are promoted out of `develop`:
+
+1. Ensure `develop` is green (the statistics gate passes).
+2. On `develop`, update `version` in `build.gradle.kts`.
+3. Open a **promotion PR** from `develop` into `main`. Make sure the PR
+   description contains the changelog block (between the
+   `<!-- BEGIN CHANGELOG -->` / `<!-- END CHANGELOG -->` markers) so release
+   notes and `docs/changelog.md` are generated correctly — the automation reads
+   it from the most recently merged PR.
+4. Merge the promotion PR. Pushing to `main` runs the build/release and
+   site-deploy workflows automatically.
 5. Verify the new GitHub Release, its attached standalone archives and
    installers, and the updated [Version History](../changelog.md).
 6. If publishing to Maven Central, run the `run_publish_maven.yml` workflow and
    confirm the artifacts appear on Central.
+
+## Hotfixes
+
+For a critical bug in an already-released version, do **not** wait for the
+normal `develop` cycle:
+
+1. Branch from `main`: `git switch main && git pull && git switch -c hotfix/short-description`.
+2. Bump the **patch** portion of `version` in `build.gradle.kts` and open a PR
+   targeting `main` using the hotfix PR template.
+3. After the PR merges and the release publishes, **backport** the fix to
+   `develop` (a follow-up PR or cherry-pick) so the next promotion does not
+   reintroduce the bug.
 
 ## Local dry runs
 
