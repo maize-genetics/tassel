@@ -1,12 +1,12 @@
 <!--
-  This template was modified from the PhenoApps/fieldbook pull_request_template.md template.
+  FEATURE / ENHANCEMENT / NON-CRITICAL BUGFIX
+  Base branch: develop  <-- set the PR base to `develop`, NOT `main`.
 
-  This is the DEFAULT template, used for features, enhancements, and
-  non-urgent bug fixes. The base branch for this work should be `develop`.
+  Use this template for normal work: new features, enhancements, refactors,
+  docs, CI, and bug fixes that are NOT urgent production issues.
 
-  Working on a CRITICAL fix for an already-released version? Use the hotfix
-  template (base branch `main`) by opening the PR with `?template=hotfix.md`
-  appended to the compare URL, e.g.:
+  For a critical bug already affecting a released version, use the hotfix
+  template instead:
   https://github.com/maize-genetics/tassel/compare/main...HEAD?template=hotfix.md
 -->
 
@@ -14,8 +14,8 @@
 
 _Provide a summary of your changes including motivation, context,
 and a bullet list of **concise**, **human-readable changes**. The
-bullet list should be in the following `CHANGELOG` tags. If these 
-changes fix a bug or resolves a feature request, be sure to link to 
+bullet list should be in the following `CHANGELOG` tags. If these
+changes fix a bug or resolves a feature request, be sure to link to
 that issue._
 
 <!-- BEGIN CHANGELOG -->
@@ -35,7 +35,7 @@ _What type of changes does your code introduce? Put an `x` in boxes that apply._
 
 ## Checklist:
 
-- [ ] The base branch of this PR is `develop` (use the hotfix template if this targets `main`)
+- [ ] The base branch of this PR is `develop`
 - [ ] I have updated the `version` variable in `build.gradle.kts`
 - [ ] I have performed a self-review of my code
 - [ ] I have commented my code, particularly in hard-to-understand areas

@@ -6,12 +6,35 @@ on:
     types:
       - opened
       - synchronize
-    branches: [main, master]
-    paths: 'src/**'
+    branches: [main, develop, master]
 
 jobs:
+  # Detect whether this PR touches compiled sources. The heavy test/coverage
+  # job below is only meaningful for src/** changes, but it must still report a
+  # status so it can be a *required* check: a job skipped via `if:` reports
+  # "success" to branch protection, whereas a whole workflow skipped by a
+  # top-level `paths:` filter stays "pending" and blocks docs-only PRs forever.
+  changes:
+    name: Detect source changes
+    runs-on: ubuntu-latest
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Detect changes under src/
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+
   test_and_coverage:
     name: TASSEL 5 CI
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

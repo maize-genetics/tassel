@@ -3,6 +3,14 @@ name: jDeploy CI with Gradle
 on:
   push:
     branches: [main, master]
+    # Docs-only pushes to main should not cut a software release. If any
+    # non-docs file changes too, this still runs (paths-ignore only skips when
+    # ALL changed files match). The live site is published separately by
+    # deploy_project_site.yml on docs pushes.
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - 'mkdocs.yml'
   workflow_dispatch:
 
 permissions:
@@ -156,6 +164,10 @@ jobs:
           envsubst < docs/templates/template_featured_downloads.html > docs/overrides/partials/featured_downloads.html.new
           mv docs/overrides/partials/featured_downloads.html.new docs/overrides/partials/featured_downloads.html
 
+          # Update the Download page's static fallback links and library version
+          envsubst < docs/templates/template_download.md > docs/download/index.md.new
+          mv docs/download/index.md.new docs/download/index.md
+
           # Update the GitHub release body
           gh release edit "v${VERSION}" --notes-file RELEASE_NOTES.md
         env:
@@ -200,6 +212,6 @@ jobs:
             exit 0
           fi
 
-          git add docs/changelog.md docs/overrides/partials/featured_downloads.html
+          git add docs/changelog.md docs/overrides/partials/featured_downloads.html docs/download/index.md
           git commit -m "Update changelog and links for version ${{ env.VERSION }}"
           git push
