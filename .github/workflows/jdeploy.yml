@@ -177,10 +177,6 @@ jobs:
           envsubst < docs/templates/template_featured_downloads.html > docs/overrides/partials/featured_downloads.html.new
           mv docs/overrides/partials/featured_downloads.html.new docs/overrides/partials/featured_downloads.html
 
-          # Update the Download page's static fallback links and library version
-          envsubst < docs/templates/template_download.md > docs/download/index.md.new
-          mv docs/download/index.md.new docs/download/index.md
-
           # Update the GitHub release body
           gh release edit "v${VERSION}" --notes-file RELEASE_NOTES.md
         env:
@@ -225,6 +221,6 @@ jobs:
             exit 0
           fi
 
-          git add docs/changelog.md docs/overrides/partials/featured_downloads.html docs/download/index.md
+          git add docs/changelog.md docs/overrides/partials/featured_downloads.html
           git commit -m "Update changelog and links for version ${{ env.VERSION }}"
           git push
