@@ -15,6 +15,7 @@ TASSEL is developed on GitHub at [maize-genetics/tassel](https://github.com/maiz
      * [Feature track (the default)](#feature-track-the-default)
      * [Hotfix track](#hotfix-track)
      * [Documentation track](#documentation-track)
+     * [Keeping `develop` in sync with `main`](#keeping-develop-in-sync-with-main)
 * [Opening a Pull Request](#opening-a-pull-request)
 * [Testing and Continuous Integration](#testing-and-continuous-integration)
 * [Code Review](#code-review)
@@ -111,7 +112,9 @@ git pull
 git checkout -b hotfix/short-description
 ```
 
-Because this bypasses `develop`, the fix **must** be brought back into `develop` after merge (see the checklist in the template) or the next promotion will reintroduce the bug.
+Because this bypasses `develop`, the fix has to reach `develop` too, or the next promotion will reintroduce the bug. You do not need to cherry-pick it: merging to `main` opens an automated `main` → `develop` [back-merge PR](#keeping-develop-in-sync-with-main). Confirming that PR merges is part of the hotfix checklist.
+
+When resolving conflicts in that PR, keep **`develop`'s** `version` in `build.gradle.kts` — a hotfix bumps the patch version of the released line and must not overwrite an in-progress version on `develop`.
 
 ### Documentation track
 Use this when the change touches **nothing but** documentation: files under `docs/`, any `*.md` file (including `README.md`), and `mkdocs.yml`. Documentation is neither a feature that should wait for the next release nor an emergency, so it gets a shorter path: straight to `main`, with no test suite and no release.
@@ -132,9 +135,19 @@ What is different about this track:
 * **No version bump.** Do not change `version` in `build.gradle.kts`.
 * **No changelog block.** Documentation merges never reach the release-notes automation, so the `CHANGELOG` markers are not needed.
 * **No release.** Merging documentation to `main` does not build the application, cut a GitHub release, or publish to Maven Central. It only redeploys the documentation site, so your change is live within a few minutes.
-* **`develop` is synced for you.** Because these commits land on `main` first, an automated `main` → `develop` pull request is opened (or an existing one updated) to bring them back down. Review and merge it; unlike the hotfix track, you do not need to cherry-pick anything yourself.
+* **`develop` is synced for you.** Because these commits land on `main` first, an automated [back-merge PR](#keeping-develop-in-sync-with-main) brings them back down.
 
 If a "documentation" change turns out to also need a code edit, move it to the feature track — the **Docs track guard** check fails any `docs/`-prefixed PR that touches files outside the documentation paths.
+
+### Keeping `develop` in sync with `main`
+Three things land on `main` without going through `develop`: documentation merges, hotfixes, and the release automation's own commits (it writes `docs/changelog.md` and the download links after each release). Left alone, each one becomes a conflict to untangle at the next promotion.
+
+So a workflow opens a single `main` → `develop` pull request whenever `main` gains content that `develop` does not have, and keeps that one PR up to date as more commits land. A person still merges it — a back-merge can be conflict-free and still be semantically wrong, which is exactly what review is for.
+
+Two things to know when you merge one:
+
+* **Prefer `main` when resolving conflicts**, since everything in the PR is already released — except `build.gradle.kts`, where you keep `develop`'s `version`.
+* **No checks run on the sync PR itself**, because it is opened by the CI token. If it carries code, the test suite runs against `develop` once you merge, and the [nightly build](developer/releasing.md#nightly-development-builds-nightlyyml) is the backstop.
 
 ## Opening a Pull Request
 When you open a PR:
@@ -161,7 +174,11 @@ Which checks run depends on what you changed. CI inspects the changed paths rath
 | `docs/**`, `*.md`, `mkdocs.yml` only | MkDocs site build (about a minute) |
 | Both | Both |
 
-A skipped job reports success, so it never blocks a merge. If you are on the documentation track, you can preview exactly what CI builds with:
+A skipped job reports success, so it never blocks a merge.
+
+The full Java CI also runs on pushes to `develop` that touch `src/**` or the build files. That is what verifies a hotfix once it has been back-merged, since no checks run on the sync PR itself.
+
+If you are on the documentation track, you can preview exactly what CI builds with:
 
 ```bash
 mkdocs serve

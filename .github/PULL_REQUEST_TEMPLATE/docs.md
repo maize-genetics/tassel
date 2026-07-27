@@ -36,8 +36,8 @@ _List the pages or sections touched, so a reviewer knows where to look._
 - [ ] Links and images resolve, and code samples are accurate for the current release
 
 <!--
-  After merge: the site redeploys automatically, and a `main` -> `develop` sync
-  PR is opened (or updated) so `develop` picks these changes up. No changelog
-  block is needed here — documentation merges never reach the release-notes
-  automation.
+  After merge: the site redeploys automatically, and a `main` -> `develop`
+  back-merge PR is opened (or updated) so `develop` picks these changes up. No
+  changelog block is needed here — documentation merges never reach the
+  release-notes automation.
 -->

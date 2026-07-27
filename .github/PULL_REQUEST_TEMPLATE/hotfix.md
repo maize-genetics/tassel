@@ -13,9 +13,9 @@
   `main`, but skips the test suite and needs no version bump:
   https://github.com/maize-genetics/tassel/compare/main...HEAD?template=docs.md
 
-  IMPORTANT: after this hotfix merges to `main`, it MUST be backported to
-  `develop` (see the checklist) so the next promotion does not reintroduce
-  the bug.
+  IMPORTANT: this fix must reach `develop` as well, or the next promotion will
+  reintroduce the bug. An automated `main` -> `develop` sync PR is opened for
+  you after merge — you own confirming that it merges (see the checklist).
 -->
 
 ## Summary of the critical issue
@@ -48,4 +48,4 @@ and targeted as possible._
 - [ ] I bumped the **patch** portion of `version` in `build.gradle.kts` (e.g. `5.2.97` -> `5.2.98`)
 - [ ] The `CHANGELOG` tags above contain the user-facing change note
 - [ ] The change is minimal and scoped to the critical fix
-- [ ] **Backport planned:** I will open a follow-up PR (or cherry-pick) to bring this fix into `develop` immediately after merge
+- [ ] **Backport confirmed:** I will check that the automated `main` → `develop` sync PR merges after this lands, and resolve any conflicts (keeping `develop`'s `version` in `build.gradle.kts`)
