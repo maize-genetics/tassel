@@ -1,9 +1,14 @@
 # Releasing
 
-TASSEL releases are largely **automated through GitHub Actions**. Merging to
+TASSEL releases are largely **automated through GitHub Actions**. Merging code to
 `main` builds the application, publishes a GitHub release with installers and a
 standalone distribution, and redeploys the documentation site. Publishing to
 Maven Central is a separate, manually-triggered workflow.
+
+!!! note "Documentation-only merges do not cut a release"
+    Merges to `main` that touch only `docs/**`, `*.md`, or `mkdocs.yml` are
+    excluded from the release automation — they redeploy the site and nothing
+    else. See the [documentation track](../CONTRIBUTING.md#documentation-track).
 
 ## Versioning
 
@@ -29,7 +34,8 @@ Two workflows chain together automatically.
 
 ### 1. Build & publish release (`jdeploy.yml`)
 
-Triggered on push to `main`, this "jDeploy CI with Gradle" workflow:
+Triggered on push to `main` — except for documentation-only pushes, which are
+filtered out with `paths-ignore` — this "jDeploy CI with Gradle" workflow:
 
 1. Sets up JDK 21 and reads the version via `./gradlew printVersion`.
 2. Builds the app: `./gradlew clean build -x test -x koverVerify`.
@@ -54,6 +60,20 @@ After the build workflow completes on `main`, the "Site Builder and Deployment"
 workflow builds this MkDocs site with `mkdocs gh-deploy --force`, publishing it to
 GitHub Pages.
 
+It also runs directly on any push to `main` that touches `docs/**` or
+`mkdocs.yml`, which is what publishes documentation-track changes without a
+release. Deploys are serialized through a `site-deploy` concurrency group so a
+release deploy and a docs deploy cannot race.
+
+## Nightly development builds (`nightly.yml`)
+
+Separately from releases, a scheduled workflow publishes an unstable
+prerelease from `develop` each morning (05:00 UTC), tagged `dev-<date>`. It
+skips silently when `develop` has not advanced since the last nightly, runs the
+test suite first as a health check on the integration branch, and prunes all but
+the newest 14 nightly prereleases. These `dev-*` tags are explicitly excluded
+from Maven Central publishing and are never official releases.
+
 ## Publishing to Maven Central (`run_publish_maven.yml`)
 
 Publishing the library to Maven Central is handled by a separate workflow and is
@@ -71,13 +91,16 @@ Publishing the library to Maven Central is handled by a separate workflow and is
 
 ## Cutting a release: checklist
 
-1. Ensure `main` is green (the statistics gate passes).
+1. Ensure `develop` is green (the latest nightly built successfully).
 2. Update `version` in `build.gradle.kts`.
-3. Make sure the merging PR's description contains the changelog block (between
-   the `<!-- BEGIN CHANGELOG -->` / `<!-- END CHANGELOG -->` markers) so release
-   notes and `docs/changelog.md` are generated correctly.
+3. Open a promotion PR from `develop` to `main`. Make sure its description
+   contains the changelog block (between the `<!-- BEGIN CHANGELOG -->` /
+   `<!-- END CHANGELOG -->` markers) so release notes and `docs/changelog.md`
+   are generated correctly.
 4. Merge to `main`. The build/release and site-deploy workflows run
-   automatically.
+   automatically. If an automated `main` → `develop` sync PR is open, merge it
+   first so the promotion does not revert documentation that only exists on
+   `main`.
 5. Verify the new GitHub Release, its attached standalone archives and
    installers, and the updated [Version History](../changelog.md).
 6. If publishing to Maven Central, run the `run_publish_maven.yml` workflow and

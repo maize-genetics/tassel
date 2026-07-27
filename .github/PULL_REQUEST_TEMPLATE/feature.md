@@ -3,11 +3,16 @@
   Base branch: develop  <-- set the PR base to `develop`, NOT `main`.
 
   Use this template for normal work: new features, enhancements, refactors,
-  docs, CI, and bug fixes that are NOT urgent production issues.
+  CI, and bug fixes that are NOT urgent production issues. It also covers
+  changes that mix documentation with code.
 
   For a critical bug already affecting a released version, use the hotfix
   template instead:
   https://github.com/maize-genetics/tassel/compare/main...HEAD?template=hotfix.md
+
+  For a documentation-only change, use the docs template (base branch `main`),
+  which skips the test suite and goes live without a release:
+  https://github.com/maize-genetics/tassel/compare/main...HEAD?template=docs.md
 -->
 
 ## Description

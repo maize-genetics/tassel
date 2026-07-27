@@ -11,6 +11,10 @@ TASSEL is developed on GitHub at [maize-genetics/tassel](https://github.com/maiz
      * [Suggesting Enhancements and New Features](#suggesting-enhancements-and-new-features)
      * [Submitting Code Changes](#submitting-code-changes)
 * [The Git Workflow](#the-git-workflow)
+     * [Which track am I on?](#which-track-am-i-on)
+     * [Feature track (the default)](#feature-track-the-default)
+     * [Hotfix track](#hotfix-track)
+     * [Documentation track](#documentation-track)
 * [Opening a Pull Request](#opening-a-pull-request)
 * [Testing and Continuous Integration](#testing-and-continuous-integration)
 * [Code Review](#code-review)
@@ -29,6 +33,13 @@ It is recommended to use an IDE to make any code changes. Our group prefers usin
 
 Before writing code, install the toolchain and confirm you can build the project — see [Building from Source](developer/building-from-source.md). For anything beyond a trivial fix, open (or find) a GitHub [issue](https://github.com/maize-genetics/tassel/issues) describing the bug or enhancement first, so the work can be discussed and coordinated.
 
+Contributing **documentation only**? You do not need Java, Gradle, or the test data at all — just Python and MkDocs to preview your changes:
+
+```bash
+pip install mkdocs-material
+mkdocs serve
+```
+
 ## How to Contribute
 For any code changes, you will need to fork the TASSEL repository and create a pull request. For more information on how to do this, please see [this guide](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
 
@@ -42,17 +53,27 @@ If you have an idea for an enhancement, please create a new issue with the enhan
 To submit a code change, you first will need to fork the TASSEL repository, make your changes on a branch of your fork, and then submit a Pull Request to the TASSEL repository. The sections below describe the Git workflow, pull request expectations, and the checks your change must pass.
 
 ## The Git Workflow
-TASSEL uses a branch-and-pull-request model. In short:
+TASSEL uses a branch-and-pull-request model with two long-lived branches:
+
+* **`main`** is the released branch. Every merge of code to `main` produces a new build and release, so `main` should always reflect what users have.
+* **`develop`** is the integration branch where normal work accumulates. A [nightly build](developer/releasing.md) publishes an unstable prerelease from it, and it is promoted to `main` when a release is cut.
+
+Which branch you start from depends on the kind of change you are making. There are three tracks, each with its own pull request template.
+
+### Which track am I on?
+
+| Your change | Branch from | PR into | Template | Runs the test suite? |
+| --- | --- | --- | --- | --- |
+| Feature, enhancement, refactor, non-urgent bug fix, CI work | `develop` | `develop` | feature (default) | Yes |
+| Critical fix for a bug already affecting a released version | `main` | `main` | hotfix | Yes |
+| Documentation only (`docs/**`, any `*.md`, `mkdocs.yml`) | `main` | `main` | docs | No — site build only |
+
+When in doubt, use the feature track. It is never *wrong*, only slower.
+
+Common to all three tracks:
 
 1. **Fork** the repository (external contributors) or create a branch (team members).
-2. **Branch** off `main` for your change. Branches are cheap — use one per logical piece of work and keep `main` clean.
-
-    ```bash
-    git checkout main
-    git pull
-    git checkout -b my-feature
-    ```
-
+2. **Branch** off the base branch for your track. Branches are cheap — use one per logical piece of work.
 3. **Commit** focused, well-described changes.
 
     ```bash
@@ -60,27 +81,65 @@ TASSEL uses a branch-and-pull-request model. In short:
     git commit -m "Short, imperative summary of the change"
     ```
 
-4. **Push** your branch.
+4. **Push** your branch and open a pull request against the base branch for your track.
 
-    ```bash
-    git push -u origin my-feature
-    ```
+Pull the base branch into your branch periodically to reduce merge conflicts:
 
-5. **Open a pull request** against `main`.
+```bash
+git checkout my-branch
+git fetch origin
+git merge origin/develop   # or origin/main, depending on your track
+```
 
-### Keeping your branch current
-Pull the latest `main` into your branch periodically to reduce merge conflicts:
+### Feature track (the default)
+Nearly all work belongs here, including changes that mix documentation with code.
+
+```bash
+git checkout develop
+git pull
+git checkout -b my-feature
+```
+
+Open the PR against `develop`. The default PR template applies. Your change ships to users at the next promotion of `develop` to `main`.
+
+### Hotfix track
+Only for an urgent fix to a bug that is already affecting a released version. Branch from `main`, keep the change as small as possible, bump the patch version, and open the PR against `main` with the hotfix template:
 
 ```bash
 git checkout main
 git pull
-git checkout my-feature
-git merge main
+git checkout -b hotfix/short-description
 ```
+
+Because this bypasses `develop`, the fix **must** be brought back into `develop` after merge (see the checklist in the template) or the next promotion will reintroduce the bug.
+
+### Documentation track
+Use this when the change touches **nothing but** documentation: files under `docs/`, any `*.md` file (including `README.md`), and `mkdocs.yml`. Documentation is neither a feature that should wait for the next release nor an emergency, so it gets a shorter path: straight to `main`, with no test suite and no release.
+
+Branch from `main` and prefix the branch name with `docs/`:
+
+```bash
+git checkout main
+git pull
+git checkout -b docs/fix-mlm-example
+```
+
+Open the PR against `main` using the docs template (append `?template=docs.md` to the compare URL). The `docs/` branch prefix — or a `documentation` label on the PR — is what marks the PR as being on this track.
+
+What is different about this track:
+
+* **No test suite.** The Java build and tests are skipped; the only check is a fast MkDocs site build that catches a broken `nav` entry or an unbuildable page.
+* **No version bump.** Do not change `version` in `build.gradle.kts`.
+* **No changelog block.** Documentation merges never reach the release-notes automation, so the `CHANGELOG` markers are not needed.
+* **No release.** Merging documentation to `main` does not build the application, cut a GitHub release, or publish to Maven Central. It only redeploys the documentation site, so your change is live within a few minutes.
+* **`develop` is synced for you.** Because these commits land on `main` first, an automated `main` → `develop` pull request is opened (or an existing one updated) to bring them back down. Review and merge it; unlike the hotfix track, you do not need to cherry-pick anything yourself.
+
+If a "documentation" change turns out to also need a code edit, move it to the feature track — the **Docs track guard** check fails any `docs/`-prefixed PR that touches files outside the documentation paths.
 
 ## Opening a Pull Request
 When you open a PR:
 
+- Confirm the base branch matches your track (`develop` for features, `main` for hotfixes and documentation).
 - Fill out the PR template with a clear description of *what* changed and *why*.
 - Reference any related issue (e.g. "Closes #123").
 - Keep PRs focused. Smaller, single-purpose PRs are reviewed faster.
@@ -89,10 +148,24 @@ When you open a PR:
 After you have submitted your Pull Request, verify that all of the automated checks have passed. If any of the checks have failed, review the error message and make any necessary changes. If you are unsure how to fix the error, reach out to the TASSEL team for assistance.
 
 ### Changelog notes
-The release automation extracts changelog content from the merged PR's description (the text between the `<!-- BEGIN CHANGELOG -->` and `<!-- END CHANGELOG -->` markers in the template). Fill this in so your change is reflected in the published [Version History](changelog.md).
+The release automation extracts changelog content from the merged PR's description (the text between the `<!-- BEGIN CHANGELOG -->` and `<!-- END CHANGELOG -->` markers in the template). Fill this in so your change is reflected in the published [Version History](changelog.md). Documentation-only PRs are the exception — they do not trigger a release, so they have no changelog block.
 
 ## Testing and Continuous Integration
 TASSEL uses [JUnit](https://junit.org/) tests run through Gradle. Please add or update tests for your change and make sure the required checks pass before opening a Pull Request.
+
+Which checks run depends on what you changed. CI inspects the changed paths rather than the branch, so a PR that touches no compiled sources skips the Java jobs, and a PR that touches no documentation skips the site build:
+
+| Changed paths | Checks that run |
+| --- | --- |
+| `src/**` | Full Java CI (build, tests, coverage) |
+| `docs/**`, `*.md`, `mkdocs.yml` only | MkDocs site build (about a minute) |
+| Both | Both |
+
+A skipped job reports success, so it never blocks a merge. If you are on the documentation track, you can preview exactly what CI builds with:
+
+```bash
+mkdocs serve
+```
 
 Fetch the shared test-data archive once after a clean checkout (it is downloaded into the git-ignored `dataFiles/` directory):
 
@@ -119,9 +192,9 @@ The statistical tests exercise native BLAS routines, so you will need OpenBLAS i
 For full details on the test layout, coverage reports, what CI runs, and how to add an enforced test, see the [Testing guide](developer/testing.md).
 
 ## Code Review
-A member of the TASSEL team will review your Pull Request and may request changes. Push follow-up commits to the same branch to update the PR. Once approved, the change is merged into `main`.
+A member of the TASSEL team will review your Pull Request and may request changes. Push follow-up commits to the same branch to update the PR. Once approved, the change is merged into its base branch.
 
-Merges to `main` trigger the build-and-release automation, which produces a new build and standalone distribution — so a merged PR generally results in a new released build. See [Releasing](developer/releasing.md).
+Merges of code to `main` trigger the build-and-release automation, which produces a new build and standalone distribution — so a merged hotfix, or a promotion of `develop`, generally results in a new released build. Documentation-only merges are excluded from that automation and instead redeploy the documentation site. See [Releasing](developer/releasing.md).
 
 ## Coding Tips
 - Match the style and structure of the surrounding code.

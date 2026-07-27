@@ -179,8 +179,24 @@ coverage of the analysis and pipeline logic while excluding GUI code:
 
 ### Documentation
 
+The user and developer documentation lives in `docs/` and is published with
+MkDocs. Preview it locally with:
+
+```bash
+pip install mkdocs-material
+mkdocs serve
+```
+
 API documentation is generated with Dokka:
 
 ```bash
 ./gradlew dokkaHtml
 ```
+
+### Contributing
+
+Start from the branch that matches your change: `develop` for features and
+non-urgent fixes, `main` for hotfixes and documentation-only changes.
+Documentation changes take a shortcut — they skip the test suite and publish
+without cutting a release. See
+[Contributing](docs/CONTRIBUTING.md#the-git-workflow) for the full workflow.

@@ -66,16 +66,29 @@ jobs:
           zip -r ../tassel-5-standalone-v${VERSION}.zip .
           tar -czf ../tassel-5-standalone-v${VERSION}.tar.gz .
 
-      - name: Extract changelog content from latest PR
+      - name: Extract changelog content from the PR that produced this commit
         id: extract_changelog
         run: |
-          # Get the latest merged PR
-          LATEST_PR=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                     "https://api.github.com/repos/${{ github.repository }}/pulls?state=closed&sort=updated&direction=desc" | \
-                     jq -r '[.[] | select(.merged_at != null)][0]')
+          API="https://api.github.com/repos/${{ github.repository }}"
+          AUTH="Authorization: token ${{ secrets.GITHUB_TOKEN }}"
 
-          PR_NUMBER=$(echo "$LATEST_PR" | jq -r '.number')
-          PR_BODY=$(echo "$LATEST_PR" | jq -r '.body')
+          # Resolve the PR that actually contains the commit being built. Sorting
+          # merged PRs by update time is not reliable: documentation PRs merge
+          # directly to main without triggering this workflow, so the newest
+          # merged PR is often not the one being released.
+          PR=$(curl -s -H "$AUTH" "$API/commits/${{ github.sha }}/pulls" | \
+               jq -r '[.[] | select(.merged_at != null)][0] // empty')
+
+          if [ -z "$PR" ] || [ "$PR" = "null" ]; then
+            echo "No PR associated with ${{ github.sha }}; falling back to the most recently merged PR."
+            PR=$(curl -s -H "$AUTH" \
+                 "$API/pulls?state=closed&sort=updated&direction=desc" | \
+                 jq -r '[.[] | select(.merged_at != null)][0]')
+          fi
+
+          PR_NUMBER=$(echo "$PR" | jq -r '.number')
+          PR_BODY=$(echo "$PR" | jq -r '.body')
+          echo "Using PR #$PR_NUMBER for release notes."
 
           # Extract content between BEGIN CHANGELOG and END CHANGELOG tags.
           # The grep -v filters exit non-zero on empty input, which would abort

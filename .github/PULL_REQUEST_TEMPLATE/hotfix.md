@@ -9,6 +9,10 @@
   template instead (base branch `develop`):
   https://github.com/maize-genetics/tassel/compare/develop...HEAD?template=feature.md
 
+  For a documentation-only change, use the docs template. It also targets
+  `main`, but skips the test suite and needs no version bump:
+  https://github.com/maize-genetics/tassel/compare/main...HEAD?template=docs.md
+
   IMPORTANT: after this hotfix merges to `main`, it MUST be backported to
   `develop` (see the checklist) so the next promotion does not reintroduce
   the bug.

@@ -8,6 +8,11 @@
   template (base branch `main`) by opening the PR with `?template=hotfix.md`
   appended to the compare URL, e.g.:
   https://github.com/maize-genetics/tassel/compare/main...HEAD?template=hotfix.md
+
+  Changing ONLY documentation (docs/**, *.md, mkdocs.yml)? Use the docs
+  template (base branch `main`) — it skips the test suite and publishes the
+  site without cutting a release:
+  https://github.com/maize-genetics/tassel/compare/main...HEAD?template=docs.md
 -->
 
 ## Description
