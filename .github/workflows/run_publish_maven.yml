@@ -6,7 +6,18 @@ on:
     tags:
       - '*.*'
       - '*.*.*'
+      # Never publish nightly dev tags to Maven Central. Dot-free `dev-*` tags
+      # already fail to match the version patterns above; this negative pattern
+      # is an explicit belt-and-suspenders guard.
+      - '!dev-*'
     branches: [main, master]
+    # Skip docs-only branch pushes so documentation changes don't trigger a
+    # Maven Central publish. Note: path filters are NOT evaluated for tag
+    # pushes, so tag-triggered releases are unaffected by this.
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - 'mkdocs.yml'
 
 jobs:
 

@@ -1,0 +1,116 @@
+name: Sync main to develop
+
+# Keeps `develop` caught up with everything that lands on `main` first:
+# documentation merges, hotfixes, and the release automation's own changelog and
+# download-link commits. Without this, each of those quietly accumulates as a
+# conflict to be resolved at the next promotion of `develop` to `main`.
+#
+# This opens (or updates) a single `main` -> `develop` pull request. A human
+# still merges it: a back-merge can be conflict-free and still be semantically
+# wrong, so the review step is the point.
+#
+# Trigger notes:
+#   * Pushes made with GITHUB_TOKEN do not raise `push` events, so the changelog
+#     commit from jdeploy.yml is invisible to the `push` trigger above. The
+#     `workflow_run` and `schedule` triggers exist to catch it.
+#   * PRs opened with GITHUB_TOKEN do not trigger other workflows, so no checks
+#     run on the sync PR itself. coverage.yml therefore also runs on pushes to
+#     `develop`, which covers the code once this PR is merged.
+
+on:
+  push:
+    branches: [main]
+  # Catches the changelog/download-link commit that jdeploy.yml pushes to `main`
+  # after a release.
+  workflow_run:
+    workflows: ["jDeploy CI with Gradle"]
+    types:
+      - completed
+    branches: [main, master]
+  # Backstop, in case a commit reaches `main` by some path that raises no event.
+  schedule:
+    # 06:00 UTC daily, after the nightly build.
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: sync-main-to-develop
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Open main to develop sync PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Open or reuse the sync pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if ! git show-ref --verify --quiet refs/remotes/origin/develop; then
+            echo "No origin/develop branch; nothing to sync."
+            exit 0
+          fi
+
+          # `gh pr create` fails outright when the branches share no new commits.
+          AHEAD=$(git rev-list --count origin/develop..origin/main)
+          if [ "$AHEAD" -eq 0 ]; then
+            echo "develop already contains every commit on main; nothing to sync."
+            exit 0
+          fi
+
+          # A promotion of develop to main leaves main exactly one merge commit
+          # ahead with an identical tree. Comparing content rather than commit
+          # counts avoids opening an empty PR after every release.
+          if git diff --quiet origin/develop origin/main; then
+            echo "main is $AHEAD commit(s) ahead of develop but the trees are identical; nothing to sync."
+            exit 0
+          fi
+          echo "main is $AHEAD commit(s) ahead of develop, with content differences."
+
+          # An open sync PR keeps updating itself as main moves, so reuse it.
+          EXISTING=$(gh pr list --base develop --head main --state open \
+            --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            echo "Sync PR #$EXISTING is already open; it will pick up these commits."
+            exit 0
+          fi
+
+          cat > sync_pr_body.md <<'BODY'
+          Automated back-merge. Documentation changes and hotfixes merge directly to
+          `main`, and the release automation commits the changelog and download links
+          there too, all of which leaves `develop` behind. Merging this keeps the two
+          branches aligned so the next promotion does not have to untangle them.
+
+          ## Resolving conflicts
+
+          Everything here is already on `main`, so prefer `main` when the same
+          content was edited on both sides — with one exception:
+
+          * **`build.gradle.kts`** — keep **`develop`'s** `version`. A hotfix bumps
+            the patch version of the *released* line (for example `5.2.97` to
+            `5.2.98`), which must not overwrite an in-progress version on `develop`.
+
+          ## Before merging
+
+          Checks do not run on this pull request, because it was opened by
+          `GITHUB_TOKEN`. If it carries code (a hotfix rather than documentation),
+          CI runs against `develop` once this is merged, and the nightly build is
+          the backstop. Watch for a failure there.
+          BODY
+
+          gh pr create \
+            --base develop \
+            --head main \
+            --title "Sync main into develop" \
+            --body-file sync_pr_body.md
