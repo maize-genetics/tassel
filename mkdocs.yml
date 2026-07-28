@@ -46,6 +46,12 @@ extra:
     - icon: fontawesome/brands/youtube
       link: https://www.youtube.com/c/BucklerLab
 
+# Build exclusions
+# docs/templates/ holds envsubst sources rendered by the release workflow, not
+# publishable pages; building them would publish raw ${VERSION} placeholders.
+exclude_docs: |
+  templates/
+
 # Markdown extensions
 markdown_extensions:
   - attr_list
