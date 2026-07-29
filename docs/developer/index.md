@@ -17,9 +17,13 @@ TASSEL is written primarily in **Java** (with some **Kotlin**) and built with
 | Add a new analysis, filter, or data operation             | [Developing Plugins](plugin-development.md)      |
 | Run the test suite and check statistical correctness       | [Testing](testing.md)                           |
 | Submit a change through a pull request                     | [Contributing](../CONTRIBUTING.md)              |
-| Know which branch to start from (`main` vs. `develop`)     | [The Git Workflow](../CONTRIBUTING.md#the-git-workflow) |
-| Fix a typo or improve these docs                           | [Documentation track](../CONTRIBUTING.md#documentation-track) |
 | Cut a release and publish artifacts                        | [Releasing](releasing.md)                       |
+
+!!! note "Branching model"
+    TASSEL uses a `develop` integration branch: normal work flows
+    `feature/* -> develop -> main`, and `main` holds released code. Branch off
+    `develop` for your change (see [Contributing](../CONTRIBUTING.md)); releases
+    are promoted from `develop` to `main` (see [Releasing](releasing.md)).
 
 ## Toolchain at a glance
 
