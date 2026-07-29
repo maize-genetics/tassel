@@ -11,9 +11,7 @@ TASSEL is developed on GitHub at [maize-genetics/tassel](https://github.com/maiz
      * [Suggesting Enhancements and New Features](#suggesting-enhancements-and-new-features)
      * [Submitting Code Changes](#submitting-code-changes)
 * [The Git Workflow](#the-git-workflow)
-     * [Which track am I on?](#which-track-am-i-on)
-     * [Feature track (the default)](#feature-track-the-default)
-     * [Hotfix track](#hotfix-track)
+     * [Keeping your branch current](#keeping-your-branch-current)
      * [Documentation track](#documentation-track)
      * [Keeping `develop` in sync with `main`](#keeping-develop-in-sync-with-main)
 * [Opening a Pull Request](#opening-a-pull-request)
@@ -54,27 +52,26 @@ If you have an idea for an enhancement, please create a new issue with the enhan
 To submit a code change, you first will need to fork the TASSEL repository, make your changes on a branch of your fork, and then submit a Pull Request to the TASSEL repository. The sections below describe the Git workflow, pull request expectations, and the checks your change must pass.
 
 ## The Git Workflow
-TASSEL uses a branch-and-pull-request model with two long-lived branches:
+TASSEL uses a `develop` integration branch: everyday work is merged into
+`develop` first, and `main` always reflects the latest released version. Normal
+contributions branch off `develop` and are merged back into `develop`. Two kinds
+of change take a different path: critical fixes to an already-released version
+(the [hotfix track](developer/releasing.md#hotfixes)) and changes that touch
+nothing but documentation (the [documentation track](#documentation-track)).
+When in doubt, use the normal flow below — it is never *wrong*, only slower.
 
-* **`main`** is the released branch. Every merge of code to `main` produces a new build and release, so `main` should always reflect what users have.
-* **`develop`** is the integration branch where normal work accumulates. A [nightly build](developer/releasing.md) publishes an unstable prerelease from it, and it is promoted to `main` when a release is cut.
-
-Which branch you start from depends on the kind of change you are making. There are three tracks, each with its own pull request template.
-
-### Which track am I on?
-
-| Your change | Branch from | PR into | Template | Runs the test suite? |
-| --- | --- | --- | --- | --- |
-| Feature, enhancement, refactor, non-urgent bug fix, CI work | `develop` | `develop` | feature (default) | Yes |
-| Critical fix for a bug already affecting a released version | `main` | `main` | hotfix | Yes |
-| Documentation only (`docs/**`, any `*.md`, `mkdocs.yml`) | `main` | `main` | docs | No — site build only |
-
-When in doubt, use the feature track. It is never *wrong*, only slower.
-
-Common to all three tracks:
+In short:
 
 1. **Fork** the repository (external contributors) or create a branch (team members).
-2. **Branch** off the base branch for your track. Branches are cheap — use one per logical piece of work.
+2. **Branch** off `develop` for your change, using a `feature/*` name. Branches
+   are cheap — use one per logical piece of work.
+
+    ```bash
+    git switch develop
+    git pull
+    git switch -c feature/my-change
+    ```
+
 3. **Commit** focused, well-described changes.
 
     ```bash
@@ -82,78 +79,91 @@ Common to all three tracks:
     git commit -m "Short, imperative summary of the change"
     ```
 
-4. **Push** your branch and open a pull request against the base branch for your track.
+4. **Push** your branch.
 
-Pull the base branch into your branch periodically to reduce merge conflicts:
+    ```bash
+    git push -u origin feature/my-change
+    ```
 
-```bash
-git checkout my-branch
-git fetch origin
-git merge origin/develop   # or origin/main, depending on your track
-```
+5. **Open a pull request** against `develop`.
 
-### Feature track (the default)
-Nearly all work belongs here, including changes that mix documentation with code.
+### Keeping your branch current
+Pull the latest `develop` into your branch periodically to reduce merge conflicts:
 
 ```bash
-git checkout develop
+git switch develop
 git pull
-git checkout -b my-feature
+git switch feature/my-change
+git merge develop
 ```
-
-Open the PR against `develop`. The default PR template applies. Your change ships to users at the next promotion of `develop` to `main`.
-
-### Hotfix track
-Only for an urgent fix to a bug that is already affecting a released version. Branch from `main`, keep the change as small as possible, bump the patch version, and open the PR against `main` with the hotfix template:
-
-```bash
-git checkout main
-git pull
-git checkout -b hotfix/short-description
-```
-
-Because this bypasses `develop`, the fix has to reach `develop` too, or the next promotion will reintroduce the bug. You do not need to cherry-pick it: merging to `main` opens an automated `main` → `develop` [back-merge PR](#keeping-develop-in-sync-with-main). Confirming that PR merges is part of the hotfix checklist.
-
-When resolving conflicts in that PR, keep **`develop`'s** `version` in `build.gradle.kts` — a hotfix bumps the patch version of the released line and must not overwrite an in-progress version on `develop`.
 
 ### Documentation track
-Use this when the change touches **nothing but** documentation: files under `docs/`, any `*.md` file (including `README.md`), and `mkdocs.yml`. Documentation is neither a feature that should wait for the next release nor an emergency, so it gets a shorter path: straight to `main`, with no test suite and no release.
+Use this when your change touches **nothing but** documentation: files under
+`docs/`, any `*.md` file (including `README.md`), and `mkdocs.yml`. Documentation
+is neither a feature that should wait for the next release nor an emergency, so it
+gets a shorter path — straight to `main`, with no test suite and no release.
 
 Branch from `main` and prefix the branch name with `docs/`:
 
 ```bash
-git checkout main
+git switch main
 git pull
-git checkout -b docs/fix-mlm-example
+git switch -c docs/fix-mlm-example
 ```
 
-Open the PR against `main` using the docs template (append `?template=docs.md` to the compare URL). The `docs/` branch prefix — or a `documentation` label on the PR — is what marks the PR as being on this track.
+Open the PR against `main` using the docs template (append `?template=docs.md` to
+the compare URL). The `docs/` branch prefix — or a `documentation` label on the
+PR — is what marks the PR as being on this track.
 
-What is different about this track:
+What is different here:
 
-* **No test suite.** The Java build and tests are skipped; the only check is a fast MkDocs site build that catches a broken `nav` entry or an unbuildable page.
+* **No test suite.** The Java build and tests are skipped. The only check is a
+  fast MkDocs site build that catches a broken `nav` entry or an unbuildable page.
 * **No version bump.** Do not change `version` in `build.gradle.kts`.
-* **No changelog block.** Documentation merges never reach the release-notes automation, so the `CHANGELOG` markers are not needed.
-* **No release.** Merging documentation to `main` does not build the application, cut a GitHub release, or publish to Maven Central. It only redeploys the documentation site, so your change is live within a few minutes.
-* **`develop` is synced for you.** Because these commits land on `main` first, an automated [back-merge PR](#keeping-develop-in-sync-with-main) brings them back down.
+* **No changelog block.** Documentation merges never reach the release-notes
+  automation, so the `CHANGELOG` markers are not needed.
+* **No release.** Merging documentation to `main` does not build the application,
+  cut a GitHub release, or publish to Maven Central. It only redeploys the
+  documentation site, so your change is live within a few minutes.
+* **`develop` is synced for you.** Because these commits land on `main` first, an
+  automated [back-merge PR](#keeping-develop-in-sync-with-main) brings them down.
 
-If a "documentation" change turns out to also need a code edit, move it to the feature track — the **Docs track guard** check fails any `docs/`-prefixed PR that touches files outside the documentation paths.
+If a documentation change turns out to also need a code edit, move it to the
+normal flow: the **Docs track guard** check fails any `docs/`-prefixed PR that
+touches files outside the documentation paths.
 
 ### Keeping `develop` in sync with `main`
-Three things land on `main` without going through `develop`: documentation merges, hotfixes, and the release automation's own commits (it writes `docs/changelog.md` and the download links after each release). Left alone, each one becomes a conflict to untangle at the next promotion.
+Three things land on `main` without going through `develop`: documentation merges,
+hotfixes, and the release automation's own commits (it writes `docs/changelog.md`
+and the download links after each release). Left alone, each one becomes a
+conflict to untangle at the next promotion.
 
-So a workflow opens a single `main` → `develop` pull request whenever `main` gains content that `develop` does not have, and keeps that one PR up to date as more commits land. A person still merges it — a back-merge can be conflict-free and still be semantically wrong, which is exactly what review is for.
+So a workflow opens a single `main` → `develop` pull request whenever `main` gains
+content that `develop` does not have, and keeps that one PR up to date as more
+commits land. A person still merges it — a back-merge can be conflict-free and
+still be semantically wrong, which is exactly what review is for.
 
 Two things to know when you merge one:
 
-* **Prefer `main` when resolving conflicts**, since everything in the PR is already released — except `build.gradle.kts`, where you keep `develop`'s `version`.
-* **No checks run on the sync PR itself**, because it is opened by the CI token. If it carries code, the test suite runs against `develop` once you merge, and the [nightly build](developer/releasing.md#nightly-development-builds-nightlyyml) is the backstop.
+* **Prefer `main` when resolving conflicts**, since everything in the PR is
+  already released — except `build.gradle.kts`, where you keep `develop`'s
+  `version`. A hotfix bumps the patch version of the released line and must not
+  overwrite an in-progress version on `develop`.
+* **No checks run on the sync PR itself**, because it is opened by the CI token.
+  If it carries code, the test suite runs against `develop` once you merge, and
+  the [nightly build](developer/releasing.md#nightly-dev-builds) is the backstop.
 
 ## Opening a Pull Request
 When you open a PR:
 
-- Confirm the base branch matches your track (`develop` for features, `main` for hotfixes and documentation).
+- Confirm the base branch matches your change: `develop` for normal work, `main`
+  for hotfixes and documentation.
 - Fill out the PR template with a clear description of *what* changed and *why*.
+  Normal work uses the default (feature) template with `develop` as the base
+  branch. Critical fixes to an already-released version instead use the **hotfix**
+  template with `main` as the base branch (see [Releasing](developer/releasing.md#hotfixes)),
+  and documentation-only changes use the **docs** template, also against `main`
+  (see [Documentation track](#documentation-track)).
 - Reference any related issue (e.g. "Closes #123").
 - Keep PRs focused. Smaller, single-purpose PRs are reviewed faster.
 - Add reviewers from the TASSEL team. If you are unsure who should review, add **@zrm22** and additional reviewers will be assigned.
@@ -166,6 +176,12 @@ The release automation extracts changelog content from the merged PR's descripti
 ## Testing and Continuous Integration
 TASSEL uses [JUnit](https://junit.org/) tests run through Gradle. Please add or update tests for your change and make sure the required checks pass before opening a Pull Request.
 
+Fetch the shared test-data archive once after a clean checkout (it is downloaded into the git-ignored `dataFiles/` directory):
+
+```bash
+./gradlew fetchTestData
+```
+
 Which checks run depends on what you changed. CI inspects the changed paths rather than the branch, so a PR that touches no compiled sources skips the Java jobs, and a PR that touches no documentation skips the site build:
 
 | Changed paths | Checks that run |
@@ -174,21 +190,7 @@ Which checks run depends on what you changed. CI inspects the changed paths rath
 | `docs/**`, `*.md`, `mkdocs.yml` only | MkDocs site build (about a minute) |
 | Both | Both |
 
-A skipped job reports success, so it never blocks a merge.
-
-The full Java CI also runs on pushes to `develop` that touch `src/**` or the build files. That is what verifies a hotfix once it has been back-merged, since no checks run on the sync PR itself.
-
-If you are on the documentation track, you can preview exactly what CI builds with:
-
-```bash
-mkdocs serve
-```
-
-Fetch the shared test-data archive once after a clean checkout (it is downloaded into the git-ignored `dataFiles/` directory):
-
-```bash
-./gradlew fetchTestData
-```
+A skipped job reports success, so it never blocks a merge. The full Java CI also runs on pushes to `develop` that touch `src/**` or the build files; that is what verifies a hotfix once it has been back-merged, since no checks run on the sync PR itself.
 
 Opening or updating a PR that touches `src/**` triggers the CI workflow (JDK 21 with OpenBLAS installed). It has two jobs, matching the two local test entry points:
 
@@ -211,7 +213,7 @@ For full details on the test layout, coverage reports, what CI runs, and how to 
 ## Code Review
 A member of the TASSEL team will review your Pull Request and may request changes. Push follow-up commits to the same branch to update the PR. Once approved, the change is merged into its base branch.
 
-Merges of code to `main` trigger the build-and-release automation, which produces a new build and standalone distribution — so a merged hotfix, or a promotion of `develop`, generally results in a new released build. Documentation-only merges are excluded from that automation and instead redeploy the documentation site. See [Releasing](developer/releasing.md).
+Merging to `develop` does **not** publish a release. Releases happen when `develop` is promoted to `main` through a separate promotion PR, and merges of code to `main` trigger the build-and-release automation. Documentation-only merges are excluded from that automation and instead redeploy the documentation site. See [Releasing](developer/releasing.md).
 
 ## Coding Tips
 - Match the style and structure of the surrounding code.

@@ -1,5 +1,7 @@
 ---
-title: "Tassel 5 Change History"
+title: "TASSEL 5 Change History"
+hide:
+  - navigation
 ---
 
 ## (V5.2.97) July 19, 2026

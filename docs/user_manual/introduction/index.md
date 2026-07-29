@@ -50,9 +50,11 @@ TASSEL is written in Java, thereby enabling its use with virtually any operating
 
 ## Citations
 
-!!! info "Overall Package"
+!!! quote "Overall Package"
 
     Bradbury PJ, Zhang Z, Kroon DE, Casstevens TM, Ramdoss Y, Buckler ES. (2007) [TASSEL: Software for association mapping of complex traits in diverse samples.](https://academic.oup.com/bioinformatics/article/23/19/2633/185151) Bioinformatics 23:2633-2635.
+
+    For BibTex users:
 
     ```bibtex
     @article{Bradbury2007,
@@ -68,9 +70,11 @@ TASSEL is written in Java, thereby enabling its use with virtually any operating
     }
     ```
 
-!!! info "Genotyping by Sequencing"
+!!! quote "Genotyping by Sequencing"
 
     Glaubitz JC, Casstevens TM, Lu F, Harriman J, Elshire RJ, Sun Q, Buckler ES. (2014) [TASSEL-GBS: A High Capacity Genotyping by Sequencing Analysis Pipeline.](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0090346) PLoS ONE 9(2): e90346
+
+    For BibTex users:
 
     ```bibtex
     @article{Glaubitz2014,
@@ -86,9 +90,11 @@ TASSEL is written in Java, thereby enabling its use with virtually any operating
     }
     ```
 
-!!! info "Mixed Model GWAS"
+!!! quote "Mixed Model GWAS"
 
     Zhang Z, Ersoz E, Lai C-Q, Todhunter RJ, Tiwari HK, Gore MA, Bradbury PJ, Yu J, Arnett DK, Ordovas JM, Buckler ES. (2010) [Mixed linear model approach adapted for genome-wide association studies.](https://www.nature.com/articles/ng.546) Nature Genetics 42:355-360.
+
+    For BibTex users:
 
     ```bibtex
     @article{Zhang2010,
