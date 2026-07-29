@@ -44,6 +44,17 @@ Full documentation lives on the [TASSEL docs site](https://maize-genetics.github
 | [Contributing](https://maize-genetics.github.io/tassel/CONTRIBUTING/)                      | Git workflow, pull requests, and code review.                                |
 | [Version History](https://maize-genetics.github.io/tassel/changelog/)                      | Release notes and changelog.                                                 |
 
+To preview the site locally, install `mkdocs-material` and run `mkdocs serve`.
+
+### Contributing
+
+Start from the branch that matches your change: `develop` for features and
+non-urgent fixes, `main` for hotfixes and documentation-only changes.
+Documentation changes take a shortcut — they skip the test suite and publish
+without cutting a release. See
+[Contributing](https://maize-genetics.github.io/tassel/CONTRIBUTING/#the-git-workflow)
+for the full workflow.
+
 ### Citation
 
 If you use TASSEL in your research, please cite the overall package:

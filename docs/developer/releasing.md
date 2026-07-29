@@ -1,9 +1,8 @@
 # Releasing
 
-TASSEL releases are largely **automated through GitHub Actions**. Merging to
+TASSEL releases are largely **automated through GitHub Actions**. Merging code to
 `main` builds the application, publishes a GitHub release with installers and a
-standalone distribution, and redeploys the documentation site. Publishing to
-Maven Central is a separate, manually-triggered workflow.
+standalone distribution, and redeploys the documentation site.
 
 ## Branching model
 
@@ -12,18 +11,22 @@ code:
 
 ```
 feature/*  --PR-->  develop  --promotion PR-->  main  --> release
-hotfix/*   ------------------------PR------------------->  main  --> release (then backport to develop)
+hotfix/*   ------------------------PR------------------->  main  --> release (then synced to develop)
+docs/*     ------------------------PR------------------->  main  --> site deploy only
 ```
 
 * `develop` — the default branch and integration target for all normal work
   (features, enhancements, non-urgent bug fixes). See
   [Contributing](../CONTRIBUTING.md).
-* `main` — released code only. A push here triggers the release automation
-  described below.
+* `main` — released code only. A push of code here triggers the release
+  automation described below.
 
 A release is cut by opening a **promotion PR** from `develop` into `main`.
 Because `main` is where the automation fires, everything on this page keys off
 that promotion merge.
+
+Documentation is the one thing that reaches `main` without producing a release —
+see [Documentation-only changes](#documentation-only-changes).
 
 ## Versioning
 
@@ -72,13 +75,36 @@ Triggered on push to `main`, this "jDeploy CI with Gradle" workflow:
 
 After the build workflow completes on `main`, the "Site Builder and Deployment"
 workflow builds this MkDocs site with `mkdocs gh-deploy --force`, publishing it to
-GitHub Pages.
+GitHub Pages. It also runs directly on any push to `main` that touches `docs/**`
+or `mkdocs.yml`, which is what publishes documentation-only merges.
+
+## Documentation-only changes
+
+A push to `main` where **every** changed file is documentation (`docs/**`, any
+`*.md`, or `mkdocs.yml`) skips the release automation entirely: both
+`jdeploy.yml` and `run_publish_maven.yml` carry a `paths-ignore` filter for those
+paths. No application build, no GitHub release, no Maven Central publish — only
+the site deploy above.
+
+Two consequences worth knowing:
+
+* The filter skips a run only when *all* changed files are documentation. A PR
+  mixing docs with a workflow or source edit still triggers the full release
+  path, which is why the documentation track refuses mixed changes.
+* Because these commits land on `main` first, they need to come back down to
+  `develop`. That is what
+  [`sync_main_to_develop.yml`](../CONTRIBUTING.md#keeping-develop-in-sync-with-main)
+  is for.
+
+See [Documentation track](../CONTRIBUTING.md#documentation-track) for how to open
+one of these PRs.
 
 ## Publishing to Maven Central (`run_publish_maven.yml`)
 
-Publishing the library to Maven Central is handled by a separate workflow and is
-**not** triggered automatically by every merge. It relies on the `maven-publish`,
-`signing`, and `jreleaser` configuration in `build.gradle.kts`:
+Publishing the library to Maven Central runs on pushes of code to `main` and on
+version tags, and can also be triggered manually. Documentation-only pushes are
+excluded, and nightly `dev-*` tags never publish. It relies on the
+`maven-publish`, `signing`, and `jreleaser` configuration in `build.gradle.kts`:
 
 - The publication artifact id is `tassel` under group `net.maizegenetics`.
 - Artifacts are GPG-signed. The signing key and passphrase are supplied via the
@@ -106,8 +132,8 @@ Releases are promoted out of `develop`:
 3. Open a **promotion PR** from `develop` into `main`. Make sure the PR
    description contains the changelog block (between the
    `<!-- BEGIN CHANGELOG -->` / `<!-- END CHANGELOG -->` markers) so release
-   notes and `docs/changelog.md` are generated correctly — the automation reads
-   it from the most recently merged PR.
+   notes and `docs/changelog.md` are generated correctly — the automation resolves
+   the PR from the commit being built.
 4. Merge the promotion PR. Pushing to `main` runs the build/release and
    site-deploy workflows automatically.
 5. Verify the new GitHub Release, its attached standalone archives and
@@ -123,9 +149,12 @@ normal `develop` cycle:
 1. Branch from `main`: `git switch main && git pull && git switch -c hotfix/short-description`.
 2. Bump the **patch** portion of `version` in `build.gradle.kts` and open a PR
    targeting `main` using the hotfix PR template.
-3. After the PR merges and the release publishes, **backport** the fix to
-   `develop` (a follow-up PR or cherry-pick) so the next promotion does not
-   reintroduce the bug.
+3. After the PR merges and the release publishes, the fix has to reach `develop`
+   too, or the next promotion will reintroduce the bug. You do not need to
+   cherry-pick it: an automated `main` → `develop`
+   [back-merge PR](../CONTRIBUTING.md#keeping-develop-in-sync-with-main) is
+   opened for you. Confirming that PR merges is part of the hotfix checklist,
+   and when resolving its conflicts you keep **`develop`'s** `version`.
 
 ## Local dry runs
 
