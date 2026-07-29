@@ -6,12 +6,51 @@ on:
     types:
       - opened
       - synchronize
-    branches: [main, master]
-    paths: 'src/**'
+    branches: [main, develop, master]
+  # Also verify `develop` itself after a merge. The `main` -> `develop` back-merge
+  # PR is opened by GITHUB_TOKEN, so no checks run on that PR; this is what
+  # exercises a hotfix once it has been merged down.
+  push:
+    branches: [develop]
+    paths:
+      - 'src/**'
+      - 'build.gradle.kts'
+      - 'gradle.properties'
 
 jobs:
+  # Detect whether this PR touches compiled sources. The heavy test/coverage
+  # job below is only meaningful for src/** changes, but it must still report a
+  # status so it can be a *required* check: a job skipped via `if:` reports
+  # "success" to branch protection, whereas a whole workflow skipped by a
+  # top-level `paths:` filter stays "pending" and blocks docs-only PRs forever.
+  changes:
+    name: Detect source changes
+    runs-on: ubuntu-latest
+    # dorny/paths-filter lists a PR's changed files through the REST API.
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Detect changes under src/
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+
   test_and_coverage:
     name: TASSEL 5 CI
+    needs: changes
+    # On `push` the workflow-level `paths:` filter has already decided the change
+    # is relevant, so run unconditionally rather than re-deriving it from a
+    # merge-base comparison against the default branch.
+    if: ${{ needs.changes.outputs.src == 'true' || github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

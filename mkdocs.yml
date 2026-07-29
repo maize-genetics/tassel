@@ -33,11 +33,11 @@ theme:
     - navigation.instant: false
   language: en
   font:
-    text: Roboto
-    code: Roboto Mono
+    text: Inter
+    code: IBM Plex Mono
 
 # Copyright
-copyright: Copyright &copy; 2001 - 2025  <a href="https://www.maizegenetics.net "><b>Buckler Lab</b></a>
+copyright: '© 2026 <a href="https://www.maizegenetics.net"><b>Lab for Plant Genomic Diversity &amp; Design</b></a>'
 
 extra:
   social:
@@ -45,6 +45,12 @@ extra:
       link: https://github.com/maize-genetics
     - icon: fontawesome/brands/youtube
       link: https://www.youtube.com/c/BucklerLab
+
+# Build exclusions
+# docs/templates/ holds envsubst sources rendered by the release workflow, not
+# publishable pages; building them would publish raw ${VERSION} placeholders.
+exclude_docs: |
+  templates/
 
 # Markdown extensions
 markdown_extensions:
@@ -73,16 +79,28 @@ extra_javascript:
   - javascript/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
   - javascript/gallery.js
+  - javascript/download.js
+  - javascript/changelog.js
 
 extra_css:
   - assets/stylesheets/extra.css
+  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
+  - https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200
+  - https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap
 
 # Navigation
 nav:
   - Home:
       - index.md
+  - Download:
+      - download/index.md
   - Getting Started:
       - getting_started/index.md
+      - Installation:
+          - Desktop Application: getting_started/install-gui.md
+          - Standalone: getting_started/install-standalone.md
+          - JVM Library: getting_started/install-maven.md
+          - R Package (rTASSEL): getting_started/install-rtassel.md
       - User Manual:
           - Overview: user_manual/index.md
           - Introduction: user_manual/introduction/index.md
@@ -164,15 +182,17 @@ nav:
               - Pan-genome Atlas (PanA): pipelines/pangenome-atlas-pipeline.md
               - Cassava Production Pipeline: pipelines/cassava-production-pipeline.md
               - Pipeline CLI (v3 / v4): pipelines/tassel-pipeline-cli-v3-v4.md
-  - Developer:
-      - Overview: developer/index.md
-      - Building from Source: developer/building-from-source.md
-      - Project Architecture: developer/architecture.md
-      - Developing Plugins: developer/plugin-development.md
-      - Testing: developer/testing.md
-      - Releasing: developer/releasing.md
   - Community:
-      - Contributing: CONTRIBUTING.md
-      - Code of Conduct: CODE_OF_CONDUCT.md
+      - community/index.md
+      - Get Involved:
+          - Contributing: CONTRIBUTING.md
+          - Code of Conduct: CODE_OF_CONDUCT.md
+      - Developer:
+          - Overview: developer/index.md
+          - Building from Source: developer/building-from-source.md
+          - Project Architecture: developer/architecture.md
+          - Developing Plugins: developer/plugin-development.md
+          - Testing: developer/testing.md
+          - Releasing: developer/releasing.md
   - Version History: changelog.md
 
