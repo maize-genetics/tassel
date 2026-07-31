@@ -16,7 +16,7 @@
   var CACHE_KEY = "tassel-releases-v1";
   var CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
 
-  // Installer OS options (native jDeploy installers live on the rolling "main" release).
+  // Installer OS options (native jDeploy installers are attached to each version release).
   var INSTALLER_OS = [
     { value: "mac-arm64", label: "macOS (Apple Silicon)", match: "mac-arm64" },
     { value: "mac-x64", label: "macOS (Intel)", match: "mac-x64" },
@@ -129,6 +129,7 @@
 
   function buildCatalog(releases) {
     var installers = null; // { "mac-arm64": {name, url}, ... }
+    var installerTag = null; // Release tag the chosen installers came from.
     var standalone = {}; // version -> { targz, zip }
 
     (releases || []).forEach(function (rel) {
@@ -137,14 +138,15 @@
         var name = asset.name || "";
         var url = asset.browser_download_url;
 
-        // Native installers (rolling "main" release).
+        // Native installers, attached to each version release.
         if (name.indexOf("TASSEL.5.Installer-") === 0) {
           INSTALLER_OS.forEach(function (os) {
             if (name.indexOf(os.match) !== -1) {
               installers = installers || {};
-              // Prefer the newest release's asset if duplicated.
+              // The API lists releases newest first, so the first match wins.
               if (!installers[os.value]) {
                 installers[os.value] = { name: name, url: url };
+                installerTag = installerTag || rel.tag_name;
               }
             }
           });
@@ -165,6 +167,7 @@
 
     return {
       installers: installers,
+      installerTag: installerTag,
       standalone: standalone,
       standaloneVersions: standaloneVersions
     };
@@ -201,7 +204,14 @@
             return { value: o.value, label: o.label };
           })
         );
-        fillSelect(els.version, [{ value: "main", label: "Latest (main)" }]);
+        fillSelect(els.version, [
+          {
+            value: data.installerTag || "latest",
+            label: data.installerTag
+              ? "Latest (" + data.installerTag + ")"
+              : "Latest"
+          }
+        ]);
       } else {
         els.osField.hidden = true;
         fillSelect(els.version,
@@ -243,7 +253,9 @@
       title: "TASSEL 5 for " + osLabel,
       filename: asset.name,
       url: asset.url,
-      note: "Native installer &middot; latest build"
+      note:
+        "Native installer &middot; " +
+        (data.installerTag ? escapeHtml(data.installerTag) : "latest build")
     });
   }
 
