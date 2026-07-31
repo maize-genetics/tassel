@@ -49,3 +49,11 @@ production_pipeline.properties
 
 ### MkDocs ###
 site/
+
+### jDeploy ###
+jdeploy/
+jdeploy-bundle/
+.jdeploy-action/
+# Copied to the project root so the jDeploy CLI can package them.
+/sTASSEL.jar
+/lib/
