@@ -224,17 +224,24 @@ jobs:
             exit 0
           fi
 
-          # Insert the new section after the header (line 4) without sed:
+          # Insert the new section directly below the YAML front matter, without sed:
           # the changelog content is multi-line markdown (bullets starting with
           # "-"), which breaks `sed i\` because each line is parsed as a new
           # command. Rebuild the file with head/cat/tail instead so arbitrary
-          # text is inserted verbatim.
+          # text is inserted verbatim. The insertion point is found by locating the
+          # front matter's closing delimiter rather than hard-coding a line number,
+          # which silently breaks whenever the front matter gains or loses a key.
+          FRONT_MATTER_END=$(awk 'NR > 1 && /^---$/ { print NR; exit }' docs/changelog.md)
+          if [ -z "$FRONT_MATTER_END" ]; then
+            echo "Could not find the end of the changelog front matter" >&2
+            exit 1
+          fi
+
           {
-            head -n 4 docs/changelog.md
-            printf '## (V%s) %s\n\n' "${{ env.VERSION }}" "${{ env.DATE }}"
+            head -n "$FRONT_MATTER_END" docs/changelog.md
+            printf '\n## (V%s) %s\n\n' "${{ env.VERSION }}" "${{ env.DATE }}"
             cat /tmp/changelog_content.txt
-            printf '\n'
-            tail -n +5 docs/changelog.md
+            tail -n +$((FRONT_MATTER_END + 1)) docs/changelog.md
           } > docs/changelog.md.new
           mv docs/changelog.md.new docs/changelog.md
 

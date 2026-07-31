@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jreleaser.model.Active
@@ -12,6 +13,8 @@ plugins {
     id("org.jetbrains.dokka") version "2.0.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
     id("org.jreleaser") version "1.18.0"
+    // 8.3.x is the line that supports Gradle 8.x; Shadow 9.3+ requires Gradle 9.
+    id("com.gradleup.shadow") version "8.3.11"
 
     application
     `java-library`
@@ -31,7 +34,7 @@ kotlin {
 }
 
 group = "net.maizegenetics"
-version = "5.2.97"
+version = "5.2.98"
 description = "TASSEL is a software package to evaluate traits associations, evolutionary patterns, and linkage disequilibrium."
 val kotlinVersion = "2.1.21"
 
@@ -49,6 +52,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("com.formdev:flatlaf:3.7.1") // modern flat Swing Look-and-Feel (light/dark, HiDPI, macOS)
     implementation("org.apache.logging.log4j:log4j-api:2.21.1")
     implementation("org.apache.logging.log4j:log4j-core:2.21.1")
     implementation("com.google.guava:guava:22.0")
@@ -208,6 +212,42 @@ tasks {
     }
 }
 
+/**
+ * Fat ("uber") JAR published to Maven Central as `tassel-<version>-jar-with-dependencies.jar`.
+ * The classifier matches what maven-assembly-plugin produced through 5.2.96 so that existing
+ * consumers of that coordinate keep working.
+ */
+tasks.shadowJar {
+    archiveBaseName.set("tassel")
+    archiveClassifier.set("jar-with-dependencies")
+
+    manifest {
+        attributes(
+            "Main-Class" to application.mainClass.get(),
+            // Shadow inherits the `jar` manifest, whose Class-Path points at the
+            // external lib/ directory of the standalone distribution. Everything is
+            // already inside this archive.
+            "Class-Path" to "",
+            // FlatLaf and log4j2 contribute META-INF/versions/9 classes, which the JVM
+            // ignores unless the archive is flagged as multi-release.
+            "Multi-Release" to "true"
+        )
+    }
+
+    // Several dependencies (log4j2, biojava, avro) ship provider registrations that are
+    // silently lost when only the first copy of each file survives the merge.
+    mergeServiceFiles()
+    transform(Log4j2PluginsCacheFileTransformer())
+}
+
+// The fat JAR is a publishing artifact only. Shadow's `application` integration
+// registers a "shadow" distribution whose zip/tar land in the legacy `archives`
+// configuration that `assemble` builds, which would drag the 70+ MB JAR into every
+// `./gradlew build` in the jDeploy and nightly workflows. Removing those artifacts
+// detaches the whole shadow distribution, including `shadowJar` itself, from the
+// lifecycle; `shadowDistZip` and friends still work when invoked explicitly.
+configurations["archives"].artifacts.removeIf { it.name == "${project.name}-shadow" }
+
 // Kover (coverage) tasks
 kover {
     reports {
@@ -231,20 +271,15 @@ kover {
  *
  * This was modified from the BioKotlin project.
  */
-// configure Dokka’s HTML output directory so dokkaJar can find it
-tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml") {
-    outputDirectory.set(buildDir.resolve("dokka"))
-}
-
-val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
+// Under Dokka's V2 plugin mode the V1 `dokkaHtml` task is disabled, so the javadoc JAR
+// has to be packed from the V2 generator's output or it ships empty.
+val dokkaGeneratePublicationHtml = tasks.named("dokkaGeneratePublicationHtml")
 
 val dokkaJar by tasks.registering(Jar::class) {
-    dependsOn(dokkaHtml)
-    mustRunAfter(dokkaHtml)
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     description = "TASSEL: ${project.version}"
     archiveClassifier.set("javadoc")
-    from(dokkaHtml.outputDirectory)
+    from(dokkaGeneratePublicationHtml)
 }
 
 publishing {
@@ -311,13 +346,6 @@ publishing {
                 }
             }
         }
-    }
-
-    signing {
-        val signingKey: String? = System.getenv("JRELEASER_GPG_SECRET_KEY")
-        val signingPass: String? = System.getenv("JRELEASER_GPG_PASSPHRASE")
-        useInMemoryPgpKeys(signingKey, signingPass)
-        sign(publishing.publications["maven"])
     }
 
     repositories {

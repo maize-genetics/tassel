@@ -30,6 +30,10 @@ public class PreferencesDialog extends AbstractPlugin {
             .description("Flag whether to send logging to the console.")
             .build();
 
+    private PluginParameter<Boolean> myDarkTheme = new PluginParameter.Builder<>("darkTheme", TasselPrefs.TASSEL_DARK_THEME_DEFAULT, Boolean.class)
+            .description("Use the dark color theme (unchecked = light theme).")
+            .build();
+
     private PluginParameter<String> myConfigFile = new PluginParameter.Builder<>("configFile", TasselPrefs.TASSEL_CONFIG_FILE_DEFAULT, String.class)
             .description("Global configuration file")
             .required(false)
@@ -57,6 +61,7 @@ public class PreferencesDialog extends AbstractPlugin {
 
         setParameter(myRetainRareAlleles, TasselPrefs.getAlignmentRetainRareAlleles());
         setParameter(mySendLogToConsole, TasselPrefs.getLogSendToConsole());
+        setParameter(myDarkTheme, TasselPrefs.getDarkTheme());
         setParameter(myConfigFile, TasselPrefs.getConfigFile());
 
         List<LocaleWrapper> temp = new ArrayList<>();
@@ -77,6 +82,12 @@ public class PreferencesDialog extends AbstractPlugin {
 
         TasselPrefs.putLogSendToConsole(sendLogToConsole());
         TasselLogging.updateLoggingLocation();
+
+        if (TasselPrefs.getDarkTheme() != darkTheme()) {
+            TasselPrefs.putDarkTheme(darkTheme());
+            TASSELMainApp.setupLookAndFeel();
+            com.formdev.flatlaf.FlatLaf.updateUI();
+        }
 
         TasselPrefs.putConfigFile(configFile());
         ParameterCache.load(TasselPrefs.getConfigFile());
@@ -129,6 +140,27 @@ public class PreferencesDialog extends AbstractPlugin {
      */
     public PreferencesDialog sendLogToConsole(Boolean value) {
         mySendLogToConsole = new PluginParameter<>(mySendLogToConsole, value);
+        return this;
+    }
+
+    /**
+     * Use the dark color theme.
+     *
+     * @return Dark Theme
+     */
+    public Boolean darkTheme() {
+        return myDarkTheme.value();
+    }
+
+    /**
+     * Set Dark Theme. Use the dark color theme (unchecked = light theme).
+     *
+     * @param value Dark Theme
+     *
+     * @return this plugin
+     */
+    public PreferencesDialog darkTheme(Boolean value) {
+        myDarkTheme = new PluginParameter<>(myDarkTheme, value);
         return this;
     }
 

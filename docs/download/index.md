@@ -42,7 +42,7 @@ Add the TASSEL library to your JVM project from Maven Central:
     }
 
     dependencies {
-        implementation("net.maizegenetics:tassel:5.2.97")
+        implementation("net.maizegenetics:tassel:5.2.98")
     }
     ```
 
@@ -55,7 +55,7 @@ Add the TASSEL library to your JVM project from Maven Central:
     }
 
     dependencies {
-        implementation 'net.maizegenetics:tassel:5.2.97'
+        implementation 'net.maizegenetics:tassel:5.2.98'
     }
     ```
 
@@ -66,7 +66,7 @@ Add the TASSEL library to your JVM project from Maven Central:
     <dependency>
       <groupId>net.maizegenetics</groupId>
       <artifactId>tassel</artifactId>
-      <version>5.2.97</version>
+      <version>5.2.98</version>
     </dependency>
     ```
 

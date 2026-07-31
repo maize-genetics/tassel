@@ -49,6 +49,8 @@ public class TasselPrefs {
     public static final String TASSEL_CONFIG_FILE = "configFile";
     public static final String TASSEL_CONFIG_FILE_DEFAULT = "";
     public static final String TASSEL_LOCALE = "locale";
+    public static final String TASSEL_DARK_THEME = "darkTheme";
+    public static final boolean TASSEL_DARK_THEME_DEFAULT = false;
     //
     // ExportPlugin preferences
     //
@@ -271,6 +273,14 @@ public class TasselPrefs {
 
     public static void putYDim(int value) {
         putIntPref(TASSEL_TOP, TASSEL_Y_DIM, value);
+    }
+
+    public static boolean getDarkTheme() {
+        return getBooleanPref(TASSEL_TOP, TASSEL_DARK_THEME, TASSEL_DARK_THEME_DEFAULT);
+    }
+
+    public static void putDarkTheme(boolean value) {
+        putBooleanPref(TASSEL_TOP, TASSEL_DARK_THEME, value);
     }
 
     public static boolean getLogSendToConsole() {

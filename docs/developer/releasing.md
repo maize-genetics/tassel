@@ -33,8 +33,11 @@ see [Documentation-only changes](#documentation-only-changes).
 The project version is declared in `build.gradle.kts`:
 
 ```kotlin
-version = "5.2.97"
+version = "5.2.98"
 ```
+
+The same value is duplicated in `TASSELMainFrame.version`, which is what the GUI and
+pipeline banner report. Bump both together.
 
 Bump this value on `develop` before opening the promotion PR. You can confirm
 the current version with:
@@ -104,7 +107,8 @@ one of these PRs.
 Publishing the library to Maven Central runs on pushes of code to `main` and on
 version tags, and can also be triggered manually. Documentation-only pushes are
 excluded, and nightly `dev-*` tags never publish. It relies on the
-`maven-publish`, `signing`, and `jreleaser` configuration in `build.gradle.kts`:
+`maven-publish`, `signing`, `shadow`, and `jreleaser` configuration in
+`build.gradle.kts`:
 
 - The publication artifact id is `tassel` under group `net.maizegenetics`.
 - Artifacts are GPG-signed. The signing key and passphrase are supplied via the
@@ -114,6 +118,39 @@ excluded, and nightly `dev-*` tags never publish. It relies on the
   alongside the sources JAR.
 - JReleaser deploys the staged repository (`build/staging-deploy`) to Sonatype /
   Maven Central.
+
+### Published artifacts
+
+Every release must publish four JARs:
+
+| Artifact | Produced by |
+| -------- | ----------- |
+| `tassel-<version>.jar` | `jar` (also written locally as `sTASSEL.jar`) |
+| `tassel-<version>-jar-with-dependencies.jar` | `shadowJar` |
+| `tassel-<version>-sources.jar` | `sourcesJar` |
+| `tassel-<version>-javadoc.jar` | `dokkaJar` |
+
+The fat JAR carries the `jar-with-dependencies` classifier that
+`maven-assembly-plugin` used through 5.2.96, so consumers of that coordinate are
+unaffected by the move to Gradle. It is deliberately excluded from `assemble`, so
+`./gradlew build` does not pay for it; only `publish` builds it.
+
+### Artifact verification
+
+Maven Central is immutable — a bad upload can only be corrected by cutting a new
+version. Release 5.2.97 shipped without a fat JAR, and its sources and javadoc JARs
+were copies of the main JAR, because every `Jar` task was writing to the same
+`sTASSEL.jar` file.
+
+To prevent a repeat, `.github/scripts/verify-staged-artifacts.sh` runs between
+staging and deployment and fails the workflow unless all four JARs exist, are
+signed, have distinct checksums, and contain what their classifier claims. Run it
+yourself against a local staging directory:
+
+```bash
+./gradlew clean publish
+.github/scripts/verify-staged-artifacts.sh "$(./gradlew printVersion -q | tail -n1)"
+```
 
 ## Nightly dev builds
 
