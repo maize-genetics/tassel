@@ -60,6 +60,31 @@ jobs:
 
           rm -f *.bak
 
+      # Runs before the release is created, so a jar that cannot launch fails the
+      # build instead of being published. This jar is also what feeds the jDeploy
+      # installer bundles below.
+      - name: Verify standalone jar is runnable
+        run: |
+          JAR=dist/tassel-5-standalone/sTASSEL.jar
+
+          # The listing goes to a file rather than straight into a pipe: `grep -q`
+          # exits on its first match and closes the pipe, so the upstream `unzip`
+          # dies of SIGPIPE and trips `pipefail`, which would report a perfectly
+          # good jar as broken.
+          LISTING=$(mktemp)
+          unzip -l "$JAR" > "$LISTING"
+
+          for CLS in net/maizegenetics/tassel/TASSELMainApp.class \
+                     net/maizegenetics/pipeline/TasselPipeline.class; do
+            grep -qF "$CLS" "$LISTING" || {
+              echo "::error::$JAR is missing $CLS"; exit 1; }
+          done
+
+          # A sources jar carrying an executable manifest is the failure mode this guards.
+          if grep -q '\.java$' "$LISTING"; then
+            echo "::error::$JAR contains .java entries; it is a sources jar"; exit 1
+          fi
+
       - name: Archive TASSEL Standalone (ZIP and TAR.GZ)
         run: |
           cd dist/tassel-5-standalone/
