@@ -68,11 +68,71 @@ Triggered on push to `main`, this "jDeploy CI with Gradle" workflow:
    release notes from `.github/release_template.md`.
 6. Creates a **GitHub Release** tagged `v<version>` and uploads the standalone
    archives.
-7. Runs [jDeploy](https://www.jdeploy.com/) to build native **installer bundles**
-   (Linux x64, macOS arm64/x64, Windows x64) and attaches them to the release.
-8. Updates the download links in the release notes and in
-   `docs/overrides/partials/featured_downloads.html`, then commits the updated
-   `docs/changelog.md` and download links back to the repository.
+7. Runs the [jDeploy](https://www.jdeploy.com/) CLI to build native **installer
+   bundles** (Linux x64, macOS arm64/x64, Windows x64), refreshes the
+   `package-info.json` metadata on the `jdeploy` release tag that installed copies
+   poll for updates, and attaches the bundles to the `v<version>` release.
+8. Updates the download links in the release notes, in
+   `docs/overrides/partials/featured_downloads.html`, and in
+   `docs/download/index.md`, then commits the updated `docs/changelog.md` and
+   download links back to the repository.
+
+The `shannah/jdeploy` GitHub Action is deliberately not used. On a branch push it
+overwrites the package version with `0.0.0-<branch>`, and the jDeploy installer
+appends everything after the first dash to the application title, which is why
+installers used to register the app as "TASSEL 5 main". Invoking the CLI directly
+lets the release publish under the real Gradle version. Two consequences worth
+knowing:
+
+- Installer filenames now carry the version
+  (`TASSEL.5.Installer-mac-arm64-<version>_26DT.tgz`) and live on the
+  `v<version>` release rather than a rolling `main` release, so **the version must
+  be bumped for every release** — republishing the same version overwrites that
+  release and its `package-info.json` entry.
+- The version is no longer a prerelease, so jDeploy records it as `latest` and
+  installed copies can auto-update to it.
+
+### Installer branding assets
+
+jDeploy picks these up by filename from the project root. All three are generated
+from the Inkscape sources in `docs/images/`:
+
+| File | Where it appears | Source |
+| ---- | ---------------- | ------ |
+| `icon.png` | App icon and the installer window icon | `docs/images/tassel_icon.svg` |
+| `installsplash.png` | The panel inside the installer window | `docs/images/tassel_splash.svg` |
+| `launcher-splash.html` | Shown by the launcher while it downloads or updates the app | `docs/images/tassel_splash.svg`, inlined |
+
+`installsplash.png` has to be a raster image at exactly the size you want it
+displayed. The installer builds its window with
+`new JLabel(new ImageIcon(installsplash.png))` followed by `pack()`, so the image
+is drawn one image pixel per screen point with no scaling: SVG is not accepted,
+there is no `@2x` variant, and adding pixels enlarges the installer window rather
+than sharpening the image. The current 800x363 is an exact render of the SVG at
+1x. `launcher-splash.html` has no such limit — it is HTML, so the logo is inline
+SVG and stays sharp at any display scale.
+
+To regenerate the rasters after editing the SVG sources:
+
+```bash
+inkscape docs/images/tassel_splash.svg --export-type=png \
+  --export-filename=installsplash.png --export-width=800 --export-height=363
+inkscape docs/images/tassel_icon.svg --export-type=png \
+  --export-filename=icon.png --export-width=1024 --export-height=1024
+```
+
+`launcher-splash.html` embeds the splash SVG with its text converted to paths, so
+it renders identically on machines that do not have the Bebas Neue and Roboto
+fonts. Regenerate that intermediate SVG with `--export-text-to-path` and paste it
+back into the `<div class="splash">` wrapper:
+
+```bash
+inkscape docs/images/tassel_splash.svg --export-type=svg --export-plain-svg \
+  --export-text-to-path --export-filename=/tmp/tassel_splash_paths.svg
+```
+
+Keep the file self-contained — the launcher renders it in a WebView with no
+network access and no JavaScript.
 
 ### 2. Deploy the documentation site (`deploy_project_site.yml`)
 

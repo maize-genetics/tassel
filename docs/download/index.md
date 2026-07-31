@@ -100,23 +100,23 @@ For a full walkthrough, see the
   <p>If the live selector above is unavailable, use these direct links:</p>
   <div class="feature-grid">
     <div class="feature-cards">
-      <a href="https://github.com/maize-genetics/tassel/releases/download/main/TASSEL.5.Installer-mac-arm64-@main_26DT.tgz" class="feature-card">
+      <a href="https://github.com/maize-genetics/tassel/releases/download/v5.2.98/TASSEL.5.Installer-mac-arm64-5.2.98_26DT.tgz" class="feature-card">
         <i class="fa fa-apple fa-2x"></i>
         <strong>macOS (Apple Silicon)</strong>
       </a>
-      <a href="https://github.com/maize-genetics/tassel/releases/download/main/TASSEL.5.Installer-mac-x64-@main_26DT.tgz" class="feature-card">
+      <a href="https://github.com/maize-genetics/tassel/releases/download/v5.2.98/TASSEL.5.Installer-mac-x64-5.2.98_26DT.tgz" class="feature-card">
         <i class="fa fa-apple fa-2x"></i>
         <strong>macOS (Intel)</strong>
       </a>
-      <a href="https://github.com/maize-genetics/tassel/releases/download/main/TASSEL.5.Installer-linux-x64-@main_26DT.tar.gz" class="feature-card">
+      <a href="https://github.com/maize-genetics/tassel/releases/download/v5.2.98/TASSEL.5.Installer-linux-x64-5.2.98_26DT.tar.gz" class="feature-card">
         <i class="fa fa-linux fa-2x"></i>
         <strong>Linux/Unix</strong>
       </a>
-      <a href="https://github.com/maize-genetics/tassel/releases/download/main/TASSEL.5.Installer-win-x64-@main_26DT.exe" class="feature-card">
+      <a href="https://github.com/maize-genetics/tassel/releases/download/v5.2.98/TASSEL.5.Installer-win-x64-5.2.98_26DT.exe" class="feature-card">
         <i class="fa fa-windows fa-2x"></i>
         <strong>Windows (64-bit)</strong>
       </a>
-      <a href="https://github.com/maize-genetics/tassel/releases/download/v5.2.97/tassel-5-standalone-v5.2.97.tar.gz" class="feature-card">
+      <a href="https://github.com/maize-genetics/tassel/releases/download/v5.2.98/tassel-5-standalone-v5.2.98.tar.gz" class="feature-card">
         <i class="fa fa-terminal fa-2x"></i>
         <strong>Standalone</strong>
       </a>
@@ -135,8 +135,13 @@ For a full walkthrough, see the
     - **Library (Maven / Gradle):** add TASSEL to your own JVM project.
 
 !!! note
-    Native GUI installers are published to the rolling `main` release and always
-    reflect the latest build. The standalone distribution and the Maven library
-    are published per version, so older versions remain available in the
-    selector and on the
+    Native GUI installers, the standalone distribution, and the Maven library are
+    all published per version, so older versions remain available in the selector
+    and on the
     [GitHub releases page](https://github.com/maize-genetics/tassel/releases).
+
+!!! warning "Upgrading from an install named TASSEL 5 main?"
+    Installers from 5.2.97 and earlier registered the desktop application as
+    **TASSEL 5 main**; it is now plain **TASSEL 5**. Uninstall the old copy once
+    before installing — see
+    [Updating](../getting_started/install-gui.md#updating).
