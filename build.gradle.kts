@@ -98,8 +98,11 @@ tasks.named<CreateStartScripts>("startScripts") {
 
 // General tasks
 tasks {
-    // Set JAR file name and add to manifest along with classes
-    withType<Jar> {
+    // Set JAR file name and add to manifest along with classes. This must stay
+    // scoped to the main `jar` task: applying it to every Jar task makes
+    // sourcesJar and dokkaJar write to the same file, which published three
+    // identical artifacts to Maven Central in 5.2.97.
+    jar {
         archiveFileName.set("sTASSEL.jar")
 
         manifest {
