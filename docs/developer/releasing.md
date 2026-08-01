@@ -59,20 +59,23 @@ Triggered on push to `main`, this "jDeploy CI with Gradle" workflow:
 
 1. Sets up JDK 21 and reads the version via `./gradlew printVersion`.
 2. Builds the app: `./gradlew clean build -x test -x koverVerify`.
-3. Assembles the **standalone distribution** in `dist/tassel-5-standalone/` —
-   `sTASSEL.jar`, the `lib/` dependencies, and the launcher scripts
-   (`start_tassel.pl`, `run_pipeline.pl`, `run_pipeline.bat`) with their paths
-   rewritten for the flattened layout.
-4. Archives the standalone as both `.zip` and `.tar.gz`.
-5. Extracts changelog content from the latest merged PR description and renders
+3. Builds the **standalone distribution** by running
+   `.github/scripts/build-standalone.sh tassel-5-standalone-v<version>`, which
+   stages `sTASSEL.jar`, the `lib/` dependencies, and the launcher scripts into
+   `dist/tassel-5-standalone-v<version>/`, rewrites every launcher's classpath
+   for the flattened layout, and archives that directory as both `.zip` and
+   `.tar.gz`. Archiving the directory rather than its contents is what keeps an
+   extracted release from scattering itself across the user's current directory,
+   as everything through 5.2.97 did.
+4. Extracts changelog content from the latest merged PR description and renders
    release notes from `.github/release_template.md`.
-6. Creates a **GitHub Release** tagged `v<version>` and uploads the standalone
+5. Creates a **GitHub Release** tagged `v<version>` and uploads the standalone
    archives.
-7. Runs the [jDeploy](https://www.jdeploy.com/) CLI to build native **installer
+6. Runs the [jDeploy](https://www.jdeploy.com/) CLI to build native **installer
    bundles** (Linux x64, macOS arm64/x64, Windows x64), refreshes the
    `package-info.json` metadata on the `jdeploy` release tag that installed copies
    poll for updates, and attaches the bundles to the `v<version>` release.
-8. Updates the download links in the release notes, in
+7. Updates the download links in the release notes, in
    `docs/overrides/partials/featured_downloads.html`, and in
    `docs/download/index.md`, then commits the updated `docs/changelog.md` and
    download links back to the repository.
@@ -261,7 +264,14 @@ Releases are promoted out of `develop`:
 4. Merge the promotion PR. Pushing to `main` runs the build/release and
    site-deploy workflows automatically.
 5. Verify the new GitHub Release, its attached standalone archives and
-   installers, and the updated [Version History](../changelog.md).
+   installers, and the updated [Version History](../changelog.md). Confirm each
+   standalone archive unpacks into a single `tassel-5-standalone-v<version>/`
+   directory:
+
+    ```bash
+    tar -tzf tassel-5-standalone-v<version>.tar.gz | cut -d/ -f1 | sort -u
+    ```
+
 6. If publishing to Maven Central, run the `run_publish_maven.yml` workflow and
    confirm the artifacts appear on Central.
 

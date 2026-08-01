@@ -41,30 +41,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test -x koverVerify
 
-      - name: Create TASSEL "Standalone" distribution
-        run: |
-          mkdir -p dist/tassel-5-standalone
-          cp -r build/libs/lib/ dist/tassel-5-standalone/
-          cp build/libs/sTASSEL.jar dist/tassel-5-standalone/
-          cp scripts/*.pl scripts/*.bat dist/tassel-5-standalone/
-
-          cd dist/tassel-5-standalone
-
-          for f in start_tassel.pl run_pipeline.pl; do
-            sed -i.bak 's|push(@fl, "\$top/dist/sTASSEL.jar");|push(@fl, "\$top/sTASSEL.jar");|' "$f"
-          done
-
-          for f in start_tassel.bat run_pipeline.bat; do
-            sed -i.bak 's|set CP=%TOP%\\dist\\sTASSEL.jar|set CP=%TOP%\\sTASSEL.jar|' "$f"
-          done
-
-          rm -f *.bak
-
-      - name: Archive TASSEL Standalone (ZIP and TAR.GZ)
-        run: |
-          cd dist/tassel-5-standalone/
-          zip -r ../tassel-5-standalone-v${VERSION}.zip .
-          tar -czf ../tassel-5-standalone-v${VERSION}.tar.gz .
+      - name: Build TASSEL "Standalone" distribution (ZIP and TAR.GZ)
+        run: .github/scripts/build-standalone.sh "tassel-5-standalone-v${VERSION}"
 
       - name: Extract changelog content from the PR that produced this commit
         id: extract_changelog

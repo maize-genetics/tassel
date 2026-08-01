@@ -44,9 +44,11 @@ tar -xzf tassel-5-standalone-nightly.tar.gz
 
 The same release also carries a dated copy of each archive
 (`tassel-5-standalone-v<version>-dev.<date>.tar.gz`), so you can tell which
-build you downloaded. Running it is otherwise identical to the released
-standalone distribution — see the
-[standalone guide](../getting_started/install-standalone.md).
+build you downloaded. The constant-named archive is a copy of that dated one, so
+it unpacks into a dated folder such as `tassel-5-standalone-v5.2.98-dev.20260801/`
+— which is the other way to identify a build fetched from the stable URL above.
+Running it is otherwise identical to the released standalone distribution — see
+the [standalone guide](../getting_started/install-standalone.md).
 
 ## All nightly builds { #all }
 

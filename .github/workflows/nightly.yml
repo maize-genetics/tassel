@@ -125,34 +125,15 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build -x test -x koverVerify
 
-      - name: Create TASSEL "Standalone" distribution
+      - name: Build TASSEL "Standalone" distribution (ZIP and TAR.GZ)
         run: |
-          mkdir -p dist/tassel-5-standalone
-          cp -r build/libs/lib/ dist/tassel-5-standalone/
-          cp build/libs/sTASSEL.jar dist/tassel-5-standalone/
-          cp scripts/*.pl scripts/*.bat dist/tassel-5-standalone/
-
-          cd dist/tassel-5-standalone
-
-          for f in start_tassel.pl run_pipeline.pl; do
-            sed -i.bak 's|push(@fl, "\$top/dist/sTASSEL.jar");|push(@fl, "\$top/sTASSEL.jar");|' "$f"
-          done
-
-          for f in start_tassel.bat run_pipeline.bat; do
-            sed -i.bak 's|set CP=%TOP%\\dist\\sTASSEL.jar|set CP=%TOP%\\sTASSEL.jar|' "$f"
-          done
-
-          rm -f *.bak
-
-      - name: Archive TASSEL Standalone (ZIP and TAR.GZ)
-        run: |
-          cd dist/tassel-5-standalone/
-          zip -r ../tassel-5-standalone-v${VERSION}-dev.${DATE}.zip .
-          tar -czf ../tassel-5-standalone-v${VERSION}-dev.${DATE}.tar.gz .
+          .github/scripts/build-standalone.sh "tassel-5-standalone-v${VERSION}-dev.${DATE}"
 
           # Constant filenames for the rolling `dev-latest` release, so scripts
-          # can hard-code a download URL that never changes.
-          cd ..
+          # can hard-code a download URL that never changes. These are byte
+          # copies, so they still unpack into the dated directory, which is how
+          # you tell which build a stable URL gave you.
+          cd dist
           cp tassel-5-standalone-v${VERSION}-dev.${DATE}.zip tassel-5-standalone-nightly.zip
           cp tassel-5-standalone-v${VERSION}-dev.${DATE}.tar.gz tassel-5-standalone-nightly.tar.gz
 
