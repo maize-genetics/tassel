@@ -1,7 +1,5 @@
 ---
 title: Download TASSEL 5
-hide:
-  - navigation
 ---
 
 # Download TASSEL 5
@@ -139,6 +137,11 @@ For a full walkthrough, see the
     all published per version, so older versions remain available in the selector
     and on the
     [GitHub releases page](https://github.com/maize-genetics/tassel/releases).
+
+!!! info "Want to test an unreleased fix?"
+    Nightly builds of the `develop` branch are published as unstable
+    prereleases. See [Nightly builds](nightly.md) for the latest one and the
+    archive of past builds.
 
 !!! warning "Upgrading from an install named TASSEL 5 main?"
     Installers from 5.2.97 and earlier registered the desktop application as

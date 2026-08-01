@@ -215,10 +215,37 @@ yourself against a local staging directory:
 ## Nightly dev builds
 
 Every night, `.github/workflows/nightly.yml` builds `develop` and publishes an
-unstable standalone **prerelease** tagged `dev-YYYYMMDD` — but only when
-`develop` has new commits since the last nightly. These builds are for testing
-only and never publish to Maven Central. The nightly also runs the full test
-suite, so a red nightly means `develop` is broken.
+unstable standalone **prerelease** — but only when `develop` has new commits
+since the last nightly. These builds are for testing only and never publish to
+Maven Central. The nightly also runs the full test suite, so a red nightly means
+`develop` is broken.
+
+Each build is published under two tags:
+
+| Tag | Purpose | Assets |
+| --- | ------- | ------ |
+| `dev-YYYYMMDD` | The archive. The newest 14 are kept; older ones are deleted along with their tags. | `tassel-5-standalone-v<version>-dev.<date>.{zip,tar.gz}` |
+| `dev-latest` | Rolling pointer at the newest nightly, deleted and recreated on every run. | The dated archives above, plus constant-named copies: `tassel-5-standalone-nightly.{zip,tar.gz}` |
+
+The rolling tag exists because GitHub has no "latest prerelease" redirect to
+match `/releases/latest`, so without it neither the README nor the
+[nightly builds page](../download/nightly.md) would have a stable URL to link
+to. The constant filenames are what make the download URL itself stable:
+
+```
+https://github.com/maize-genetics/tassel/releases/download/dev-latest/tassel-5-standalone-nightly.tar.gz
+```
+
+Two consequences worth knowing:
+
+* `dev-latest` **moves**. A clone that already has it needs
+  `git fetch --tags --force` to pick up the new target, and the workflow
+  recreates the release rather than editing it, because `gh release edit` cannot
+  move an existing tag.
+* The "has `develop` moved?" check and the pruning step both key off
+  `dev-latest`: the check compares `develop` HEAD against the commit
+  `dev-latest` points at, and the prune step excludes it from the keep-14 window
+  so it does not consume an archive slot.
 
 ## Cutting a release: checklist
 

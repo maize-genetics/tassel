@@ -3,22 +3,6 @@ Thank you for your interest in contributing to TASSEL! We welcome contributions 
 
 TASSEL is developed on GitHub at [maize-genetics/tassel](https://github.com/maize-genetics/tassel). This page covers everything you need to contribute: setting up your environment, reporting issues, and the mechanics of the Git workflow, pull requests, testing, and code review.
 
-## Table of Contents
-* [Code of Conduct](#code-of-conduct)
-* [Getting Started](#getting-started)
-* [How to Contribute](#how-to-contribute)
-     * [Reporting Bugs](#reporting-bugs)
-     * [Suggesting Enhancements and New Features](#suggesting-enhancements-and-new-features)
-     * [Submitting Code Changes](#submitting-code-changes)
-* [The Git Workflow](#the-git-workflow)
-     * [Keeping your branch current](#keeping-your-branch-current)
-     * [Documentation track](#documentation-track)
-     * [Keeping `develop` in sync with `main`](#keeping-develop-in-sync-with-main)
-* [Opening a Pull Request](#opening-a-pull-request)
-* [Testing and Continuous Integration](#testing-and-continuous-integration)
-* [Code Review](#code-review)
-* [Coding Tips](#coding-tips)
-
 ## Code of Conduct
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
@@ -30,9 +14,9 @@ The TASSEL project is written in Java (with some Kotlin) and uses the Gradle bui
 
 It is recommended to use an IDE to make any code changes. Our group prefers using [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
 
-Before writing code, install the toolchain and confirm you can build the project — see [Building from Source](developer/building-from-source.md). For anything beyond a trivial fix, open (or find) a GitHub [issue](https://github.com/maize-genetics/tassel/issues) describing the bug or enhancement first, so the work can be discussed and coordinated.
+Before writing code, install the toolchain and confirm you can build the project - see [Building from Source](developer/building-from-source.md). For anything beyond a trivial fix, open (or find) a GitHub [issue](https://github.com/maize-genetics/tassel/issues) describing the bug or enhancement first, so the work can be discussed and coordinated.
 
-Contributing **documentation only**? You do not need Java, Gradle, or the test data at all — just Python and MkDocs to preview your changes:
+Contributing **documentation only**? You do not need Java, Gradle, or the test data at all - just Python and MkDocs to preview your changes:
 
 ```bash
 pip install mkdocs-material
@@ -58,13 +42,13 @@ contributions branch off `develop` and are merged back into `develop`. Two kinds
 of change take a different path: critical fixes to an already-released version
 (the [hotfix track](developer/releasing.md#hotfixes)) and changes that touch
 nothing but documentation (the [documentation track](#documentation-track)).
-When in doubt, use the normal flow below — it is never *wrong*, only slower.
+When in doubt, use the normal flow below - it is never *wrong*, only slower.
 
 In short:
 
 1. **Fork** the repository (external contributors) or create a branch (team members).
 2. **Branch** off `develop` for your change, using a `feature/*` name. Branches
-   are cheap — use one per logical piece of work.
+   are cheap - use one per logical piece of work.
 
     ```bash
     git switch develop
@@ -101,7 +85,7 @@ git merge develop
 Use this when your change touches **nothing but** documentation: files under
 `docs/`, any `*.md` file (including `README.md`), and `mkdocs.yml`. Documentation
 is neither a feature that should wait for the next release nor an emergency, so it
-gets a shorter path — straight to `main`, with no test suite and no release.
+gets a shorter path - straight to `main`, with no test suite and no release.
 
 Branch from `main` and prefix the branch name with `docs/`:
 
@@ -112,8 +96,8 @@ git switch -c docs/fix-mlm-example
 ```
 
 Open the PR against `main` using the docs template (append `?template=docs.md` to
-the compare URL). The `docs/` branch prefix — or a `documentation` label on the
-PR — is what marks the PR as being on this track.
+the compare URL). The `docs/` branch prefix - or a `documentation` label on the
+PR - is what marks the PR as being on this track.
 
 What is different here:
 
@@ -140,13 +124,13 @@ conflict to untangle at the next promotion.
 
 So a workflow opens a single `main` → `develop` pull request whenever `main` gains
 content that `develop` does not have, and keeps that one PR up to date as more
-commits land. A person still merges it — a back-merge can be conflict-free and
+commits land. A person still merges it - a back-merge can be conflict-free and
 still be semantically wrong, which is exactly what review is for.
 
 Two things to know when you merge one:
 
 * **Prefer `main` when resolving conflicts**, since everything in the PR is
-  already released — except `build.gradle.kts`, where you keep `develop`'s
+  already released - except `build.gradle.kts`, where you keep `develop`'s
   `version`. A hotfix bumps the patch version of the released line and must not
   overwrite an in-progress version on `develop`.
 * **No checks run on the sync PR itself**, because it is opened by the CI token.
@@ -171,7 +155,7 @@ When you open a PR:
 After you have submitted your Pull Request, verify that all of the automated checks have passed. If any of the checks have failed, review the error message and make any necessary changes. If you are unsure how to fix the error, reach out to the TASSEL team for assistance.
 
 ### Changelog notes
-The release automation extracts changelog content from the merged PR's description (the text between the `<!-- BEGIN CHANGELOG -->` and `<!-- END CHANGELOG -->` markers in the template). Fill this in so your change is reflected in the published [Version History](changelog.md). Documentation-only PRs are the exception — they do not trigger a release, so they have no changelog block.
+The release automation extracts changelog content from the merged PR's description (the text between the `<!-- BEGIN CHANGELOG -->` and `<!-- END CHANGELOG -->` markers in the template). Fill this in so your change is reflected in the published [Version History](changelog.md). Documentation-only PRs are the exception - they do not trigger a release, so they have no changelog block.
 
 ## Testing and Continuous Integration
 TASSEL uses [JUnit](https://junit.org/) tests run through Gradle. Please add or update tests for your change and make sure the required checks pass before opening a Pull Request.
@@ -217,6 +201,6 @@ Merging to `develop` does **not** publish a release. Releases happen when `devel
 
 ## Coding Tips
 - Match the style and structure of the surrounding code.
-- Implement new user-facing functionality as a plugin — see [Developing Plugins](developer/plugin-development.md).
+- Implement new user-facing functionality as a plugin - see [Developing Plugins](developer/plugin-development.md).
 - Add or update tests for your change; for statistical code, wire enforced tests into the statistics gate (see [Testing](developer/testing.md)).
 - Prefer throwing exceptions over handling errors inline in plugins; let `AbstractPlugin` present them.

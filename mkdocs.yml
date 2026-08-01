@@ -49,8 +49,11 @@ extra:
 # Build exclusions
 # docs/templates/ holds envsubst sources rendered by the release workflow, not
 # publishable pages; building them would publish raw ${VERSION} placeholders.
+# docs/llm_notes/ holds internal planning notes with links to repo paths outside
+# docs/; they are not part of the published site.
 exclude_docs: |
   templates/
+  llm_notes/
 
 # Markdown extensions
 markdown_extensions:
@@ -79,7 +82,11 @@ extra_javascript:
   - javascript/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
   - javascript/gallery.js
+  # releases.js must come before download.js and nightly.js: it defines the
+  # shared, cached GitHub Releases fetch both of them use.
+  - javascript/releases.js
   - javascript/download.js
+  - javascript/nightly.js
   - javascript/changelog.js
 
 extra_css:
@@ -94,6 +101,7 @@ nav:
       - index.md
   - Download:
       - download/index.md
+      - Nightly Builds: download/nightly.md
   - Getting Started:
       - getting_started/index.md
       - Installation:
