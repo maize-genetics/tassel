@@ -41,6 +41,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test -x koverVerify
 
+      # The script sanity-checks the jar before archiving it, so a jar that cannot
+      # launch fails the build here rather than being published. That jar is also
+      # what feeds the jDeploy installer bundles below.
       - name: Build TASSEL "Standalone" distribution (ZIP and TAR.GZ)
         run: .github/scripts/build-standalone.sh "tassel-5-standalone-v${VERSION}"
 

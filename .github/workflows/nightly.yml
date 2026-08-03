@@ -125,6 +125,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build -x test -x koverVerify
 
+      # The script sanity-checks the jar before archiving it, so a jar that cannot
+      # launch fails the nightly here rather than being published.
       - name: Build TASSEL "Standalone" distribution (ZIP and TAR.GZ)
         run: |
           .github/scripts/build-standalone.sh "tassel-5-standalone-v${VERSION}-dev.${DATE}"

@@ -53,6 +53,31 @@ if grep -l 'dist[/\]sTASSEL\.jar' "$STAGE"/*.pl "$STAGE"/*.bat; then
     exit 1
 fi
 
+# --- Check the jar can actually launch --------------------------------------------
+
+# Both workflows publish whatever this script produces, so a jar that cannot launch
+# has to fail here rather than in a release asset.
+
+# The listing goes to a file rather than straight into a pipe: `grep -q` exits on
+# its first match and closes the pipe, so the upstream `unzip` dies of SIGPIPE and
+# trips `pipefail`, which would report a perfectly good jar as broken.
+LISTING=$(mktemp)
+unzip -l "${STAGE}/sTASSEL.jar" > "$LISTING"
+
+for CLS in net/maizegenetics/tassel/TASSELMainApp.class \
+           net/maizegenetics/pipeline/TasselPipeline.class; do
+    if ! grep -qF "$CLS" "$LISTING"; then
+        echo "FAIL: sTASSEL.jar is missing ${CLS}" >&2
+        exit 1
+    fi
+done
+
+# A sources jar carrying an executable manifest is the failure mode this guards.
+if grep -q '\.java$' "$LISTING"; then
+    echo "FAIL: sTASSEL.jar contains .java entries; it is a sources jar" >&2
+    exit 1
+fi
+
 # --- Archive the directory, not its contents --------------------------------------
 
 cd dist
