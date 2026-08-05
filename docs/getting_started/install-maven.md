@@ -1,6 +1,7 @@
 ---
 hide:
   - navigation
+render_macros: true
 ---
 
 # Use TASSEL as a Library (Maven / Gradle)
@@ -15,7 +16,7 @@ command line.
 | --- | --- |
 | **Group** | `net.maizegenetics` |
 | **Artifact** | `tassel` |
-| **Latest version** | `5.2.98` |
+| **Latest version** | `{{ version }}` |
 
 Each release publishes four artifacts:
 
@@ -42,7 +43,7 @@ Each release publishes four artifacts:
     }
 
     dependencies {
-        implementation("net.maizegenetics:tassel:5.2.98")
+        implementation("net.maizegenetics:tassel:{{ version }}")
     }
     ```
 
@@ -55,7 +56,7 @@ Each release publishes four artifacts:
     }
 
     dependencies {
-        implementation 'net.maizegenetics:tassel:5.2.98'
+        implementation 'net.maizegenetics:tassel:{{ version }}'
     }
     ```
 
@@ -66,7 +67,7 @@ Each release publishes four artifacts:
     <dependency>
       <groupId>net.maizegenetics</groupId>
       <artifactId>tassel</artifactId>
-      <version>5.2.98</version>
+      <version>{{ version }}</version>
     </dependency>
     ```
 

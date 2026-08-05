@@ -43,6 +43,8 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material 
+      # mkdocs-macros-plugin injects the version from build.gradle.kts into the
+      # install pages; without it those pages fail to build.
+      - run: pip install mkdocs-material mkdocs-macros-plugin
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force

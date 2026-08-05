@@ -10,13 +10,7 @@
 (function () {
   "use strict";
 
-  var REPO = "maize-genetics/tassel";
-  var API = "https://api.github.com/repos/" + REPO + "/releases?per_page=100";
-  var RELEASES_URL = "https://github.com/" + REPO + "/releases";
-  var CACHE_KEY = "tassel-releases-v1";
-  var CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
-
-  // Installer OS options (native jDeploy installers live on the rolling "main" release).
+  // Installer OS options (native jDeploy installers are attached to each version release).
   var INSTALLER_OS = [
     { value: "mac-arm64", label: "macOS (Apple Silicon)", match: "mac-arm64" },
     { value: "mac-x64", label: "macOS (Intel)", match: "mac-x64" },
@@ -95,56 +89,42 @@
   }
 
   function fetchReleases() {
-    try {
-      var cached = sessionStorage.getItem(CACHE_KEY);
-      if (cached) {
-        var parsed = JSON.parse(cached);
-        if (parsed && Date.now() - parsed.t < CACHE_TTL_MS) {
-          return Promise.resolve(parsed.d);
-        }
-      }
-    } catch (e) {
-      /* ignore cache errors */
+    if (!window.tasselReleases) {
+      return Promise.reject(new Error("releases.js did not load"));
     }
-
-    return fetch(API, { headers: { Accept: "application/vnd.github+json" } })
-      .then(function (resp) {
-        if (!resp.ok) {
-          throw new Error("GitHub API " + resp.status);
-        }
-        return resp.json();
-      })
-      .then(function (releases) {
-        try {
-          sessionStorage.setItem(
-            CACHE_KEY,
-            JSON.stringify({ t: Date.now(), d: releases })
-          );
-        } catch (e) {
-          /* ignore */
-        }
-        return releases;
-      });
+    return window.tasselReleases.fetch();
   }
 
   function buildCatalog(releases) {
     var installers = null; // { "mac-arm64": {name, url}, ... }
+    var installerTag = null; // Release tag the chosen installers came from.
     var standalone = {}; // version -> { targz, zip }
 
     (releases || []).forEach(function (rel) {
+      // Nightly prereleases carry standalone archives whose filenames match the
+      // pattern below ("...-v5.2.98-dev.20260801.zip"), which would list build
+      // dates in the version dropdown as if they were releases. They belong on
+      // the nightly builds page instead. Only `dev-*` tags are skipped: the
+      // legacy `main` prerelease still holds installer assets for releases that
+      // predate per-version installer uploads.
+      if (rel.prerelease && /^dev-/.test(rel.tag_name || "")) {
+        return;
+      }
+
       var assets = rel.assets || [];
       assets.forEach(function (asset) {
         var name = asset.name || "";
         var url = asset.browser_download_url;
 
-        // Native installers (rolling "main" release).
+        // Native installers, attached to each version release.
         if (name.indexOf("TASSEL.5.Installer-") === 0) {
           INSTALLER_OS.forEach(function (os) {
             if (name.indexOf(os.match) !== -1) {
               installers = installers || {};
-              // Prefer the newest release's asset if duplicated.
+              // The API lists releases newest first, so the first match wins.
               if (!installers[os.value]) {
                 installers[os.value] = { name: name, url: url };
+                installerTag = installerTag || rel.tag_name;
               }
             }
           });
@@ -165,6 +145,7 @@
 
     return {
       installers: installers,
+      installerTag: installerTag,
       standalone: standalone,
       standaloneVersions: standaloneVersions
     };
@@ -201,7 +182,14 @@
             return { value: o.value, label: o.label };
           })
         );
-        fillSelect(els.version, [{ value: "main", label: "Latest (main)" }]);
+        fillSelect(els.version, [
+          {
+            value: data.installerTag || "latest",
+            label: data.installerTag
+              ? "Latest (" + data.installerTag + ")"
+              : "Latest"
+          }
+        ]);
       } else {
         els.osField.hidden = true;
         fillSelect(els.version,
@@ -243,7 +231,9 @@
       title: "TASSEL 5 for " + osLabel,
       filename: asset.name,
       url: asset.url,
-      note: "Native installer &middot; latest build"
+      note:
+        "Native installer &middot; " +
+        (data.installerTag ? escapeHtml(data.installerTag) : "latest build")
     });
   }
 

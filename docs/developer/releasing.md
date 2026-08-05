@@ -30,24 +30,55 @@ see [Documentation-only changes](#documentation-only-changes).
 
 ## Versioning
 
-The project version is declared in `build.gradle.kts`:
+`build.gradle.kts` is the **single source of truth** for the version and its
+release date:
 
 ```kotlin
 version = "5.2.98"
+val versionDate = "July 30, 2026"
 ```
 
-The same value is duplicated in `TASSELMainFrame.version`, which is what the GUI and
-pipeline banner report. Bump both together.
+Bump these two values on `develop` before opening the promotion PR. Nothing else
+needs a version edit — everything downstream derives from them:
 
-Bump this value on `develop` before opening the promotion PR. You can confirm
-the current version with:
+| Consumer | How it gets the version |
+| --- | --- |
+| GUI, About box, pipeline banner, log header | The `generateVersionSources` Gradle task writes `TasselBuildInfo` into `build/generated/`, which `TASSELMainFrame.version` and `TasselVersions` read. It runs automatically before compilation. |
+| Install guides (Maven coordinates, standalone archive names) | `docs/macros.py` parses `build.gradle.kts` and exposes `{{ version }}` to MkDocs, substituted every time the site builds. |
+| Release name, standalone archives, installer bundles | The release workflows read `./gradlew printVersion`. |
+| Download page, featured downloads, release notes | `envsubst` at release time, from the same `printVersion` value (see below). |
+
+You can confirm the current version with:
 
 ```bash
 ./gradlew printVersion
 ```
 
-The build workflow reads this version to name the GitHub release
-(`v<version>`), the standalone archives, and the installer bundles.
+!!! note "Pages that keep a literal version"
+    Historical references — the "Skip 5.2.97" warning, "from 5.2.98 onward"
+    behaviour notes, and the changelog — describe specific past releases and are
+    deliberately **not** templated. Only text meaning "the current release" uses
+    `{{ version }}`.
+
+### Adding a version reference to a docs page
+
+Pages opt in to macro rendering, because Jinja2 would otherwise trip over the
+BibTeX citation blocks elsewhere in the docs. Add `render_macros: true` to the
+page's front matter, then use `{{ version }}` (or `{{ version_date }}`):
+
+```yaml
+---
+title: My page
+render_macros: true
+---
+```
+
+Building the site locally needs the plugin:
+
+```bash
+pip install mkdocs-material mkdocs-macros-plugin
+mkdocs serve
+```
 
 ## What happens on merge to `main`
 
@@ -59,20 +90,83 @@ Triggered on push to `main`, this "jDeploy CI with Gradle" workflow:
 
 1. Sets up JDK 21 and reads the version via `./gradlew printVersion`.
 2. Builds the app: `./gradlew clean build -x test -x koverVerify`.
-3. Assembles the **standalone distribution** in `dist/tassel-5-standalone/` —
-   `sTASSEL.jar`, the `lib/` dependencies, and the launcher scripts
-   (`start_tassel.pl`, `run_pipeline.pl`, `run_pipeline.bat`) with their paths
-   rewritten for the flattened layout.
-4. Archives the standalone as both `.zip` and `.tar.gz`.
-5. Extracts changelog content from the latest merged PR description and renders
+3. Builds the **standalone distribution** by running
+   `.github/scripts/build-standalone.sh tassel-5-standalone-v<version>`, which
+   stages `sTASSEL.jar`, the `lib/` dependencies, and the launcher scripts into
+   `dist/tassel-5-standalone-v<version>/`, rewrites every launcher's classpath
+   for the flattened layout, and archives that directory as both `.zip` and
+   `.tar.gz`. Archiving the directory rather than its contents is what keeps an
+   extracted release from scattering itself across the user's current directory,
+   as everything through 5.2.97 did.
+4. Extracts changelog content from the latest merged PR description and renders
    release notes from `.github/release_template.md`.
-6. Creates a **GitHub Release** tagged `v<version>` and uploads the standalone
+5. Creates a **GitHub Release** tagged `v<version>` and uploads the standalone
    archives.
-7. Runs [jDeploy](https://www.jdeploy.com/) to build native **installer bundles**
-   (Linux x64, macOS arm64/x64, Windows x64) and attaches them to the release.
-8. Updates the download links in the release notes and in
-   `docs/overrides/partials/featured_downloads.html`, then commits the updated
-   `docs/changelog.md` and download links back to the repository.
+6. Runs the [jDeploy](https://www.jdeploy.com/) CLI to build native **installer
+   bundles** (Linux x64, macOS arm64/x64, Windows x64), refreshes the
+   `package-info.json` metadata on the `jdeploy` release tag that installed copies
+   poll for updates, and attaches the bundles to the `v<version>` release.
+7. Updates the download links in the release notes, in
+   `docs/overrides/partials/featured_downloads.html`, and in
+   `docs/download/index.md`, then commits the updated `docs/changelog.md` and
+   download links back to the repository.
+
+The `shannah/jdeploy` GitHub Action is deliberately not used. On a branch push it
+overwrites the package version with `0.0.0-<branch>`, and the jDeploy installer
+appends everything after the first dash to the application title, which is why
+installers used to register the app as "TASSEL 5 main". Invoking the CLI directly
+lets the release publish under the real Gradle version. Two consequences worth
+knowing:
+
+- Installer filenames now carry the version
+  (`TASSEL.5.Installer-mac-arm64-<version>_26DT.tgz`) and live on the
+  `v<version>` release rather than a rolling `main` release, so **the version must
+  be bumped for every release** — republishing the same version overwrites that
+  release and its `package-info.json` entry.
+- The version is no longer a prerelease, so jDeploy records it as `latest` and
+  installed copies can auto-update to it.
+
+### Installer branding assets
+
+jDeploy picks these up by filename from the project root. All three are generated
+from the Inkscape sources in `docs/images/`:
+
+| File | Where it appears | Source |
+| ---- | ---------------- | ------ |
+| `icon.png` | App icon and the installer window icon | `docs/images/tassel_icon.svg` |
+| `installsplash.png` | The panel inside the installer window | `docs/images/tassel_splash.svg` |
+| `launcher-splash.html` | Shown by the launcher while it downloads or updates the app | `docs/images/tassel_splash.svg`, inlined |
+
+`installsplash.png` has to be a raster image at exactly the size you want it
+displayed. The installer builds its window with
+`new JLabel(new ImageIcon(installsplash.png))` followed by `pack()`, so the image
+is drawn one image pixel per screen point with no scaling: SVG is not accepted,
+there is no `@2x` variant, and adding pixels enlarges the installer window rather
+than sharpening the image. The current 800x363 is an exact render of the SVG at
+1x. `launcher-splash.html` has no such limit — it is HTML, so the logo is inline
+SVG and stays sharp at any display scale.
+
+To regenerate the rasters after editing the SVG sources:
+
+```bash
+inkscape docs/images/tassel_splash.svg --export-type=png \
+  --export-filename=installsplash.png --export-width=800 --export-height=363
+inkscape docs/images/tassel_icon.svg --export-type=png \
+  --export-filename=icon.png --export-width=1024 --export-height=1024
+```
+
+`launcher-splash.html` embeds the splash SVG with its text converted to paths, so
+it renders identically on machines that do not have the Bebas Neue and Roboto
+fonts. Regenerate that intermediate SVG with `--export-text-to-path` and paste it
+back into the `<div class="splash">` wrapper:
+
+```bash
+inkscape docs/images/tassel_splash.svg --export-type=svg --export-plain-svg \
+  --export-text-to-path --export-filename=/tmp/tassel_splash_paths.svg
+```
+
+Keep the file self-contained — the launcher renders it in a WebView with no
+network access and no JavaScript.
 
 ### 2. Deploy the documentation site (`deploy_project_site.yml`)
 
@@ -155,10 +249,37 @@ yourself against a local staging directory:
 ## Nightly dev builds
 
 Every night, `.github/workflows/nightly.yml` builds `develop` and publishes an
-unstable standalone **prerelease** tagged `dev-YYYYMMDD` — but only when
-`develop` has new commits since the last nightly. These builds are for testing
-only and never publish to Maven Central. The nightly also runs the full test
-suite, so a red nightly means `develop` is broken.
+unstable standalone **prerelease** — but only when `develop` has new commits
+since the last nightly. These builds are for testing only and never publish to
+Maven Central. The nightly also runs the full test suite, so a red nightly means
+`develop` is broken.
+
+Each build is published under two tags:
+
+| Tag | Purpose | Assets |
+| --- | ------- | ------ |
+| `dev-YYYYMMDD` | The archive. The newest 14 are kept; older ones are deleted along with their tags. | `tassel-5-standalone-v<version>-dev.<date>.{zip,tar.gz}` |
+| `dev-latest` | Rolling pointer at the newest nightly, deleted and recreated on every run. | The dated archives above, plus constant-named copies: `tassel-5-standalone-nightly.{zip,tar.gz}` |
+
+The rolling tag exists because GitHub has no "latest prerelease" redirect to
+match `/releases/latest`, so without it neither the README nor the
+[nightly builds page](../download/nightly.md) would have a stable URL to link
+to. The constant filenames are what make the download URL itself stable:
+
+```
+https://github.com/maize-genetics/tassel/releases/download/dev-latest/tassel-5-standalone-nightly.tar.gz
+```
+
+Two consequences worth knowing:
+
+* `dev-latest` **moves**. A clone that already has it needs
+  `git fetch --tags --force` to pick up the new target, and the workflow
+  recreates the release rather than editing it, because `gh release edit` cannot
+  move an existing tag.
+* The "has `develop` moved?" check and the pruning step both key off
+  `dev-latest`: the check compares `develop` HEAD against the commit
+  `dev-latest` points at, and the prune step excludes it from the keep-14 window
+  so it does not consume an archive slot.
 
 ## Cutting a release: checklist
 
@@ -174,7 +295,14 @@ Releases are promoted out of `develop`:
 4. Merge the promotion PR. Pushing to `main` runs the build/release and
    site-deploy workflows automatically.
 5. Verify the new GitHub Release, its attached standalone archives and
-   installers, and the updated [Version History](../changelog.md).
+   installers, and the updated [Version History](../changelog.md). Confirm each
+   standalone archive unpacks into a single `tassel-5-standalone-v<version>/`
+   directory:
+
+    ```bash
+    tar -tzf tassel-5-standalone-v<version>.tar.gz | cut -d/ -f1 | sort -u
+    ```
+
 6. If publishing to Maven Central, run the `run_publish_maven.yml` workflow and
    confirm the artifacts appear on Central.
 
@@ -205,6 +333,7 @@ merging:
 # Confirm the version string
 ./gradlew printVersion
 
-# Build the docs site locally (requires mkdocs-material)
+# Build the docs site locally
+pip install mkdocs-material mkdocs-macros-plugin
 mkdocs serve
 ```
