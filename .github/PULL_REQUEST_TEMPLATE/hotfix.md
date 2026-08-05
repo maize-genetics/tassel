@@ -45,7 +45,7 @@ and targeted as possible._
 
 - [ ] The base branch of this PR is `main`
 - [ ] I branched from `main` (not `develop`)
-- [ ] I bumped the **patch** portion of `version` in `build.gradle.kts` (e.g. `5.2.97` -> `5.2.98`)
+- [ ] I bumped the **patch** portion of `version` in `build.gradle.kts` (e.g. `5.2.97` -> `5.2.98`) and updated `versionDate` alongside it
 - [ ] The `CHANGELOG` tags above contain the user-facing change note
 - [ ] The change is minimal and scoped to the critical fix
 - [ ] **Backport confirmed:** I will check that the automated `main` → `develop` sync PR merges after this lands, and resolve any conflicts (keeping `develop`'s `version` in `build.gradle.kts`)

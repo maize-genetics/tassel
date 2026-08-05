@@ -49,6 +49,8 @@ production_pipeline.properties
 
 ### MkDocs ###
 site/
+# Left behind when mkdocs-macros imports docs/macros.py
+__pycache__/
 
 ### jDeploy ###
 jdeploy/

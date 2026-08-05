@@ -30,24 +30,55 @@ see [Documentation-only changes](#documentation-only-changes).
 
 ## Versioning
 
-The project version is declared in `build.gradle.kts`:
+`build.gradle.kts` is the **single source of truth** for the version and its
+release date:
 
 ```kotlin
 version = "5.2.98"
+val versionDate = "July 30, 2026"
 ```
 
-The same value is duplicated in `TASSELMainFrame.version`, which is what the GUI and
-pipeline banner report. Bump both together.
+Bump these two values on `develop` before opening the promotion PR. Nothing else
+needs a version edit — everything downstream derives from them:
 
-Bump this value on `develop` before opening the promotion PR. You can confirm
-the current version with:
+| Consumer | How it gets the version |
+| --- | --- |
+| GUI, About box, pipeline banner, log header | The `generateVersionSources` Gradle task writes `TasselBuildInfo` into `build/generated/`, which `TASSELMainFrame.version` and `TasselVersions` read. It runs automatically before compilation. |
+| Install guides (Maven coordinates, standalone archive names) | `docs/macros.py` parses `build.gradle.kts` and exposes `{{ version }}` to MkDocs, substituted every time the site builds. |
+| Release name, standalone archives, installer bundles | The release workflows read `./gradlew printVersion`. |
+| Download page, featured downloads, release notes | `envsubst` at release time, from the same `printVersion` value (see below). |
+
+You can confirm the current version with:
 
 ```bash
 ./gradlew printVersion
 ```
 
-The build workflow reads this version to name the GitHub release
-(`v<version>`), the standalone archives, and the installer bundles.
+!!! note "Pages that keep a literal version"
+    Historical references — the "Skip 5.2.97" warning, "from 5.2.98 onward"
+    behaviour notes, and the changelog — describe specific past releases and are
+    deliberately **not** templated. Only text meaning "the current release" uses
+    `{{ version }}`.
+
+### Adding a version reference to a docs page
+
+Pages opt in to macro rendering, because Jinja2 would otherwise trip over the
+BibTeX citation blocks elsewhere in the docs. Add `render_macros: true` to the
+page's front matter, then use `{{ version }}` (or `{{ version_date }}`):
+
+```yaml
+---
+title: My page
+render_macros: true
+---
+```
+
+Building the site locally needs the plugin:
+
+```bash
+pip install mkdocs-material mkdocs-macros-plugin
+mkdocs serve
+```
 
 ## What happens on merge to `main`
 
@@ -302,6 +333,7 @@ merging:
 # Confirm the version string
 ./gradlew printVersion
 
-# Build the docs site locally (requires mkdocs-material)
+# Build the docs site locally
+pip install mkdocs-material mkdocs-macros-plugin
 mkdocs serve
 ```

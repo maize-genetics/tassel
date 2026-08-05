@@ -19,7 +19,7 @@ Before writing code, install the toolchain and confirm you can build the project
 Contributing **documentation only**? You do not need Java, Gradle, or the test data at all - just Python and MkDocs to preview your changes:
 
 ```bash
-pip install mkdocs-material
+pip install mkdocs-material mkdocs-macros-plugin
 mkdocs serve
 ```
 

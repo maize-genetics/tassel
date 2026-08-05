@@ -116,8 +116,10 @@ import java.util.Map;
 public class TASSELMainFrame extends JFrame implements ActionListener {
 
     private static final Logger myLogger = LogManager.getLogger(TASSELMainFrame.class);
-    public static final String version = "5.2.98";
-    public static final String versionDate = "July 30, 2026";
+    // Sourced from build.gradle.kts via the generated TasselBuildInfo. Kept here because these
+    // fields are long-standing public API; bump the version in build.gradle.kts, not this file.
+    public static final String version = TasselBuildInfo.VERSION;
+    public static final String versionDate = TasselBuildInfo.VERSION_DATE;
     private DataTreePanel myDataTreePanel;
     //a variable to control when the progress bar was last updated
     private JFileChooser filerSave = new JFileChooser();

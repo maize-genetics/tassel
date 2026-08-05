@@ -51,7 +51,8 @@ Full documentation lives on the [TASSEL docs site](https://maize-genetics.github
 | [Contributing](https://maize-genetics.github.io/tassel/CONTRIBUTING/)                      | Git workflow, pull requests, and code review.                                |
 | [Version History](https://maize-genetics.github.io/tassel/changelog/)                      | Release notes and changelog.                                                 |
 
-To preview the site locally, install `mkdocs-material` and run `mkdocs serve`.
+To preview the site locally, run `pip install mkdocs-material mkdocs-macros-plugin`
+followed by `mkdocs serve`.
 
 ## Contributing
 

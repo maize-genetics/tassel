@@ -1,6 +1,7 @@
 ---
 hide:
   - navigation
+render_macros: true
 ---
 
 # Install the Standalone Distribution
@@ -29,7 +30,7 @@ a Java runtime, so you need Java installed yourself.
 Grab the latest standalone archive from the [Download page](../download/index.md)
 (select **Standalone**), or directly:
 
-- [`tassel-5-standalone-v5.2.98.tar.gz`](https://github.com/maize-genetics/tassel/releases/download/v5.2.98/tassel-5-standalone-v5.2.98.tar.gz)
+- [`tassel-5-standalone-v{{ version }}.tar.gz`](https://github.com/maize-genetics/tassel/releases/download/v{{ version }}/tassel-5-standalone-v{{ version }}.tar.gz)
 
 A `.zip` archive is also published on the
 [releases page](https://github.com/maize-genetics/tassel/releases) for each
@@ -43,14 +44,14 @@ versions side by side without them overwriting each other.
 === "macOS / Linux"
 
     ```bash
-    tar -xzf tassel-5-standalone-v5.2.98.tar.gz
-    cd tassel-5-standalone-v5.2.98
+    tar -xzf tassel-5-standalone-v{{ version }}.tar.gz
+    cd tassel-5-standalone-v{{ version }}
     ```
 
 === "Windows"
 
     Extract the `.zip` with File Explorer (right-click &rarr; **Extract All**),
-    then open a Command Prompt in the `tassel-5-standalone-v5.2.98` folder that
+    then open a Command Prompt in the `tassel-5-standalone-v{{ version }}` folder that
     contains `sTASSEL.jar`. File Explorer proposes a destination folder named
     after the archive, so accepting the default nests the distribution one level
     deeper; the `.bat` scripts must be run from the folder holding the JAR.

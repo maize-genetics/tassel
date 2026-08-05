@@ -41,7 +41,7 @@ _What type of changes does your code introduce? Put an `x` in boxes that apply._
 ## Checklist:
 
 - [ ] The base branch of this PR is `develop`
-- [ ] I have updated the `version` variable in `build.gradle.kts`
+- [ ] I have updated the `version` and `versionDate` variables in `build.gradle.kts` (the only place a version is edited; code and docs derive from it)
 - [ ] I have performed a self-review of my code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have updated relevant documentation

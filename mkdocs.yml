@@ -46,14 +46,33 @@ extra:
     - icon: fontawesome/brands/youtube
       link: https://www.youtube.com/c/BucklerLab
 
+# Plugins
+# `search` has to be listed explicitly: naming any plugin replaces the default
+# plugin list, which would otherwise drop the search index.
+plugins:
+  - search
+  - macros:
+      module_name: docs/macros
+      # Opt-in rendering. Jinja2 would choke on the BibTeX blocks in the user
+      # manual and rTASSEL page, which contain `{{TASSEL}`, so only pages that
+      # declare `render_macros: true` in their front matter are processed.
+      render_by_default: false
+      # Surface a bad macro as a build failure instead of publishing the
+      # rendering error into the page.
+      on_error_fail: true
+
 # Build exclusions
 # docs/templates/ holds envsubst sources rendered by the release workflow, not
 # publishable pages; building them would publish raw ${VERSION} placeholders.
 # docs/llm_notes/ holds internal planning notes with links to repo paths outside
 # docs/; they are not part of the published site.
+# macros.py is the mkdocs-macros module, not site content; importing it leaves a
+# __pycache__/ alongside it, which would otherwise be published too.
 exclude_docs: |
   templates/
   llm_notes/
+  macros.py
+  __pycache__/
 
 # Markdown extensions
 markdown_extensions:

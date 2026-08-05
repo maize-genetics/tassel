@@ -97,9 +97,10 @@ jobs:
           Everything here is already on `main`, so prefer `main` when the same
           content was edited on both sides — with one exception:
 
-          * **`build.gradle.kts`** — keep **`develop`'s** `version`. A hotfix bumps
-            the patch version of the *released* line (for example `5.2.97` to
-            `5.2.98`), which must not overwrite an in-progress version on `develop`.
+          * **`build.gradle.kts`** — keep **`develop`'s** `version` and
+            `versionDate`. A hotfix bumps the patch version of the *released* line
+            (for example `5.2.97` to `5.2.98`), which must not overwrite an
+            in-progress version on `develop`.
 
           ## Before merging
 
