@@ -268,6 +268,15 @@ val generateVersionSources by tasks.registering {
 // across to compileJava and compileKotlin.
 sourceSets.main {
     java.srcDir(generateVersionSources)
+
+    // Icons, Home.html, the workflow presets and the SQLite schemas live beside the classes
+    // that load them with getResource(). Maven packaged them through an explicit <resources>
+    // include; Gradle's java plugin only looks in src/main/resources, so without this every
+    // such lookup returns null at runtime. The include list keeps the JNI .c/.h files out.
+    resources {
+        srcDir("src/main/java")
+        include("**/*.gif", "**/*.GIF", "**/*.png", "**/*.html", "**/*.sql", "**/*.xml")
+    }
 }
 
 /**
