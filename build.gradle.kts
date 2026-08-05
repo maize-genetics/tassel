@@ -107,6 +107,25 @@ tasks.named<CreateStartScripts>("startScripts") {
     dependsOn(tasks.named("jar"), tasks.named("sourcesJar"))
 }
 
+// src/main/java is registered as both a java root and a resource root (see the sourceSets
+// block below), so every icon, HTML page and XML file under it reaches `allSource` twice.
+// The sources jar packs `allSource` and refuses the second copy unless told what to do with
+// it. Both copies resolve to the same file on disk, so keeping the first loses nothing.
+tasks.named<Jar>("sourcesJar") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// A plain `java -cp` launch has no bundle for macOS to read branding from, so the Dock shows
+// the generic Java tile named "java". Only -Xdock: can override that; the
+// apple.awt.application.name property TASSELMainApp sets reaches the screen menu bar but not
+// the Dock. These stay scoped to `run` because the JVM rejects -Xdock: outright on other
+// platforms, which would break the start scripts shipped in distZip/distTar.
+tasks.named<JavaExec>("run") {
+    if ("mac" in System.getProperty("os.name").lowercase(Locale.ROOT)) {
+        jvmArgs("-Xdock:name=TASSEL", "-Xdock:icon=${file("icon.png").absolutePath}")
+    }
+}
+
 // General tasks
 tasks {
     // Set JAR file name and add to manifest along with classes. This must stay
