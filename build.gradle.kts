@@ -40,7 +40,7 @@ version = "5.2.98"
 // single source of truth for both values: `generateVersionSources` compiles
 // them into TasselBuildInfo, and docs/macros.py feeds them to the MkDocs build.
 // Bump `version` and `versionDate` together and nothing else needs editing.
-val versionDate = "July 30, 2026"
+val versionDate = "August 6, 2026"
 
 description = "TASSEL is a software package to evaluate traits associations, evolutionary patterns, and linkage disequilibrium."
 val kotlinVersion = "2.1.21"
