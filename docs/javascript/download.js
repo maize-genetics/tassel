@@ -101,16 +101,6 @@
     var standalone = {}; // version -> { targz, zip }
 
     (releases || []).forEach(function (rel) {
-      // Nightly prereleases carry standalone archives whose filenames match the
-      // pattern below ("...-v5.2.98-dev.20260801.zip"), which would list build
-      // dates in the version dropdown as if they were releases. They belong on
-      // the nightly builds page instead. Only `dev-*` tags are skipped: the
-      // legacy `main` prerelease still holds installer assets for releases that
-      // predate per-version installer uploads.
-      if (rel.prerelease && /^dev-/.test(rel.tag_name || "")) {
-        return;
-      }
-
       var assets = rel.assets || [];
       assets.forEach(function (asset) {
         var name = asset.name || "";
@@ -130,8 +120,20 @@
           });
         }
 
-        // Standalone distributions (per version tag).
-        var m = name.match(/tassel-5-standalone-v([0-9][0-9A-Za-z.\-]*)\.(tar\.gz|zip)$/);
+        // Standalone distributions, attached to each version release.
+        //
+        // Prereleases are skipped here but not above: nightly builds attach
+        // standalone archives named "...-v5.2.98-dev.20260806.zip", whose
+        // version key ("5.2.98-dev.20260806") sorts above every stable release
+        // because of its trailing build date. Left in, it takes over both the
+        // recommended download and the version dropdown, which is what the
+        // nightly builds page is for. Installer assets are still read from
+        // prereleases, because the legacy rolling `main` release holds the
+        // installers for versions that predate per-version installer uploads.
+        if (rel.prerelease) {
+          return;
+        }
+        var m = name.match(/tassel-5-standalone-v([0-9][0-9.]*)\.(tar\.gz|zip)$/);
         if (m) {
           var ver = m[1];
           var kind = m[2] === "zip" ? "zip" : "targz";
