@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
@@ -127,7 +128,11 @@ public class DiscreteSitesTest {
         int nsites = 10;
         Chromosome chr = Chromosome.instance(1);
         GenotypeTableBuilder gtBuilder = GenotypeTableBuilder.getSiteIncremental(myTaxa);
-        for (int i = 0; i < nsites; i++) gtBuilder.addSite(Position.builder(1, i).build(), MLMTest.randomGenotypes(ntaxa, "A", "C"));
+        Random ran = new Random(MLMTest.HETEROZYGOTE_TEST_SEED);
+        for (int i = 0; i < nsites; i++) {
+            gtBuilder.addSite(Position.builder(1, i).build(),
+                    MLMTest.randomGenotypesAllClasses(ntaxa, "A", "C", ran));
+        }
         GenotypeTable gt = gtBuilder.build();
         
         //create phenotype for twenty taxa
