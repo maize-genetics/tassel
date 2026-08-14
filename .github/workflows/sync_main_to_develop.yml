@@ -10,9 +10,10 @@ name: Sync main to develop
 # wrong, so the review step is the point.
 #
 # Trigger notes:
-#   * Pushes made with GITHUB_TOKEN do not raise `push` events, so the changelog
-#     commit from jdeploy.yml is invisible to the `push` trigger above. The
-#     `workflow_run` and `schedule` triggers exist to catch it.
+#   * jdeploy.yml pushes its changelog commit with a deploy key rather than
+#     GITHUB_TOKEN, so that commit does raise a `push` event and the `push`
+#     trigger sees it. The `workflow_run` and `schedule` triggers remain as
+#     backstops; both exit early when `develop` already matches `main`.
 #   * PRs opened with GITHUB_TOKEN do not trigger other workflows, so no checks
 #     run on the sync PR itself. coverage.yml therefore also runs on pushes to
 #     `develop`, which covers the code once this PR is merged.
@@ -20,8 +21,6 @@ name: Sync main to develop
 on:
   push:
     branches: [main]
-  # Catches the changelog/download-link commit that jdeploy.yml pushes to `main`
-  # after a release.
   workflow_run:
     workflows: ["jDeploy CI with Gradle"]
     types:
