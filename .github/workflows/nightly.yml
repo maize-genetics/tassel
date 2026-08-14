@@ -1,0 +1,238 @@
+name: Nightly Dev Build
+
+# Publishes an unstable prerelease ("nightly") standalone build from the
+# `develop` branch, but only when develop has advanced since the last nightly.
+# Each build lands twice: under a dated `dev-YYYYMMDD` tag that forms the
+# browsable archive, and under the rolling `dev-latest` tag that the README and
+# the docs site link to.
+# Releases to `main` are unaffected and remain manual via promotion PRs.
+
+on:
+  schedule:
+    # 05:00 UTC daily.
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nightly-build
+  cancel-in-progress: true
+
+jobs:
+  # Decide whether there is anything new to build. Skips silently when develop
+  # has not moved since the previous nightly tag; manual dispatch always builds.
+  check:
+    name: Check for new commits
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.decide.outputs.should_run }}
+      date_tag: ${{ steps.decide.outputs.date_tag }}
+    steps:
+      - name: Check out develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Decide whether to build
+        id: decide
+        run: |
+          DATE_TAG="dev-$(date -u +'%Y%m%d')"
+          echo "date_tag=$DATE_TAG" >> "$GITHUB_OUTPUT"
+
+          # Manual runs always build.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual dispatch: building."
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # The rolling `dev-latest` tag is, by definition, the commit the last
+          # nightly was built from. Globbing `dev-*` and sorting by creation date
+          # would be ambiguous now that a rolling tag sits alongside the dated
+          # ones.
+          LAST_SHA=$(git rev-list -n 1 dev-latest 2>/dev/null || true)
+          if [ -z "$LAST_SHA" ]; then
+            echo "No dev-latest tag; bootstrapping first rolling build."
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          HEAD_SHA=$(git rev-parse HEAD)
+          echo "Last nightly (dev-latest) = $LAST_SHA"
+          echo "develop HEAD              = $HEAD_SHA"
+          if [ "$LAST_SHA" = "$HEAD_SHA" ]; then
+            echo "No new commits since last nightly; skipping."
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "New commits found; building."
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    name: Build and publish nightly
+    needs: check
+    if: ${{ needs.check.outputs.should_run == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Install OpenBLAS
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libopenblas-dev
+
+      - name: Download and extract TASSEL test data
+        run: |
+          curl -L \
+            -o tassel_test_data_v1.tar.gz \
+            https://github.com/maize-genetics/tassel_test_data/releases/download/v1.0.0/tassel_test_data_v1.tar.gz
+          tar -xzf tassel_test_data_v1.tar.gz
+
+      # Health check: a failing test suite fails the nightly and stops the
+      # subsequent build/publish steps, signalling that develop is broken.
+      - name: Run test suite (nightly health check)
+        run: ./gradlew clean test --continue
+        env:
+          JAVA_TOOL_OPTIONS: >
+            -Djava.library.path=/usr/lib/x86_64-linux-gnu
+
+      - name: Read version from Gradle build file
+        run: |
+          RAW=$(./gradlew printVersion -q)
+          VERSION=$(echo "$RAW" | tail -n1)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Derive nightly tag and date
+        run: |
+          TAG="${{ needs.check.outputs.date_tag }}"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          echo "DATE=${TAG#dev-}" >> "$GITHUB_ENV"
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test -x koverVerify
+
+      # The script sanity-checks the jar before archiving it, so a jar that cannot
+      # launch fails the nightly here rather than being published.
+      - name: Build TASSEL "Standalone" distribution (ZIP and TAR.GZ)
+        run: |
+          .github/scripts/build-standalone.sh "tassel-5-standalone-v${VERSION}-dev.${DATE}"
+
+          # Constant filenames for the rolling `dev-latest` release, so scripts
+          # can hard-code a download URL that never changes. These are byte
+          # copies, so they still unpack into the dated directory, which is how
+          # you tell which build a stable URL gave you.
+          cd dist
+          cp tassel-5-standalone-v${VERSION}-dev.${DATE}.zip tassel-5-standalone-nightly.zip
+          cp tassel-5-standalone-v${VERSION}-dev.${DATE}.tar.gz tassel-5-standalone-nightly.tar.gz
+
+      - name: Write nightly release notes
+        run: |
+          {
+            echo "Automated nightly build of the \`develop\` branch."
+            echo ""
+            echo "- Version: \`${VERSION}\`"
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            echo "- Built: $(date -u +'%Y-%m-%d %H:%M UTC')"
+            echo ""
+            echo "> Unstable prerelease for testing only. This is **not** an official release."
+          } > RELEASE_NOTES_NIGHTLY.md
+
+      - name: Write rolling release notes
+        run: |
+          {
+            cat RELEASE_NOTES_NIGHTLY.md
+            echo ""
+            echo "This rolling release always mirrors the newest nightly, which is"
+            echo "archived under its own dated tag [\`${TAG}\`](https://github.com/${{ github.repository }}/releases/tag/${TAG})."
+            echo "The \`tassel-5-standalone-nightly.*\` assets keep the same filenames"
+            echo "every night, so these URLs are stable:"
+            echo ""
+            echo '```'
+            echo "https://github.com/${{ github.repository }}/releases/download/dev-latest/tassel-5-standalone-nightly.tar.gz"
+            echo "https://github.com/${{ github.repository }}/releases/download/dev-latest/tassel-5-standalone-nightly.zip"
+            echo '```'
+            echo ""
+            echo "Past nightlies are listed on the [nightly builds page](https://maize-genetics.github.io/tassel/download/nightly/)."
+          } > RELEASE_NOTES_ROLLING.md
+
+      - name: Publish nightly prerelease
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHA=$(git rev-parse HEAD)
+          TITLE="TASSEL ${VERSION}-dev.${DATE} (nightly)"
+
+          # Idempotent: if a nightly for today already exists (e.g. a re-run or
+          # a manual dispatch after the scheduled run), replace it.
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; replacing it."
+            gh release delete "$TAG" --yes --cleanup-tag
+          fi
+
+          gh release create "$TAG" \
+            --title "$TITLE" \
+            --notes-file RELEASE_NOTES_NIGHTLY.md \
+            --prerelease \
+            --target "$SHA" \
+            dist/tassel-5-standalone-v${VERSION}-dev.${DATE}.zip \
+            dist/tassel-5-standalone-v${VERSION}-dev.${DATE}.tar.gz
+
+      # GitHub has no "latest prerelease" redirect to match /releases/latest, so
+      # a rolling tag is what gives the README and the docs site something stable
+      # to point at. It is recreated rather than edited: `gh release edit` cannot
+      # move a git tag that already exists.
+      - name: Publish rolling dev-latest prerelease
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHA=$(git rev-parse HEAD)
+          ROLLING_TAG="dev-latest"
+
+          if gh release view "$ROLLING_TAG" >/dev/null 2>&1; then
+            echo "Release $ROLLING_TAG already exists; replacing it."
+            gh release delete "$ROLLING_TAG" --yes --cleanup-tag
+          fi
+
+          gh release create "$ROLLING_TAG" \
+            --title "TASSEL nightly (latest develop build)" \
+            --notes-file RELEASE_NOTES_ROLLING.md \
+            --prerelease \
+            --target "$SHA" \
+            dist/tassel-5-standalone-v${VERSION}-dev.${DATE}.zip \
+            dist/tassel-5-standalone-v${VERSION}-dev.${DATE}.tar.gz \
+            dist/tassel-5-standalone-nightly.zip \
+            dist/tassel-5-standalone-nightly.tar.gz
+
+      - name: Prune old nightly prereleases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Keep the newest 14 dated dev-* prereleases; delete older ones and
+          # their tags. `dev-latest` is excluded: it is a rolling pointer at the
+          # newest build, and counting it would shorten the archive by one.
+          KEEP=14
+          gh release list --limit 200 --json tagName,isPrerelease,createdAt \
+            --jq '[.[] | select(.isPrerelease
+                                and (.tagName | startswith("dev-"))
+                                and .tagName != "dev-latest")]
+                  | sort_by(.createdAt) | reverse | .[].tagName' > all_dev_tags.txt
+
+          tail -n +$((KEEP + 1)) all_dev_tags.txt | while read -r old_tag; do
+            [ -n "$old_tag" ] || continue
+            echo "Deleting old nightly $old_tag"
+            gh release delete "$old_tag" --yes --cleanup-tag
+          done

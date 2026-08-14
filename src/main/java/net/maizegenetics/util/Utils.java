@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -167,28 +168,52 @@ public final class Utils {
             if (path.trim().length() != 0) {
                 File file = new File(path);
                 if (file.exists()) {
-
-                    try (ZipFile zFile = new ZipFile(file.getAbsolutePath());) {
-
-                        Enumeration<? extends ZipEntry> entries = zFile.entries();
-                        while (entries.hasMoreElements()) {
-                            ZipEntry entry = entries.nextElement();
-                            if (!entry.isDirectory()) {
-                                String name = entry.getName();
-                                if (name.endsWith(filename)) {
-                                    result.add("/" + name);
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        myLogger.debug(e.getMessage(), e);
+                    // Running from an IDE or Gradle puts exploded class and resource
+                    // directories on the classpath alongside the jars.
+                    if (file.isDirectory()) {
+                        addResourceNamesFromDirectory(file, filename, result);
+                    } else {
+                        addResourceNamesFromArchive(file, filename, result);
                     }
-
                 }
             }
         }
 
         return result;
+
+    }
+
+    private static void addResourceNamesFromDirectory(File directory, String filename, Set<String> result) {
+
+        Path root = directory.toPath();
+        try (Stream<Path> files = Files.walk(root)) {
+            files.filter(Files::isRegularFile)
+                    .map(current -> "/" + root.relativize(current).toString().replace(File.separatorChar, '/'))
+                    .filter(name -> name.endsWith(filename))
+                    .forEach(result::add);
+        } catch (Exception e) {
+            myLogger.debug(e.getMessage(), e);
+        }
+
+    }
+
+    private static void addResourceNamesFromArchive(File archive, String filename, Set<String> result) {
+
+        try (ZipFile zFile = new ZipFile(archive.getAbsolutePath());) {
+
+            Enumeration<? extends ZipEntry> entries = zFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                if (!entry.isDirectory()) {
+                    String name = entry.getName();
+                    if (name.endsWith(filename)) {
+                        result.add("/" + name);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            myLogger.debug(e.getMessage(), e);
+        }
 
     }
 

@@ -44,7 +44,6 @@ public class TasselLogging extends AbstractPlugin {
         createDialog();
         basicLoggingInfo();
         LoggingUtils.setupLogging(myPrintStream);
-        myTextAreaOutputStream.clear();
         if (TasselPrefs.getLogSendToConsole()) {
             LoggingUtils.setupLogging();
         }
@@ -135,6 +134,7 @@ public class TasselLogging extends AbstractPlugin {
             @Override
             public void actionPerformed(ActionEvent e) {
                 myTextAreaOutputStream.clear();
+                basicLoggingInfo();
             }
         });
 
@@ -228,7 +228,6 @@ public class TasselLogging extends AbstractPlugin {
         public synchronized void clear() {
             if (myTextAppender != null) {
                 myTextAppender.clear();
-                basicLoggingInfo();
             }
         }
 

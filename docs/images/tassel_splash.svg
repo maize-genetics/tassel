@@ -102,15 +102,15 @@
          inkscape:export-ydpi="96" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.15266px;line-height:4.84965px;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#4d4d4d;fill-opacity:0.996078;fill-rule:evenodd;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round"
-         x="108.16415"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.15266px;line-height:4.84965px;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:center;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#4d4d4d;fill-opacity:0.996078;fill-rule:evenodd;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round"
+         x="148.64955"
          y="130.70879"
          id="text11"><tspan
            sodipodi:role="line"
            id="tspan11"
            style="stroke-width:0.5"
-           x="108.16415"
-           y="130.70879">Copyright © Buckler Lab. All rights reserved.</tspan></text>
+           x="148.64955"
+           y="130.70879">© Lab for Plant Genomic Diversity &amp; Design</tspan></text>
     </g>
   </g>
 </svg>

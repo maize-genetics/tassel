@@ -69,6 +69,13 @@ This produces:
 - `build/libs/lib/` — all runtime dependencies, copied next to the JAR so the
   manifest classpath resolves.
 
+A self-contained JAR that needs no `lib/` directory is available too, but it is
+built only on demand because it is over 70 MB:
+
+```bash
+./gradlew shadowJar   # build/libs/tassel-<version>-jar-with-dependencies.jar
+```
+
 To do a clean rebuild:
 
 ```bash
@@ -124,7 +131,8 @@ the full pipeline command language, see the
 | `./gradlew test` | Run the full (non-blocking) test suite. |
 | `./gradlew statisticsTest` | Run the enforced statistical-correctness gate. |
 | `./gradlew koverHtmlReport` | Generate an HTML code-coverage report. |
-| `./gradlew dokkaHtml` | Generate API documentation with Dokka. |
+| `./gradlew dokkaGenerate` | Generate API documentation with Dokka. |
+| `./gradlew shadowJar` | Assemble the self-contained `jar-with-dependencies` JAR. |
 | `./gradlew fetchTestData` | Download the shared test-data archive into `dataFiles/`. |
 | `./gradlew printVersion` | Print the current project version. |
 

@@ -3,6 +3,14 @@ name: jDeploy CI with Gradle
 on:
   push:
     branches: [main, master]
+    # Docs-only pushes to main should not cut a software release. If any
+    # non-docs file changes too, this still runs (paths-ignore only skips when
+    # ALL changed files match). The live site is published separately by
+    # deploy_project_site.yml on docs pushes.
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - 'mkdocs.yml'
   workflow_dispatch:
 
 permissions:
@@ -33,41 +41,35 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test -x koverVerify
 
-      - name: Create TASSEL "Standalone" distribution
-        run: |
-          mkdir -p dist/tassel-5-standalone
-          cp -r build/libs/lib/ dist/tassel-5-standalone/
-          cp build/libs/sTASSEL.jar dist/tassel-5-standalone/
-          cp scripts/*.pl scripts/*.bat dist/tassel-5-standalone/
+      # The script sanity-checks the jar before archiving it, so a jar that cannot
+      # launch fails the build here rather than being published. That jar is also
+      # what feeds the jDeploy installer bundles below.
+      - name: Build TASSEL "Standalone" distribution (ZIP and TAR.GZ)
+        run: .github/scripts/build-standalone.sh "tassel-5-standalone-v${VERSION}"
 
-          cd dist/tassel-5-standalone
-
-          for f in start_tassel.pl run_pipeline.pl; do
-            sed -i.bak 's|push(@fl, "\$top/dist/sTASSEL.jar");|push(@fl, "\$top/sTASSEL.jar");|' "$f"
-          done
-
-          for f in start_tassel.bat run_pipeline.bat; do
-            sed -i.bak 's|set CP=%TOP%\\dist\\sTASSEL.jar|set CP=%TOP%\\sTASSEL.jar|' "$f"
-          done
-
-          rm -f *.bak
-
-      - name: Archive TASSEL Standalone (ZIP and TAR.GZ)
-        run: |
-          cd dist/tassel-5-standalone/
-          zip -r ../tassel-5-standalone-v${VERSION}.zip .
-          tar -czf ../tassel-5-standalone-v${VERSION}.tar.gz .
-
-      - name: Extract changelog content from latest PR
+      - name: Extract changelog content from the PR that produced this commit
         id: extract_changelog
         run: |
-          # Get the latest merged PR
-          LATEST_PR=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                     "https://api.github.com/repos/${{ github.repository }}/pulls?state=closed&sort=updated&direction=desc" | \
-                     jq -r '[.[] | select(.merged_at != null)][0]')
+          API="https://api.github.com/repos/${{ github.repository }}"
+          AUTH="Authorization: token ${{ secrets.GITHUB_TOKEN }}"
 
-          PR_NUMBER=$(echo "$LATEST_PR" | jq -r '.number')
-          PR_BODY=$(echo "$LATEST_PR" | jq -r '.body')
+          # Resolve the PR that actually contains the commit being built. Sorting
+          # merged PRs by update time is not reliable: documentation PRs merge
+          # directly to main without triggering this workflow, so the newest
+          # merged PR is often not the one being released.
+          PR=$(curl -s -H "$AUTH" "$API/commits/${{ github.sha }}/pulls" | \
+               jq -r '[.[] | select(.merged_at != null)][0] // empty')
+
+          if [ -z "$PR" ] || [ "$PR" = "null" ]; then
+            echo "No PR associated with ${{ github.sha }}; falling back to the most recently merged PR."
+            PR=$(curl -s -H "$AUTH" \
+                 "$API/pulls?state=closed&sort=updated&direction=desc" | \
+                 jq -r '[.[] | select(.merged_at != null)][0]')
+          fi
+
+          PR_NUMBER=$(echo "$PR" | jq -r '.number')
+          PR_BODY=$(echo "$PR" | jq -r '.body')
+          echo "Using PR #$PR_NUMBER for release notes."
 
           # Extract content between BEGIN CHANGELOG and END CHANGELOG tags.
           # The grep -v filters exit non-zero on empty input, which would abort
@@ -123,24 +125,74 @@ jobs:
           cp build/libs/sTASSEL.jar .
           cp -r build/libs/lib .
 
-      - name: Build App Installer Bundles
-        # Pinned to a master commit SHA rather than the latest tag (v6.1.5):
-        # v6.1.5 sets up Node 20 then runs `npm install -g npm@latest`, and the
-        # current npm@latest dropped Node 20 support, so the tagged action fails
-        # with EBADENGINE. This commit contains the fix (Node 22 + pinned npm@11)
-        # which is not yet in a released tag. Revisit once a fixed tag ships.
-        uses: shannah/jdeploy@6257b2d7815b5c127fd530932e7bab8de9c696d2
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          jdeploy_version: '6.1.1'
+          node-version: '22.x'
+
+      # The jdeploy CLI leaves the 'jdeploy' metadata tag alone; updating it is
+      # the job of these two scripts, which live in the jDeploy action repo. They
+      # implement optimistic locking against concurrent publishes, so reuse them
+      # from the pinned revision instead of copying the logic here.
+      - name: Fetch jDeploy release helper scripts
+        uses: actions/checkout@v4
+        with:
+          repository: shannah/jdeploy
+          ref: 6257b2d7815b5c127fd530932e7bab8de9c696d2
+          path: .jdeploy-action
+          sparse-checkout: .github/scripts
+
+      # The jDeploy action is deliberately not used here. On a branch push it
+      # forces the package version to "0.0.0-<branch>", and the installer appends
+      # everything after the first dash to the app title, so the app installed as
+      # "TASSEL 5 main". Driving the CLI directly lets us publish under the real
+      # Gradle version, which also gives jDeploy a non-prerelease version to
+      # record as "latest" for auto-updates. GITHUB_REF_NAME/REF_TYPE are what the
+      # CLI reads to decide which release tag the assets will live under.
+      - name: Build App Installer Bundles
+        run: |
+          npm pkg set version="$VERSION"
+          npm pkg set jdeploy.jdeployVersion="$JDEPLOY_VERSION"
+          npm pkg set jdeploy.commitHash="$GITHUB_SHA"
+          npm pkg set jdeploy.gitTag="v$VERSION"
+          npx --yes "jdeploy@$JDEPLOY_VERSION" github-prepare-release
+        env:
+          JDEPLOY_VERSION: '6.1.5'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REF_NAME: v${{ env.VERSION }}
+          GITHUB_REF_TYPE: tag
+
+      # Two steps rather than one: the baseline script hands the release id and
+      # the ETag it locks against to the upload script through $GITHUB_ENV, which
+      # only propagates between steps.
+      - name: Read the jdeploy metadata baseline
+        run: |
+          chmod +x .jdeploy-action/.github/scripts/*.sh
+          .jdeploy-action/.github/scripts/download-jdeploy-baseline.sh \
+            "${{ github.repository }}" "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Update the jdeploy metadata tag
+        run: |
+          .jdeploy-action/.github/scripts/upload-jdeploy-package-info.sh \
+            "${{ github.repository }}" "${{ secrets.GITHUB_TOKEN }}" \
+            ./jdeploy/github-release-files
+
+      - name: Upload installers to the version release
+        run: |
+          # jdeploy-files.zip has to be an asset of this exact tag: the installer
+          # derives it from the version baked into its filename ("5.2.98" ->
+          # "v5.2.98") when it goes looking for the app payload.
+          gh release upload "v${VERSION}" ./jdeploy/github-release-files/* --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update release note download links
         run: |
           # Find the installer files and update the release notes
-          REL_LINUX=$(ls jdeploy/github-release-files/TASSEL.5.Installer-linux-x64-@main* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
-          REL_MAC_SILICON=$(ls jdeploy/github-release-files/TASSEL.5.Installer-mac-arm64-@main* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
-          REL_MAC_INTEL=$(ls jdeploy/github-release-files/TASSEL.5.Installer-mac-x64-@main* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
-          REL_WINDOWS=$(ls jdeploy/github-release-files/TASSEL.5.Installer-win-x64-@main* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+          REL_LINUX=$(ls jdeploy/github-release-files/TASSEL.5.Installer-linux-x64-* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+          REL_MAC_SILICON=$(ls jdeploy/github-release-files/TASSEL.5.Installer-mac-arm64-* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+          REL_MAC_INTEL=$(ls jdeploy/github-release-files/TASSEL.5.Installer-mac-x64-* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
+          REL_WINDOWS=$(ls jdeploy/github-release-files/TASSEL.5.Installer-win-x64-* 2>/dev/null | head -n 1 | xargs basename 2>/dev/null || echo "")
 
           # Export variables for template substitution
           export REL_LINUX
@@ -155,6 +207,12 @@ jobs:
           # Update the featured_downloads.html file with the updated download links
           envsubst < docs/templates/template_featured_downloads.html > docs/overrides/partials/featured_downloads.html.new
           mv docs/overrides/partials/featured_downloads.html.new docs/overrides/partials/featured_downloads.html
+
+          # Same for the download page's static fallback links. Installer
+          # filenames now carry the version, so this page goes stale unless it is
+          # regenerated with every release.
+          envsubst < docs/templates/template_download.md > docs/download/index.md.new
+          mv docs/download/index.md.new docs/download/index.md
 
           # Update the GitHub release body
           gh release edit "v${VERSION}" --notes-file RELEASE_NOTES.md
@@ -178,17 +236,24 @@ jobs:
             exit 0
           fi
 
-          # Insert the new section after the header (line 4) without sed:
+          # Insert the new section directly below the YAML front matter, without sed:
           # the changelog content is multi-line markdown (bullets starting with
           # "-"), which breaks `sed i\` because each line is parsed as a new
           # command. Rebuild the file with head/cat/tail instead so arbitrary
-          # text is inserted verbatim.
+          # text is inserted verbatim. The insertion point is found by locating the
+          # front matter's closing delimiter rather than hard-coding a line number,
+          # which silently breaks whenever the front matter gains or loses a key.
+          FRONT_MATTER_END=$(awk 'NR > 1 && /^---$/ { print NR; exit }' docs/changelog.md)
+          if [ -z "$FRONT_MATTER_END" ]; then
+            echo "Could not find the end of the changelog front matter" >&2
+            exit 1
+          fi
+
           {
-            head -n 4 docs/changelog.md
-            printf '## (V%s) %s\n\n' "${{ env.VERSION }}" "${{ env.DATE }}"
+            head -n "$FRONT_MATTER_END" docs/changelog.md
+            printf '\n## (V%s) %s\n\n' "${{ env.VERSION }}" "${{ env.DATE }}"
             cat /tmp/changelog_content.txt
-            printf '\n'
-            tail -n +5 docs/changelog.md
+            tail -n +$((FRONT_MATTER_END + 1)) docs/changelog.md
           } > docs/changelog.md.new
           mv docs/changelog.md.new docs/changelog.md
 
@@ -200,6 +265,6 @@ jobs:
             exit 0
           fi
 
-          git add docs/changelog.md docs/overrides/partials/featured_downloads.html
+          git add docs/changelog.md docs/overrides/partials/featured_downloads.html docs/download/index.md
           git commit -m "Update changelog and links for version ${{ env.VERSION }}"
           git push

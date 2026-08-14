@@ -1,0 +1,105 @@
+name: Docs CI
+
+# Lightweight checks for documentation changes. Building the MkDocs site takes
+# about a minute and needs no JDK, Gradle, or test-data download, so docs-only
+# PRs are not held up by the Java test suite in coverage.yml.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches: [main, develop, master]
+
+# `pull-requests: read` is what dorny/paths-filter needs to list a PR's changed
+# files through the REST API.
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  # Path detection lives in its own job so the jobs below can be *required*
+  # checks: a job skipped via `if:` reports "success" to branch protection,
+  # whereas a whole workflow skipped by a top-level `paths:` filter stays
+  # "pending" and blocks code-only PRs forever.
+  changes:
+    name: Detect changed paths
+    runs-on: ubuntu-latest
+    outputs:
+      docs: ${{ steps.filter.outputs.docs }}
+      nondocs: ${{ steps.filter.outputs.nondocs }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Classify changed files
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            docs:
+              - 'docs/**'
+              - '**.md'
+              - 'mkdocs.yml'
+            # Must stay a single braced pattern. Patterns within a filter are
+            # OR'd per file, so listing '!docs/**', '!**.md', '!mkdocs.yml'
+            # separately would match everything (docs/index.md is not
+            # mkdocs.yml, so it satisfies the third pattern).
+            nondocs:
+              - '!{docs/**,**.md,mkdocs.yml}'
+
+  # A docs-track PR (branch named `docs/*`, or labelled `documentation`) goes
+  # straight to `main` without running the test suite, so it must not smuggle
+  # in code changes.
+  guard:
+    name: Docs track guard
+    needs: changes
+    if: |
+      needs.changes.outputs.nondocs == 'true' &&
+      (startsWith(github.head_ref, 'docs/') ||
+       contains(github.event.pull_request.labels.*.name, 'documentation'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject mixed docs and code changes
+        run: |
+          cat <<'MSG' >&2
+          This pull request is on the documentation track but changes files
+          outside docs/**, **.md, and mkdocs.yml.
+
+          The docs track skips the test suite and merges directly to `main`, so
+          it is only valid for documentation-only changes. To proceed:
+
+            * Move the non-documentation changes onto a branch based on
+              `develop` and open a PR against `develop` with the feature
+              template, or
+            * If this really is a critical fix for a released version, use the
+              hotfix template against `main`.
+
+          Alternatively, drop the `docs/` branch prefix (and the
+          `documentation` label) so this PR is treated as a normal change and
+          runs the full CI pipeline.
+          MSG
+          exit 1
+
+  build:
+    name: Build documentation site
+    needs: changes
+    if: ${{ needs.changes.outputs.docs == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      # mkdocs-macros-plugin injects the version from build.gradle.kts into the
+      # install pages; without it those pages fail to build.
+      - run: pip install mkdocs-material mkdocs-macros-plugin
+
+      # Deliberately not `--strict`: this mirrors what deploy_project_site.yml
+      # runs, so a PR cannot pass here and then fail at deploy time, and
+      # pre-existing warnings elsewhere in docs/ do not block unrelated edits.
+      - name: Build site
+        run: mkdocs build

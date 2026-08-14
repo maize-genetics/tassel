@@ -1,16 +1,32 @@
 name: Site Builder and Deployment
 on:
+  # Publish the site after a release build finishes (keeps release-time
+  # download-link updates in sync with what jdeploy.yml commits).
   workflow_run:
     workflows: ["jDeploy CI with Gradle"]
     types:
       - completed
     branches: [main, master]
+  # Publish the site directly for docs-only changes so documentation updates
+  # go live without waiting for (or triggering) a software release.
+  push:
+    branches: [main, master]
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+  workflow_dispatch:
 permissions:
   contents: write
+# Serialize deploys so an overlapping release deploy and docs deploy don't race
+# on `mkdocs gh-deploy --force`; the most recent run wins with the latest content.
+concurrency:
+  group: site-deploy
+  cancel-in-progress: true
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # For workflow_run, only deploy on success; push/dispatch always proceed.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
       - name: Configure Git Credentials
@@ -27,6 +43,8 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material 
+      # mkdocs-macros-plugin injects the version from build.gradle.kts into the
+      # install pages; without it those pages fail to build.
+      - run: pip install mkdocs-material mkdocs-macros-plugin
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force

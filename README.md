@@ -1,9 +1,8 @@
-<img src="docs/images/tassel_logo.svg" align="right" width="100" alt="TASSEL logo">
+# TASSEL <img src="docs/images/tassel_logo.svg" align="right" width="120" alt="TASSEL logo">
 
-## TASSEL
-
-[![TASSEL 5 CI](https://github.com/maize-genetics/tassel/actions/workflows/coverage.yml/badge.svg)](https://github.com/maize-genetics/tassel/actions/workflows/coverage.yml)
+[![CI](https://github.com/maize-genetics/tassel/actions/workflows/coverage.yml/badge.svg)](https://github.com/maize-genetics/tassel/actions/workflows/coverage.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/net.maizegenetics/tassel?label=Maven%20Central)](https://central.sonatype.com/artifact/net.maizegenetics/tassel)
+[![Bioinformatics](https://img.shields.io/badge/Bioinformatics-10.1093%2Fbioinformatics%2Fbtm308-blue)](https://doi.org/10.1093/bioinformatics/btm308)
 
 TASSEL (**T**rait **A**nalysis by a**SS**ociation, **E**volution and **L**inkage) is a
 software package for evaluating trait associations, evolutionary patterns, and
@@ -11,10 +10,18 @@ linkage disequilibrium in genetic data. It is designed to handle the diversity o
 data types and sizes common in modern genomics, including a variety of genotype and
 phenotype file formats.
 
-* [**Website**](https://maize-genetics.github.io/tassel/)
-* [**Latest Builds**](https://github.com/maize-genetics/tassel/releases/latest)
+## Downloads
 
-### Quick start
+| Build | Version |
+| ----- | ------- |
+| **Latest stable** | [![Stable release](https://img.shields.io/github/v/release/maize-genetics/tassel?label=release)](https://github.com/maize-genetics/tassel/releases/latest) |
+| **Latest nightly** | [![Nightly build date](https://img.shields.io/github/release-date-pre/maize-genetics/tassel?label=built)](https://github.com/maize-genetics/tassel/releases/tag/dev-latest) |
+
+Nightly builds are automated, unreleased snapshots of the `develop` branch,
+published for testing only. They are not versioned releases and are never
+published to Maven Central. Use the latest stable release for real work.
+
+## Quick start
 
 If you want to build this from the source, TASSEL needs **Java 21**. 
 A Gradle wrapper (`./gradlew`) is included, so a local Gradle installation is 
@@ -31,7 +38,7 @@ Build the runnable JAR and launch the graphical interface:
 For prerequisites (including OpenBLAS setup), command-line pipelines, and the
 standalone distribution, see the documentation links below.
 
-### Documentation
+## Documentation
 
 Full documentation lives on the [TASSEL docs site](https://maize-genetics.github.io/tassel/):
 
@@ -44,7 +51,19 @@ Full documentation lives on the [TASSEL docs site](https://maize-genetics.github
 | [Contributing](https://maize-genetics.github.io/tassel/CONTRIBUTING/)                      | Git workflow, pull requests, and code review.                                |
 | [Version History](https://maize-genetics.github.io/tassel/changelog/)                      | Release notes and changelog.                                                 |
 
-### Citation
+To preview the site locally, run `pip install mkdocs-material mkdocs-macros-plugin`
+followed by `mkdocs serve`.
+
+## Contributing
+
+Start from the branch that matches your change: `develop` for features and
+non-urgent fixes, `main` for hotfixes and documentation-only changes.
+Documentation changes take a shortcut — they skip the test suite and publish
+without cutting a release. See
+[Contributing](https://maize-genetics.github.io/tassel/CONTRIBUTING/#the-git-workflow)
+for the full workflow.
+
+## Citation
 
 If you use TASSEL in your research, please cite the overall package:
 
@@ -67,4 +86,8 @@ BibTeX entry:
   url     = {https://academic.oup.com/bioinformatics/article/23/19/2633/185151}
 }
 ```
+
+## License
+
+TASSEL is licensed under the [Apache License, Version 2.0](LICENSE).
 

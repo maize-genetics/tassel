@@ -5,12 +5,17 @@
  * This software evaluates linkage disequilibrium nucletide diversity and
  * associations. For more information visit http://www.maizegenetics.net
  *
- * This software is distributed under GNU general public license, version 2 and without
- * any warranty or technical support.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * You can redistribute and/or modify it under the terms of GNU General
- * public license.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 //Title:      TASSELMainFrame
 //Version:
@@ -111,8 +116,10 @@ import java.util.Map;
 public class TASSELMainFrame extends JFrame implements ActionListener {
 
     private static final Logger myLogger = LogManager.getLogger(TASSELMainFrame.class);
-    public static final String version = "5.2.97";
-    public static final String versionDate = "July 16, 2026";
+    // Sourced from build.gradle.kts via the generated TasselBuildInfo. Kept here because these
+    // fields are long-standing public API; bump the version in build.gradle.kts, not this file.
+    public static final String version = TasselBuildInfo.VERSION;
+    public static final String versionDate = TasselBuildInfo.VERSION_DATE;
     private DataTreePanel myDataTreePanel;
     //a variable to control when the progress bar was last updated
     private JFileChooser filerSave = new JFileChooser();
@@ -177,7 +184,7 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
         mainPanelTextArea.setFont(new java.awt.Font("Monospaced", 0, 12));
         mainPanelTextArea.setToolTipText("Main Panel");
 
-        myStatusTextField.setBackground(Color.lightGray);
+        myStatusTextField.setBackground(UIManager.getColor("Panel.background"));
         myStatusTextField.setBorder(null);
 
         JSplitPane dataTreeReportMainPanelsSplitPanel = new JSplitPane();
@@ -432,7 +439,7 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
             }
             menuItem.setIconTextGap(pixels);
         }
-        menuItem.setBackground(Color.white);
+        menuItem.setBackground(UIManager.getColor("MenuItem.background"));
         menuItem.setMargin(new Insets(2, 2, 2, 2));
         menuItem.setToolTipText(theTP.getToolTipText());
         menuItem.addActionListener(this);
@@ -455,7 +462,7 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
             pixels /= 2;
         }
         menuItem.setIconTextGap(pixels);
-        menuItem.setBackground(Color.white);
+        menuItem.setBackground(UIManager.getColor("MenuItem.background"));
         menuItem.setMargin(new Insets(2, 2, 2, 2));
         menuItem.addActionListener(action);
         return menuItem;
@@ -468,7 +475,7 @@ public class TASSELMainFrame extends JFrame implements ActionListener {
         if (adjustForIcon) {
             menuItem.setIconTextGap(ICON_WIDTH_PLUS_GAP);
         }
-        menuItem.setBackground(Color.white);
+        menuItem.setBackground(UIManager.getColor("MenuItem.background"));
         menuItem.setMargin(new Insets(2, 2, 2, 2));
         menuItem.setEnabled(false);
         return menuItem;
