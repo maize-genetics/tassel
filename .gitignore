@@ -46,3 +46,16 @@ bin/
 dataFiles/
 tempDir/
 production_pipeline.properties
+
+### MkDocs ###
+site/
+# Left behind when mkdocs-macros imports docs/macros.py
+__pycache__/
+
+### jDeploy ###
+jdeploy/
+jdeploy-bundle/
+.jdeploy-action/
+# Copied to the project root so the jDeploy CLI can package them.
+/sTASSEL.jar
+/lib/

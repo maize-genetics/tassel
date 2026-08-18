@@ -6,10 +6,44 @@ on:
     types:
       - opened
       - synchronize
-    branches: [main, master]
-    paths: 'src/**'
+    branches: [main, develop, master]
+  # Also verify `develop` itself after a merge. The `main` -> `develop` back-merge
+  # PR is opened by GITHUB_TOKEN, so no checks run on that PR; this is what
+  # exercises a hotfix once it has been merged down.
+  push:
+    branches: [develop]
+    paths:
+      - 'src/**'
+      - 'build.gradle.kts'
+      - 'gradle.properties'
 
 jobs:
+  # Detect whether this PR touches compiled sources. The heavy jobs below are
+  # only meaningful for src/** changes, but they must still report a status so
+  # they can be *required* checks: a job skipped via `if:` reports "success" to
+  # branch protection, whereas a whole workflow skipped by a top-level `paths:`
+  # filter stays "pending" and blocks docs-only PRs forever.
+  changes:
+    name: Detect source changes
+    runs-on: ubuntu-latest
+    # dorny/paths-filter lists a PR's changed files through the REST API.
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Detect changes under src/
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+
   # ──────────────────────────────────────────────────────────────────────────
   # REQUIRED gate: statistical-correctness tests (ignoreFailures = false).
   # This job MUST be green for a PR to merge.  It runs the kinship / MLM /
@@ -18,6 +52,11 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   statistics_gate:
     name: Statistics gate (required)
+    needs: changes
+    # On `push` the workflow-level `paths:` filter has already decided the change
+    # is relevant, so run unconditionally rather than re-deriving it from a
+    # merge-base comparison against the default branch.
+    if: ${{ needs.changes.outputs.src == 'true' || github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -77,11 +116,16 @@ jobs:
           detailed_summary: true
 
   # ──────────────────────────────────────────────────────────────────────────
-  # Non-blocking: full test suite + coverage.  Failures here are visible but
-  # do not block PRs while the pipeline / IO tests are still being fixed.
+  # Full test suite + coverage.  The suite itself runs with ignoreFailures =
+  # true, so individual pipeline / IO failures are reported but do not fail the
+  # job while those tests are still being stabilized; koverVerify is what this
+  # job actually gates on.
   # ──────────────────────────────────────────────────────────────────────────
   test_and_coverage:
-    name: Full suite & coverage (non-blocking)
+    # Keep this display name in step with the branch-protection required check.
+    name: TASSEL 5 CI
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' || github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -119,8 +163,8 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
-      - name: Run tests & generate Kover coverage report
-        run: ./gradlew test koverXmlReport --continue
+      - name: Run tests, generate Kover report & verify coverage gate
+        run: ./gradlew clean test koverXmlReport koverVerify --continue
         env:
           BLAS_LIB_PATH: /usr/lib/x86_64-linux-gnu
 

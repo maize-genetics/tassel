@@ -534,7 +534,7 @@ public class GenotypeSummaryPlugin extends AbstractPlugin {
 
     @Override
     public String pluginUserManualURL() {
-        return "https://bitbucket.org/tasseladmin/tassel-5-source/wiki/UserManual/GenoSummary/GenoSummary";
+        return "https://maize-genetics.github.io/tassel/user_manual/genosummary/";
     }
 
 }

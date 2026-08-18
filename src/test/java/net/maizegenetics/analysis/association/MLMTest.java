@@ -1,7 +1,5 @@
 package net.maizegenetics.analysis.association;
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 import net.maizegenetics.analysis.association.MLMPlugin.CompressionType;
 import net.maizegenetics.analysis.distance.EndelmanDistanceMatrix;
 import net.maizegenetics.analysis.distance.KinshipPlugin;
@@ -42,6 +40,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class MLMTest {
+	/** Fixed seed so the genotypes drawn by the heterozygote tests are reproducible across runs. */
+	public final static long HETEROZYGOTE_TEST_SEED = 20240917L;
 	private final static String statsNocompNop3d = GeneralConstants.EXPECTED_RESULTS_DIR + "MLM_statistics_nocomp_nop3d.txt";
 	private final static String effectsNocompNop3d = GeneralConstants.EXPECTED_RESULTS_DIR + "MLM_effects_nocomp_nop3d.txt";
 	private final static String residualsNocompNop3d = GeneralConstants.EXPECTED_RESULTS_DIR + "MLM_residuals_nocomp_nop3d.txt";
@@ -125,17 +125,9 @@ public class MLMTest {
 	    int nsites = 10;
 	    Chromosome chr = Chromosome.instance(1);
 	    GenotypeTableBuilder gtBuilder = GenotypeTableBuilder.getSiteIncremental(myTaxa);
+	    Random ran = new Random(HETEROZYGOTE_TEST_SEED);
 	    for (int i = 0; i < nsites; i++) {
-	    	int ngeno = 0;
-	    	byte[] geno = new byte[0];
-	    	while (ngeno != 4) {
-				geno = randomGenotypes(ntaxa, "A", "C");
-				Multiset<Integer> genoMultiset = HashMultiset.create();
-				for (byte genoValue : geno) genoMultiset.add(Byte.toUnsignedInt(genoValue));
-				ngeno = genoMultiset.elementSet().size();
-			}
-
-	    	gtBuilder.addSite(Position.builder(1, i).build(), geno);
+	    	gtBuilder.addSite(Position.builder(1, i).build(), randomGenotypesAllClasses(ntaxa, "A", "C", ran));
 		}
 	    GenotypeTable gt = gtBuilder.build();
 	    
@@ -172,7 +164,10 @@ public class MLMTest {
 	}
 	
 	public static byte[] randomGenotypes(int n, String nuc1, String nuc2) {
-	    Random ran = new Random();
+	    return randomGenotypes(n, nuc1, nuc2, new Random());
+	}
+
+	public static byte[] randomGenotypes(int n, String nuc1, String nuc2, Random ran) {
 	    byte[] geno = new byte[4];
 	    geno[0] = NucleotideAlignmentConstants.getNucleotideDiploidByte(nuc1 + nuc1);
 	    geno[1] = NucleotideAlignmentConstants.getNucleotideDiploidByte(nuc1 + nuc2);
@@ -183,5 +178,19 @@ public class MLMTest {
 	        genotype[i] = geno[ran.nextInt(4)];
 	    }
 	    return genotype;
+	}
+
+	/**
+	 * Draws a site until all four diploid encodings are present, which guarantees the site has both
+	 * homozygous classes and the heterozygous class. Tests that assert a fixed number of effect rows
+	 * per site depend on that, and independent draws can otherwise omit a class by chance.
+	 */
+	public static byte[] randomGenotypesAllClasses(int n, String nuc1, String nuc2, Random ran) {
+	    while (true) {
+	        byte[] genotype = randomGenotypes(n, nuc1, nuc2, ran);
+	        Set<Byte> distinctGenotypes = new HashSet<>();
+	        for (byte genoValue : genotype) distinctGenotypes.add(genoValue);
+	        if (distinctGenotypes.size() == 4) return genotype;
+	    }
 	}
 }

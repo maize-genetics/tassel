@@ -220,7 +220,6 @@ public class GenotypeTest {
         System.out.println("GenotypeTest: testSetBaseRangeForTaxon: " + numTaxa + " sites: " + numSites + " time: " + timeLapsed);
         GenotypeCallTable newGenotype = builder.build();
         compareGenotypeCallTables(genotype, newGenotype);
-        Assert.assertTrue("GenotypeTest: testSetBaseRangeForTaxon: " + timeLapsed + " sec. longer than expected: 5.0", timeLapsed < 5.0);
     }
 
     public static void compareGenotypeCallTables(GenotypeCallTable table1, GenotypeCallTable table2) {

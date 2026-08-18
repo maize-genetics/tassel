@@ -9,7 +9,8 @@
 
 {% block extrahead %}
   {{ super() }}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="assets/stylesheets/extra.css" />
 {% endblock %}
 
@@ -24,22 +25,132 @@
     .md-ellipsis {
       font-weight: 700;
     }
+    @media screen and (min-width: 76.25em) {
+      .md-sidebar--primary,
+      .md-sidebar--secondary {
+        display: none;
+      }
+    }
   </style>
 
+  <!-- ===================== HERO ===================== -->
   <section class="tx-hero">
-    <div class="md-grid md-typeset">
-      <div class="tx-hero__content">
-        <img src="../images/tassel_logo.svg" alt="TASSEL Logo" class="hero-logo" style="max-width: 250px;" />
-        <h3><strong>TASSEL 5</strong> (<strong>T</strong>rait <strong>A</strong>nalysis by a<strong>SS</strong>ociation, <strong>E</strong>volution and <strong>L</strong>inkage)</h3>
+    <div class="tx-hero__inner">
+      <img src="{{ base_url }}/images/tassel_logo.svg" alt="TASSEL Logo" class="hero-logo" />
+      <h1 class="tx-hero__title">
+        <strong>TASSEL 5</strong>
+      </h1>
+      <p class="tx-hero__lede">
+        <strong>T</strong>rait <strong>A</strong>nalysis by
+        a<strong>SS</strong>ociation, <strong>E</strong>volution and
+        <strong>L</strong>inkage
+      </p>
+      <p class="tx-hero__sub">
+        A powerful, open software package for evaluating trait associations,
+        evolutionary patterns, and linkage disequilibrium.
+      </p>
+      <div class="download-links">
+        <a href="download/" class="md-button md-button--primary">
+          <span class="material-symbols-outlined hero-btn-icon" aria-hidden="true">download</span>
+          Download
+        </a>
+        <a href="getting_started/" class="md-button md-button--secondary">
+          <span class="material-symbols-outlined hero-btn-icon" aria-hidden="true">rocket_launch</span>
+          Getting Started
+        </a>
+        <a href="https://github.com/maize-genetics/tassel" class="md-button md-button--secondary" target="_blank" rel="noopener noreferrer">
+          <i class="fa fa-github hero-btn-icon" aria-hidden="true"></i>
+          GitHub
+        </a>
       </div>
     </div>
   </section>
 
+  <!-- ===================== BENTO GRID ===================== -->
+  <section class="bento-section">
+    <div class="bento-wrap">
+      <div class="bento-grid">
+
+        <div class="bento-card bento-card--feature bento-card--wide">
+          <span class="material-symbols-outlined bento-icon" aria-hidden="true">analytics</span>
+          <h3>Powerful association mapping</h3>
+          <p>
+            <strong>General Linear Model (GLM)</strong> and
+            <strong>Mixed Linear Model (MLM)</strong> approaches. MLM
+            (<em>Nature Genetics</em>) reduces Type&nbsp;I error in complex
+            pedigrees and population structures.
+          </p>
+          <a class="bento-card__cta" href="user_manual/mlm/">
+            Explore the models
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+
+        <div class="bento-card bento-card--feature">
+          <span class="material-symbols-outlined bento-icon" aria-hidden="true">bolt</span>
+          <h3>Bit-level speed</h3>
+          <p>
+            Bit-encoded nucleotides make genetic distance and linkage
+            disequilibrium estimates <strong>20&ndash;50&times; faster</strong>.
+          </p>
+        </div>
+
+        <div class="bento-card bento-card--feature">
+          <span class="material-symbols-outlined bento-icon" aria-hidden="true">difference</span>
+          <h3>Indel aware</h3>
+          <p>
+            First-class support for <strong>insertions &amp; deletions</strong>,
+            a dominant form of polymorphism in species like maize.
+          </p>
+        </div>
+
+        <a class="bento-card bento-card--accent bento-card--wide" href="download/">
+          <span class="material-symbols-outlined bento-icon" aria-hidden="true">download</span>
+          <h3>Download TASSEL 5</h3>
+          <p>
+            Native installers for macOS, Windows, and Linux, plus the
+            standalone command-line distribution.
+          </p>
+          <span class="bento-card__cta">
+            Go to downloads
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </span>
+        </a>
+
+        <div class="bento-card bento-card--feature">
+          <span class="material-symbols-outlined bento-icon" aria-hidden="true">genetics</span>
+          <h3>Built for GBS</h3>
+          <p>
+            Extract and call <strong>SNPs</strong> from massive
+            Genotyping-by-Sequencing datasets &mdash; tested at 60,000 samples
+            &times; 2.5M SNPs.
+          </p>
+        </div>
+
+        <a class="bento-card bento-card--wide" href="getting_started/">
+          <span class="material-symbols-outlined bento-icon" aria-hidden="true">rocket_launch</span>
+          <h3>Getting Started</h3>
+          <p>
+            Install TASSEL, explore the user manual and pipelines, and download
+            test data to follow along.
+          </p>
+          <span class="bento-card__cta">
+            Get started
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
   <section class="about-section">
     <div class="md-grid md-typeset">
       <h2>About TASSEL 5</h2>
       <p>
-        TASSEL is a software package to evaluate trait associations, evolutionary patterns, and linkage disequilibrium. Strengths of this software:
+        TASSEL is a software package to evaluate trait associations, evolutionary
+        patterns, and linkage disequilibrium. Strengths of this software:
       </p>
 
       <ol>
@@ -47,7 +158,7 @@
           It provides powerful statistical approaches for association mapping such as
           <strong>General Linear Model (GLM)</strong> and <strong>Mixed Linear Model (MLM)</strong>.
           MLM is a method described in a <em>Nature Genetics</em> paper -
-          <a href="https://tassel.bitbucket.io/unified-mixed-model">Unified Mixed-Model Method for Association Mapping</a> -
+          <a href="https://maize-genetics.github.io/tassel/user_manual/mlm/">Unified Mixed-Model Method for Association Mapping</a> -
           that reduces Type I error in complex pedigrees and population structures.
         </li>
         <li>
@@ -55,103 +166,103 @@
           which are commonly ignored by other software. This is crucial in species like maize
           where indels are a dominant form of polymorphism.
         </li>
+        <li>
+          <strong>Bit level encoding</strong> of nucleotides so <strong>genetic distance</strong>
+          and <strong>linkage disequilibrium</strong> estimates can be made very quickly
+          (20-50X speed increases).
+        </li>
+        <li>
+          Tools for extracting and calling <strong>SNPs</strong> from extensive
+          <strong>Genotyping-by-Sequencing</strong> data (tested for 60,000 samples by over
+          2.5 million SNPs and 96 million sequence alleles).
+        </li>
       </ol>
-
-
-      <h2>Citation</h2>
-      <p>
-        <strong>Bradbury PJ, Zhang Z, Kroon DE, Casstevens TM, Ramdoss Y, Buckler ES.</strong> (2007)
-        <em>TASSEL: Software for association mapping of complex traits in diverse samples.</em>
-        <a href="https://doi.org/10.1093/bioinformatics/btm308" target="_blank">Bioinformatics 23:2633–2635</a>.
-      </p>
     </div>
   </section>
 
+  <!-- ===================== GALLERY ===================== -->
   <section class="gallery-section">
     <div class="md-typeset">
       <h2>Gallery</h2>
-      <div class="image-gallery">
+      <div class="image-gallery" id="gallery">
 
-        <figure>
-          <a href="#lightbox-1">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Alignment Viewer">
             <img src="images/gui_screenshots/tassel_screen_shot1.jpg" alt="Screenshot 1" />
-          </a>
+          </button>
           <figcaption>Alignment Viewer</figcaption>
         </figure>
 
-        <div id="lightbox-1" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot1.jpg" alt="Screenshot 1" />
-          <p class="lightbox-caption">Alignment Viewer</p>
-        </div>
-
-        <figure>
-          <a href="#lightbox-2">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Linkage Disequilibrium">
             <img src="images/gui_screenshots/tassel_screen_shot2.jpg" alt="Screenshot 2" />
-          </a>
+          </button>
           <figcaption>Linkage Disequilibrium</figcaption>
         </figure>
 
-        <div id="lightbox-2" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot2.jpg" alt="Screenshot 2" />
-          <p class="lightbox-caption">Linkage Disequilibrium</p>
-        </div>
-
-        <figure>
-          <a href="#lightbox-3">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Manhattan Plot">
             <img src="images/gui_screenshots/tassel_screen_shot3.jpg" alt="Screenshot 3" />
-          </a>
+          </button>
           <figcaption>Manhattan Plot</figcaption>
         </figure>
 
-        <div id="lightbox-3" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot3.jpg" alt="Screenshot 3" />
-          <p class="lightbox-caption">Manhattan Plot</p>
-        </div>
-
-        <figure>
-          <a href="#lightbox-4">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Genetic Distance Heat Map">
             <img src="images/gui_screenshots/tassel_screen_shot4.jpg" alt="Screenshot 4" />
-          </a>
+          </button>
           <figcaption>Genetic Distance Heat Map</figcaption>
         </figure>
 
-        <div id="lightbox-4" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot4.jpg" alt="Screenshot 4" />
-          <p class="lightbox-caption">Genetic Distance Heat Map</p>
-        </div>
-
-        <figure>
-          <a href="#lightbox-5">
+        <figure class="gallery-item">
+          <button type="button" class="gallery-trigger" data-caption="Phylogenetic Tree using Archaeopteryx">
             <img src="images/gui_screenshots/tassel_screen_shot5.jpg" alt="Screenshot 5" />
-          </a>
+          </button>
           <figcaption>Phylogenetic Tree using Archaeopteryx</figcaption>
         </figure>
 
-        <div id="lightbox-5" class="lightbox-overlay">
-          <a href="#gallery" class="lightbox-close">&times;</a>
-          <img src="images/gui_screenshots/tassel_screen_shot5.jpg" alt="Screenshot 5" />
-          <p class="lightbox-caption">Phylogenetic Tree using Archaeopteryx</p>
-        </div>
+      </div>
 
+      <div class="lightbox-overlay" id="gallery-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image gallery viewer">
+        <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+        <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous image">&#10094;</button>
+        <figure class="lightbox-content">
+          <img class="lightbox-img" src="" alt="" />
+          <figcaption class="lightbox-caption"></figcaption>
+          <span class="lightbox-counter"></span>
+        </figure>
+        <button type="button" class="lightbox-nav lightbox-next" aria-label="Next image">&#10095;</button>
       </div>
     </div>
   </section>
 
-  <section class="features-section">
-    <div class="md-typeset">
-      {% include "partials/featured_downloads.html" %}
-      {% include "partials/featured_docs.html" %}
-    </div>
-  </section>
-
-  <section class="about-section">
+  <!-- ===================== CITATION & HELP ===================== -->
+  <section class="about-section about-section--alt">
     <div class="md-grid md-typeset">
+      <h2>Citation</h2>
+      <div class="admonition quote">
+        <p class="admonition-title">Overall Package</p>
+        <p>
+          Bradbury PJ, Zhang Z, Kroon DE, Casstevens TM, Ramdoss Y, Buckler ES. (2007)
+          <a href="https://doi.org/10.1093/bioinformatics/btm308">TASSEL: Software for association mapping of complex traits in diverse samples.</a>
+          Bioinformatics 23:2633–2635.
+        </p>
+        <p class="citation-bibtex-intro">For BibTeX users:</p>
+        <div class="language-bibtex highlight"><pre id="__code_citation"><nav class="md-code__nav"><button class="md-code__button" title="Copy to clipboard" data-clipboard-target="#__code_citation > code" data-md-type="copy"></button></nav><span></span><code class="language-bibtex"><span class="nc">@article</span><span class="p">{</span><span class="nl">Bradbury2007</span><span class="p">,</span>
+  <span class="na">author</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="s">{Bradbury, Peter J. and Zhang, Zhiwu and Kroon, Dallas E. and Casstevens, Terry M. and Ramdoss, Yogesh and Buckler, Edward S.}</span><span class="p">,</span>
+  <span class="na">title</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="s">&#123;&#123;TASSEL}: Software for association mapping of complex traits in diverse samples}</span><span class="p">,</span>
+  <span class="na">journal</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{Bioinformatics}</span><span class="p">,</span>
+  <span class="na">volume</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="s">{23}</span><span class="p">,</span>
+  <span class="na">number</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="s">{19}</span><span class="p">,</span>
+  <span class="na">pages</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="s">{2633--2635}</span><span class="p">,</span>
+  <span class="na">year</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="s">{2007}</span><span class="p">,</span>
+  <span class="na">doi</span><span class="w">     </span><span class="p">=</span><span class="w"> </span><span class="s">{10.1093/bioinformatics/btm308}</span><span class="p">,</span>
+  <span class="na">url</span><span class="w">     </span><span class="p">=</span><span class="w"> </span><span class="s">{https://doi.org/10.1093/bioinformatics/btm308}</span>
+<span class="p">}</span></code></pre></div>
+      </div>
+
       <h2>Looking for older versions of TASSEL?</h2>
-      <p>Archived versions of TASSEL (versions 3 and 4) can be found on our <a href="https://tassel.bitbucket.io/TasselArchived.html">older site</a>.</p>
+      <p>Archived versions of TASSEL (versions 3 and 4) can be found on our <a href="https://github.com/maize-genetics/tassel/releases">releases page</a>.</p>
 
       <h2>Looking for additional help?</h2>
       <p>We recommend first searching the archives and posting questions on the <a href="http://groups.google.com/group/tassel">Google Discussion Group</a>. If you are on <a href="https://www.github.com">GitHub</a>, we also have a <a href="https://github.com/maize-genetics/tassel/discussions">discussion forum</a> on the TASSEL code repository.</p>
@@ -161,4 +272,3 @@
     </div>
   </section>
 {% endblock %}
-

@@ -8,14 +8,14 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import java.net.URL;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -24,7 +24,6 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -38,9 +37,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.MouseInputListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+
+import com.formdev.flatlaf.FlatClientProperties;
 import javax.swing.plaf.basic.BasicTableUI;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -49,6 +51,7 @@ import net.maizegenetics.dna.snp.FilterGenotypeTable;
 
 import net.maizegenetics.gui.AlignmentTableCellRenderer;
 import net.maizegenetics.gui.AlignmentTableModel;
+import net.maizegenetics.gui.ArrowIcon;
 import net.maizegenetics.gui.RowHeaderRenderer;
 import net.maizegenetics.gui.TableRowHeaderListModel;
 import net.maizegenetics.gui.VerticalLabelUI;
@@ -73,6 +76,7 @@ public class SeqViewerPanel extends JPanel implements ComponentListener, TableMo
     private static final int ROW_HEADER_WIDTH = 150;
     private static final int SCROLL_BAR_WIDTH = 25;
     private static final int SLIDER_TEXT_WIDTH = 125;
+    private static final int ARROW_ICON_SIZE = 12;
     private JSlider mySlider;
     private JButton myLeftButton;
     private JButton myRightButton;
@@ -486,17 +490,57 @@ public class SeqViewerPanel extends JPanel implements ComponentListener, TableMo
         searchField.setText("(Enter site number)");
     }
 
+    /**
+     * Returns the button wrapped in a vertically centering panel.
+     *
+     * <p>These are icon-only buttons, so left to itself FlatLaf pads them out to its default button
+     * minimum width and BorderLayout then stretches them to the full height of the slider row,
+     * leaving the arrow adrift in a tall rectangle. The tightened margin plus
+     * {@code SQUARE_SIZE} makes the button square around the icon, and the wrapper keeps
+     * BorderLayout from stretching it again. The client property is inert under look-and-feels that
+     * do not recognize it, which matters because TASSELMainApp falls back to the platform default
+     * if FlatLaf cannot be installed.
+     */
+    private static JPanel wrapArrowButton(JButton button) {
+
+        button.setMargin(new Insets(4, 4, 4, 4));
+        button.putClientProperty(FlatClientProperties.SQUARE_SIZE, true);
+
+        // GridBagLayout with default constraints centers the button at its preferred size.
+        JPanel result = new JPanel(new GridBagLayout());
+        result.setOpaque(false);
+        result.add(button);
+        return result;
+
+    }
+
+    /**
+     * Greys out an arrow once the visible window is already flush against that end of the
+     * alignment, so the buttons also convey when there is nothing further to scroll to.
+     */
+    private void updateArrowButtons() {
+
+        if ((myLeftButton == null) || (myRightButton == null)) {
+            return;
+        }
+
+        int lastVisibleColumn = Math.max(0, myTableModel.getColumnCount() - 1);
+        int firstSite = myTableModel.getRealColumnIndex(0);
+        int lastSite = myTableModel.getRealColumnIndex(lastVisibleColumn);
+
+        myLeftButton.setEnabled(firstSite > 0);
+        myRightButton.setEnabled(lastSite < myTableModel.getRealColumnCount() - 1);
+
+    }
+
     private JPanel getSliderPane() {
 
         mySliderPane = new JPanel(new BorderLayout());
 
-        URL imageURL = SeqViewerPanel.class.getResource("left.gif");
-        ImageIcon imageIcon = null;
-        if (imageURL != null) {
-            imageIcon = new ImageIcon(imageURL);
-        }
-
-        myLeftButton = new JButton(imageIcon);
+        myLeftButton = new JButton(new ArrowIcon(SwingConstants.WEST, ARROW_ICON_SIZE));
+        myLeftButton.setToolTipText("Scroll left to previous sites");
+        myLeftButton.getAccessibleContext().setAccessibleName("Scroll left to previous sites");
+        JPanel leftButtonPane = wrapArrowButton(myLeftButton);
         myLeftButton.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 if (myTableModel.isPhysicalPosition()) {
@@ -510,17 +554,14 @@ public class SeqViewerPanel extends JPanel implements ComponentListener, TableMo
                 }
             }
         });
-        mySliderPane.add(myLeftButton, BorderLayout.WEST);
+        mySliderPane.add(leftButtonPane, BorderLayout.WEST);
 
         mySliderPane.add(mySlider, BorderLayout.CENTER);
 
-        imageURL = SeqViewerPanel.class.getResource("right.gif");
-        imageIcon = null;
-        if (imageURL != null) {
-            imageIcon = new ImageIcon(imageURL);
-        }
-
-        myRightButton = new JButton(imageIcon);
+        myRightButton = new JButton(new ArrowIcon(SwingConstants.EAST, ARROW_ICON_SIZE));
+        myRightButton.setToolTipText("Scroll right to next sites");
+        myRightButton.getAccessibleContext().setAccessibleName("Scroll right to next sites");
+        JPanel rightButtonPane = wrapArrowButton(myRightButton);
         myRightButton.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 if (myTableModel.isPhysicalPosition()) {
@@ -534,7 +575,9 @@ public class SeqViewerPanel extends JPanel implements ComponentListener, TableMo
                 }
             }
         });
-        mySliderPane.add(myRightButton, BorderLayout.EAST);
+        mySliderPane.add(rightButtonPane, BorderLayout.EAST);
+
+        updateArrowButtons();
 
         return mySliderPane;
 
@@ -576,6 +619,7 @@ public class SeqViewerPanel extends JPanel implements ComponentListener, TableMo
         mySlider.setLabelTable(mySlider.createStandardLabels(spacing));
         mySlider.setMajorTickSpacing(spacing);
         mySlider.setValue(myAlignment.chromosomalPosition(center));
+        updateArrowButtons();
         mySlider.validate();
         mySliderPane.validate();
         mySliderPane.repaint();
@@ -605,6 +649,7 @@ public class SeqViewerPanel extends JPanel implements ComponentListener, TableMo
         mySlider.setLabelTable(mySlider.createStandardLabels(spacing));
         mySlider.setMajorTickSpacing(spacing);
         mySlider.setValue(center);
+        updateArrowButtons();
         mySlider.validate();
         mySliderPane.validate();
         mySliderPane.repaint();

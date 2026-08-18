@@ -170,7 +170,7 @@ public class FilterTaxaBuilderPlugin extends AbstractPlugin {
 
     @Override
     public String pluginUserManualURL() {
-        return "https://bitbucket.org/tasseladmin/tassel-5-source/wiki/UserManual/FilterMenu/FilterTaxaBuilderPlugin";
+        return "https://maize-genetics.github.io/tassel/user_manual/filtermenu/filtertaxabuilderplugin/";
     }
 
     public FilterTaxa build() {

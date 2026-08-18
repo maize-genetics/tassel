@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -166,28 +167,14 @@ public final class Utils {
 
             if (path.trim().length() != 0) {
                 File file = new File(path);
-                if (file.isDirectory()) {
-                    // Classpath entry is a directory of resources (e.g. when running
-                    // from Gradle / an IDE). Walk the tree instead of treating it as a zip.
-                    addMatchingResourcesFromDirectory(file, file, filename, result);
-                } else if (file.isFile()) {
-
-                    try (ZipFile zFile = new ZipFile(file.getAbsolutePath());) {
-
-                        Enumeration<? extends ZipEntry> entries = zFile.entries();
-                        while (entries.hasMoreElements()) {
-                            ZipEntry entry = entries.nextElement();
-                            if (!entry.isDirectory()) {
-                                String name = entry.getName();
-                                if (name.endsWith(filename)) {
-                                    result.add("/" + name);
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        myLogger.debug(e.getMessage(), e);
+                if (file.exists()) {
+                    // Running from an IDE or Gradle puts exploded class and resource
+                    // directories on the classpath alongside the jars.
+                    if (file.isDirectory()) {
+                        addResourceNamesFromDirectory(file, filename, result);
+                    } else {
+                        addResourceNamesFromArchive(file, filename, result);
                     }
-
                 }
             }
         }
@@ -196,29 +183,38 @@ public final class Utils {
 
     }
 
-    /**
-     * Recursively searches a directory classpath entry for resources whose path ends
-     * with the given filename, adding matches as absolute resource names (relative to
-     * the classpath root) to the result set.
-     *
-     * @param root     the classpath root directory (used to compute resource names)
-     * @param current  the directory currently being searched
-     * @param filename filename to match
-     * @param result   set to collect matching resource names
-     */
-    private static void addMatchingResourcesFromDirectory(File root, File current, String filename, Set<String> result) {
-        File[] children = current.listFiles();
-        if (children == null) {
-            return;
+    private static void addResourceNamesFromDirectory(File directory, String filename, Set<String> result) {
+
+        Path root = directory.toPath();
+        try (Stream<Path> files = Files.walk(root)) {
+            files.filter(Files::isRegularFile)
+                    .map(current -> "/" + root.relativize(current).toString().replace(File.separatorChar, '/'))
+                    .filter(name -> name.endsWith(filename))
+                    .forEach(result::add);
+        } catch (Exception e) {
+            myLogger.debug(e.getMessage(), e);
         }
-        for (File child : children) {
-            if (child.isDirectory()) {
-                addMatchingResourcesFromDirectory(root, child, filename, result);
-            } else if (child.getName().endsWith(filename)) {
-                String name = root.toURI().relativize(child.toURI()).getPath();
-                result.add("/" + name);
+
+    }
+
+    private static void addResourceNamesFromArchive(File archive, String filename, Set<String> result) {
+
+        try (ZipFile zFile = new ZipFile(archive.getAbsolutePath());) {
+
+            Enumeration<? extends ZipEntry> entries = zFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                if (!entry.isDirectory()) {
+                    String name = entry.getName();
+                    if (name.endsWith(filename)) {
+                        result.add("/" + name);
+                    }
+                }
             }
+        } catch (Exception e) {
+            myLogger.debug(e.getMessage(), e);
         }
+
     }
 
     public static List<String> getFullyQualifiedClassNames(String simpleName) {

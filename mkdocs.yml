@@ -33,11 +33,11 @@ theme:
     - navigation.instant: false
   language: en
   font:
-    text: Roboto
-    code: Roboto Mono
+    text: Inter
+    code: IBM Plex Mono
 
 # Copyright
-copyright: Copyright &copy; 2001 - 2025  <a href="https://www.maizegenetics.net "><b>Buckler Lab</b></a>
+copyright: '© 2026 <a href="https://www.maizegenetics.net"><b>Lab for Plant Genomic Diversity &amp; Design</b></a>'
 
 extra:
   social:
@@ -45,6 +45,34 @@ extra:
       link: https://github.com/maize-genetics
     - icon: fontawesome/brands/youtube
       link: https://www.youtube.com/c/BucklerLab
+
+# Plugins
+# `search` has to be listed explicitly: naming any plugin replaces the default
+# plugin list, which would otherwise drop the search index.
+plugins:
+  - search
+  - macros:
+      module_name: docs/macros
+      # Opt-in rendering. Jinja2 would choke on the BibTeX blocks in the user
+      # manual and rTASSEL page, which contain `{{TASSEL}`, so only pages that
+      # declare `render_macros: true` in their front matter are processed.
+      render_by_default: false
+      # Surface a bad macro as a build failure instead of publishing the
+      # rendering error into the page.
+      on_error_fail: true
+
+# Build exclusions
+# docs/templates/ holds envsubst sources rendered by the release workflow, not
+# publishable pages; building them would publish raw ${VERSION} placeholders.
+# docs/llm_notes/ holds internal planning notes with links to repo paths outside
+# docs/; they are not part of the published site.
+# macros.py is the mkdocs-macros module, not site content; importing it leaves a
+# __pycache__/ alongside it, which would otherwise be published too.
+exclude_docs: |
+  templates/
+  llm_notes/
+  macros.py
+  __pycache__/
 
 # Markdown extensions
 markdown_extensions:
@@ -72,16 +100,126 @@ markdown_extensions:
 extra_javascript:
   - javascript/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+  - javascript/gallery.js
+  # releases.js must come before download.js and nightly.js: it defines the
+  # shared, cached GitHub Releases fetch both of them use.
+  - javascript/releases.js
+  - javascript/download.js
+  - javascript/nightly.js
+  - javascript/changelog.js
 
 extra_css:
   - assets/stylesheets/extra.css
+  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
+  - https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200
+  - https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap
 
 # Navigation
 nav:
   - Home:
       - index.md
+  - Download:
+      - download/index.md
+      - Nightly Builds: download/nightly.md
+  - Getting Started:
+      - getting_started/index.md
+      - Installation:
+          - Desktop Application: getting_started/install-gui.md
+          - Standalone: getting_started/install-standalone.md
+          - JVM Library: getting_started/install-maven.md
+          - R Package (rTASSEL): getting_started/install-rtassel.md
+      - User Manual:
+          - Overview: user_manual/index.md
+          - Introduction: user_manual/introduction/index.md
+          - File Menu:
+              - File Menu: user_manual/filemenu/index.md
+              - Open / Open As: user_manual/load/index.md
+              - Data FAQ: user_manual/load/datafaq.md
+              - Save As / Export: user_manual/export/index.md
+          - Data Menu:
+              - Sort Genotype File: user_manual/sortgenotypefile/index.md
+              - Synonymizer: user_manual/synonymizer/index.md
+              - Joins: user_manual/join/index.md
+              - Merge Genotype Tables: user_manual/mergegenotypetables/index.md
+              - Separate: user_manual/separate/index.md
+              - Homozygous Genotype: user_manual/homozygousgenotype/index.md
+              - Set Low Depth Genos To Missing: user_manual/setlowdepthgenostomissing/index.md
+              - Transform Phenotype: user_manual/transformphenotype/index.md
+              - Numerical Genotype: user_manual/numericalgenotype/index.md
+              - ABH Genotype: user_manual/genostoabh/genostoabhplugin.md
+              - Thin Sites By Position: user_manual/thinsitesbyposition/thinsitesbypositionplugin.md
+              - Create Hybrid Genotypes: user_manual/createhybridgenotypes/index.md
+              - Geno Summary: user_manual/genosummary/index.md
+          - Impute Menu:
+              - FILLIN: user_manual/fillin/index.md
+              - FSFHap Imputation: user_manual/fsfhapimputation/index.md
+              - Numerical Impute: user_manual/numericalimpute/index.md
+              - Missing Phenotype Imputation: user_manual/missingphenotypeimputation/index.md
+          - Filter Menu:
+              - Filter Menu: user_manual/filtermenu/index.md
+              - Filter Genotype Table Sites: user_manual/filtermenu/filtersitebuilderplugin.md
+              - Filter Genotype Table Taxa: user_manual/filtermenu/filtertaxabuilderplugin.md
+              - Filter Traits: user_manual/filtermenu/filtertraitsplugin.md
+          - Analysis Menu:
+              - Diversity: user_manual/diversity/index.md
+              - Linkage Disequilibrium: user_manual/linkagedisequilibrium/index.md
+              - Distance Matrix: user_manual/distancematrix/index.md
+              - Kinship: user_manual/kinship/index.md
+              - Cladogram: user_manual/cladogram/index.md
+              - Pedigree Relationship Matrix (A): user_manual/amatrix/index.md
+              - Combined A and G Matrix (H): user_manual/hmatrix/index.md
+              - MDS: user_manual/mds/index.md
+              - PCA: user_manual/pca/index.md
+              - Remove NaN from Distance Matrix: user_manual/removenan/index.md
+              - GLM: user_manual/glm/index.md
+              - MLM: user_manual/mlm/index.md
+              - Weighted MLM: user_manual/weightedmlm/index.md
+              - Genomic Selection: user_manual/genomicselection/index.md
+              - Stepwise: user_manual/stepwise/index.md
+              - Fast Association: user_manual/fastassociation/index.md
+              - VCAP Scan: user_manual/vcapscan/index.md
+              - Association Analysis using GLM: user_manual/associationanalysisusingglm/index.md
+              - Association Analysis using MLM: user_manual/associationanalysisusingmlm/index.md
+              - Estimation of Kinship using Genetic Markers: user_manual/estimationofkinshipusinggeneticmarkers/index.md
+              - Principal Component Analysis: user_manual/principalcomponentanalysis/index.md
+          - Results Menu:
+              - Table: user_manual/table/index.md
+              - Archaeopteryx Tree: user_manual/archaeopteryxtree/index.md
+              - LD Plot: user_manual/ldplot/index.md
+              - Chart: user_manual/chart/index.md
+              - QQ Plot: user_manual/qqplot/index.md
+              - Manhattan Plot: user_manual/manhattanplot/index.md
+          - GBS Menu: user_manual/gbsmenu/index.md
+          - Help Menu: user_manual/helpmenu/index.md
+          - Frequently Asked Questions: user_manual/frequentlyaskedquestions/index.md
+          - Executing TASSEL: user_manual/executing-tassel.md
+          - User Guide (PDF): user_manual/tassel5-user-guide.md
+          - Appendix:
+              - Nucleotide Codes: user_manual/appendix/nucleotidecodes.md
+              - Depth Encodings: user_manual/appendix/depthbytetoint.md
+              - Tutorial Datasets: user_manual/appendix/tasseltutorialdatasets.md
+              - References: user_manual/appendix/references.md
+      - Pipelines:
+          - Overview: pipelines/index.md
+          - Pipeline Tutorial: pipelines/pipeline-tutorial.md
+          - Pipeline Reference: pipelines/tassel5-pipeline-cli.md
+          - GBSv2 Pipeline: gbsv2_pipeline/index.md
+          - Archived:
+              - UNEAK Pipeline: pipelines/uneak-pipeline.md
+              - Pan-genome Atlas (PanA): pipelines/pangenome-atlas-pipeline.md
+              - Cassava Production Pipeline: pipelines/cassava-production-pipeline.md
+              - Pipeline CLI (v3 / v4): pipelines/tassel-pipeline-cli-v3-v4.md
   - Community:
-      - Contributing: CONTRIBUTING.md
-      - Code of Conduct: CODE_OF_CONDUCT.md
+      - community/index.md
+      - Get Involved:
+          - Contributing: CONTRIBUTING.md
+          - Code of Conduct: CODE_OF_CONDUCT.md
+      - Developer:
+          - Overview: developer/index.md
+          - Building from Source: developer/building-from-source.md
+          - Project Architecture: developer/architecture.md
+          - Developing Plugins: developer/plugin-development.md
+          - Testing: developer/testing.md
+          - Releasing: developer/releasing.md
   - Version History: changelog.md
 

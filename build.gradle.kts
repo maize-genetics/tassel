@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
@@ -13,6 +14,8 @@ plugins {
     id("org.jetbrains.dokka") version "2.0.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
     id("org.jreleaser") version "1.18.0"
+    // 8.3.x is the line that supports Gradle 8.x; Shadow 9.3+ requires Gradle 9.
+    id("com.gradleup.shadow") version "8.3.11"
 
     application
     `java-library`
@@ -31,23 +34,15 @@ kotlin {
     jvmToolchain(21)
 }
 
-sourceSets {
-    main {
-        // Many runtime resources (SQL schemas like dna/tag/TagSchema.sql, plus GUI icons,
-        // .xml/.html) live co-located with the sources under src/main/java rather than in
-        // src/main/resources. The default build only copies src/main/resources, so these
-        // were missing from the classpath at runtime (getResourceAsStream returned null,
-        // e.g. TagDataSQLite could not create its schema). Treat src/main/java as an
-        // additional resource root, excluding the actual source files.
-        resources {
-            srcDir("src/main/java")
-            exclude("**/*.java", "**/*.kt", "**/*.c", "**/*.h")
-        }
-    }
-}
-
 group = "net.maizegenetics"
-version = "5.2.96"
+version = "5.2.98"
+
+// Release date reported by the About box and pipeline banner. This file is the
+// single source of truth for both values: `generateVersionSources` compiles
+// them into TasselBuildInfo, and docs/macros.py feeds them to the MkDocs build.
+// Bump `version` and `versionDate` together and nothing else needs editing.
+val versionDate = "August 6, 2026"
+
 description = "TASSEL is a software package to evaluate traits associations, evolutionary patterns, and linkage disequilibrium."
 val kotlinVersion = "2.1.21"
 
@@ -55,6 +50,11 @@ repositories {
     mavenCentral()
     maven {
         url = uri("https://maven.scijava.org/content/repositories/public/") // needed for JHDF5
+    }
+    maven {
+        // Gradle ignores repositories declared in dependency POMs, so declare the JBoss
+        // repo here to resolve 'openchart', a transitive dependency of forester.
+        url = uri("https://repository.jboss.org/maven2/")
     }
 }
 
@@ -67,6 +67,7 @@ configurations.all {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("com.formdev:flatlaf:3.7.1") // modern flat Swing Look-and-Feel (light/dark, HiDPI, macOS)
     implementation("org.apache.logging.log4j:log4j-api:2.21.1")
     implementation("org.apache.logging.log4j:log4j-core:2.21.1")
     implementation("com.google.guava:guava:22.0")
@@ -114,10 +115,32 @@ tasks.named<CreateStartScripts>("startScripts") {
     dependsOn(tasks.named("jar"), tasks.named("sourcesJar"))
 }
 
+// src/main/java is registered as both a java root and a resource root (see the sourceSets
+// block below), so every icon, HTML page and XML file under it reaches `allSource` twice.
+// The sources jar packs `allSource` and refuses the second copy unless told what to do with
+// it. Both copies resolve to the same file on disk, so keeping the first loses nothing.
+tasks.named<Jar>("sourcesJar") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// A plain `java -cp` launch has no bundle for macOS to read branding from, so the Dock shows
+// the generic Java tile named "java". Only -Xdock: can override that; the
+// apple.awt.application.name property TASSELMainApp sets reaches the screen menu bar but not
+// the Dock. These stay scoped to `run` because the JVM rejects -Xdock: outright on other
+// platforms, which would break the start scripts shipped in distZip/distTar.
+tasks.named<JavaExec>("run") {
+    if ("mac" in System.getProperty("os.name").lowercase(Locale.ROOT)) {
+        jvmArgs("-Xdock:name=TASSEL", "-Xdock:icon=${file("icon.png").absolutePath}")
+    }
+}
+
 // General tasks
 tasks {
-    // Set JAR file name and add to manifest along with classes
-    withType<Jar> {
+    // Set JAR file name and add to manifest along with classes. This must stay
+    // scoped to the main `jar` task: applying it to every Jar task makes
+    // sourcesJar and dokkaJar write to the same file, which published three
+    // identical artifacts to Maven Central in 5.2.97.
+    jar {
         archiveFileName.set("sTASSEL.jar")
 
         manifest {
@@ -141,9 +164,9 @@ tasks {
     }
 
     // NOTE: the SQLite schema DDL (and other non-Java resources) under src/main/java are
-    // already placed on the runtime classpath by the main sourceSet resources config above
-    // (srcDir("src/main/java") excluding source files), so no extra processResources copy is
-    // needed here — adding one duplicates net/maizegenetics/dna/tag/*.sql at build time.
+    // already placed on the runtime classpath by the `sourceSets.main` resources config
+    // further down, so no extra processResources copy is needed here — adding one
+    // duplicates net/maizegenetics/dna/tag/*.sql at build time.
 
     // statisticsTest is the required CI gate; wire it into `check` so
     // `./gradlew check` enforces it without running the full non-blocking suite.
@@ -415,6 +438,102 @@ tasks {
     }
 }
 
+/**
+ * Compiles `version` and `versionDate` into a generated `TasselBuildInfo` class so the About box,
+ * pipeline banner, and log header report exactly what Gradle built. Before this, the same values
+ * were hand-copied into `TASSELMainFrame` and silently went stale whenever only Gradle was bumped.
+ */
+val generateVersionSources by tasks.registering {
+    group = "build"
+    description = "Generates TasselBuildInfo from the project version and versionDate."
+
+    val outputDir = layout.buildDirectory.dir("generated/sources/version/java/main")
+    val buildVersion = project.version.toString()
+
+    // Declaring these as inputs is what makes the task re-run on a version bump and stay
+    // up-to-date otherwise; the output directory alone carries no record of the values used.
+    inputs.property("version", buildVersion)
+    inputs.property("versionDate", versionDate)
+    outputs.dir(outputDir)
+
+    doLast {
+        val packageDir = outputDir.get().asFile.resolve("net/maizegenetics/tassel")
+        packageDir.mkdirs()
+        packageDir.resolve("TasselBuildInfo.java").writeText(
+            """
+            package net.maizegenetics.tassel;
+
+            /**
+             * Build metadata generated from `version` and `versionDate` in build.gradle.kts.
+             *
+             * <p>Generated by the Gradle `generateVersionSources` task. Do not edit: this file is
+             * rewritten on every build and is not checked into version control.
+             */
+            public final class TasselBuildInfo {
+
+                public static final String VERSION = "$buildVersion";
+                public static final String VERSION_DATE = "$versionDate";
+
+                private TasselBuildInfo() {
+                }
+            }
+
+            """.trimIndent()
+        )
+    }
+}
+
+// Passing the task provider (rather than the directory) is what carries the task dependency
+// across to compileJava and compileKotlin.
+sourceSets.main {
+    java.srcDir(generateVersionSources)
+
+    // Icons, Home.html, the workflow presets and the SQLite schemas live beside the classes
+    // that load them with getResource(). Maven packaged them through an explicit <resources>
+    // include; Gradle's java plugin only looks in src/main/resources, so without this every
+    // such lookup returns null at runtime. The include list keeps the JNI .c/.h files out.
+    resources {
+        srcDir("src/main/java")
+        include("**/*.gif", "**/*.GIF", "**/*.png", "**/*.html", "**/*.sql", "**/*.xml")
+    }
+}
+
+/**
+ * Fat ("uber") JAR published to Maven Central as `tassel-<version>-jar-with-dependencies.jar`.
+ * The classifier matches what maven-assembly-plugin produced through 5.2.96 so that existing
+ * consumers of that coordinate keep working.
+ */
+tasks.shadowJar {
+    archiveBaseName.set("tassel")
+    archiveClassifier.set("jar-with-dependencies")
+
+    manifest {
+        attributes(
+            "Main-Class" to application.mainClass.get(),
+            // Shadow inherits the `jar` manifest, whose Class-Path points at the
+            // external lib/ directory of the standalone distribution. Everything is
+            // already inside this archive.
+            "Class-Path" to "",
+            // FlatLaf and log4j2 contribute META-INF/versions/9 classes, which the JVM
+            // ignores unless the archive is flagged as multi-release.
+            "Multi-Release" to "true"
+        )
+    }
+
+    // Several dependencies (log4j2, biojava, avro) ship provider registrations that are
+    // silently lost when only the first copy of each file survives the merge.
+    mergeServiceFiles()
+    transform(Log4j2PluginsCacheFileTransformer())
+}
+
+// The fat JAR is a publishing artifact only. Shadow's `application` integration
+// registers a "shadow" distribution whose zip/tar land in the legacy `archives`
+// configuration that `assemble` builds, which would drag the 70+ MB JAR into every
+// `./gradlew build` in the jDeploy and nightly workflows. Removing those artifacts
+// detaches the whole shadow distribution, including `shadowJar` itself, from the
+// lifecycle; `shadowDistZip` and friends still work when invoked explicitly.
+configurations["archives"].artifacts.removeIf { it.name == "${project.name}-shadow" }
+
 // Kover (coverage) tasks
 //
 // Run coverage through the JaCoCo engine so that method-level boilerplate
@@ -470,20 +589,15 @@ kover {
  *
  * This was modified from the BioKotlin project.
  */
-// configure Dokka’s HTML output directory so dokkaJar can find it
-tasks.named<org.jetbrains.dokka.gradle.DokkaTask>("dokkaHtml") {
-    outputDirectory.set(layout.buildDirectory.dir("dokka").get().asFile)
-}
-
-val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
+// Under Dokka's V2 plugin mode the V1 `dokkaHtml` task is disabled, so the javadoc JAR
+// has to be packed from the V2 generator's output or it ships empty.
+val dokkaGeneratePublicationHtml = tasks.named("dokkaGeneratePublicationHtml")
 
 val dokkaJar by tasks.registering(Jar::class) {
-    dependsOn(dokkaHtml)
-    mustRunAfter(dokkaHtml)
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     description = "TASSEL: ${project.version}"
     archiveClassifier.set("javadoc")
-    from(dokkaHtml.outputDirectory)
+    from(dokkaGeneratePublicationHtml)
 }
 
 publishing {
@@ -546,17 +660,10 @@ publishing {
                 scm {
                     connection.set("scm:git:git://github.com/maize-genetics/tassel.git")
                     developerConnection.set("scm:git:ssh://github.com/maize-genetics/tassel.git")
-                    url.set("https://github.com/maize-genetis/tassel")
+                    url.set("https://github.com/maize-genetics/tassel")
                 }
             }
         }
-    }
-
-    signing {
-        val signingKey: String? = System.getenv("JRELEASER_GPG_SECRET_KEY")
-        val signingPass: String? = System.getenv("JRELEASER_GPG_PASSPHRASE")
-        useInMemoryPgpKeys(signingKey, signingPass)
-        sign(publishing.publications["maven"])
     }
 
     repositories {

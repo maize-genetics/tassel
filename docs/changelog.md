@@ -1,6 +1,27 @@
 ---
-title: "Tassel 5 Change History"
+title: "TASSEL 5 Change History"
+hide:
+  - navigation
 ---
+
+## (V5.2.97) July 19, 2026
+
+!!! warning "Defective Maven Central artifacts"
+    The 5.2.97 artifacts on Maven Central are broken: the
+    `jar-with-dependencies` (fat) JAR was never published, and the sources and
+    javadoc JARs are copies of the main JAR. Maven Central is immutable, so this
+    release cannot be repaired — use 5.2.98 or later. The standalone
+    distribution and installers for 5.2.97 are unaffected.
+
+- Migrated documentation into MkDocs with a new "Getting Started" hub linking to the User Manual, Pipelines, and GBSv2 Pipeline sections
+- Added and reorganized user manual, pipeline, developer, and GBSv2 documentation pages (including images, tutorials, and archived legacy pipeline docs)
+- Updated the home page with Get Started, Download, and GitHub buttons; added an image gallery script and styling improvements
+- Updated in-app and plugin Javadoc links from BitBucket to `https://maize-genetics.github.io/tassel/`
+- Modernized jDeploy CI: pinned `shannah/jdeploy` to a fixed commit SHA, set `jdeploy_version: '6.1.1'`, and simplified Gradle caching via `setup-java`
+- Removed legacy jDeploy npm bundle configuration from `package.json` (unused by v6 GitHub deploys)
+- Fixed changelog extraction in the release workflow when merged PRs lack `BEGIN/END CHANGELOG` tags
+- Fixed build resolution for the `openchart` transitive dependency by adding the JBoss Maven repository
+- Updated coverage workflow to run `koverVerify` and gated site deployment on successful upstream workflow runs
 
 ## (V5.2.96) March 31, 2025
 

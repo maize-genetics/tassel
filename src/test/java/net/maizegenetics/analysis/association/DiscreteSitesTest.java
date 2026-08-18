@@ -2,14 +2,12 @@ package net.maizegenetics.analysis.association;
 
 import static org.junit.Assert.*;
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
@@ -127,22 +125,13 @@ public class DiscreteSitesTest {
         TaxaList myTaxa = TaxaListBuilder.getInstance(ntaxa);
         
         //create genotypes with 10 SNPs and twenty taxa
-        //all sites must have all 3 genotype classes (2 homozygous, 1 heterozygous) so that
-        //the expected row count is deterministic; require all 4 byte genotypes (AA, AC, CA, CC),
-        //which also verifies that AC and CA collapse into a single heterozygous class
         int nsites = 10;
         Chromosome chr = Chromosome.instance(1);
         GenotypeTableBuilder gtBuilder = GenotypeTableBuilder.getSiteIncremental(myTaxa);
+        Random ran = new Random(MLMTest.HETEROZYGOTE_TEST_SEED);
         for (int i = 0; i < nsites; i++) {
-            int ngeno = 0;
-            byte[] geno = new byte[0];
-            while (ngeno != 4) {
-                geno = MLMTest.randomGenotypes(ntaxa, "A", "C");
-                Multiset<Integer> genoMultiset = HashMultiset.create();
-                for (byte genoValue : geno) genoMultiset.add(Byte.toUnsignedInt(genoValue));
-                ngeno = genoMultiset.elementSet().size();
-            }
-            gtBuilder.addSite(Position.builder(1, i).build(), geno);
+            gtBuilder.addSite(Position.builder(1, i).build(),
+                    MLMTest.randomGenotypesAllClasses(ntaxa, "A", "C", ran));
         }
         GenotypeTable gt = gtBuilder.build();
         

@@ -105,7 +105,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
     @Override
     public String pluginUserManualURL() {
         //TODO add in the documentation link once it is written up
-        return "https://bitbucket.org/tasseladmin/tassel­5­source/wiki/UserManual/Kinship/Kinship"; 
+        return "https://maize-genetics.github.io/tassel/user_manual/transformphenotype/"; 
     } 
     
     // The following getters and setters were auto-generated.

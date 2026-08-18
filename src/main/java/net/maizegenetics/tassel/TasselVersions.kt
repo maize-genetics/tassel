@@ -42,9 +42,9 @@ object TasselVersions {
 
     fun tasselName() = ""
 
-    fun tasselVersion() = TASSELMainFrame.version
+    fun tasselVersion() = TasselBuildInfo.VERSION
 
-    fun tasselVersionDate() = TASSELMainFrame.versionDate
+    fun tasselVersionDate() = TasselBuildInfo.VERSION_DATE
 
     fun tasselCitation() = AbstractPlugin.DEFAULT_CITATION
 

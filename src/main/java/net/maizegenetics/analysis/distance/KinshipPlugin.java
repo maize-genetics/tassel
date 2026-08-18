@@ -153,7 +153,7 @@ public class KinshipPlugin extends AbstractPlugin {
 
     @Override
     public String pluginUserManualURL() {
-        return "https://bitbucket.org/tasseladmin/tassel-5-source/wiki/UserManual/Kinship/Kinship";
+        return "https://maize-genetics.github.io/tassel/user_manual/kinship/";
     }
 
     @Override
