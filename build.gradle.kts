@@ -274,7 +274,8 @@ tasks {
         println(jvmArgs)
     }
 
-    // Runs the GBSv2 test suite against real Chr9 datasets in dataFiles/ (see notes/gbs-tests/).
+    // Runs the GBSv2 test suite against real Chr9 datasets in dataFiles/
+    // (see docs/llm_notes/gbs-tests/).
     // The rehabilitated GBSv2 tests self-generate their data via GBSSimData and also run in the
     // main `test` suite; these tasks additionally exercise them against the downloaded datasets.
     //
@@ -567,8 +568,10 @@ kover {
 
         // Measure BRANCH coverage (decision paths exercised) instead of raw line
         // counting -- a far more meaningful signal for TASSEL's numeric and
-        // pipeline logic. Non-blocking: koverVerify is not wired into `check` or
-        // CI (CI runs koverXmlReport only), so this rule is informational.
+        // pipeline logic. Not wired into `check`, but CI does run koverVerify,
+        // and because the broad `test` task ignores failures this bound is what
+        // the coverage job actually gates on. Branch coverage sits around 24%,
+        // so raise the bound as that improves rather than leaving slack here.
         verify {
             rule {
                 bound {

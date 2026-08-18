@@ -1,11 +1,48 @@
 # TASSEL Test Suite — Issues & Remediation Plan
 
 **Audience:** developers joining to fix the test suite.
-**Status:** the build passes green, but that green is not trustworthy. This document
-explains why, inventories the problems, and lays out a phased plan to restore
-enforceable test coverage — with special attention to the **statistical-correctness
-tests**, which are the highest priority to protect (TASSEL is the analysis core for
-`rTASSEL` and is used to teach GWAS to ~25,000 students/year).
+**Status:** phases 0–3 are largely delivered; see "Where this stands" below. The
+diagnosis in the rest of this document describes the state *before* that work and
+is kept as the rationale for it, so read it as history rather than as the current
+situation.
+
+## Where this stands
+
+Delivered:
+
+- `./gradlew fetchTestData` downloads the `tassel_test_data` archive into
+  `dataFiles/`, so a clean checkout can run the data-dependent tests.
+- `./gradlew statisticsTest` runs the statistical-correctness classes with
+  `ignoreFailures = false`, is wired into `check`, and is a separate required job
+  in `.github/workflows/coverage.yml`. It is green because those tests pass.
+- CI provisions OpenBLAS, and `cisd:jhdf5` supplies the HDF5 native library, which
+  released the HDF5-dependent exclusions.
+- The GBSv2 block named in phase 4 has been worked through: those tests now
+  self-generate deterministic inputs instead of depending on golden fixtures, and
+  the legacy GBS v1 and PanA pipelines were removed outright.
+- Every remaining exclusion in `build.gradle.kts` carries a reason.
+
+Still open:
+
+- The broad `test` task remains `ignoreFailures = true`.
+- The GOBII and MonetDB tests are still excluded; they need live Postgres/MonetDB
+  instances, and no decision has been recorded on containerising them versus
+  formally marking them integration-only.
+- Coverage is still near the floor. The bound is now 18% *branch* coverage under
+  the JaCoCo engine, which is not comparable to the 15% *line* figure quoted below.
+- Release and nightly packaging still skip the gate (`-x statisticsTest`), which
+  contradicts the "distribution builds run the gate" item in the definition of
+  done. The gate instead runs on the pull request and on pushes to `develop`, so
+  nothing reaches `main` unverified, but the packaging jobs themselves do not
+  re-run it.
+
+---
+
+This document explains why the suite could not be trusted, inventories the
+problems, and lays out the phased plan that produced the state above — with
+special attention to the **statistical-correctness tests**, which are the highest
+priority to protect (TASSEL is the analysis core for `rTASSEL` and is used to
+teach GWAS to ~25,000 students/year).
 
 ---
 
