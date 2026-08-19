@@ -35,13 +35,13 @@ kotlin {
 }
 
 group = "net.maizegenetics"
-version = "5.2.98"
+version = "5.3.0"
 
 // Release date reported by the About box and pipeline banner. This file is the
 // single source of truth for both values: `generateVersionSources` compiles
 // them into TasselBuildInfo, and docs/macros.py feeds them to the MkDocs build.
 // Bump `version` and `versionDate` together and nothing else needs editing.
-val versionDate = "August 6, 2026"
+val versionDate = "August 19, 2026"
 
 description = "TASSEL is a software package to evaluate traits associations, evolutionary patterns, and linkage disequilibrium."
 val kotlinVersion = "2.1.21"
