@@ -11,6 +11,7 @@ import net.maizegenetics.dna.snp.io.LineIndexBuilder;
 import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.PluginParameter;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -44,6 +45,7 @@ public class LIXPlugin extends AbstractPlugin {
      *
      * @return Create Index
      */
+    @GeneratedGuiBoilerplate
     public String createIndex() {
         return myCreateIndex.value();
     }
@@ -55,22 +57,26 @@ public class LIXPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public LIXPlugin createIndex(String value) {
         myCreateIndex = new PluginParameter<>(myCreateIndex, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "LIX";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Line Index Plugin";
     }

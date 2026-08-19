@@ -29,6 +29,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Reads SAM file formats to determine the potential positions of Tags against the reference genome.
@@ -521,6 +522,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SAMToGBSdbPlugin mappingApproach(String value) {
         mappingApproach = new PluginParameter<>(mappingApproach, value);
         return this;
@@ -533,6 +535,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return String for mapper type
      */
+    @GeneratedGuiBoilerplate
     public String mappingApproach() {
         return mappingApproach.value();
     }
@@ -548,6 +551,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public TagData runPlugin(DataSet input) {
         return (TagData) performFunction(input).getData(0).getData();
     }
@@ -557,6 +561,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return SAM Input File
      */
+    @GeneratedGuiBoilerplate
     public String sAMInputFile() {
         return myInputFile.value();
     }
@@ -569,6 +574,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SAMToGBSdbPlugin sAMInputFile(String value) {
         myInputFile = new PluginParameter<>(myInputFile, value);
         return this;
@@ -579,6 +585,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return GBS DB File
      */
+    @GeneratedGuiBoilerplate
     public String gBSDBFile() {
         return myOutputFile.value();
     }
@@ -590,6 +597,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SAMToGBSdbPlugin gBSDBFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
@@ -601,6 +609,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return SAM Min Align Proportion
      */
+    @GeneratedGuiBoilerplate
     public Double minAlignProportion() {
         return alignProportion.value();
     }
@@ -613,6 +622,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SAMToGBSdbPlugin minAlignProportion(Double value) {
         alignProportion = new PluginParameter<>(alignProportion, value);
         return this;
@@ -623,6 +633,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return SAM Min Align Length
      */
+    @GeneratedGuiBoilerplate
     public Integer minAlignLength() {
         return minAlignLength.value();
     }
@@ -635,6 +646,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SAMToGBSdbPlugin minAlignLength(Integer value) {
         minAlignLength = new PluginParameter<>(minAlignLength, value);
         return this;
@@ -644,6 +656,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return SAM minimum MAPQ value
      */
+    @GeneratedGuiBoilerplate
     public Integer minMAPQ() {
         return minMAPQ.value();
     }
@@ -656,6 +669,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SAMToGBSdbPlugin minMAPQ(Integer value) {
         minMAPQ = new PluginParameter<>(minMAPQ, value);
         return this;
@@ -666,6 +680,7 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return deleteOldData
      */
+    @GeneratedGuiBoilerplate
     public Boolean deleteOldData() {
         return myDeleteOldData.value();
     }
@@ -678,21 +693,25 @@ public final class SAMToGBSdbPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SAMToGBSdbPlugin deleteOldData(Boolean value) {
         myDeleteOldData = new PluginParameter<>(myDeleteOldData, value);
         return this;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "SAM to TOPM Converter";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "SAM to TOPM Converter";
     }

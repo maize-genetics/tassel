@@ -23,6 +23,7 @@ import net.maizegenetics.util.SimpleTableReport;
 import net.maizegenetics.util.TableReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -444,6 +445,7 @@ public class GenotypeSummaryPlugin extends AbstractPlugin {
      *
      * @return Overview
      */
+    @GeneratedGuiBoilerplate
     public Boolean overview() {
         return myOverview.value();
     }
@@ -455,6 +457,7 @@ public class GenotypeSummaryPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenotypeSummaryPlugin overview(Boolean value) {
         myOverview = new PluginParameter<>(myOverview, value);
         return this;
@@ -465,6 +468,7 @@ public class GenotypeSummaryPlugin extends AbstractPlugin {
      *
      * @return Site Summary
      */
+    @GeneratedGuiBoilerplate
     public Boolean siteSummary() {
         return mySiteSummary.value();
     }
@@ -476,6 +480,7 @@ public class GenotypeSummaryPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenotypeSummaryPlugin siteSummary(Boolean value) {
         mySiteSummary = new PluginParameter<>(mySiteSummary, value);
         return this;
@@ -486,6 +491,7 @@ public class GenotypeSummaryPlugin extends AbstractPlugin {
      *
      * @return Taxa Summary
      */
+    @GeneratedGuiBoilerplate
     public Boolean taxaSummary() {
         return myTaxaSummary.value();
     }
@@ -497,12 +503,14 @@ public class GenotypeSummaryPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenotypeSummaryPlugin taxaSummary(Boolean value) {
         myTaxaSummary = new PluginParameter<>(myTaxaSummary, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = GenotypeSummaryPlugin.class.getResource("/net/maizegenetics/analysis/images/summary.gif");
         if (imageURL == null) {
@@ -513,11 +521,13 @@ public class GenotypeSummaryPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Geno Summary";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Genotype Summary";
     }

@@ -20,6 +20,7 @@ import net.maizegenetics.dna.snp.FilterGenotypeTable;
 import net.maizegenetics.dna.snp.GenotypeTable;
 import net.maizegenetics.dna.snp.ImportUtils;
 import net.maizegenetics.plugindef.PluginParameter;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -139,6 +140,7 @@ public class SplitHDF5ByChromosomePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
 //        URL imageURL = SeparatePlugin.class.getResource("/net/maizegenetics/analysis/images/Merge.gif");
 //        if (imageURL == null) {
@@ -149,11 +151,13 @@ public class SplitHDF5ByChromosomePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Split chromosomes from HDF5 genotype file";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Split chromosomes from HDF5 genotype file";
     }
@@ -172,6 +176,7 @@ public class SplitHDF5ByChromosomePlugin extends AbstractPlugin {
      *
      * @return Input HDF5 Genotype File
      */
+    @GeneratedGuiBoilerplate
     public String inputHDF5GenotypeFile() {
         return myInputGenotypes.value();
     }
@@ -185,6 +190,7 @@ public class SplitHDF5ByChromosomePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SplitHDF5ByChromosomePlugin inputHDF5GenotypeFile(String value) {
         myInputGenotypes = new PluginParameter<>(myInputGenotypes, value);
         return this;
@@ -197,6 +203,7 @@ public class SplitHDF5ByChromosomePlugin extends AbstractPlugin {
      *
      * @return Ignore Depth
      */
+    @GeneratedGuiBoilerplate
     public Boolean ignoreDepth() {
         return myIgnoreDepth.value();
     }
@@ -211,6 +218,7 @@ public class SplitHDF5ByChromosomePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SplitHDF5ByChromosomePlugin ignoreDepth(Boolean value) {
         myIgnoreDepth = new PluginParameter<>(myIgnoreDepth, value);
         return this;

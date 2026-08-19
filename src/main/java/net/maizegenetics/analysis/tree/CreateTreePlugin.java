@@ -24,6 +24,7 @@ import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Ed Buckler
@@ -124,6 +125,7 @@ public class CreateTreePlugin extends AbstractPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = CreateTreePlugin.class.getResource("/net/maizegenetics/analysis/images/Tree.gif");
         if (imageURL == null) {
@@ -139,6 +141,7 @@ public class CreateTreePlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Create Tree";
     }
@@ -149,6 +152,7 @@ public class CreateTreePlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Create a tree";
     }
@@ -156,6 +160,7 @@ public class CreateTreePlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public Tree runPlugin(DataSet input) {
         return (Tree) performFunction(input).getData(0).getData();
     }
@@ -165,6 +170,7 @@ public class CreateTreePlugin extends AbstractPlugin {
      *
      * @return Clustering Method
      */
+    @GeneratedGuiBoilerplate
     public CLUSTERING_METHOD clusteringMethod() {
         return myClusteringMethod.value();
     }
@@ -176,6 +182,7 @@ public class CreateTreePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public CreateTreePlugin clusteringMethod(CLUSTERING_METHOD value) {
         myClusteringMethod = new PluginParameter<>(myClusteringMethod, value);
         return this;
@@ -186,6 +193,7 @@ public class CreateTreePlugin extends AbstractPlugin {
      *
      * @return Save Distance Matrix
      */
+    @GeneratedGuiBoilerplate
     public Boolean saveDistanceMatrix() {
         return mySaveDistanceMatrix.value();
     }
@@ -197,6 +205,7 @@ public class CreateTreePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public CreateTreePlugin saveDistanceMatrix(Boolean value) {
         mySaveDistanceMatrix = new PluginParameter<>(mySaveDistanceMatrix, value);
         return this;

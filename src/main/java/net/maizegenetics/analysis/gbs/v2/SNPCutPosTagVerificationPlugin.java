@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Multimap;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This class allows a user to specify a Cut or SNP position for which they
@@ -254,16 +255,19 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
 
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Debug tool: Verify which Tags in which taxon map to the specified cut position.  Verify which tags have a SNP at the specified position.";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "SNP/Cut Position Verification";
     }
@@ -272,6 +276,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public String runPlugin(DataSet input) {
         return (String) performFunction(input).getData(0).getData();
     }
@@ -281,6 +286,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return Input DB
      */
+    @GeneratedGuiBoilerplate
     public String inputDB() {
         return myDBFile.value();
     }
@@ -293,6 +299,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPCutPosTagVerificationPlugin inputDB(String value) {
         myDBFile = new PluginParameter<>(myDBFile, value);
         return this;
@@ -303,6 +310,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return Chromosome name
      */
+    @GeneratedGuiBoilerplate
     public String chrom() {
         return myChrom.value();
     }
@@ -315,6 +323,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPCutPosTagVerificationPlugin chrom(String value) {
         myChrom = new PluginParameter<>(myChrom, value);
         return this;
@@ -325,6 +334,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return Cut position
      */
+    @GeneratedGuiBoilerplate
     public Integer cutOrSnpPosition() {
         return myPosition.value();
     }
@@ -336,6 +346,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPCutPosTagVerificationPlugin cutOrSnpPosition(Integer value) {
         myPosition = new PluginParameter<>(myPosition, value);
         return this;
@@ -346,6 +357,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return Strand direction
      */
+    @GeneratedGuiBoilerplate
     public Byte strand() {
         return myStrand.value();
     }
@@ -357,6 +369,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPCutPosTagVerificationPlugin strand(Byte value) {
         myStrand = new PluginParameter<>(myStrand, value);
         return this;
@@ -366,6 +379,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return SNP position
      */
+    @GeneratedGuiBoilerplate
     public String positionType() {
         return myPositionType.value();
     }
@@ -377,6 +391,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPCutPosTagVerificationPlugin positionType(String value) {
         myPositionType = new PluginParameter<>(myPositionType, value);
         return this;
@@ -386,6 +401,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return outPutDir directory string
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
@@ -398,6 +414,7 @@ public class SNPCutPosTagVerificationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SNPCutPosTagVerificationPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;

@@ -11,6 +11,7 @@ import net.maizegenetics.util.Utils
 import org.apache.logging.log4j.LogManager
 import java.awt.Frame
 import javax.swing.ImageIcon
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 class MeanR2FromLDPlugin(parentFrame: Frame? = null, isInteractive: Boolean = false) : AbstractPlugin(parentFrame, isInteractive) {
 
@@ -83,14 +84,17 @@ class MeanR2FromLDPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fa
         return intervalMapBuilder.build()
     }
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         return null
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return "Mean R2 From LD"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return "Mean R2 From LD"
     }
@@ -100,6 +104,7 @@ class MeanR2FromLDPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fa
      *
      * @return Intervals
      */
+    @GeneratedGuiBoilerplate
     fun intervalFile(): String {
         return intervalFile.value()
     }
@@ -111,6 +116,7 @@ class MeanR2FromLDPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fa
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun intervalFile(value: String): MeanR2FromLDPlugin {
         intervalFile = PluginParameter(intervalFile, value)
         return this
@@ -121,6 +127,7 @@ class MeanR2FromLDPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fa
      *
      * @return Ld Result File
      */
+    @GeneratedGuiBoilerplate
     fun ldResultFile(): String {
         return ldResultFile.value()
     }
@@ -132,6 +139,7 @@ class MeanR2FromLDPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fa
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun ldResultFile(value: String): MeanR2FromLDPlugin {
         ldResultFile = PluginParameter(ldResultFile, value)
         return this
@@ -142,6 +150,7 @@ class MeanR2FromLDPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fa
      *
      * @return Output
      */
+    @GeneratedGuiBoilerplate
     fun output(): String {
         return output.value()
     }
@@ -153,6 +162,7 @@ class MeanR2FromLDPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fa
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun output(value: String): MeanR2FromLDPlugin {
         output = PluginParameter(output, value)
         return this

@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -289,6 +290,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = FilterSiteBuilderPlugin.class.getResource("/net/maizegenetics/analysis/images/FilterNew.gif");
         if (imageURL == null) {
@@ -299,11 +301,13 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Filter Genotype Table Sites";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Filter Genotype Table Sites";
     }
@@ -328,10 +332,12 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public FilterSite runPlugin() {
         return (FilterSite) performFunction(null).getData(0).getData();
     }
 
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(DataSet input) {
         return (GenotypeTable) performFunction(input).getDataOfType(GenotypeTable.class).get(0).getData();
     }
@@ -350,6 +356,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Filter Name
      */
+    @GeneratedGuiBoilerplate
     public String filterName() {
         return myFilterName.value();
     }
@@ -361,6 +368,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin filterName(String value) {
         myFilterName = new PluginParameter<>(myFilterName, value);
         return this;
@@ -371,6 +379,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Site Min Count
      */
+    @GeneratedGuiBoilerplate
     public Integer siteMinCount() {
         return mySiteMinCount.value();
     }
@@ -382,6 +391,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin siteMinCount(Integer value) {
         mySiteMinCount = new PluginParameter<>(mySiteMinCount, value);
         return this;
@@ -392,6 +402,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Site Min Allele Freq
      */
+    @GeneratedGuiBoilerplate
     public Double siteMinAlleleFreq() {
         return mySiteMinAlleleFreq.value();
     }
@@ -403,6 +414,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin siteMinAlleleFreq(Double value) {
         mySiteMinAlleleFreq = new PluginParameter<>(mySiteMinAlleleFreq, value);
         return this;
@@ -413,6 +425,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Site Max Allele Freq
      */
+    @GeneratedGuiBoilerplate
     public Double siteMaxAlleleFreq() {
         return mySiteMaxAlleleFreq.value();
     }
@@ -424,6 +437,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin siteMaxAlleleFreq(Double value) {
         mySiteMaxAlleleFreq = new PluginParameter<>(mySiteMaxAlleleFreq, value);
         return this;
@@ -434,6 +448,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Min Heterozygous Proportion
      */
+    @GeneratedGuiBoilerplate
     public Double minHeterozygous() {
         return myMinHeterozygous.value();
     }
@@ -445,6 +460,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin minHeterozygous(Double value) {
         myMinHeterozygous = new PluginParameter<>(myMinHeterozygous, value);
         return this;
@@ -455,6 +471,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Max Heterozygous Proportion
      */
+    @GeneratedGuiBoilerplate
     public Double maxHeterozygous() {
         return myMaxHeterozygous.value();
     }
@@ -466,6 +483,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin maxHeterozygous(Double value) {
         myMaxHeterozygous = new PluginParameter<>(myMaxHeterozygous, value);
         return this;
@@ -476,6 +494,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Remove Minor SNP States
      */
+    @GeneratedGuiBoilerplate
     public Boolean removeMinorSNPStates() {
         return myRemoveMinorSNPStates.value();
     }
@@ -487,6 +506,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin removeMinorSNPStates(Boolean value) {
         myRemoveMinorSNPStates = new PluginParameter<>(myRemoveMinorSNPStates, value);
         return this;
@@ -497,6 +517,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Remove Sites With Indels
      */
+    @GeneratedGuiBoilerplate
     public Boolean removeSitesWithIndels() {
         return myRemoveSitesWithIndels.value();
     }
@@ -509,6 +530,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin removeSitesWithIndels(Boolean value) {
         myRemoveSitesWithIndels = new PluginParameter<>(myRemoveSitesWithIndels, value);
         return this;
@@ -520,6 +542,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Site Filter
      */
+    @GeneratedGuiBoilerplate
     public SITE_RANGE_FILTER_TYPES siteFilter() {
         return mySiteFilter.value();
     }
@@ -532,6 +555,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin siteFilter(SITE_RANGE_FILTER_TYPES value) {
         mySiteFilter = new PluginParameter<>(mySiteFilter, value);
         return this;
@@ -542,6 +566,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Start Site
      */
+    @GeneratedGuiBoilerplate
     public Integer startSite() {
         return myStartSite.value();
     }
@@ -553,6 +578,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin startSite(Integer value) {
         myStartSite = new PluginParameter<>(myStartSite, value);
         return this;
@@ -563,6 +589,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return End Site
      */
+    @GeneratedGuiBoilerplate
     public Integer endSite() {
         return myEndSite.value();
     }
@@ -574,6 +601,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin endSite(Integer value) {
         myEndSite = new PluginParameter<>(myEndSite, value);
         return this;
@@ -584,6 +612,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Start Chr
      */
+    @GeneratedGuiBoilerplate
     public Chromosome startChr() {
         return myStartChr.value();
     }
@@ -595,6 +624,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin startChr(Chromosome value) {
         myStartChr = new PluginParameter<>(myStartChr, value);
         return this;
@@ -605,6 +635,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Start Pos
      */
+    @GeneratedGuiBoilerplate
     public Integer startPos() {
         return myStartPos.value();
     }
@@ -616,6 +647,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin startPos(Integer value) {
         myStartPos = new PluginParameter<>(myStartPos, value);
         return this;
@@ -626,6 +658,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return End Chr
      */
+    @GeneratedGuiBoilerplate
     public Chromosome endChr() {
         return myEndChr.value();
     }
@@ -637,6 +670,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin endChr(Chromosome value) {
         myEndChr = new PluginParameter<>(myEndChr, value);
         return this;
@@ -647,6 +681,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return End Pos
      */
+    @GeneratedGuiBoilerplate
     public Integer endPos() {
         return myEndPos.value();
     }
@@ -658,6 +693,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin endPos(Integer value) {
         myEndPos = new PluginParameter<>(myEndPos, value);
         return this;
@@ -668,6 +704,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Include Sites
      */
+    @GeneratedGuiBoilerplate
     public Boolean includeSites() {
         return myIncludeSites.value();
     }
@@ -679,6 +716,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin includeSites(Boolean value) {
         myIncludeSites = new PluginParameter<>(myIncludeSites, value);
         return this;
@@ -689,6 +727,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Position List
      */
+    @GeneratedGuiBoilerplate
     public PositionList positionList() {
         return myPositionList.value();
     }
@@ -700,6 +739,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin positionList(PositionList value) {
         myPositionList = new PluginParameter<>(myPositionList, value);
         return this;
@@ -710,6 +750,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Site Names List
      */
+    @GeneratedGuiBoilerplate
     public List<String> siteNamesList() {
         return mySiteNamesList.value();
     }
@@ -721,6 +762,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin siteNamesList(List<String> value) {
         mySiteNamesList = new PluginParameter<>(mySiteNamesList, value);
         return this;
@@ -731,6 +773,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Bed File
      */
+    @GeneratedGuiBoilerplate
     public String bedFile() {
         return myBedFile.value();
     }
@@ -742,6 +785,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin bedFile(String value) {
         myBedFile = new PluginParameter<>(myBedFile, value);
         return this;
@@ -752,6 +796,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return Chr Pos File
      */
+    @GeneratedGuiBoilerplate
     public String chrPosFile() {
         return myChrPosFile.value();
     }
@@ -763,6 +808,7 @@ public class FilterSiteBuilderPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FilterSiteBuilderPlugin chrPosFile(String value) {
         myChrPosFile = new PluginParameter<>(myChrPosFile, value);
         return this;

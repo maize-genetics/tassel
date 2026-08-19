@@ -13,7 +13,13 @@ public class GBSConstants {
     public static final String GBS_DATA_DIR = "dataFiles/GBS/";
     public static final String RAW_SEQ_CHR_9_10_200000 = "Chr9_10-200000/";
     public static final String RAW_SEQ_CHR_9_10_20000000 = "Chr9_10-20000000/";
-    public static final String RAW_SEQ_CURRENT_TEST = RAW_SEQ_CHR_9_10_20000000;
+    // Which raw-sequence dataset the GBS tests run against. Defaults to the full 20 MB
+    // dataset to preserve historical behavior, but the Gradle gbsTestSmall/gbsTestLarge
+    // tasks (or any runner) can override it with -Dgbs.test.dataset=Chr9_10-200000/ etc.
+    // Must be set before this class loads (i.e. as a JVM -D arg), since everything below
+    // is derived from it at class-initialization time.
+    public static final String RAW_SEQ_CURRENT_TEST =
+            System.getProperty("gbs.test.dataset", RAW_SEQ_CHR_9_10_20000000);
     public static final String GBS_INPUT_DIR = GBS_DATA_DIR + RAW_SEQ_CURRENT_TEST;
     public static final String GBS_INPUT_FASTQ_FILE = GBS_INPUT_DIR + "C05F2ACXX_5_fastq.gz";
     public static final String GBS_REFERENCE_GENOME = GBS_DATA_DIR + "ZmB73_RefGen_v2_chr9_10_1st20MB.fasta";

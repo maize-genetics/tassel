@@ -45,7 +45,6 @@ public class GenotypeTableBuilderTest {
         System.out.println("Testing GenotypeTableBuilder.getHomozygousInstance()...");
 
         GenotypeTable inputAlign = ImportUtils.readFromHapmap(TutorialConstants.HAPMAP_FILENAME, null);
-        //GenotypeTable inputAlign = ImportUtils.readFromHapmap("/Users/terry/data/B73RefGenV2_1/maizeHapMapV2_B73RefGenV2_201203028_chr10.hmp.txt.gz", null);
         System.out.println("   Input Alignment: Taxa Count: " + inputAlign.numberOfTaxa() + "  Site Count: " + inputAlign.numberOfSites());
 
         long previous = System.nanoTime();

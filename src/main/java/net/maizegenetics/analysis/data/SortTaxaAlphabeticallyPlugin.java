@@ -15,6 +15,7 @@ import net.maizegenetics.gui.DialogUtils;
 import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -48,6 +49,7 @@ public class SortTaxaAlphabeticallyPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = SortTaxaAlphabeticallyPlugin.class.getResource("/net/maizegenetics/analysis/images/sort.gif");
         if (imageURL == null) {
@@ -58,11 +60,13 @@ public class SortTaxaAlphabeticallyPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Sort Taxa Alphabetically";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Sort Taxa Alphabetically";
     }

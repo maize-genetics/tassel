@@ -19,6 +19,7 @@ import net.maizegenetics.util.Tuple;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -87,16 +88,19 @@ public class IdentityRecognitionPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Taxa Identity Recognition";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Taxa Identity Recognition";
     }

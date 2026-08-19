@@ -29,6 +29,7 @@ import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.taxa.TaxaListBuilder;
 import net.maizegenetics.taxa.Taxon;
 import net.maizegenetics.util.GeneralAnnotation;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.AbstractPlugin {
     
@@ -362,6 +363,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = MergeGenotypeTablesPlugin.class.getResource("/net/maizegenetics/analysis/images/Merge.gif");
         if (imageURL == null) {
@@ -371,10 +373,12 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
         }
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Merge GenotypeTable V2"; 
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Merges Genotype Tables";
     }
@@ -396,6 +400,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
      */
     // TODO: Replace <Type> with specific type.
     /*
+    @GeneratedGuiBoilerplate
     public <Type> runPlugin(DataSet input) {
         return (<Type>) performFunction(input).getData(0).getData();
     }
@@ -406,6 +411,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
      *
      * @return Taxa Merge Rule
      */
+    @GeneratedGuiBoilerplate
     public MERGE_TYPES taxaMergeSelection() {
         return taxaMergeSelection.value();
     }
@@ -417,6 +423,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeGenotypeTablesPluginV2 taxaMergeSelection(MERGE_TYPES value) {
         taxaMergeSelection = new PluginParameter<>(taxaMergeSelection, value);
         return this;
@@ -427,6 +434,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
      *
      * @return Position Merge Rule
      */
+    @GeneratedGuiBoilerplate
     public MERGE_TYPES positionMergeSelection() {
         return positionMergeSelection.value();
     }
@@ -439,6 +447,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeGenotypeTablesPluginV2 positionMergeSelection(MERGE_TYPES value) {
         positionMergeSelection = new PluginParameter<>(positionMergeSelection, value);
         return this;
@@ -449,6 +458,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
      *
      * @return Call Merge Rule
      */
+    @GeneratedGuiBoilerplate
     public CALL_MERGE callMergeSelection() {
         return callMergeSelection.value();
     }
@@ -460,6 +470,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeGenotypeTablesPluginV2 callMergeSelection(CALL_MERGE value) {
         callMergeSelection = new PluginParameter<>(callMergeSelection, value);
         return this;
@@ -470,6 +481,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
      *
      * @return Depth Merge Rule
      */
+    @GeneratedGuiBoilerplate
     public DEPTH_MERGE depthMergeSelection() {
         return depthMergeSelection.value();
     }
@@ -481,6 +493,7 @@ public class MergeGenotypeTablesPluginV2 extends net.maizegenetics.plugindef.Abs
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeGenotypeTablesPluginV2 depthMergeSelection(DEPTH_MERGE value) {
         depthMergeSelection = new PluginParameter<>(depthMergeSelection, value);
         return this;

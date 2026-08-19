@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Josh Lamos-Sweeney
@@ -80,6 +81,7 @@ public class HMatrixPlugin extends AbstractPlugin {
      *
      * @return Pedigree Matrix
      */
+    @GeneratedGuiBoilerplate
     public DistanceMatrix aMatrix() {
         return myAMatrix.value();
     }
@@ -91,6 +93,7 @@ public class HMatrixPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public HMatrixPlugin aMatrix(DistanceMatrix value) {
         myAMatrix = new PluginParameter<>(myAMatrix, value);
         return this;
@@ -101,6 +104,7 @@ public class HMatrixPlugin extends AbstractPlugin {
      *
      * @return Kinship Matrix
      */
+    @GeneratedGuiBoilerplate
     public DistanceMatrix gMatrix() {
         return myGMatrix.value();
     }
@@ -112,6 +116,7 @@ public class HMatrixPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public HMatrixPlugin gMatrix(DistanceMatrix value) {
         myGMatrix = new PluginParameter<>(myGMatrix, value);
         return this;
@@ -122,6 +127,7 @@ public class HMatrixPlugin extends AbstractPlugin {
      *
      * @return Weight
      */
+    @GeneratedGuiBoilerplate
     public Double weight() {
         return myWeight.value();
     }
@@ -133,6 +139,7 @@ public class HMatrixPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public HMatrixPlugin weight(Double value) {
         myWeight = new PluginParameter<>(myWeight, value);
         return this;
@@ -261,6 +268,7 @@ public class HMatrixPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = HMatrixPlugin.class.getResource("/net/maizegenetics/analysis/images/hmatrix.png");
         if (imageURL == null) {
@@ -271,11 +279,13 @@ public class HMatrixPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Combined A and G Relationship Matrix";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Create Combined A and G Relationship Matrix (H Matrix)";
     }

@@ -24,6 +24,7 @@ import net.maizegenetics.util.Utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Plugin to convert genotypes to parental comparisons and store them in an
@@ -312,11 +313,13 @@ public class GenosToABHPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Convert Genotypes to A/B/H";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = GenosToABHPlugin.class.getResource("/net/maizegenetics/analysis/images/homozygous.gif");
         if (imageURL == null) {
@@ -327,6 +330,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "ABH Genotype";
     }
@@ -343,6 +347,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(DataSet input) {
         return (GenotypeTable) performFunction(input).getData(0).getData();
     }
@@ -352,6 +357,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
      *
      * @return Output file
      */
+    @GeneratedGuiBoilerplate
     public String outfile() {
         return outfile.value();
     }
@@ -363,6 +369,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenosToABHPlugin outfile(String value) {
         outfile = new PluginParameter<>(outfile, value);
         return this;
@@ -373,6 +380,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
      *
      * @return Parent A
      */
+    @GeneratedGuiBoilerplate
     public String parentA() {
         return parentA.value();
     }
@@ -384,6 +392,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenosToABHPlugin parentA(String value) {
         parentA = new PluginParameter<>(parentA, value);
         return this;
@@ -394,6 +403,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
      *
      * @return Parent B
      */
+    @GeneratedGuiBoilerplate
     public String parentB() {
         return parentB.value();
     }
@@ -405,6 +415,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenosToABHPlugin parentB(String value) {
         parentB = new PluginParameter<>(parentB, value);
         return this;
@@ -415,6 +426,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
      *
      * @return Output Format
      */
+    @GeneratedGuiBoilerplate
     public OUTPUT_CHECK outputFormat() {
         return outputFormat.value();
     }
@@ -426,6 +438,7 @@ public class GenosToABHPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenosToABHPlugin outputFormat(OUTPUT_CHECK value) {
         outputFormat = new PluginParameter<>(outputFormat, value);
         return this;

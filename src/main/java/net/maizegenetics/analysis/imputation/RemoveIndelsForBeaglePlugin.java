@@ -22,6 +22,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.PluginParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -85,16 +86,19 @@ public class RemoveIndelsForBeaglePlugin extends net.maizegenetics.plugindef.Abs
     }
     
      @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Remove indels for input to Beagle v.4";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Removes sites with an indel as major and minor and changes indels in the third allele state to missing";
     }

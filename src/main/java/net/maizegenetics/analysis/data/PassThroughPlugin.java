@@ -13,6 +13,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.PluginEvent;
 
 import javax.swing.*;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -34,14 +35,17 @@ public class PassThroughPlugin extends AbstractPlugin{
         return result;
     }
     
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "";
     }
     
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
     
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "";
     }

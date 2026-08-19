@@ -122,8 +122,11 @@ jobs:
           echo "TAG=$TAG" >> "$GITHUB_ENV"
           echo "DATE=${TAG#dev-}" >> "$GITHUB_ENV"
 
+      # `statisticsTest` is wired into `check`, which `build` runs. The health
+      # check above already exercised the suite, so skip the gate here rather
+      # than running those classes a second time.
       - name: Build with Gradle
-        run: ./gradlew build -x test -x koverVerify
+        run: ./gradlew build -x test -x statisticsTest -x koverVerify
 
       # The script sanity-checks the jar before archiving it, so a jar that cannot
       # launch fails the nightly here rather than being published.

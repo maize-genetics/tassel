@@ -18,6 +18,7 @@ import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This class has methods to create GOBII intermediary files to be used when 
@@ -78,18 +79,21 @@ public class MonetDB_IFLFilePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -198,6 +202,7 @@ public class MonetDB_IFLFilePlugin extends AbstractPlugin {
      *
      * @return dbConfigFile
      */
+    @GeneratedGuiBoilerplate
     public String dbConfigFile() {
         return dbConfigFile.value();
     }
@@ -209,6 +214,7 @@ public class MonetDB_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MonetDB_IFLFilePlugin dbConfigFile(String value) {
         dbConfigFile = new PluginParameter<>(dbConfigFile, value);
         return this;
@@ -220,6 +226,7 @@ public class MonetDB_IFLFilePlugin extends AbstractPlugin {
      *
      * @return dataset name
      */
+    @GeneratedGuiBoilerplate
     public String datasetName() {
         return datasetName.value();
     }
@@ -232,6 +239,7 @@ public class MonetDB_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MonetDB_IFLFilePlugin datasetName(String value) {
         datasetName = new PluginParameter<>(datasetName, value);
         return this;
@@ -243,6 +251,7 @@ public class MonetDB_IFLFilePlugin extends AbstractPlugin {
      *
      * @return Path of output directory
      */
+    @GeneratedGuiBoilerplate
     public String outputDir() {
         return outputDir.value();
     }
@@ -255,6 +264,7 @@ public class MonetDB_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MonetDB_IFLFilePlugin outputDir(String value) {
         outputDir = new PluginParameter<>(outputDir, value);
         return this;

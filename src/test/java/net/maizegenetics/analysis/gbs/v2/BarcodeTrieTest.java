@@ -3,7 +3,6 @@ package net.maizegenetics.analysis.gbs.v2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import junit.framework.Assert;
-import net.maizegenetics.analysis.gbs.Barcode;
 import org.junit.Test;
 
 import java.util.ArrayList;

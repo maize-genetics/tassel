@@ -22,6 +22,7 @@ import java.awt.Frame;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -54,6 +55,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(DataSet input) {
         return (GenotypeTable) performFunction(input).getData(0).getData();
     }
@@ -63,6 +65,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
      *
      * @return Ped File
      */
+    @GeneratedGuiBoilerplate
     public String pedFile() {
         return myPedFile.value();
     }
@@ -74,6 +77,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PlinkLoadPlugin pedFile(String value) {
         myPedFile = new PluginParameter<>(myPedFile, value);
         return this;
@@ -84,6 +88,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
      *
      * @return Map File
      */
+    @GeneratedGuiBoilerplate
     public String mapFile() {
         return myMapFile.value();
     }
@@ -95,6 +100,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PlinkLoadPlugin mapFile(String value) {
         myMapFile = new PluginParameter<>(myMapFile, value);
         return this;
@@ -105,6 +111,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
      *
      * @return Sort Positions
      */
+    @GeneratedGuiBoilerplate
     public Boolean sortPositions() {
         return mySortPositions.value();
     }
@@ -116,6 +123,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PlinkLoadPlugin sortPositions(Boolean value) {
         mySortPositions = new PluginParameter<>(mySortPositions, value);
         return this;
@@ -126,6 +134,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
@@ -135,6 +144,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Load Plink";
     }
@@ -144,6 +154,7 @@ public class PlinkLoadPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Load Plink Files";
     }

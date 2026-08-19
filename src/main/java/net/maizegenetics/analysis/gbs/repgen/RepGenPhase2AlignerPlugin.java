@@ -55,6 +55,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.OpenBitSet;
 import net.maizegenetics.util.Tuple;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin takes an existing repGen db, grabs the tags
@@ -973,18 +974,21 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -1002,6 +1006,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return Input DB
      */
+    @GeneratedGuiBoilerplate
     public String inputDB() {
         return myDBFile.value();
     }
@@ -1014,6 +1019,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin inputDB(String value) {
         myDBFile = new PluginParameter<>(myDBFile, value);
         return this;
@@ -1024,6 +1030,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String refGenome() {
         return refGenome.value();
     }
@@ -1036,6 +1043,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin refGenome(String value) {
         refGenome = new PluginParameter<>(refGenome, value);
         return this;
@@ -1046,6 +1054,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return Min Count
      */
+    @GeneratedGuiBoilerplate
     public Integer minTagCount() {
         return minTagCount.value();
     }
@@ -1058,6 +1067,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin minTagCount(Integer value) {
         minTagCount = new PluginParameter<>(minTagCount, value);
         return this;
@@ -1068,6 +1078,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return seed len
      */
+    @GeneratedGuiBoilerplate
     public Integer seedLen() {
         return seedLen.value();
     }
@@ -1080,6 +1091,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin seedLen(Integer value) {
         seedLen = new PluginParameter<>(seedLen, value);
         return this;
@@ -1091,6 +1103,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return seed window
      */
+    @GeneratedGuiBoilerplate
     public Integer seedWindow() {
         return seedWindow.value();
     }
@@ -1103,6 +1116,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin seedWindow(Integer value) {
         seedWindow = new PluginParameter<>(seedWindow, value);
         return this;
@@ -1112,6 +1126,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return kmerLen
      */
+    @GeneratedGuiBoilerplate
     public Integer kmerLen() {
         return kmerLen.value();
     }
@@ -1124,6 +1139,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin kmerLen(Integer value) {
         kmerLen = new PluginParameter<>(kmerLen, value);
         return this;
@@ -1133,6 +1149,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return kmerLen
      */
+    @GeneratedGuiBoilerplate
     public Integer refKmerLen() {
         return refKmerLen.value();
     }
@@ -1145,6 +1162,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin refKmerLen(Integer value) {
         refKmerLen = new PluginParameter<>(refKmerLen, value);
         return this;
@@ -1156,6 +1174,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return Match Reward Amount
      */
+    @GeneratedGuiBoilerplate
     public Integer match_reward() {
         return match_reward.value();
     }
@@ -1169,6 +1188,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin match_reward(Integer value) {
         match_reward = new PluginParameter<>(match_reward, value);
         return this;
@@ -1180,6 +1200,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return Mismatch Penalty Amount
      */
+    @GeneratedGuiBoilerplate
     public Integer mismatch_penalty() {
         return mismatch_penalty.value();
     }
@@ -1193,6 +1214,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin mismatch_penalty(Integer value) {
         mismatch_penalty = new PluginParameter<>(mismatch_penalty, value);
         return this;
@@ -1204,6 +1226,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return Gap Penalty Amount
      */
+    @GeneratedGuiBoilerplate
     public Integer gap_penalty() {
         return gap_penalty.value();
     }
@@ -1217,6 +1240,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin gap_penalty(Integer value) {
         gap_penalty = new PluginParameter<>(gap_penalty, value);
         return this;
@@ -1231,6 +1255,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return Primers
      */
+    @GeneratedGuiBoilerplate
     public String primers() {
         return primers.value();
     }
@@ -1246,6 +1271,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenPhase2AlignerPlugin primers(String value) {
         primers = new PluginParameter<>(primers, value);
         return this;

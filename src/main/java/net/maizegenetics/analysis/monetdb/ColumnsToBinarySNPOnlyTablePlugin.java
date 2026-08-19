@@ -28,6 +28,7 @@ import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.DirectoryCrawler;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin is copied from Kelly's ColumnsToBinaryPlugin (which was re-worked
@@ -838,18 +839,21 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
         }
     }
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -876,6 +880,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Input File 
       */
+     @GeneratedGuiBoilerplate
      public String inputFile() {
          return inputFile.value();
      }
@@ -889,6 +894,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin inputFile(String value) {
          inputFile = new PluginParameter<>(inputFile, value);
          return this;
@@ -900,6 +906,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return refDir
       */
+     @GeneratedGuiBoilerplate
      public String refDir() {
          return refDir.value();
      }
@@ -912,6 +919,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin refDir(String value) {
          refDir = new PluginParameter<>(refDir, value);
          return this;
@@ -923,6 +931,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return outBase
       */
+     @GeneratedGuiBoilerplate
      public String outBase() {
          return outBase.value();
      }
@@ -935,6 +944,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin outBase(String value) {
          outBase = new PluginParameter<>(outBase, value);
          return this;
@@ -946,6 +956,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Columns keep as Real (Float)
       */
+     @GeneratedGuiBoilerplate
      public String colsFloat() {
          return colsFloat.value();
      }
@@ -958,6 +969,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin colsFloat(String value) {
          colsFloat = new PluginParameter<>(colsFloat, value);
          return this;
@@ -969,6 +981,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Columns keep as Int
       */
+     @GeneratedGuiBoilerplate
      public String colsInt() {
          return colsInt.value();
      }
@@ -981,6 +994,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin colsInt(String value) {
          colsInt = new PluginParameter<>(colsInt, value);
          return this;
@@ -992,6 +1006,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Columns keep as Short
       */
+     @GeneratedGuiBoilerplate
      public String colsShort() {
          return colsShort.value();
      }
@@ -1004,6 +1019,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin colsShort(String value) {
          colsShort = new PluginParameter<>(colsShort, value);
          return this;
@@ -1015,6 +1031,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Columns keep as Long
       */
+     @GeneratedGuiBoilerplate
      public String colsLong() {
          return colsLong.value();
      }
@@ -1027,6 +1044,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin colsLong(String value) {
          colsLong = new PluginParameter<>(colsLong, value);
          return this;
@@ -1038,6 +1056,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Columns keep as Byte
       */
+     @GeneratedGuiBoilerplate
      public String colsByte() {
          return colsByte.value();
      }
@@ -1050,6 +1069,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin colsByte(String value) {
          colsByte = new PluginParameter<>(colsByte, value);
          return this;
@@ -1061,6 +1081,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Columns keep as Byte
       */
+     @GeneratedGuiBoilerplate
      public String colsAllele() {
          return colsAllele.value();
      }
@@ -1074,6 +1095,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin colsAllele(String value) {
          colsAllele = new PluginParameter<>(colsAllele, value);
          return this;
@@ -1084,6 +1106,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Columns keep as Char
       */
+     @GeneratedGuiBoilerplate
      public String colsChar() {
          return colsChar.value();
      }
@@ -1096,6 +1119,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin colsChar(String value) {
          colsChar = new PluginParameter<>(colsChar, value);
          return this;
@@ -1107,6 +1131,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Columns to Keep and transform -log10
       */
+     @GeneratedGuiBoilerplate
      public String colsLog10() {
          return colsLog10.value();
      }
@@ -1120,6 +1145,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin colsLog10(String value) {
          colsLog10 = new PluginParameter<>(colsLog10, value);
          return this;
@@ -1132,6 +1158,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Range information?
       */
+     @GeneratedGuiBoilerplate
      public Boolean range() {
          return range.value();
      }
@@ -1146,6 +1173,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin range(Boolean value) {
          range = new PluginParameter<>(range, value);
          return this;
@@ -1157,6 +1185,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Negative floats to zero?
       */
+     @GeneratedGuiBoilerplate
      public Boolean negToZero() {
          return negToZero.value();
      }
@@ -1170,6 +1199,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin negToZero(Boolean value) {
          negToZero = new PluginParameter<>(negToZero, value);
          return this;
@@ -1181,6 +1211,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return Missing float values to zero?
       */
+     @GeneratedGuiBoilerplate
      public Boolean missToZero() {
          return missToZero.value();
      }
@@ -1194,6 +1225,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin missToZero(Boolean value) {
          missToZero = new PluginParameter<>(missToZero, value);
          return this;
@@ -1204,6 +1236,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       * 
       * @return positions are 1-based?
       */
+     @GeneratedGuiBoilerplate
      public Boolean oneBased() {
          return oneBased.value();
      }
@@ -1216,6 +1249,7 @@ public class ColumnsToBinarySNPOnlyTablePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public ColumnsToBinarySNPOnlyTablePlugin oneBased(Boolean value) {
          oneBased = new PluginParameter<>(oneBased, value);
          return this;

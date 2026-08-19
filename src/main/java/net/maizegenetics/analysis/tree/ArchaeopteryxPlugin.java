@@ -19,6 +19,7 @@ import net.maizegenetics.taxa.tree.Tree;
 import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class ArchaeopteryxPlugin extends AbstractPlugin {
 
@@ -52,6 +53,7 @@ public class ArchaeopteryxPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = ArchaeopteryxPlugin.class.getResource("/net/maizegenetics/analysis/images/Tree.gif");
         if (imageURL == null) {
@@ -62,11 +64,13 @@ public class ArchaeopteryxPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Archaeopteryx Tree";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Archaeopteryx Tree Viewer";
     }

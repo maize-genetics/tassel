@@ -24,6 +24,7 @@ import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * The purpose of this class is to mask (make UNKNOWN) a portion of the
@@ -205,6 +206,7 @@ public class MaskGenotypePlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(DataSet input) {
         return (GenotypeTable) performFunction(input).getData(0).getData();
     }
@@ -214,6 +216,7 @@ public class MaskGenotypePlugin extends AbstractPlugin {
      *
      * @return Percentage Masked
      */
+    @GeneratedGuiBoilerplate
     public Double percentageMasked() {
         return myPercentageMasked.value();
     }
@@ -225,6 +228,7 @@ public class MaskGenotypePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MaskGenotypePlugin percentageMasked(Double value) {
         myPercentageMasked = new PluginParameter<>(myPercentageMasked, value);
         return this;
@@ -235,6 +239,7 @@ public class MaskGenotypePlugin extends AbstractPlugin {
      *
      * @return Min Depth
      */
+    @GeneratedGuiBoilerplate
     public Integer minDepth() {
         return myMinDepth.value();
     }
@@ -246,17 +251,20 @@ public class MaskGenotypePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MaskGenotypePlugin minDepth(Integer value) {
         myMinDepth = new PluginParameter<>(myMinDepth, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Mask Genotype";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = MaskGenotypePlugin.class.getResource("/net/maizegenetics/analysis/images/mask.gif");
         if (imageURL == null) {
@@ -267,6 +275,7 @@ public class MaskGenotypePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Mask Genotype";
     }

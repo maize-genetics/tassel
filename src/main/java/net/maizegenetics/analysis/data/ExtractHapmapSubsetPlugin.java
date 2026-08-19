@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 
 public class ExtractHapmapSubsetPlugin extends AbstractPlugin {
@@ -77,16 +78,19 @@ public class ExtractHapmapSubsetPlugin extends AbstractPlugin {
 	}
 	
 	@Override
+	@GeneratedGuiBoilerplate
 	public ImageIcon getIcon() {
 		return null;
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getButtonName() {
 		return null;
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getToolTipText() {
 		return null;
 	}

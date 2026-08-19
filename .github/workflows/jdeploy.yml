@@ -51,8 +51,11 @@ jobs:
           VERSION=$(echo "$RAW" | tail -n1)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
+      # `statisticsTest` is wired into `check`, which `build` runs. The gate is
+      # enforced on the PR into develop; this job only packages, and the runner
+      # has neither OpenBLAS nor the test-data archive the gate needs.
       - name: Build with Gradle
-        run: ./gradlew clean build -x test -x koverVerify
+        run: ./gradlew clean build -x test -x statisticsTest -x koverVerify
 
       # The script sanity-checks the jar before archiving it, so a jar that cannot
       # launch fails the build here rather than being published. That jar is also

@@ -59,6 +59,29 @@ The broad `test` task runs everything but is currently **non-blocking**
 it excludes a set of environment-sensitive tests (certain GBS, HDF5, and
 hard-coded-path tests). Failures here are informative but do not block CI.
 
+## The GBSv2 suite
+
+The GBSv2 tests self-generate deterministic inputs through `GBSSimData`, so they
+run as part of the broad `test` task without any extra setup. Two additional
+tasks exercise the same classes against the real Chr9 datasets in `dataFiles/`:
+
+```bash
+./gradlew gbsTestSmall   # Chr9_10-200000, ~200 KB — fast, use while iterating
+./gradlew gbsTestLarge   # Chr9_10-20000000, ~20 MB — slow, full validation
+```
+
+`gbsTest` is a back-compat alias for `gbsTestLarge`. The dataset reaches the
+test JVM as `-Dgbs.test.dataset` and is read by
+`GBSConstants.RAW_SEQ_CURRENT_TEST`, which must be set before that class loads.
+A handful of tests need inputs that only ship with the 20 MB dataset and
+self-skip on the small one through JUnit `Assume` guards.
+
+Both tasks run with `ignoreFailures = true`, so check the reports under
+`build/reports/tests/` rather than relying on the build's exit status.
+
+Background on how these tests were rehabilitated is in
+`docs/llm_notes/gbs-tests/` (internal notes, excluded from the docs site).
+
 ## Coverage
 
 Coverage is measured with [Kover](https://github.com/Kotlin/kotlinx-kover) using
@@ -83,14 +106,28 @@ The HTML report is written under `build/reports/kover/`.
 
 ## What CI runs
 
-The GitHub Actions workflow (`.github/workflows/coverage.yml`) runs on pull
-requests that touch `src/**`, on Ubuntu with JDK 21 and OpenBLAS installed. It
-has two jobs:
+The GitHub Actions workflow (`.github/workflows/coverage.yml`) runs on Ubuntu
+with JDK 21 and OpenBLAS installed. It has three jobs:
 
-1. **Statistics gate (required)** — installs OpenBLAS, downloads the test data,
+1. **Detect source changes** — classifies the pull request with
+   `dorny/paths-filter`. The two heavy jobs below `needs:` this one and skip
+   when nothing under `src/**` changed. They are skipped via `if:` rather than a
+   workflow-level `paths:` filter, because a job skipped through `if:` reports
+   success to branch protection while a workflow skipped by `paths:` stays
+   pending forever and would block docs-only pull requests.
+2. **Statistics gate (required)** — installs OpenBLAS, downloads the test data,
    and runs `./gradlew statisticsTest`. Must be green to merge.
-2. **Full suite & coverage (non-blocking)** — runs
-   `./gradlew test koverXmlReport` and uploads coverage to Codecov.
+3. **TASSEL 5 CI** — runs
+   `./gradlew clean test koverXmlReport koverVerify --continue` and uploads
+   coverage to Codecov. The suite itself is non-blocking
+   (`ignoreFailures = true`), so this job gates on `koverVerify`.
+
+!!! note "Release builds skip the gate"
+    `statisticsTest` is wired into `check`, and `build` depends on `check`, so
+    the packaging steps in `jdeploy.yml` and `nightly.yml` pass
+    `-x statisticsTest` alongside the `-x test` and `-x koverVerify` they
+    already used. Those jobs only package; the gate is enforced on the pull
+    request and on pushes to `develop`, before anything is promoted to `main`.
 
 ## Writing tests
 

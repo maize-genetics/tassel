@@ -23,6 +23,7 @@ import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.taxa.TaxaListBuilder;
 import net.maizegenetics.taxa.Taxon;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class SubtractGenotypesPlugin extends AbstractPlugin {
 	private static final Logger myLogger = LogManager.getLogger(SubtractGenotypesPlugin.class);
@@ -93,6 +94,7 @@ public class SubtractGenotypesPlugin extends AbstractPlugin {
     /**
      * @return
      */
+    @GeneratedGuiBoilerplate
     public String hybridFile() {
         return myHybridFile.value();
     }
@@ -108,6 +110,7 @@ public class SubtractGenotypesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = SubtractGenotypesPlugin.class.getResource("/net/maizegenetics/analysis/images/hybrid.gif");
         if (imageURL == null) {
@@ -118,11 +121,13 @@ public class SubtractGenotypesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Subtract Genotypes";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Subtract Parent from Hybrid";
     }

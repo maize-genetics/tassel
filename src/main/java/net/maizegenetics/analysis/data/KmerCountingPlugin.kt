@@ -9,6 +9,7 @@ import java.awt.Frame
 import java.io.File
 import javax.swing.ImageIcon
 import kotlin.math.ceil
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 /**
  * @author Terry Casstevens
@@ -96,32 +97,39 @@ class KmerCountingPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fa
 
     }
 
+    @GeneratedGuiBoilerplate
     fun fastqFile(): String {
         return fastqFile.value()
     }
 
+    @GeneratedGuiBoilerplate
     fun fastqFile(value: String): KmerCountingPlugin {
         fastqFile = PluginParameter(fastqFile, value)
         return this
     }
 
+    @GeneratedGuiBoilerplate
     fun kmerLength(): Int {
         return kmerLength.value()
     }
 
+    @GeneratedGuiBoilerplate
     fun knerLength(value: Int): KmerCountingPlugin {
         kmerLength = PluginParameter(kmerLength, value)
         return this
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return "Kmer Counting"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         return null
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return "Kmer Counting"
     }

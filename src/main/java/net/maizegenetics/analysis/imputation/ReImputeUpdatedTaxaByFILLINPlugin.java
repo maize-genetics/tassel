@@ -30,6 +30,7 @@ import net.maizegenetics.util.HDF5Utils;
 import net.maizegenetics.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Compares an unfinished HDF5 file containing raw genotypes to a corresponding 
@@ -281,16 +282,19 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Update imputed genotypes";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Update imputed genotypes file based on modified/new taxa in raw genotypes file";
     }
@@ -312,6 +316,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public DataSet runPlugin(DataSet input) {
         return (DataSet) performFunction(input).getData(0).getData();
     }
@@ -322,6 +327,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return Raw HDF5 Genotype File
      */
+    @GeneratedGuiBoilerplate
     public String rawHDF5GenotypeFile() {
         return rawHDF5GenotypeFile.value();
     }
@@ -334,6 +340,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ReImputeUpdatedTaxaByFILLINPlugin rawHDF5GenotypeFile(String value) {
         rawHDF5GenotypeFile = new PluginParameter<>(rawHDF5GenotypeFile, value);
         return this;
@@ -345,6 +352,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return Imputed HDF5 Genotype File
      */
+    @GeneratedGuiBoilerplate
     public String imputedHDF5GenotypeFile() {
         return imputedHDF5GenotypeFile.value();
     }
@@ -358,6 +366,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ReImputeUpdatedTaxaByFILLINPlugin imputedHDF5GenotypeFile(String value) {
         imputedHDF5GenotypeFile = new PluginParameter<>(imputedHDF5GenotypeFile, value);
         return this;
@@ -371,6 +380,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return Donor Dir
      */
+    @GeneratedGuiBoilerplate
     public String donorDir() {
         return donorDir.value();
     }
@@ -385,6 +395,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ReImputeUpdatedTaxaByFILLINPlugin donorDir(String value) {
         donorDir = new PluginParameter<>(donorDir, value);
         return this;
@@ -396,6 +407,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return Position Source HDF5 Geno File
      */
+    @GeneratedGuiBoilerplate
     public String positionSourceHDF5GenoFile() {
         return positionSourceHDF5GenoFile.value();
     }
@@ -409,6 +421,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ReImputeUpdatedTaxaByFILLINPlugin positionSourceHDF5GenoFile(String value) {
         positionSourceHDF5GenoFile = new PluginParameter<>(positionSourceHDF5GenoFile, value);
         return this;
@@ -420,6 +433,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return Preferred haplotype size
      */
+    @GeneratedGuiBoilerplate
     public Integer preferredHaplotypeSize() {
         return preferredHaplotypeSize.value();
     }
@@ -432,6 +446,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ReImputeUpdatedTaxaByFILLINPlugin preferredHaplotypeSize(Integer value) {
         preferredHaplotypeSize = new PluginParameter<>(preferredHaplotypeSize, value);
         return this;
@@ -444,6 +459,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return Keep Temp Genotypes
      */
+    @GeneratedGuiBoilerplate
     public Boolean keepTempGenotypes() {
         return keepTempGenotypes.value();
     }
@@ -457,6 +473,7 @@ public class ReImputeUpdatedTaxaByFILLINPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ReImputeUpdatedTaxaByFILLINPlugin keepTempGenotypes(Boolean value) {
         keepTempGenotypes = new PluginParameter<>(keepTempGenotypes, value);
         return this;
