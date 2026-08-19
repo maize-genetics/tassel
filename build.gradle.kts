@@ -187,6 +187,19 @@ tasks {
         }
     }
 
+    // Mirrors GeneralConstants.TEMP_DIR, which many tests write their outputs into.
+    // It is git-ignored, so it is absent on a fresh checkout; a plugin whose outFile
+    // parameter points into a missing directory calls System.exit(1) and takes the
+    // whole test worker down before any report is written. Create it for every Test
+    // task rather than leaving it to whichever test class happens to run first — the
+    // broad `test` suite only survives because some of its classes mkdirs() it in
+    // setup, and none of those classes are in the statisticsTest gate.
+    withType<Test> {
+        doFirst {
+            file("tempDir").mkdirs()
+        }
+    }
+
     test {
         val baseArgs = mutableListOf("-Xmx10g")
 
@@ -423,6 +436,14 @@ tasks {
         }
 
         ignoreFailures = false
+
+        // Without this the gate's CI log shows only Gradle's "finished with non-zero
+        // exit value" line, naming neither the class that was running nor the assertion
+        // that failed.
+        testLogging {
+            events("passed", "skipped", "failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
+        }
 
         reports {
             html.outputLocation.set(layout.buildDirectory.dir("reports/tests/statisticsTest"))
