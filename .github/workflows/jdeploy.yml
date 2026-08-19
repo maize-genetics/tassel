@@ -21,7 +21,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checked out over SSH with a write-enabled deploy key, because the final
+      # step pushes the generated changelog to `main`. The `main` ruleset
+      # requires a pull request and the "TASSEL 5 CI" check, and GITHUB_TOKEN
+      # cannot be exempted from it: a bypass entry for the GitHub Actions app is
+      # rejected with "Actor GitHub Actions integration must be part of the
+      # ruleset source or owner organization", since that app is not an
+      # installation on the organization. A deploy key *is* a valid bypass
+      # actor, and is the only one the ruleset grants. Opening a pull request
+      # instead is not an option either: pull requests created with
+      # GITHUB_TOKEN trigger no workflows, so the required check would never
+      # report and the pull request could never merge on its own.
       - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.RELEASE_DEPLOY_KEY }}
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
