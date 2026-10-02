@@ -5,18 +5,28 @@ name: Sync main to develop
 # download-link commits. Without this, each of those quietly accumulates as a
 # conflict to be resolved at the next promotion of `develop` to `main`.
 #
-# This opens (or updates) a single `main` -> `develop` pull request. A human
-# still merges it: a back-merge can be conflict-free and still be semantically
-# wrong, so the review step is the point.
+# The back-merge is applied directly: this workflow merges `main` into `develop`
+# and pushes. A pull request is opened only when the merge needs a human, which
+# is either a conflict or a change to the version in `build.gradle.kts`.
 #
 # Trigger notes:
 #   * jdeploy.yml pushes its changelog commit with a deploy key rather than
 #     GITHUB_TOKEN, so that commit does raise a `push` event and the `push`
 #     trigger sees it. The `workflow_run` and `schedule` triggers remain as
-#     backstops; both exit early when `develop` already matches `main`.
-#   * PRs opened with GITHUB_TOKEN do not trigger other workflows, so no checks
-#     run on the sync PR itself. coverage.yml therefore also runs on pushes to
-#     `develop`, which covers the code once this PR is merged.
+#     backstops; all of them exit early when `develop` already matches `main`.
+#   * The push below also uses the deploy key, so it raises a `push` event on
+#     `develop` and coverage.yml runs against the merged result.
+#
+# Permission notes:
+#   * The `develop` ruleset requires a pull request, a review, and the
+#     "TASSEL 5 CI" check. GITHUB_TOKEN cannot be exempted from it, for the same
+#     reason spelled out in jdeploy.yml: a bypass entry for the GitHub Actions
+#     app is rejected because that app is not an org installation. A deploy key
+#     is a valid bypass actor, and `RELEASE_DEPLOY_KEY` is listed as one on both
+#     `main` and `develop`.
+#   * That also rules out letting the fallback pull request merge itself. Pull
+#     requests created with GITHUB_TOKEN trigger no workflows, so the required
+#     check would never report. The fallback is for human review anyway.
 
 on:
   push:
@@ -42,40 +52,94 @@ concurrency:
 
 jobs:
   sync:
-    name: Open main to develop sync PR
+    name: Merge main into develop
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # Pushing to `develop` depends on this key being a ruleset bypass
+          # actor; GITHUB_TOKEN cannot be one. See the note at the top.
+          ssh-key: ${{ secrets.RELEASE_DEPLOY_KEY }}
 
-      - name: Open or reuse the sync pull request
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Merge main into develop
+        id: merge
         run: |
           set -euo pipefail
 
-          if ! git show-ref --verify --quiet refs/remotes/origin/develop; then
-            echo "No origin/develop branch; nothing to sync."
+          finish() {
+            echo "result=$1" >> "$GITHUB_OUTPUT"
+            echo "reason=$2" >> "$GITHUB_OUTPUT"
+            echo "$3"
             exit 0
+          }
+
+          if ! git show-ref --verify --quiet refs/remotes/origin/develop; then
+            finish skipped "" "No origin/develop branch; nothing to sync."
           fi
 
-          # `gh pr create` fails outright when the branches share no new commits.
           AHEAD=$(git rev-list --count origin/develop..origin/main)
           if [ "$AHEAD" -eq 0 ]; then
-            echo "develop already contains every commit on main; nothing to sync."
-            exit 0
+            finish skipped "" "develop already contains every commit on main."
           fi
 
           # A promotion of develop to main leaves main exactly one merge commit
           # ahead with an identical tree. Comparing content rather than commit
-          # counts avoids opening an empty PR after every release.
+          # counts avoids a pointless merge commit after every release.
           if git diff --quiet origin/develop origin/main; then
-            echo "main is $AHEAD commit(s) ahead of develop but the trees are identical; nothing to sync."
-            exit 0
+            finish skipped "" \
+              "main is $AHEAD commit(s) ahead of develop but the trees are identical."
           fi
           echo "main is $AHEAD commit(s) ahead of develop, with content differences."
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          # `develop` can move between the fetch and the push, in which case the
+          # push is rejected and the whole merge has to be redone on the new tip.
+          for attempt in 1 2 3; do
+            git fetch --quiet origin main develop
+            git checkout --quiet -B develop origin/develop
+
+            if ! git merge --no-ff --no-commit origin/main; then
+              git merge --abort || true
+              finish needs-review \
+                "The merge has conflicts, which only a human can resolve." \
+                "Conflicts; opening a pull request instead."
+            fi
+
+            # A hotfix bumps the patch version of the *released* line, which
+            # must not overwrite an in-progress version on develop. Git catches
+            # this as a conflict only when develop moved the same line, so the
+            # version is checked separately.
+            if ! git diff --cached --quiet -- build.gradle.kts; then
+              git merge --abort || true
+              finish needs-review \
+                "The merge changes \`build.gradle.kts\`, which carries the version." \
+                "build.gradle.kts touched; opening a pull request instead."
+            fi
+
+            git commit --quiet --no-edit
+
+            if git push origin develop; then
+              finish pushed "" "Merged main into develop and pushed."
+            fi
+
+            echo "Push rejected on attempt $attempt; develop moved. Retrying."
+          done
+
+          finish needs-review \
+            "Three consecutive pushes to \`develop\` were rejected, so \`develop\` is moving faster than this workflow can follow." \
+            "Giving up on pushing; opening a pull request instead."
+
+      - name: Open a pull request for review
+        if: steps.merge.outputs.result == 'needs-review'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REASON: ${{ steps.merge.outputs.reason }}
+        run: |
+          set -euo pipefail
 
           # An open sync PR keeps updating itself as main moves, so reuse it.
           EXISTING=$(gh pr list --base develop --head main --state open \
@@ -85,28 +149,30 @@ jobs:
             exit 0
           fi
 
-          cat > sync_pr_body.md <<'BODY'
-          Automated back-merge. Documentation changes and hotfixes merge directly to
-          `main`, and the release automation commits the changelog and download links
-          there too, all of which leaves `develop` behind. Merging this keeps the two
+          cat > sync_pr_body.md <<BODY
+          This back-merge could not be applied automatically. ${REASON}
+
+          Documentation changes and hotfixes merge directly to \`main\`, and the
+          release automation commits the changelog and download links there too,
+          all of which leaves \`develop\` behind. Merging this keeps the two
           branches aligned so the next promotion does not have to untangle them.
 
           ## Resolving conflicts
 
-          Everything here is already on `main`, so prefer `main` when the same
+          Everything here is already on \`main\`, so prefer \`main\` when the same
           content was edited on both sides — with one exception:
 
-          * **`build.gradle.kts`** — keep **`develop`'s** `version` and
-            `versionDate`. A hotfix bumps the patch version of the *released* line
-            (for example `5.2.97` to `5.2.98`), which must not overwrite an
-            in-progress version on `develop`.
+          * **\`build.gradle.kts\`** — keep **\`develop\`'s** \`version\`. A hotfix
+            bumps the patch version of the *released* line (for example
+            \`5.2.97\` to \`5.2.98\`), which must not overwrite an in-progress
+            version on \`develop\`.
 
           ## Before merging
 
           Checks do not run on this pull request, because it was opened by
-          `GITHUB_TOKEN`. If it carries code (a hotfix rather than documentation),
-          CI runs against `develop` once this is merged, and the nightly build is
-          the backstop. Watch for a failure there.
+          \`GITHUB_TOKEN\`. If it carries code (a hotfix rather than
+          documentation), CI runs against \`develop\` once this is merged, and the
+          nightly build is the backstop. Watch for a failure there.
           BODY
 
           gh pr create \
