@@ -4,6 +4,16 @@ hide:
   - navigation
 ---
 
+## (V5.2.98) August 14, 2026
+
+* Refreshed the TASSEL desktop interface with the FlatLaf look and feel, adding light and dark themes, HiDPI support, updated icons and splash art, and a proper application name and icon in the macOS Dock.
+* Rebuilt the release pipeline so installers are published through jDeploy, added shadow jar tasks for a self contained standalone build, and added a nightly workflow that publishes automated development builds under a stable tag.
+* Fixed the Maven Central publishing bug that uploaded three identical artifacts in 5.2.97 by scoping the shared jar name to the main `jar` task, and added a script that verifies staged artifacts before a release goes out.
+* Made the version and release date single sourced from `build.gradle.kts`. A new `generateVersionSources` Gradle task compiles them into a `TasselBuildInfo` class used by the About box, the pipeline banner, and the documentation site, so they can no longer drift out of sync.
+* Expanded the documentation site with new download, nightly build, and community pages, separate install guides for the GUI, standalone, Maven, and rTASSEL, and a redesigned home page that links to the latest stable and nightly builds.
+* Added repository automation for the `main` and `develop` branch strategy, including templates for feature, hotfix, and documentation pull requests, a documentation only CI workflow, and a job that syncs `main` back into `develop`.
+* Fixed several smaller issues: resource lookup now works from exploded class directories when running from an IDE or Gradle, GUI debug logging no longer throws file exceptions, redundant logging was removed, the Apache 2.0 license and file headers were added, and flaky association tests were made deterministic.
+
 ## (V5.2.97) July 19, 2026
 
 !!! warning "Defective Maven Central artifacts"
