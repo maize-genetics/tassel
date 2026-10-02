@@ -46,6 +46,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -650,6 +651,7 @@ public class SynonymizerPlugin extends AbstractPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = SynonymizerPlugin.class.getResource("/net/maizegenetics/analysis/images/Synonymizer.gif");
         if (imageURL == null) {
@@ -664,6 +666,7 @@ public class SynonymizerPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Synonymizer";
     }
@@ -673,6 +676,7 @@ public class SynonymizerPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Unify Taxa Names";
     }

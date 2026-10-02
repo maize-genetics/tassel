@@ -22,6 +22,7 @@ import net.maizegenetics.taxa.TaxaListBuilder;
 import net.maizegenetics.taxa.Taxon;
 import net.maizegenetics.taxa.distance.DistanceMatrix;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -230,6 +231,7 @@ public class AMatrixPlugin extends AbstractPlugin {
      *
      * @return Ped Filename
      */
+    @GeneratedGuiBoilerplate
     public String pedFilename() {
         return myPedFilename.value();
     }
@@ -241,12 +243,14 @@ public class AMatrixPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AMatrixPlugin pedFilename(String value) {
         myPedFilename = new PluginParameter<>(myPedFilename, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = AMatrixPlugin.class.getResource("/net/maizegenetics/analysis/images/amatrix.png");
         if (imageURL == null) {
@@ -257,11 +261,13 @@ public class AMatrixPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Pedigree Relationship Matrix";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Create Pedigree Relationship Matrix";
     }

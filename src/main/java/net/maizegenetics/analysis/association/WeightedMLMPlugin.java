@@ -35,6 +35,7 @@ import net.maizegenetics.taxa.distance.DistanceMatrix;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class WeightedMLMPlugin extends MLMPlugin{
     
@@ -271,6 +272,7 @@ public class WeightedMLMPlugin extends MLMPlugin{
         return hasTypes;
     }
     
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = WeightedMLMPlugin.class.getResource("/net/maizegenetics/analysis/images/Mix.gif");
         if (imageURL == null) {
@@ -280,10 +282,12 @@ public class WeightedMLMPlugin extends MLMPlugin{
         }
     }
 
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "WeightedMLM";
     }
 
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Association analysis using mixed model";
     }

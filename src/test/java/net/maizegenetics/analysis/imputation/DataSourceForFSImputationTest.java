@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import net.maizegenetics.analysis.filter.FilterTaxaBuilderPlugin;
+import net.maizegenetics.constants.GeneralConstants;
 
 import net.maizegenetics.dna.map.Chromosome;
 import net.maizegenetics.dna.map.GeneralPosition;
@@ -69,9 +70,9 @@ public class DataSourceForFSImputationTest {
 		}
 		System.out.printf("percent not Missing = %1.3f\n", ((double) notMissingErr)/((double) notMissing));
 		System.out.printf("count of het orig = %d, error = %d\n", hetCount, hetCountErr);
-		ExportUtils.writeToHapmap(myData.myGenotypeTable, "/Volumes/Macintosh HD 2/temp/simGenotype");
-		ExportUtils.writeToHapmap(myData.myGenotypeTableWithError, "/Volumes/Macintosh HD 2/temp/simGenotypeWithErr");
-		ExportUtils.writeToHapmap(myData.myGenotypeTableWithErrorNucleotides, "/Volumes/Macintosh HD 2/temp/simGenotypeWithErrNuc");
+		ExportUtils.writeToHapmap(myData.myGenotypeTable, GeneralConstants.TEMP_DIR + "simGenotype");
+		ExportUtils.writeToHapmap(myData.myGenotypeTableWithError, GeneralConstants.TEMP_DIR + "simGenotypeWithErr");
+		ExportUtils.writeToHapmap(myData.myGenotypeTableWithErrorNucleotides, GeneralConstants.TEMP_DIR + "simGenotypeWithErrNuc");
 
 		errorRate(myData.myGenotypeTable, myData.myGenotypeTableWithError);
 	}

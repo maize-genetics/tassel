@@ -18,6 +18,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.SimpleTableReport;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -94,6 +95,7 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return Start Site
      */
+    @GeneratedGuiBoilerplate
     public Integer startSite() {
         return myStartSite.value();
     }
@@ -105,6 +107,7 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SequenceDiversityPlugin startSite(Integer value) {
         myStartSite = new PluginParameter<>(myStartSite, value);
         return this;
@@ -115,6 +118,7 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return End Site
      */
+    @GeneratedGuiBoilerplate
     public Integer endSite() {
         return myEndSite.value();
     }
@@ -126,6 +130,7 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SequenceDiversityPlugin endSite(Integer value) {
         myEndSite = new PluginParameter<>(myEndSite, value);
         return this;
@@ -136,6 +141,7 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return Sliding Window Analysis
      */
+    @GeneratedGuiBoilerplate
     public Boolean isSlidingWindowAnalysis() {
         return myIsSlidingWindowAnalysis.value();
     }
@@ -147,6 +153,7 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SequenceDiversityPlugin isSlidingWindowAnalysis(Boolean value) {
         myIsSlidingWindowAnalysis = new PluginParameter<>(myIsSlidingWindowAnalysis, value);
         return this;
@@ -157,6 +164,7 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return Window Size
      */
+    @GeneratedGuiBoilerplate
     public Integer windowSize() {
         return myWindowSize.value();
     }
@@ -168,6 +176,7 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SequenceDiversityPlugin windowSize(Integer value) {
         myWindowSize = new PluginParameter<>(myWindowSize, value);
         return this;
@@ -178,6 +187,7 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return Step Size
      */
+    @GeneratedGuiBoilerplate
     public Integer stepSize() {
         return myStepSize.value();
     }
@@ -189,12 +199,14 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SequenceDiversityPlugin stepSize(Integer value) {
         myStepSize = new PluginParameter<>(myStepSize, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = SequenceDiversityPlugin.class.getResource("/net/maizegenetics/analysis/images/Diversity.gif");
         if (imageURL == null) {
@@ -205,11 +217,13 @@ public class SequenceDiversityPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Diversity";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Basic description of diversity";
     }

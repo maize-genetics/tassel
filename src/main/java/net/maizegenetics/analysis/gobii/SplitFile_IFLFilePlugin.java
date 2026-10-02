@@ -18,6 +18,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author lcj34
@@ -104,16 +105,19 @@ public class SplitFile_IFLFilePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -139,6 +143,7 @@ public class SplitFile_IFLFilePlugin extends AbstractPlugin {
      *
      * @return Input FIle
      */
+    @GeneratedGuiBoilerplate
     public String inFile() {
         return inFile.value();
     }
@@ -152,6 +157,7 @@ public class SplitFile_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SplitFile_IFLFilePlugin inFile(String value) {
         inFile = new PluginParameter<>(inFile, value);
         return this;
@@ -162,6 +168,7 @@ public class SplitFile_IFLFilePlugin extends AbstractPlugin {
      *
      * @return Maximum file size
      */
+    @GeneratedGuiBoilerplate
     public Integer maxSize() {
         return maxSize.value();
     }
@@ -174,6 +181,7 @@ public class SplitFile_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SplitFile_IFLFilePlugin maxSize(Integer value) {
         maxSize = new PluginParameter<>(maxSize, value);
         return this;
@@ -185,6 +193,7 @@ public class SplitFile_IFLFilePlugin extends AbstractPlugin {
      *
      * @return Path of output directory
      */
+    @GeneratedGuiBoilerplate
     public String outputDir() {
         return outputDir.value();
     }
@@ -197,6 +206,7 @@ public class SplitFile_IFLFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SplitFile_IFLFilePlugin outputDir(String value) {
         outputDir = new PluginParameter<>(outputDir, value);
         return this;

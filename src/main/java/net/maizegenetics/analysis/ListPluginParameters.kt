@@ -18,6 +18,7 @@ import java.io.File
 import java.util.*
 import java.util.zip.ZipFile
 import javax.swing.ImageIcon
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 /**
  *
@@ -117,19 +118,23 @@ class ListPluginParameters(parentFrame: Frame? = null, isInteractive: Boolean = 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun jarFiles(value: List<String>): ListPluginParameters {
         jarFiles = PluginParameter<List<*>>(jarFiles, value)
         return this
     }
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         return null
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return "List Plugins"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return "List Plugins"
     }

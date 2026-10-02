@@ -20,6 +20,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.taxa.TaxaList;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin takes a GBSv2 database as input, queries for the tags
@@ -138,17 +139,20 @@ public class GetTagTaxaDistFromDBPlugin extends AbstractPlugin {
         GeneratePluginCode.generate(GetTagTaxaDistFromDBPlugin.class);
     }
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return ("GetTagTaxaDistFromDB");
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return ("From a given database, data on taxa distribution of tags is compiled and printed.");
     }
@@ -157,6 +161,7 @@ public class GetTagTaxaDistFromDBPlugin extends AbstractPlugin {
      *
      * @return Input DB
      */
+    @GeneratedGuiBoilerplate
     public String inputDB() {
         return myDBFile.value();
     }
@@ -169,6 +174,7 @@ public class GetTagTaxaDistFromDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetTagTaxaDistFromDBPlugin inputDB(String value) {
         myDBFile = new PluginParameter<>(myDBFile, value);
         return this;
@@ -179,6 +185,7 @@ public class GetTagTaxaDistFromDBPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
@@ -193,6 +200,7 @@ public class GetTagTaxaDistFromDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetTagTaxaDistFromDBPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
@@ -204,6 +212,7 @@ public class GetTagTaxaDistFromDBPlugin extends AbstractPlugin {
      *
      * @return Tag File
      */
+    @GeneratedGuiBoilerplate
     public String tagFile() {
         return myTagFile.value();
     }
@@ -217,6 +226,7 @@ public class GetTagTaxaDistFromDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetTagTaxaDistFromDBPlugin tagFile(String value) {
         myTagFile = new PluginParameter<>(myTagFile, value);
         return this;

@@ -33,6 +33,7 @@ import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.taxa.Taxon;
 import net.maizegenetics.util.OpenBitSet;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class ClusterGenotypesPlugin extends AbstractPlugin {
 	private GenotypeTable myGenotype;
@@ -255,6 +256,7 @@ public class ClusterGenotypesPlugin extends AbstractPlugin {
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public ImageIcon getIcon() {
         URL imageURL = GetTaxaListPlugin.class.getResource("/net/maizegenetics/analysis/images/pca.gif");
         if (imageURL == null) {
@@ -265,11 +267,13 @@ public class ClusterGenotypesPlugin extends AbstractPlugin {
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getButtonName() {
 		return "Cluster Genotypes";
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getToolTipText() {
 		return "Cluster the genotypes in a dataset";
 	}

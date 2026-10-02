@@ -9,6 +9,7 @@ import net.maizegenetics.taxa.tree.convertNames
 import org.apache.logging.log4j.LogManager
 import java.awt.Frame
 import javax.swing.ImageIcon
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 private val myLogger = LogManager.getLogger(ConvertTreeNamesPlugin::class.java)
 
@@ -40,6 +41,7 @@ class ConvertTreeNamesPlugin(parentFrame: Frame? = null, isInteractive: Boolean 
      *
      * @return Name List
      */
+    @GeneratedGuiBoilerplate
     fun filename(): String {
         return filename.value()
     }
@@ -53,19 +55,23 @@ class ConvertTreeNamesPlugin(parentFrame: Frame? = null, isInteractive: Boolean 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun filename(value: String): ConvertTreeNamesPlugin {
         filename = PluginParameter<String>(filename, value)
         return this
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return "Convert Tree Names"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return "Convert Tree Names"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         return null
     }

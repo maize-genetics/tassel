@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -156,6 +157,7 @@ public class KinshipPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = KinshipPlugin.class.getResource("/net/maizegenetics/analysis/images/Kin.gif");
         if (imageURL == null) {
@@ -166,11 +168,13 @@ public class KinshipPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Kinship";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Calculate kinship from marker data";
     }
@@ -178,6 +182,7 @@ public class KinshipPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public DistanceMatrix runPlugin(DataSet input) {
         return (DistanceMatrix) performFunction(input).getData(0).getData();
     }
@@ -185,6 +190,7 @@ public class KinshipPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public DistanceMatrix runPlugin(GenotypeTable input) {
         return (DistanceMatrix) performFunction(DataSet.getDataSet(input)).getData(0).getData();
     }
@@ -199,6 +205,7 @@ public class KinshipPlugin extends AbstractPlugin {
      *
      * @return Kinship method
      */
+    @GeneratedGuiBoilerplate
     public KINSHIP_METHOD kinshipMethod() {
         return myMethod.value();
     }
@@ -215,6 +222,7 @@ public class KinshipPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public KinshipPlugin kinshipMethod(KINSHIP_METHOD value) {
         myMethod = new PluginParameter<>(myMethod, value);
         return this;
@@ -225,6 +233,7 @@ public class KinshipPlugin extends AbstractPlugin {
      *
      * @return Max Alleles
      */
+    @GeneratedGuiBoilerplate
     public Integer maxAlleles() {
         return myMaxAlleles.value();
     }
@@ -236,6 +245,7 @@ public class KinshipPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public KinshipPlugin maxAlleles(Integer value) {
         myMaxAlleles = new PluginParameter<>(myMaxAlleles, value);
         return this;
@@ -246,6 +256,7 @@ public class KinshipPlugin extends AbstractPlugin {
      *
      * @return Algorithm Variation
      */
+    @GeneratedGuiBoilerplate
     public ALGORITHM_VARIATION algorithmVariation() {
         return myAlgorithmVariation.value();
     }
@@ -257,6 +268,7 @@ public class KinshipPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public KinshipPlugin algorithmVariation(ALGORITHM_VARIATION value) {
         myAlgorithmVariation = new PluginParameter<>(myAlgorithmVariation, value);
         return this;

@@ -20,6 +20,7 @@ import net.maizegenetics.phenotype.Phenotype;
 import net.maizegenetics.phenotype.PhenotypeAttribute;
 import net.maizegenetics.phenotype.Phenotype.ATTRIBUTE_TYPE;
 import net.maizegenetics.phenotype.PhenotypeBuilder;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class FilterTraitsPlugin extends AbstractPlugin {
     private static final Logger myLogger = LogManager.getLogger(FilterTraitsPlugin.class);
@@ -33,11 +34,13 @@ public class FilterTraitsPlugin extends AbstractPlugin {
 	}
 	
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getButtonName() {
 		return "Traits";
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public ImageIcon getIcon() {
             URL imageURL = FilterTraitsPlugin.class.getResource("/net/maizegenetics/analysis/images/FilterNew.gif");
         if (imageURL == null) {
@@ -48,6 +51,7 @@ public class FilterTraitsPlugin extends AbstractPlugin {
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getToolTipText() {
 		return "Exclude traits or change properties";
 	}

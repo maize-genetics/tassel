@@ -74,6 +74,7 @@ public class GeneratePluginCode {
         System.out.println("     * Convenience method to run plugin with one return object.");
         System.out.println("     */");
         System.out.println("    // TODO: Replace <Type> with specific type.");
+        System.out.println("    @GeneratedGuiBoilerplate");
         System.out.println("    public <Type> runPlugin(DataSet input) {");
         System.out.println("        return (<Type>) performFunction(input).getData(0).getData();");
         System.out.println("    }\n");
@@ -95,6 +96,7 @@ public class GeneratePluginCode {
             System.out.println("     *");
             System.out.println("     * @return " + current.guiName());
             System.out.println("     */");
+            System.out.println("    @GeneratedGuiBoilerplate");
             System.out.println("    public " + current.valueType().getSimpleName() + " " + methodName + "() {");
             System.out.println("        return " + field.getName() + ".value();");
             System.out.println("    }\n");
@@ -107,6 +109,7 @@ public class GeneratePluginCode {
             System.out.println("     *");
             System.out.println("     * @return this plugin");
             System.out.println("     */");
+            System.out.println("    @GeneratedGuiBoilerplate");
             System.out.println("    public " + clazz + " " + methodName + "(" + current.valueType().getSimpleName() + " value) {");
             System.out.println("        " + field.getName() + " = new PluginParameter<>(" + field.getName() + ", value);");
             System.out.println("        return this;");
@@ -143,6 +146,7 @@ public class GeneratePluginCode {
             System.out.println("     *");
             System.out.println("     * @return " + current.guiName());
             System.out.println("     */");
+            System.out.println("    @GeneratedGuiBoilerplate");
             System.out.println("    fun " + methodName + "(): "+current.valueType().getSimpleName() +" {");
             System.out.println("        return " + field.getName() + ".value()");
             System.out.println("    }\n");
@@ -155,6 +159,7 @@ public class GeneratePluginCode {
             System.out.println("     *");
             System.out.println("     * @return this plugin");
             System.out.println("     */");
+            System.out.println("    @GeneratedGuiBoilerplate");
             System.out.println("    fun " + methodName + "(value: "+current.valueType().getSimpleName()+"): " + clazz +" {");
             System.out.println("        " + field.getName() + " = PluginParameter<"+current.valueType().getSimpleName()+">(" + field.getName() + ", value)");
             System.out.println("        return this");

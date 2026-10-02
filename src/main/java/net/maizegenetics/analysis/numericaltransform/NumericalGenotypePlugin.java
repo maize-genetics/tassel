@@ -20,6 +20,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Numerical Genotype Plugin.
@@ -144,6 +145,7 @@ public class NumericalGenotypePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public  ImageIcon getIcon(){
         URL imageURL = NumericalGenotypePlugin.class.getResource("/net/maizegenetics/analysis/images/NumericalGenotype.gif");
         if (imageURL == null) {
@@ -154,12 +156,14 @@ public class NumericalGenotypePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName(){
         return "Numerical Genotype";
     }
 
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText(){
         return "Numerical Genotype";
     }

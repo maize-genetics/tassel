@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 
 /**
@@ -617,14 +618,17 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
     }
 
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         return null
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return "Multivariate Stepwise"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return "Multivariate Stepwise"
     }
@@ -646,6 +650,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Use permutations
      */
+    @GeneratedGuiBoilerplate
     fun usePermutations(): Boolean {
         return usePermutations.value()
     }
@@ -661,6 +666,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun usePermutations(value: Boolean): MultivariateStepwisePlugin {
         usePermutations = PluginParameter(usePermutations, value)
         return this
@@ -672,6 +678,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Number of permutations
      */
+    @GeneratedGuiBoilerplate
     fun numberOfPermutations(): Int {
         return numberOfPermutations.value()
     }
@@ -684,6 +691,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun numberOfPermutations(value: Int): MultivariateStepwisePlugin {
         numberOfPermutations = PluginParameter(numberOfPermutations, value)
         return this
@@ -694,6 +702,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Alpha for permutations
      */
+    @GeneratedGuiBoilerplate
     fun permutationAlpha(): Double? {
         return permutationAlpha.value()
     }
@@ -706,6 +715,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun permutationAlpha(value: Double?): MultivariateStepwisePlugin {
         permutationAlpha = PluginParameter(permutationAlpha, value)
         return this
@@ -719,6 +729,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return enterLimit
      */
+    @GeneratedGuiBoilerplate
     fun enterLimit(): Double {
         return enterLimit.value()
     }
@@ -734,6 +745,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun enterLimit(value: Double): MultivariateStepwisePlugin {
         enterLimit = PluginParameter(enterLimit, value)
         return this
@@ -747,6 +759,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return exitLimit
      */
+    @GeneratedGuiBoilerplate
     fun exitLimit(): Double {
         return exitLimit.value()
     }
@@ -761,6 +774,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun exitLimit(value: Double): MultivariateStepwisePlugin {
         exitLimit = PluginParameter(exitLimit, value)
         return this
@@ -772,6 +786,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Is Nested
      */
+    @GeneratedGuiBoilerplate
     fun isNested(): Boolean {
         return isNested.value()
     }
@@ -784,6 +799,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun isNested(value: Boolean): MultivariateStepwisePlugin {
         isNested = PluginParameter(isNested, value)
         return this
@@ -796,6 +812,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Nesting factor
      */
+    @GeneratedGuiBoilerplate
     fun nestingFactor(): String {
         return nestingFactor.value()
     }
@@ -809,6 +826,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun nestingFactor(value: String): MultivariateStepwisePlugin {
         nestingFactor = PluginParameter(nestingFactor, value)
         return this
@@ -820,6 +838,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Genotype Component
      */
+    @GeneratedGuiBoilerplate
     fun genotypeTable(): GenotypeTable.GENOTYPE_TABLE_COMPONENT {
         return myGenotypeTable.value()
     }
@@ -833,6 +852,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun genotypeTable(value: GenotypeTable.GENOTYPE_TABLE_COMPONENT): MultivariateStepwisePlugin {
         myGenotypeTable = PluginParameter(myGenotypeTable, value)
         return this
@@ -843,6 +863,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Create anova reports
      */
+    @GeneratedGuiBoilerplate
     fun createManova(): Boolean {
         return createManova.value()
     }
@@ -855,6 +876,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun createManova(value: Boolean): MultivariateStepwisePlugin {
         createManova = PluginParameter(createManova, value)
         return this
@@ -867,6 +889,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      * @return Create effects report
      */
 /*
+    @GeneratedGuiBoilerplate
     fun createEffects(): Boolean {
         return createEffects.value()
     }
@@ -881,6 +904,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      * @return this plugin
      */
 /*
+    @GeneratedGuiBoilerplate
     fun createEffects(value: Boolean): MultivariateStepwisePlugin {
         createEffects = PluginParameter(createEffects, value)
         return this
@@ -893,6 +917,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Create step report
      */
+    @GeneratedGuiBoilerplate
     fun createStep(): Boolean {
         return createStep.value()
     }
@@ -905,6 +930,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun createStep(value: Boolean): MultivariateStepwisePlugin {
         createStep = PluginParameter(createStep, value)
         return this
@@ -919,6 +945,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      * @return Create residuals
      */
 /*
+    @GeneratedGuiBoilerplate
     fun createResiduals(): Boolean {
         return createResiduals.value()
     }
@@ -935,6 +962,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      * @return this plugin
      */
 /*
+    @GeneratedGuiBoilerplate
     fun createResiduals(value: Boolean): MultivariateStepwisePlugin {
         createResiduals = PluginParameter(createResiduals, value)
         return this
@@ -946,6 +974,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Write to files
      */
+    @GeneratedGuiBoilerplate
     fun writeFiles(): Boolean {
         return writeFiles.value()
     }
@@ -958,6 +987,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun writeFiles(value: Boolean): MultivariateStepwisePlugin {
         writeFiles = PluginParameter(writeFiles, value)
         return this
@@ -969,6 +999,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Base file path
      */
+    @GeneratedGuiBoilerplate
     fun outputName(): String {
         return outputName.value()
     }
@@ -982,6 +1013,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun outputName(value: String): MultivariateStepwisePlugin {
         outputName = PluginParameter(outputName, value)
         return this
@@ -992,6 +1024,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Maximum QTN Number
      */
+    @GeneratedGuiBoilerplate
     fun maximumNumberOfVariantsInModel(): Int {
         return maximumNumberOfVariantsInModel.value()
     }
@@ -1004,6 +1037,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun maximumNumberOfVariantsInModel(value: Int): MultivariateStepwisePlugin {
         maximumNumberOfVariantsInModel = PluginParameter(maximumNumberOfVariantsInModel, value)
         return this
@@ -1014,6 +1048,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Run Parallel
      */
+    @GeneratedGuiBoilerplate
     fun runParallel(): Boolean? {
         return runParallel.value()
     }
@@ -1025,6 +1060,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun runParallel(value: Boolean?): MultivariateStepwisePlugin {
         runParallel = PluginParameter(runParallel, value)
         return this
@@ -1035,6 +1071,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return Number of threads
      */
+    @GeneratedGuiBoilerplate
     fun maxThreads(): Int? {
         return maxThreads.value()
     }
@@ -1046,6 +1083,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun maxThreads(value: Int?): MultivariateStepwisePlugin {
         maxThreads = PluginParameter(maxThreads, value)
         return this

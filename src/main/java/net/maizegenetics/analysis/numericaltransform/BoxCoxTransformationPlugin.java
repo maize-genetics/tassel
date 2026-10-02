@@ -11,6 +11,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class BoxCoxTransformationPlugin extends AbstractPlugin{
     
@@ -79,14 +80,17 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Box Cox Transformation";
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Box Cox Transformation.";
     }
@@ -115,6 +119,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public Phenotype runPlugin(DataSet input) {
         return (Phenotype) performFunction(input).getData(0).getData();
     }
@@ -124,6 +129,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return Add Small Value
      */
+    @GeneratedGuiBoilerplate
     public Boolean addSmallValue() {
         return addSmallValue.value();
     }
@@ -135,6 +141,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BoxCoxTransformationPlugin addSmallValue(Boolean value) {
         addSmallValue = new PluginParameter<>(addSmallValue, value);
         return this;
@@ -145,6 +152,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return Random Seed
      */
+    @GeneratedGuiBoilerplate
     public Long randomSeed() {
         return randomSeed.value();
     }
@@ -156,6 +164,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BoxCoxTransformationPlugin randomSeed(Long value) {
         randomSeed = new PluginParameter<>(randomSeed, value);
         return this;
@@ -166,6 +175,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return Start Lambda
      */
+    @GeneratedGuiBoilerplate
     public Double startLambda() {
         return startLambda.value();
     }
@@ -177,6 +187,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BoxCoxTransformationPlugin startLambda(Double value) {
         startLambda = new PluginParameter<>(startLambda, value);
         return this;
@@ -187,6 +198,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return End Lambda
      */
+    @GeneratedGuiBoilerplate
     public Double endLambda() {
         return endLambda.value();
     }
@@ -198,6 +210,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BoxCoxTransformationPlugin endLambda(Double value) {
         endLambda = new PluginParameter<>(endLambda, value);
         return this;
@@ -208,6 +221,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return Step Lambda
      */
+    @GeneratedGuiBoilerplate
     public Double stepLambda() {
         return stepLambda.value();
     }
@@ -219,6 +233,7 @@ public class BoxCoxTransformationPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BoxCoxTransformationPlugin stepLambda(Double value) {
         stepLambda = new PluginParameter<>(stepLambda, value);
         return this;

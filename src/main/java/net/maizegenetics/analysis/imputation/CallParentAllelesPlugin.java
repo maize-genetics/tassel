@@ -20,6 +20,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class CallParentAllelesPlugin extends AbstractPlugin {
     private static final Logger myLogger = LogManager.getLogger(CallParentAllelesPlugin.class);
@@ -316,16 +317,19 @@ public class CallParentAllelesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Call Parents";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return null;
     }

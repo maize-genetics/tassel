@@ -26,6 +26,7 @@ import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin queries a GBSv2 sql database for existing tags.
@@ -133,16 +134,19 @@ public class GetTagSequenceFromDBPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Verify single tag sequence exists in DB, or get list of all tag sequences in data base";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Get Tag Sequence from DB";
     }
@@ -158,6 +162,7 @@ public class GetTagSequenceFromDBPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public String runPlugin(DataSet input) {
         return (String) performFunction(input).getData(0).getData();
     }
@@ -167,6 +172,7 @@ public class GetTagSequenceFromDBPlugin extends AbstractPlugin {
      *
      * @return Input DB
      */
+    @GeneratedGuiBoilerplate
     public String inputDB() {
         return myDBFile.value();
     }
@@ -179,6 +185,7 @@ public class GetTagSequenceFromDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetTagSequenceFromDBPlugin inputDB(String value) {
         myDBFile = new PluginParameter<>(myDBFile, value);
         return this;
@@ -189,6 +196,7 @@ public class GetTagSequenceFromDBPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
@@ -203,6 +211,7 @@ public class GetTagSequenceFromDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetTagSequenceFromDBPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
@@ -213,6 +222,7 @@ public class GetTagSequenceFromDBPlugin extends AbstractPlugin {
      *
      * @return tag sequence 
      */
+    @GeneratedGuiBoilerplate
     public String tagSequence() {
         return myTagSequence.value();
     }
@@ -223,6 +233,7 @@ public class GetTagSequenceFromDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GetTagSequenceFromDBPlugin tagSequence(String value) {
         myTagSequence = new PluginParameter<>(myTagSequence, value);
         return this;

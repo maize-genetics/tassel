@@ -31,6 +31,7 @@ import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginEvent;
 import net.maizegenetics.util.BitSet;
 import net.maizegenetics.util.OpenBitSet;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class WritePopulationAlignmentPlugin extends AbstractPlugin {
 
@@ -513,16 +514,19 @@ public class WritePopulationAlignmentPlugin extends AbstractPlugin {
     //    }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Write Populations";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return null;
     }

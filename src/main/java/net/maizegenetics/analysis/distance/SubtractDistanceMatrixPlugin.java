@@ -20,6 +20,7 @@ import net.maizegenetics.util.GeneralAnnotation;
 import net.maizegenetics.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -105,6 +106,7 @@ public class SubtractDistanceMatrixPlugin extends AbstractPlugin {
      *
      * @return Whole Matrix
      */
+    @GeneratedGuiBoilerplate
     public String wholeMatrix() {
         return myWholeMatrix.value();
     }
@@ -130,16 +132,19 @@ public class SubtractDistanceMatrixPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Subtract Distance Matrix";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Subtract Distance Matrix";
     }

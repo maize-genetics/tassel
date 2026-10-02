@@ -27,6 +27,7 @@ import java.util.stream.IntStream;
 import static net.maizegenetics.dna.snp.GenotypeTable.UNKNOWN_DIPLOID_ALLELE;
 import static net.maizegenetics.dna.snp.GenotypeTableUtils.getDiploidValue;
 import static net.maizegenetics.dna.snp.GenotypeTableUtils.getUnphasedSortedDiploidValue;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This imputation algorithm uses LD to identify good predictors for each SNP,
@@ -280,16 +281,19 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "LD KNNi Imputation";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "LD KNNi Imputation";
     }
@@ -305,6 +309,7 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(DataSet input) {
         return (GenotypeTable) performFunction(input).getData(0).getData();
     }
@@ -314,6 +319,7 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
      *
      * @return High LD Sites
      */
+    @GeneratedGuiBoilerplate
     public Integer highLDSSites() {
         return highLDSSites.value();
     }
@@ -326,6 +332,7 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public LDKNNiImputationPlugin highLDSSites(Integer value) {
         highLDSSites = new PluginParameter<>(highLDSSites, value);
         return this;
@@ -336,6 +343,7 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
      *
      * @return Number of nearest neighbors
      */
+    @GeneratedGuiBoilerplate
     public Integer knnTaxa() {
         return knnTaxa.value();
     }
@@ -348,6 +356,7 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public LDKNNiImputationPlugin knnTaxa(Integer value) {
         knnTaxa = new PluginParameter<>(knnTaxa, value);
         return this;
@@ -360,6 +369,7 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
      *
      * @return Max distance between site to find LD
      */
+    @GeneratedGuiBoilerplate
     public Integer maxDistance() {
         return maxDistance.value();
     }
@@ -373,6 +383,7 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public LDKNNiImputationPlugin maxDistance(Integer value) {
         maxDistance = new PluginParameter<>(maxDistance, value);
         return this;

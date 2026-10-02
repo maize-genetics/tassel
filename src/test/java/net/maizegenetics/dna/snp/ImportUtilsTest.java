@@ -34,8 +34,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ImportUtilsTest {
     public static final String outName= GeneralConstants.TEMP_DIR+"/Z001v27.hmp.t.txt.gz";
-    public static final String infileNameNoZip="/Users/edbuckler/SolexaAnal/GBS/GBS27/test/Z001v27.hmp.txt";
-   public static final String infileName= TutorialConstants.HAPMAP_FILENAME;
+    public static final String infileName= TutorialConstants.HAPMAP_FILENAME;
     public static final String complexVCF= GeneralConstants.DATA_DIR+"/CandidateTests/VCF4_2.vcf";
     private static final String largeHapMap=GeneralConstants.TEMP_DIR+"manySiteHapMap.hmp.txt.gz";
     private static final String largeVCF=GeneralConstants.TEMP_DIR+"manySiteVCF.vcf.gz";
@@ -268,7 +267,6 @@ public class ImportUtilsTest {
             final byte nlb=(byte) '\n';
             final char nlc='\n';
             BufferedReader r=Utils.getBufferedReader(infileName, -1);
-            //  BufferedReader r=Utils.getBufferedReader(infileNameNoZip);
             String s;
             ArrayList<String> stuff=new ArrayList<>();
             int lines=0;
@@ -301,8 +299,6 @@ public class ImportUtilsTest {
         long time=System.nanoTime();
         try {
             InputStream gzipOS=new GZIPInputStream(new FileInputStream(infileName));
-
-            //gzipOS=new FileInputStream(infileNameNoZip);
             ReadableByteChannel in = Channels.newChannel(gzipOS);
             ByteBuffer buf = ByteBuffer.allocate(100_000_000);
             int bytesRead = in.read(buf);

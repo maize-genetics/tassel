@@ -1,12 +1,16 @@
 package net.maizegenetics.pal.distance;
 
 import ch.systemsx.cisd.hdf5.*;
+import net.maizegenetics.constants.GeneralConstants;
 import org.apache.commons.lang3.ArrayUtils;
+import org.junit.Before;
 import org.junit.Test;
 import ch.systemsx.cisd.base.mdarray.MDIntArray;
 import java.io.File;
 import java.util.Random;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * User: dek29
@@ -15,6 +19,14 @@ import static org.junit.Assert.assertArrayEquals;
  */
 public class DistanceMatrixHDF5Test {
 
+    // All HDF5 output is written under the git-ignored temp dir instead of the
+    // original hard-coded /local/hdf5/test/ path so the test is self-contained.
+    private static final String TEST_DIR = GeneralConstants.TEMP_DIR + "DistanceMatrixHDF5Test/";
+
+    @Before
+    public void setUp() {
+        new File(TEST_DIR).mkdirs();
+    }
 
     /**
      * Contains simplifications over previous tests (square only) and looping
@@ -27,11 +39,12 @@ public class DistanceMatrixHDF5Test {
         int[] deflationLevel = { 0,1,2,3,5,7,9 };
         int scaling = 3;
 //        String scaling = "none";
-        // number of objects in each dimension of a block of data
-        // arrays are aligned so as you give 10240 x 10240 matrix
-        int[] dataDim =  { 32, 64, 128, 256, 512, 1024, 2048, 10240 };
+        // number of objects in each dimension of a block of data.
+        // Dimensions were reduced from the original {32..10240} so the test runs
+        // in seconds instead of writing multi-GB 10240x10240 matrices.
+        int[] dataDim =  { 32, 64 };
         // number of blocks in each dimension
-        int[] blockCount = { 320, 160, 80, 40, 20, 10, 5, 1 };
+        int[] blockCount = { 4, 2 };
 
         for(int h = 0; h < deflationLevel.length; h++) {
             for (int i = 0; i < dataDim.length; i++) {
@@ -45,7 +58,7 @@ public class DistanceMatrixHDF5Test {
 
                 float[][] mydata = new float[dataDim[i]][dataDim[i]];
 
-                String dir = "/local/hdf5/test/";
+                String dir = TEST_DIR;
 
                 String filename = dataDim[i] + "_" + dataDim[i] + "matrix" + "writeBlocks" + blockCount[i] + "_" + blockCount[i] + "def_Scl" +deflationLevel[h] + "_" + scaling +"test" + testNumber + ".h5";
                 File hdf5File = new File(dir + filename);
@@ -84,10 +97,15 @@ public class DistanceMatrixHDF5Test {
                         int yOffset = by * dataDim[i];
                         //                System.out.println("Offsets x: " + xOffset + " y: " + yOffset);
                         float[][] in = h5w.float32().readMatrixBlockWithOffset("mydata", dataDim[i], dataDim[i], xOffset, yOffset);
-                        //            assertArrayEquals(mydata[i],in[0],0.001f);
+                        // Each block read back must have the requested block dimensions.
+                        assertEquals("Read-back block row count differs", dataDim[i], in.length);
+                        assertEquals("Read-back block column count differs", dataDim[i], in[0].length);
                     }
                 }
                 h5w.close();
+
+                assertTrue("HDF5 matrix file was not written: " + filename, hdf5File.exists());
+                assertTrue("HDF5 matrix file is empty: " + filename, hdf5File.length() > 0);
                 totalTime = System.nanoTime() - time;
                 System.out.print("TotalObjects: " + fileDim + "x" + fileDim + "\tBlockSize: " + dataDim[i] + "x" + dataDim[i]);
                 System.out.print("\tTotalWrites: " + totalWrites);
@@ -228,8 +246,10 @@ public class DistanceMatrixHDF5Test {
         Random rng = new Random();
         int[][] mydata = new int[10][10];
 
+        String filename = TEST_DIR + "largeimatrix.h5";
+
         // Write the integer matrix.
-        IHDF5Writer writer = HDF5Factory.open("largeimatrix.h5");
+        IHDF5Writer writer = HDF5Factory.open(filename);
         // Define the block size as 10 x 10.
         writer.int32().createMatrix("mydata", 10, 10);
         // Write 5 x 7 blocks.
@@ -244,13 +264,17 @@ public class DistanceMatrixHDF5Test {
         writer.close();
 
         // Read the matrix in again, using the "natural" 10 x 10 blocks.
-        IHDF5Reader reader = HDF5Factory.openForReading("largeimatrix.h5");
+        int blocksRead = 0;
+        IHDF5Reader reader = HDF5Factory.openForReading(filename);
         for (HDF5MDDataBlock<MDIntArray> block : reader.int32().getMDArrayNaturalBlocks("mydata"))
         {
             System.out.println(ArrayUtils.toString(block.getIndex()) + " -> "
                     + block.getData().toString());
+            blocksRead++;
         }
         reader.close();
+
+        assertTrue("Expected to read back at least one natural block", blocksRead > 0);
     }
 
     static void fillMatrix(Random rng, int[][] mydata)

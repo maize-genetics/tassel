@@ -40,6 +40,7 @@ import javax.swing.event.ChangeEvent;
 
 import net.maizegenetics.util.TableReport;
 import net.maizegenetics.plugindef.Datum;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -138,6 +139,7 @@ public class QQDisplayPlugin extends AbstractDisplayPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = QQDisplayPlugin.class.getResource("/net/maizegenetics/analysis/images/QQPlot.gif");
         if (imageURL == null) {
@@ -153,6 +155,7 @@ public class QQDisplayPlugin extends AbstractDisplayPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "QQ Plot";
     }
@@ -163,6 +166,7 @@ public class QQDisplayPlugin extends AbstractDisplayPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Display QQ Plot";
     }

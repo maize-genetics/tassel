@@ -18,6 +18,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -151,6 +152,7 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return DB Config File
      */
+    @GeneratedGuiBoilerplate
     public String connConfigFile() {
         return myConnConfigFile.value();
     }
@@ -162,6 +164,7 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FeatureListToPositionsPlugin connConfigFile(String value) {
         myConnConfigFile = new PluginParameter<>(myConnConfigFile, value);
         return this;
@@ -172,6 +175,7 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return Feature Type
      */
+    @GeneratedGuiBoilerplate
     public String featureType() {
         return myFeatureType.value();
     }
@@ -183,6 +187,7 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FeatureListToPositionsPlugin featureType(String value) {
         myFeatureType = new PluginParameter<>(myFeatureType, value);
         return this;
@@ -193,6 +198,7 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return Feature List Filename
      */
+    @GeneratedGuiBoilerplate
     public String featureListFilename() {
         return myFeatureListFilename.value();
     }
@@ -204,6 +210,7 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FeatureListToPositionsPlugin featureListFilename(String value) {
         myFeatureListFilename = new PluginParameter<>(myFeatureListFilename, value);
         return this;
@@ -214,6 +221,7 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
@@ -225,6 +233,7 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FeatureListToPositionsPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
@@ -235,6 +244,7 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return Number Bases Plus Or Minus
      */
+    @GeneratedGuiBoilerplate
     public Integer numberBasesPlusOrMinus() {
         return myNumberBasesPlusOrMinus.value();
     }
@@ -247,22 +257,26 @@ public class FeatureListToPositionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FeatureListToPositionsPlugin numberBasesPlusOrMinus(Integer value) {
         myNumberBasesPlusOrMinus = new PluginParameter<>(myNumberBasesPlusOrMinus, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Feature List to Positions";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Feature List to Positions";
     }

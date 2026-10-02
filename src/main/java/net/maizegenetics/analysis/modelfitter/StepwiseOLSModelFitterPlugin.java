@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Stepwise Ordinary Least Squares model fitter
@@ -191,6 +192,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = StepwiseOLSModelFitterPlugin.class.getResource("stepwise.gif");
         if (imageURL == null) {
@@ -201,11 +203,13 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Stepwise";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Fit multiple markers in a single model (experimental).";
     }
@@ -226,6 +230,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public TableReport runPlugin(DataSet input) {
         return (TableReport) performFunction(input).getData(0).getData();
     }
@@ -237,6 +242,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return Model type
      */
+    @GeneratedGuiBoilerplate
     public StepwiseOLSModelFitter.MODEL_TYPE modelType() {
         return modelType.value();
     }
@@ -250,6 +256,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseOLSModelFitterPlugin modelType(StepwiseOLSModelFitter.MODEL_TYPE value) {
         modelType = new PluginParameter<>(modelType, value);
         return this;
@@ -261,6 +268,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return Entry limit
      */
+    @GeneratedGuiBoilerplate
     public Double enterlimit() {
         return enterlimit.value();
     }
@@ -273,6 +281,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseOLSModelFitterPlugin enterlimit(Double value) {
         enterlimit = new PluginParameter<>(enterlimit, value);
         return this;
@@ -284,6 +293,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return Exit limit
      */
+    @GeneratedGuiBoilerplate
     public Double exitlimit() {
         return exitlimit.value();
     }
@@ -296,6 +306,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseOLSModelFitterPlugin exitlimit(Double value) {
         exitlimit = new PluginParameter<>(exitlimit, value);
         return this;
@@ -307,6 +318,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return Maximum markers
      */
+    @GeneratedGuiBoilerplate
     public Integer maxNumberOfMarkers() {
         return maxNumberOfMarkers.value();
     }
@@ -320,6 +332,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseOLSModelFitterPlugin maxNumberOfMarkers(Integer value) {
         maxNumberOfMarkers = new PluginParameter<>(maxNumberOfMarkers, value);
         return this;
@@ -330,6 +343,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return Nest markers
      */
+    @GeneratedGuiBoilerplate
     public Boolean nestMarkers() {
         return nestMarkers.value();
     }
@@ -342,6 +356,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseOLSModelFitterPlugin nestMarkers(Boolean value) {
         nestMarkers = new PluginParameter<>(nestMarkers, value);
         return this;
@@ -352,6 +367,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return Nesting factor
      */
+    @GeneratedGuiBoilerplate
     public String nestingFactor() {
         return nestingFactor.value();
     }
@@ -363,6 +379,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseOLSModelFitterPlugin nestingFactor(String value) {
         nestingFactor = new PluginParameter<>(nestingFactor, value);
         return this;
@@ -374,6 +391,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return Number of permutations
      */
+    @GeneratedGuiBoilerplate
     public Integer numberOfPermutations() {
         return numberOfPermutations.value();
     }
@@ -386,6 +404,7 @@ public class StepwiseOLSModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseOLSModelFitterPlugin numberOfPermutations(Integer value) {
         numberOfPermutations = new PluginParameter<>(numberOfPermutations, value);
         return this;

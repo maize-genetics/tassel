@@ -19,6 +19,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin takes as input:
@@ -74,16 +75,19 @@ public class UpdateSNPPositionQualityPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Update SNP Position quality score";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Update SNP Position Quality";
     }
@@ -92,6 +96,7 @@ public class UpdateSNPPositionQualityPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public String runPlugin(DataSet input) {
         return (String) performFunction(input).getData(0).getData();
     }
@@ -101,6 +106,7 @@ public class UpdateSNPPositionQualityPlugin extends AbstractPlugin {
      *
      * @return Input DB
      */
+    @GeneratedGuiBoilerplate
     public String inputDB() {
         return myDBFile.value();
     }
@@ -113,6 +119,7 @@ public class UpdateSNPPositionQualityPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UpdateSNPPositionQualityPlugin inputDB(String value) {
         myDBFile = new PluginParameter<>(myDBFile, value);
         return this;
@@ -124,6 +131,7 @@ public class UpdateSNPPositionQualityPlugin extends AbstractPlugin {
      *
      * @return QualityScore File
      */
+    @GeneratedGuiBoilerplate
     public String qsFile() {
         return myQSFile.value();
     }
@@ -136,6 +144,7 @@ public class UpdateSNPPositionQualityPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public UpdateSNPPositionQualityPlugin qsFile(String value) {
         myQSFile = new PluginParameter<>(myQSFile, value);
         return this;

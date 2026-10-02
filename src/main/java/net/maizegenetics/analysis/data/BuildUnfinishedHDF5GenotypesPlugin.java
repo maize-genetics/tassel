@@ -19,6 +19,7 @@ import net.maizegenetics.taxa.TaxaListBuilder;
 import net.maizegenetics.util.HDF5Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Opens an "unfinished" HDF5 genotypes file, on which .closeUnfinished() was called rather than .build()
@@ -146,6 +147,7 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
 //        URL imageURL = SeparatePlugin.class.getResource("/net/maizegenetics/analysis/images/Merge.gif");
 //        if (imageURL == null) {
@@ -156,11 +158,13 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Split chromosomes from HDF5 genotype file";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Split chromosomes from HDF5 genotype file";
     }
@@ -177,6 +181,7 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
      *
      * @return Input file
      */
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return inputGenotypes.value();
     }
@@ -189,6 +194,7 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BuildUnfinishedHDF5GenotypesPlugin inputFile(String value) {
         inputGenotypes = new PluginParameter<>(inputGenotypes, value);
         return this;
@@ -200,6 +206,7 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
      *
      * @return Output file
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return outputGenotypes.value();
     }
@@ -212,6 +219,7 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BuildUnfinishedHDF5GenotypesPlugin outputFile(String value) {
         outputGenotypes = new PluginParameter<>(outputGenotypes, value);
         return this;
@@ -223,6 +231,7 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
      *
      * @return Data set name
      */
+    @GeneratedGuiBoilerplate
     public String dataSetName() {
         return dataSetName.value();
     }
@@ -235,6 +244,7 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BuildUnfinishedHDF5GenotypesPlugin dataSetName(String value) {
         dataSetName = new PluginParameter<>(dataSetName, value);
         return this;
@@ -246,6 +256,7 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
      *
      * @return Data set description
      */
+    @GeneratedGuiBoilerplate
     public String dataSetDescription() {
         return dataSetDescription.value();
     }
@@ -259,6 +270,7 @@ public class BuildUnfinishedHDF5GenotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public BuildUnfinishedHDF5GenotypesPlugin dataSetDescription(String value) {
         dataSetDescription = new PluginParameter<>(dataSetDescription, value);
         return this;

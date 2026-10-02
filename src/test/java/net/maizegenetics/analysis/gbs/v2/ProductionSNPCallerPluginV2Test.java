@@ -1,65 +1,65 @@
 package net.maizegenetics.analysis.gbs.v2;
 
-import net.maizegenetics.constants.GBSConstants;
+import net.maizegenetics.dna.snp.GenotypeTable;
+import net.maizegenetics.dna.snp.ImportUtils;
 import net.maizegenetics.util.LoggingUtils;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import static org.junit.Assert.*;
 
+/**
+ * Property-based test for {@link ProductionSNPCallerPluginV2} that builds its own tiny GBSv2
+ * database from {@link GBSSimData} (deterministic simulated FASTQ/key/reference) rather than
+ * relying on a pre-built {@code GBSv2.db} or downloaded fixtures.
+ *
+ * <p>The production caller is run twice against the same self-generated database, once writing a
+ * VCF and once writing an HDF5 ({@code .h5}) genotypes file. The HDF5 write path is the point of
+ * this test: it exercises the jhdf5 native library (bundled in {@code cisd:jhdf5} for the CI/dev
+ * platforms) without any external aligner or download. Both outputs are read back and asserted to
+ * agree on site/taxon counts instead of comparing golden hashes.</p>
+ */
 public class ProductionSNPCallerPluginV2Test {
 
     @Test
     public void testProcessData() throws Exception {
-    	//  This test assumes the database has already been populated.
-        // The test will fail if db does not already exist.  Run the 
-        // DiscoveryPipeline test to create the database 
-    	// (EvaluateSNPCallQualityOfPipelineTest.java)
         LoggingUtils.setupDebugLogging();
-        System.out.println(Paths.get(GBSConstants.GBS_GBS2DB_FILE).toAbsolutePath().toString());
-        
-        // Delete output file if it exists. 
-        try{
-        	Files.deleteIfExists(Paths.get("junk1.vcf"));
-        	Files.deleteIfExists(Paths.get("junk1.h5"));
-        } catch (IOException e) {
-        	e.printStackTrace();
+
+        GBSSimData sim = GBSSimData.createUnder("ProductionV2");
+        sim.buildDatabaseThroughSam();   // tag DB + synthesized SAM alignments
+        sim.runDiscovery(true);          // populate SNP positions (required by the production caller)
+
+        Path vcfOut = sim.baseDir.resolve("prod.vcf");
+        Path h5Out = sim.baseDir.resolve("prod.h5");
+
+        for (Path out : new Path[]{vcfOut, h5Out}) {
+            Files.deleteIfExists(out);
+            new ProductionSNPCallerPluginV2()
+                    .enzyme(GBSSimData.ENZYME)
+                    .inputDirectory(sim.fastqDir.toString())
+                    .inputGBSDatabase(sim.dbFile.toString())
+                    .keyFile(sim.keyFile.toString())
+                    .outputGenotypesFile(out.toString())
+                    .kmerLength(GBSSimData.TAG_LENGTH)
+                    .minimumQualityScore(0)
+                    .performFunction(null);
+            assertTrue("Production caller did not produce " + out, Files.exists(out));
         }
-        
-        long time=System.nanoTime();
-        System.out.println();
 
-        new ProductionSNPCallerPluginV2()
-                .enzyme("ApeKI")
-                .inputDirectory(GBSConstants.GBS_INPUT_DIR)
-                .inputGBSDatabase(GBSConstants.GBS_GBS2DB_FILE)
-                .keyFile(GBSConstants.GBS_TESTING_KEY_FILE)
-                .outputGenotypesFile("junk1.vcf")
-                .kmerLength(64)
-                .minimumQualityScore(0) // tag read quality score
-                //.positionQualityScore(5.0) // snp position quality score
-                //.maximumMapMemoryInMb(5500)
-                .performFunction(null);
-        System.out.printf("TotalTime for vcf: %g sec%n", (double) (System.nanoTime() - time) / 1e9);
-        
-        time=System.nanoTime();
-        System.out.println();
+        GenotypeTable vcf = ImportUtils.readGuessFormat(vcfOut.toString());
+        GenotypeTable h5 = ImportUtils.readGuessFormat(h5Out.toString());
 
-        new ProductionSNPCallerPluginV2()
-                .enzyme("ApeKI")
-                .inputDirectory(GBSConstants.GBS_INPUT_DIR)
-                .inputGBSDatabase(GBSConstants.GBS_GBS2DB_FILE)
-                .keyFile(GBSConstants.GBS_TESTING_KEY_FILE)
-                .outputGenotypesFile("junk1.h5")
-                .kmerLength(64)
-                .minimumQualityScore(0) // tag read quality score
-                //.positionQualityScore(5.0) // snp position quality score
-                //.maximumMapMemoryInMb(5500)
-                .performFunction(null);
-        System.out.printf("TotalTime for h5: %g sec%n", (double) (System.nanoTime() - time) / 1e9);
+        assertNotNull("Failed to read back VCF genotypes", vcf);
+        assertNotNull("Failed to read back HDF5 genotypes", h5);
 
+        assertTrue("HDF5 genotypes should contain at least one site", h5.numberOfSites() > 0);
+        assertEquals("VCF and HDF5 outputs should call the same number of sites",
+                vcf.numberOfSites(), h5.numberOfSites());
+        assertEquals("VCF and HDF5 outputs should contain the same number of taxa",
+                vcf.numberOfTaxa(), h5.numberOfTaxa());
+        assertEquals("HDF5 taxa count should match the simulated taxa",
+                sim.taxa.size(), h5.numberOfTaxa());
     }
 }

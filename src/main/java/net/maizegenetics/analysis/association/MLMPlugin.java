@@ -36,6 +36,7 @@ import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.taxa.distance.DistanceMatrix;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class MLMPlugin extends AbstractPlugin {
     
@@ -225,6 +226,7 @@ public class MLMPlugin extends AbstractPlugin {
     	return hasTypes;
     }
     
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = MLMPlugin.class.getResource("/net/maizegenetics/analysis/images/Mix.gif");
         if (imageURL == null) {
@@ -234,10 +236,12 @@ public class MLMPlugin extends AbstractPlugin {
         }
     }
 
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "MLM";
     }
 
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Association analysis using mixed model";
     }

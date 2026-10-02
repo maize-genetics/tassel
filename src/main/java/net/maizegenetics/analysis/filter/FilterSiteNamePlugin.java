@@ -40,6 +40,7 @@ import net.maizegenetics.gui.SiteNamesAvailableListModel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @deprecated 
@@ -351,6 +352,7 @@ public class FilterSiteNamePlugin extends AbstractPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = FilterSiteNamePlugin.class.getResource("/net/maizegenetics/analysis/images/Filter.gif");
         if (imageURL == null) {
@@ -365,6 +367,7 @@ public class FilterSiteNamePlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Site Names";
     }
@@ -374,6 +377,7 @@ public class FilterSiteNamePlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Select Site Names Within Dataset";
     }

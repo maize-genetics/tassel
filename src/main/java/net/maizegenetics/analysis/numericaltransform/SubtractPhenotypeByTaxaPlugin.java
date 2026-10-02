@@ -11,6 +11,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class SubtractPhenotypeByTaxaPlugin extends AbstractPlugin{
     private PluginParameter<Boolean> useAbsoluteDifference =
@@ -56,14 +57,17 @@ public class SubtractPhenotypeByTaxaPlugin extends AbstractPlugin{
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Subtract Phenotypes By Taxa";
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Subtract Phenotypes for Matching Taxa.";
     }
@@ -91,6 +95,7 @@ public class SubtractPhenotypeByTaxaPlugin extends AbstractPlugin{
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public Phenotype runPlugin(DataSet input) {
         return (Phenotype) performFunction(input).getData(0).getData();
     }
@@ -100,6 +105,7 @@ public class SubtractPhenotypeByTaxaPlugin extends AbstractPlugin{
      *
      * @return Use Abs Diff
      */
+    @GeneratedGuiBoilerplate
     public Boolean useAbsoluteDifference() {
         return useAbsoluteDifference.value();
     }
@@ -111,6 +117,7 @@ public class SubtractPhenotypeByTaxaPlugin extends AbstractPlugin{
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SubtractPhenotypeByTaxaPlugin useAbsoluteDifference(Boolean value) {
         useAbsoluteDifference = new PluginParameter<>(useAbsoluteDifference, value);
         return this;

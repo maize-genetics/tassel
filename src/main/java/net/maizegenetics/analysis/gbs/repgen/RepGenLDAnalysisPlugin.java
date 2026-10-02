@@ -35,6 +35,7 @@ import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This class takes a rAmpSeq (formerly RepGen) database and for
@@ -215,12 +216,14 @@ public class RepGenLDAnalysisPlugin extends AbstractPlugin {
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
@@ -233,6 +236,7 @@ public class RepGenLDAnalysisPlugin extends AbstractPlugin {
          GeneratePluginCode.generate(RepGenLDAnalysisPlugin.class);
      }
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -242,6 +246,7 @@ public class RepGenLDAnalysisPlugin extends AbstractPlugin {
      *
      * @return Input DB
      */
+    @GeneratedGuiBoilerplate
     public String inputDB() {
         return myDBFile.value();
     }
@@ -254,6 +259,7 @@ public class RepGenLDAnalysisPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLDAnalysisPlugin inputDB(String value) {
         myDBFile = new PluginParameter<>(myDBFile, value);
         return this;
@@ -265,6 +271,7 @@ public class RepGenLDAnalysisPlugin extends AbstractPlugin {
      *
      * @return Min Taxa for RSquared
      */
+    @GeneratedGuiBoilerplate
     public Integer minTaxa() {
         return minTaxa.value();
     }
@@ -277,6 +284,7 @@ public class RepGenLDAnalysisPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLDAnalysisPlugin minTaxa(Integer value) {
         minTaxa = new PluginParameter<>(minTaxa, value);
         return this;

@@ -30,6 +30,7 @@ import static net.maizegenetics.dna.snp.NucleotideAlignmentConstants.GAP_DIPLOID
 import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginParameter;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 
 
@@ -817,16 +818,19 @@ public class FILLINImputationPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Impute By FILLIN";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Imputation that relies on a combination of HMM and Nearest Neighbor using donors derived from FILLINFindHaplotypesPlugin";
     }
@@ -842,6 +846,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     /*// TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public <Type> runPlugin(DataSet input) {
         return (<Type>) performFunction(input).getData(0).getData();
     }*/
@@ -852,6 +857,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Target file
      */
+    @GeneratedGuiBoilerplate
     public String targetFile() {
         return hmpFile.value();
     }
@@ -864,6 +870,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin targetFile(String value) {
         hmpFile = new PluginParameter<>(hmpFile, value);
         return this;
@@ -877,6 +884,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Donor Dir
      */
+    @GeneratedGuiBoilerplate
     public String donorDir() {
         return donorFile.value();
     }
@@ -891,6 +899,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin donorDir(String value) {
         donorFile = new PluginParameter<>(donorFile, value);
         return this;
@@ -901,6 +910,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Output filename
      */
+    @GeneratedGuiBoilerplate
     public String outputFilename() {
         return outFileBase.value();
     }
@@ -913,6 +923,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin outputFilename(String value) {
         outFileBase = new PluginParameter<>(outFileBase, value);
         return this;
@@ -924,6 +935,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Preferred haplotype size
      */
+    @GeneratedGuiBoilerplate
     public Integer preferredHaplotypeSize() {
         return appoxSitesPerDonorGenotypeTable.value();
     }
@@ -936,6 +948,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin preferredHaplotypeSize(Integer value) {
         appoxSitesPerDonorGenotypeTable = new PluginParameter<>(appoxSitesPerDonorGenotypeTable, value);
         return this;
@@ -947,6 +960,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Heterozygosity threshold
      */
+    @GeneratedGuiBoilerplate
     public Double heterozygosityThreshold() {
         return hetThresh.value();
     }
@@ -960,6 +974,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin heterozygosityThreshold(Double value) {
         hetThresh = new PluginParameter<>(hetThresh, value);
         return this;
@@ -971,6 +986,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Max error to impute one donor
      */
+    @GeneratedGuiBoilerplate
     public Double maxErrorToImputeOneDonor() {
         return maximumInbredError.value();
     }
@@ -983,6 +999,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin maxErrorToImputeOneDonor(Double value) {
         maximumInbredError = new PluginParameter<>(maximumInbredError, value);
         return this;
@@ -994,6 +1011,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Max combined error to impute two donors
      */
+    @GeneratedGuiBoilerplate
     public Double maxCombinedErrorToImputeTwoDonors() {
         return maxHybridErrorRate.value();
     }
@@ -1007,6 +1025,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin maxCombinedErrorToImputeTwoDonors(Double value) {
         maxHybridErrorRate = new PluginParameter<>(maxHybridErrorRate, value);
         return this;
@@ -1018,6 +1037,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Min sites to test match
      */
+    @GeneratedGuiBoilerplate
     public Integer minSitesToTestMatch() {
         return minTestSites.value();
     }
@@ -1031,6 +1051,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin minSitesToTestMatch(Integer value) {
         minTestSites = new PluginParameter<>(minTestSites, value);
         return this;
@@ -1042,6 +1063,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Min num of minor alleles to compare
      */
+    @GeneratedGuiBoilerplate
     public Integer minNumOfMinorAllelesToCompare() {
         return minMinorCnt.value();
     }
@@ -1055,6 +1077,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin minNumOfMinorAllelesToCompare(Integer value) {
         minMinorCnt = new PluginParameter<>(minMinorCnt, value);
         return this;
@@ -1065,6 +1088,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Max donor hypotheses
      */
+    @GeneratedGuiBoilerplate
     public Integer maxDonorHypotheses() {
         return maxDonorHypotheses.value();
     }
@@ -1077,6 +1101,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin maxDonorHypotheses(Integer value) {
         maxDonorHypotheses = new PluginParameter<>(maxDonorHypotheses, value);
         return this;
@@ -1089,6 +1114,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Impute all het calls
      */
+    @GeneratedGuiBoilerplate
     public Boolean imputeAllHetCalls() {
         return imputeAllHets.value();
     }
@@ -1102,6 +1128,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin imputeAllHetCalls(Boolean value) {
         imputeAllHets = new PluginParameter<>(imputeAllHets, value);
         return this;
@@ -1113,6 +1140,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Combine two haplotypes as heterozygote
      */
+    @GeneratedGuiBoilerplate
     public Boolean combineTwoHaplotypesAsHeterozygote() {
         return hybridNN.value();
     }
@@ -1126,6 +1154,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin combineTwoHaplotypesAsHeterozygote(Boolean value) {
         hybridNN = new PluginParameter<>(hybridNN, value);
         return this;
@@ -1136,6 +1165,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Output projection alignment
      */
+    @GeneratedGuiBoilerplate
     public Boolean outputProjectionAlignment() {
         return isOutputProjection.value();
     }
@@ -1148,6 +1178,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin outputProjectionAlignment(Boolean value) {
         isOutputProjection = new PluginParameter<>(isOutputProjection, value);
         return this;
@@ -1158,6 +1189,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Impute donor file
      */
+    @GeneratedGuiBoilerplate
     public Boolean imputeDonorFile() {
         return imputeDonorFile.value();
     }
@@ -1169,6 +1201,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin imputeDonorFile(Boolean value) {
         imputeDonorFile = new PluginParameter<>(imputeDonorFile, value);
         return this;
@@ -1179,6 +1212,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Supress system out
      */
+    @GeneratedGuiBoilerplate
     public Boolean supressSystemOut() {
         return nonverboseOutput.value();
     }
@@ -1190,6 +1224,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin supressSystemOut(Boolean value) {
         nonverboseOutput = new PluginParameter<>(nonverboseOutput, value);
         return this;
@@ -1201,6 +1236,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Calculate accuracy
      */
+    @GeneratedGuiBoilerplate
     public Boolean calculateAccuracy() {
         return accuracy.value();
     }
@@ -1213,6 +1249,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin calculateAccuracy(Boolean value) {
         accuracy = new PluginParameter<>(accuracy, value);
         return this;
@@ -1224,6 +1261,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Proportion of genotypes to mask if no depth
      */
+    @GeneratedGuiBoilerplate
     public Double proportionOfGenotypesToMaskIfNoDepth() {
         return propSitesMask.value();
     }
@@ -1237,6 +1275,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin proportionOfGenotypesToMaskIfNoDepth(Double value) {
         propSitesMask = new PluginParameter<>(propSitesMask, value);
         return this;
@@ -1248,6 +1287,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Depth of genotypes to mask
      */
+    @GeneratedGuiBoilerplate
     public Integer depthOfGenotypesToMask() {
         return depthToMask.value();
     }
@@ -1261,6 +1301,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin depthOfGenotypesToMask(Integer value) {
         depthToMask = new PluginParameter<>(depthToMask, value);
         return this;
@@ -1272,6 +1313,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Proportion of depth genotypes to mask
      */
+    @GeneratedGuiBoilerplate
     public Double proportionOfDepthGenotypesToMask() {
         return propDepthSitesMask.value();
     }
@@ -1285,6 +1327,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin proportionOfDepthGenotypesToMask(Double value) {
         propDepthSitesMask = new PluginParameter<>(propDepthSitesMask, value);
         return this;
@@ -1299,6 +1342,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Optional key to calculate accuracy
      */
+    @GeneratedGuiBoilerplate
     public String optionalKeyToCalculateAccuracy() {
         return maskKey.value();
     }
@@ -1314,6 +1358,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin optionalKeyToCalculateAccuracy(String value) {
         maskKey = new PluginParameter<>(maskKey, value);
         return this;
@@ -1325,6 +1370,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return Calculate accuracy within MAF categories
      */
+    @GeneratedGuiBoilerplate
     public Boolean calculateAccuracyWithinMAFCategories() {
         return byMAF.value();
     }
@@ -1337,6 +1383,7 @@ public class FILLINImputationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINImputationPlugin calculateAccuracyWithinMAFCategories(Boolean value) {
         byMAF = new PluginParameter<>(byMAF, value);
         return this;

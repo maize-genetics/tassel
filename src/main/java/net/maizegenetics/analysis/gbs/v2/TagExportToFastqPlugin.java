@@ -18,6 +18,7 @@ import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.concurrent.atomic.LongAdder;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Converts a TagCounts binary (*.cnt) file (presumably a master tag list) to a fastq file that can be used as input
@@ -96,16 +97,19 @@ public class TagExportToFastqPlugin extends AbstractPlugin {
 
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Export unique tags to fastQ file in a format readable by aligners";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Tag Export to Fastq";
     }
@@ -121,6 +125,7 @@ public class TagExportToFastqPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      */
     // TODO: Replace <Type> with specific type.
+    @GeneratedGuiBoilerplate
     public String runPlugin(DataSet input) {
         return (String) performFunction(input).getData(0).getData();
     }
@@ -130,6 +135,7 @@ public class TagExportToFastqPlugin extends AbstractPlugin {
      *
      * @return Input DB
      */
+    @GeneratedGuiBoilerplate
     public String inputDB() {
         return myDBFile.value();
     }
@@ -142,6 +148,7 @@ public class TagExportToFastqPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public TagExportToFastqPlugin inputDB(String value) {
         myDBFile = new PluginParameter<>(myDBFile, value);
         return this;
@@ -152,6 +159,7 @@ public class TagExportToFastqPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
@@ -164,6 +172,7 @@ public class TagExportToFastqPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public TagExportToFastqPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
@@ -174,6 +183,7 @@ public class TagExportToFastqPlugin extends AbstractPlugin {
      *
      * @return Min Count
      */
+    @GeneratedGuiBoilerplate
     public Integer minCount() {
         return myMinCount.value();
     }
@@ -186,6 +196,7 @@ public class TagExportToFastqPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public TagExportToFastqPlugin minCount(Integer value) {
         myMinCount = new PluginParameter<>(myMinCount, value);
         return this;

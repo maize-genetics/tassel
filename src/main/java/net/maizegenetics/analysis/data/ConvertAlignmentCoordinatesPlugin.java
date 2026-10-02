@@ -23,6 +23,7 @@ import net.maizegenetics.util.Tuple;
 import net.maizegenetics.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -171,6 +172,7 @@ public class ConvertAlignmentCoordinatesPlugin extends AbstractPlugin {
      *
      * @return Map File
      */
+    @GeneratedGuiBoilerplate
     public String mapFilename() {
         return myMapFilename.value();
     }
@@ -182,6 +184,7 @@ public class ConvertAlignmentCoordinatesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ConvertAlignmentCoordinatesPlugin mapFilename(String value) {
         myMapFilename = new PluginParameter<>(myMapFilename, value);
         return this;
@@ -192,6 +195,7 @@ public class ConvertAlignmentCoordinatesPlugin extends AbstractPlugin {
      *
      * @return Genome Version
      */
+    @GeneratedGuiBoilerplate
     public String genomeVersion() {
         return myGenomeVersion.value();
     }
@@ -203,22 +207,26 @@ public class ConvertAlignmentCoordinatesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ConvertAlignmentCoordinatesPlugin genomeVersion(String value) {
         myGenomeVersion = new PluginParameter<>(myGenomeVersion, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Convert Genotype Table Coordinates";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Convert Genotype Table Coordinates";
     }

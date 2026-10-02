@@ -22,6 +22,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -143,6 +144,7 @@ public class RemoveNaNFromDistanceMatrixPlugin extends AbstractPlugin {
      *
      * @return Maximum Percent NaN
      */
+    @GeneratedGuiBoilerplate
     public Double maxPercentNaN() {
         return myMaxPercentNaN.value();
     }
@@ -154,22 +156,26 @@ public class RemoveNaNFromDistanceMatrixPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RemoveNaNFromDistanceMatrixPlugin maxPercentNaN(Double value) {
         myMaxPercentNaN = new PluginParameter<>(myMaxPercentNaN, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Remove NaN From Distance Matrix";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Remove NaN From Distance Matrix";
     }

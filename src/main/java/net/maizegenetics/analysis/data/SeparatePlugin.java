@@ -23,6 +23,7 @@ import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -167,6 +168,7 @@ public class SeparatePlugin extends AbstractPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = SeparatePlugin.class.getResource("/net/maizegenetics/analysis/images/Separate.gif");
         if (imageURL == null) {
@@ -182,6 +184,7 @@ public class SeparatePlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Separate";
     }
@@ -192,6 +195,7 @@ public class SeparatePlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Separate Data (i.e. into Chromosomes)";
     }

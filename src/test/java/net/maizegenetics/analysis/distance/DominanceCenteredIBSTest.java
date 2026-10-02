@@ -5,7 +5,10 @@
  */
 package net.maizegenetics.analysis.distance;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.File;
 
 import net.maizegenetics.constants.TutorialConstants;
 import net.maizegenetics.dna.snp.ImportUtils;
@@ -19,6 +22,17 @@ import net.maizegenetics.constants.GeneralConstants;
  * @author Terry Casstevens
  */
 public class DominanceCenteredIBSTest {
+
+    // ExportPlugin declares saveAs as an outFile parameter, and AbstractPlugin
+    // calls System.exit(1) when its directory is missing, which kills the whole
+    // test worker before any results are written.
+    @BeforeClass
+    public static void setUpClass() {
+        File tempDir = new File(GeneralConstants.TEMP_DIR);
+        if (!tempDir.exists()) {
+            tempDir.mkdirs();
+        }
+    }
 
     @Test
     public void testDominanceCenteredIBSTest() {

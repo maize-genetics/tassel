@@ -28,6 +28,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Reads a PostgreSQL query file and a genomeAnnosDB connection config file,
@@ -339,11 +340,13 @@ public class GenomeAnnosDBQueryToPositionListPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Get a PositionList from a query of a genome annotations DB";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = GenomeAnnosDBQueryToPositionListPlugin.class.getResource("/net/maizegenetics/analysis/images/lists.gif");
         if (imageURL == null) {
@@ -354,6 +357,7 @@ public class GenomeAnnosDBQueryToPositionListPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Get a PositionList from a query of a genome annotations DB";
     }
@@ -371,6 +375,7 @@ public class GenomeAnnosDBQueryToPositionListPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public PositionList runPlugin(DataSet input) {
         return (PositionList) performFunction(input).getData(0).getData();
     }
@@ -380,6 +385,7 @@ public class GenomeAnnosDBQueryToPositionListPlugin extends AbstractPlugin {
      *
      * @return DB config file
      */
+    @GeneratedGuiBoilerplate
     public String connConfigFile() {
         return connConfigFile.value();
     }
@@ -391,6 +397,7 @@ public class GenomeAnnosDBQueryToPositionListPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenomeAnnosDBQueryToPositionListPlugin connConfigFile(String value) {
         connConfigFile = new PluginParameter<>(connConfigFile, value);
         return this;
@@ -401,6 +408,7 @@ public class GenomeAnnosDBQueryToPositionListPlugin extends AbstractPlugin {
      *
      * @return Query file
      */
+    @GeneratedGuiBoilerplate
     public String queryFile() {
         return queryFile.value();
     }
@@ -412,6 +420,7 @@ public class GenomeAnnosDBQueryToPositionListPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenomeAnnosDBQueryToPositionListPlugin queryFile(String value) {
         queryFile = new PluginParameter<>(queryFile, value);
         return this;

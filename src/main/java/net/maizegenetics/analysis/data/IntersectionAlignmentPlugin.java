@@ -14,6 +14,7 @@ import net.maizegenetics.plugindef.PluginEvent;
 
 import javax.swing.*;
 import java.net.URL;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -45,6 +46,7 @@ public class IntersectionAlignmentPlugin extends UnionAlignmentPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = IntersectionAlignmentPlugin.class.getResource("/net/maizegenetics/analysis/images/IntersectJoin.gif");
         if (imageURL == null) {
@@ -60,6 +62,7 @@ public class IntersectionAlignmentPlugin extends UnionAlignmentPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Intersect Join";
     }
@@ -70,6 +73,7 @@ public class IntersectionAlignmentPlugin extends UnionAlignmentPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Join Datasets by Intersecting Taxa";
     }

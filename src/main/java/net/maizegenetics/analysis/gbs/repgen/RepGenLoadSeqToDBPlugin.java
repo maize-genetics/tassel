@@ -40,6 +40,7 @@ import net.maizegenetics.taxa.Taxon;
 import net.maizegenetics.util.DirectoryCrawler;
 import net.maizegenetics.util.Tuple;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Develops a discovery rGBS database based on a folder of sequencing files
@@ -464,6 +465,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return Input Directory
      */
+    @GeneratedGuiBoilerplate
     public String inputDirectory() {
         return myInputDir.value();
     }
@@ -479,6 +481,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin inputDirectory(String value) {
         myInputDir = new PluginParameter<>(myInputDir, value);
         return this;
@@ -489,6 +492,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return Key File
      */
+    @GeneratedGuiBoilerplate
     public String keyFile() {
         return myKeyFile.value();
     }
@@ -501,6 +505,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin keyFile(String value) {
         myKeyFile = new PluginParameter<>(myKeyFile, value);
         return this;
@@ -512,6 +517,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return Maximum Tag Length
      */
+    @GeneratedGuiBoilerplate
     public Integer kmerLength() {
         return myKmerLength.value();
     }
@@ -523,6 +529,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin kmerLength(Integer value) {
         myKmerLength = new PluginParameter<>(myKmerLength, value);
         return this;
@@ -533,6 +540,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return Minimum Tag Length
      */
+    @GeneratedGuiBoilerplate
     public Integer minimumKmerLength() {
         return myMinKmerLength.value();
     }
@@ -544,6 +552,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin minimumKmerLength(Integer value) {
         myMinKmerLength = new PluginParameter<>(myMinKmerLength, value);
         return this;
@@ -554,6 +563,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return Min Tag Count
      */
+    @GeneratedGuiBoilerplate
     public Integer minKmerCount() {
         return myMinKmerCount.value();
     }
@@ -565,6 +575,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin minKmerCount(Integer value) {
         myMinKmerCount = new PluginParameter<>(myMinKmerCount, value);
         return this;
@@ -575,6 +586,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return Min Taxa Count
      */
+    @GeneratedGuiBoilerplate
     public Integer minTaxa() {
         return minTaxa.value();
     }
@@ -586,6 +598,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin minTaxa(Integer value) {
         minTaxa = new PluginParameter<>(minTaxa, value);
         return this;
@@ -595,6 +608,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return Output Database File
      */
+    @GeneratedGuiBoilerplate
     public String outputDatabaseFile() {
         return myOutputDB.value();
     }
@@ -606,6 +620,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin outputDatabaseFile(String value) {
         myOutputDB = new PluginParameter<>(myOutputDB, value);
         return this;
@@ -617,6 +632,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return Minimum quality score
      */
+    @GeneratedGuiBoilerplate
     public Integer minimumQualityScore() {
         return myMinQualScore.value();
     }
@@ -629,6 +645,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin minimumQualityScore(Integer value) {
         myMinQualScore = new PluginParameter<>(myMinQualScore, value);
         return this;
@@ -639,6 +656,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      * @param value
      * @return
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin maximumKmerNumber(Integer value) {
         myMaxKmerNumber = new PluginParameter<>(myMaxKmerNumber, value);
         return this;
@@ -649,6 +667,7 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
      * @param value
      * @return
      */
+    @GeneratedGuiBoilerplate
     public RepGenLoadSeqToDBPlugin batchSize(Integer value) {
         myBatchSize = new PluginParameter<>(myBatchSize, value);
         return this;
@@ -675,16 +694,19 @@ public class RepGenLoadSeqToDBPlugin extends AbstractPlugin {
 //        return this;
 //    }
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Discovery Tags By Taxa";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Discovery Tags By Taxa";
     }

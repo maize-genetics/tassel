@@ -36,6 +36,7 @@ import net.maizegenetics.stats.PCA.PrinComp;
 import net.maizegenetics.stats.PCA.PrinComp.PC_TYPE;
 import net.maizegenetics.util.OpenBitSet;
 import net.maizegenetics.util.SimpleTableReport;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class PrincipalComponentsPlugin extends AbstractPlugin {
     private static final Logger myLogger = LogManager.getLogger(PrincipalComponentsPlugin.class);
@@ -387,6 +388,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public ImageIcon getIcon() {
         URL imageURL = FileLoadPlugin.class.getResource("/net/maizegenetics/analysis/images/pca.gif");
         if (imageURL == null) {
@@ -397,11 +399,13 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getButtonName() {
 		return "PCA";
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getToolTipText() {
 		return "Performs principal components analysis";
 	}
@@ -416,6 +420,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public Phenotype runPlugin(DataSet input) {
         return (Phenotype) performFunction(input).getData(0).getData();
     }
@@ -430,6 +435,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return covariance (alternative = correlation)
      */
+    @GeneratedGuiBoilerplate
     public Boolean covariance() {
         return useCovariance.value();
     }
@@ -446,6 +452,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PrincipalComponentsPlugin covariance(Boolean value) {
         useCovariance = new PluginParameter<>(useCovariance, value);
         return this;
@@ -459,6 +466,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return limit number of components by
      */
+    @GeneratedGuiBoilerplate
     public PCA_LIMIT limitNumberOfComponentsBy() {
         return limitBy.value();
     }
@@ -474,6 +482,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PrincipalComponentsPlugin limitNumberOfComponentsBy(PCA_LIMIT value) {
         limitBy = new PluginParameter<>(limitBy, value);
         return this;
@@ -485,6 +494,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return number of components
      */
+    @GeneratedGuiBoilerplate
     public Integer numberOfComponents() {
         return numberOfComponents.value();
     }
@@ -498,6 +508,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PrincipalComponentsPlugin numberOfComponents(Integer value) {
         numberOfComponents = new PluginParameter<>(numberOfComponents, value);
         return this;
@@ -509,6 +520,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return minimum eigenvalue
      */
+    @GeneratedGuiBoilerplate
     public Double minimumEigenvalue() {
         return minEigenval.value();
     }
@@ -522,6 +534,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PrincipalComponentsPlugin minimumEigenvalue(Double value) {
         minEigenval = new PluginParameter<>(minEigenval, value);
         return this;
@@ -533,6 +546,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return total variance
      */
+    @GeneratedGuiBoilerplate
     public Double totalVariance() {
         return totalVar.value();
     }
@@ -546,6 +560,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PrincipalComponentsPlugin totalVariance(Double value) {
         totalVar = new PluginParameter<>(totalVar, value);
         return this;
@@ -556,6 +571,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return Return Eigenvalues
      */
+    @GeneratedGuiBoilerplate
     public Boolean returnEigenvalues() {
         return reportEigenvalues.value();
     }
@@ -568,6 +584,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PrincipalComponentsPlugin returnEigenvalues(Boolean value) {
         reportEigenvalues = new PluginParameter<>(reportEigenvalues, value);
         return this;
@@ -581,6 +598,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return Return Eigenvectors
      */
+    @GeneratedGuiBoilerplate
     public Boolean returnEigenvectors() {
         return reportEigenvectors.value();
     }
@@ -595,6 +613,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PrincipalComponentsPlugin returnEigenvectors(Boolean value) {
         reportEigenvectors = new PluginParameter<>(reportEigenvectors, value);
         return this;
