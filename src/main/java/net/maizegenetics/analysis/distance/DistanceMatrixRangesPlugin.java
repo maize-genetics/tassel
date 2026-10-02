@@ -18,6 +18,7 @@ import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -136,6 +137,7 @@ public class DistanceMatrixRangesPlugin extends AbstractPlugin {
      *
      * @return ImageIcon
      */
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
@@ -145,6 +147,7 @@ public class DistanceMatrixRangesPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Distance Matrix";
     }
@@ -154,6 +157,7 @@ public class DistanceMatrixRangesPlugin extends AbstractPlugin {
      *
      * @return String
      */
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Create a distance matrix";
     }

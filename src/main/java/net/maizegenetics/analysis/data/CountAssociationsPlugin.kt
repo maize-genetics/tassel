@@ -12,6 +12,7 @@ import net.maizegenetics.util.Utils
 import org.apache.logging.log4j.LogManager
 import java.awt.Frame
 import javax.swing.ImageIcon
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 class CountAssociationsPlugin(parentFrame: Frame? = null, isInteractive: Boolean = false) : AbstractPlugin(parentFrame, isInteractive) {
 
@@ -123,14 +124,17 @@ class CountAssociationsPlugin(parentFrame: Frame? = null, isInteractive: Boolean
         return intervalMapBuilder.build()
     }
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         return null
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return ("Count Associations")
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return ("Create a count file For Associations")
     }
@@ -140,6 +144,7 @@ class CountAssociationsPlugin(parentFrame: Frame? = null, isInteractive: Boolean
      *
      * @return Intervals
      */
+    @GeneratedGuiBoilerplate
     fun intervalFile(): String {
         return intervalFile.value()
     }
@@ -151,6 +156,7 @@ class CountAssociationsPlugin(parentFrame: Frame? = null, isInteractive: Boolean
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun intervalFile(value: String): CountAssociationsPlugin {
         intervalFile = PluginParameter<String>(intervalFile, value)
         return this
@@ -161,6 +167,7 @@ class CountAssociationsPlugin(parentFrame: Frame? = null, isInteractive: Boolean
      *
      * @return Gwas Results
      */
+    @GeneratedGuiBoilerplate
     fun gwasResults(): String {
         return gwasResults.value()
     }
@@ -172,6 +179,7 @@ class CountAssociationsPlugin(parentFrame: Frame? = null, isInteractive: Boolean
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun gwasResults(value: String): CountAssociationsPlugin {
         gwasResults = PluginParameter<String>(gwasResults, value)
         return this
@@ -182,6 +190,7 @@ class CountAssociationsPlugin(parentFrame: Frame? = null, isInteractive: Boolean
      *
      * @return Output Count File
      */
+    @GeneratedGuiBoilerplate
     fun outputFile(): String {
         return outputFile.value()
     }
@@ -193,6 +202,7 @@ class CountAssociationsPlugin(parentFrame: Frame? = null, isInteractive: Boolean
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     fun outputFile(value: String): CountAssociationsPlugin {
         outputFile = PluginParameter<String>(outputFile, value)
         return this

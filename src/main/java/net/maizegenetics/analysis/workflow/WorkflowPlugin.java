@@ -25,6 +25,7 @@ import net.maizegenetics.util.Utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -154,6 +155,7 @@ public class WorkflowPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = WorkflowPlugin.class.getResource("/net/maizegenetics/analysis/images/Workflow.gif");
         if (imageURL == null) {
@@ -164,11 +166,13 @@ public class WorkflowPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return myButtonName;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return myButtonName;
     }

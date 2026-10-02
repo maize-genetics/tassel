@@ -34,6 +34,7 @@ import java.util.List;
 
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -239,16 +240,19 @@ public class AddReferenceAlleleToHDF5Plugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Add reference allele";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Add reference allele to HDF5 genotypes";
     }
@@ -266,6 +270,7 @@ public class AddReferenceAlleleToHDF5Plugin extends AbstractPlugin {
      *
      * @return Input HDF5 Genotype File
      */
+    @GeneratedGuiBoilerplate
     public String inputHDF5GenotypeFile() {
         return myInputGenotypes.value();
     }
@@ -278,6 +283,7 @@ public class AddReferenceAlleleToHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AddReferenceAlleleToHDF5Plugin inputHDF5GenotypeFile(String value) {
         myInputGenotypes = new PluginParameter<>(myInputGenotypes, value);
         return this;
@@ -288,6 +294,7 @@ public class AddReferenceAlleleToHDF5Plugin extends AbstractPlugin {
      *
      * @return Reference Genome File
      */
+    @GeneratedGuiBoilerplate
     public String referenceGenomeFile() {
         return myRefGenome.value();
     }
@@ -300,6 +307,7 @@ public class AddReferenceAlleleToHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AddReferenceAlleleToHDF5Plugin referenceGenomeFile(String value) {
         myRefGenome = new PluginParameter<>(myRefGenome, value);
         return this;
@@ -310,6 +318,7 @@ public class AddReferenceAlleleToHDF5Plugin extends AbstractPlugin {
      *
      * @return Reference Genome Version
      */
+    @GeneratedGuiBoilerplate
     public String referenceGenomeVersion() {
         return myRefGenomeVersion.value();
     }
@@ -322,6 +331,7 @@ public class AddReferenceAlleleToHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AddReferenceAlleleToHDF5Plugin referenceGenomeVersion(String value) {
         myRefGenomeVersion = new PluginParameter<>(myRefGenomeVersion, value);
         return this;
@@ -334,6 +344,7 @@ public class AddReferenceAlleleToHDF5Plugin extends AbstractPlugin {
      *
      * @return Output HDF5 Genotype File
      */
+    @GeneratedGuiBoilerplate
     public String outputHDF5GenotypeFile() {
         return myOutputGenotypes.value();
     }
@@ -348,6 +359,7 @@ public class AddReferenceAlleleToHDF5Plugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AddReferenceAlleleToHDF5Plugin outputHDF5GenotypeFile(String value) {
         myOutputGenotypes = new PluginParameter<>(myOutputGenotypes, value);
         return this;

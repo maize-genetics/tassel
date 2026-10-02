@@ -24,9 +24,7 @@ public class BuilderFromGenotypeHDF5Test {
 
     @Test@Ignore
     public void testMergeToMutableHDF5() throws Exception {
-        String root="/Users/edbuckler/SolexaAnal/HapMapV2/";
-     //   String infileRoot="/Users/edbuckler/SolexaAnal/GBS/GBS27/hmp/maizeHapMapV2_B73RefGenV2_201203028_ALLpXXXX.hmp.h5";
-     //   String outfile="/Users/edbuckler/SolexaAnal/GBS/GBS27/hmp/maizeHapMapV2_B73RefGenV2_201203028_ALLt2.hmp.h5";
+        String root="/Users/edbuckler/SolexaAnal/HapMapV2/"; // dev-only path; test is @Ignored
         int r=new Random().nextInt(1000);
 
         String infileRoot=root+"test/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.h5";
@@ -100,9 +98,7 @@ public class BuilderFromGenotypeHDF5Test {
 
     @Test@Ignore
     public void testDeflation() throws Exception {
-        String root="/Users/edbuckler/SolexaAnal/HapMapV2/";
-        //   String infileRoot="/Users/edbuckler/SolexaAnal/GBS/GBS27/hmp/maizeHapMapV2_B73RefGenV2_201203028_ALLpXXXX.hmp.h5";
-        //   String outfile="/Users/edbuckler/SolexaAnal/GBS/GBS27/hmp/maizeHapMapV2_B73RefGenV2_201203028_ALLt2.hmp.h5";
+        String root="/Users/edbuckler/SolexaAnal/HapMapV2/"; // dev-only path; test is @Ignored
         int r=new Random().nextInt(1000);
 
         String infileRoot=root+"test/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.h5";
@@ -145,8 +141,7 @@ public class BuilderFromGenotypeHDF5Test {
 
     @Test@Ignore
     public void testHMPtoHDF5() throws Exception {
-       // String root="/Volumes/LaCie/HapMapV2/";
-        String root="/Users/edbuckler/SolexaAnal/HapMapV2/";
+        String root="/Users/edbuckler/SolexaAnal/HapMapV2/"; // dev-only path; test is @Ignored
         String hmpFiles=root+"AGP2/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.txt.gz";
         String h5Files=root+"test/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.h5";
         int startChr=9;
@@ -180,8 +175,6 @@ public class BuilderFromGenotypeHDF5Test {
     }
 
     public static void main(String[] args) {
-        ///Users/edbuckler/SolexaAnal/HapMapV2/test/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.h5
-        //Users/edbuckler/SolexaAnal/HapMapV2/test/out1.hmp.h5
         String infileRoot=args[0];
         String outfile=args[1];
         int startChr=1;

@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -66,6 +67,7 @@ public class DistanceMatrixPlugin extends AbstractPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = DistanceMatrixPlugin.class.getResource("/net/maizegenetics/analysis/images/DistanceMatrix.gif");
         if (imageURL == null) {
@@ -81,6 +83,7 @@ public class DistanceMatrixPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Distance Matrix";
     }
@@ -91,6 +94,7 @@ public class DistanceMatrixPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Create a distance matrix";
     }

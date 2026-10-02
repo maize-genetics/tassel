@@ -26,6 +26,7 @@ import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.util.OpenBitSet;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class TransformDataPlugin extends AbstractPlugin {
 	private static Logger myLogger = LogManager.getLogger(TransformDataPlugin.class);
@@ -153,6 +154,7 @@ public class TransformDataPlugin extends AbstractPlugin {
 	}
 	
 	@Override
+	@GeneratedGuiBoilerplate
 	public ImageIcon getIcon() {
         URL imageURL = TransformDataPlugin.class.getResource("/net/maizegenetics/analysis/images/Transform.gif");
         if (imageURL == null) {
@@ -163,11 +165,13 @@ public class TransformDataPlugin extends AbstractPlugin {
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getButtonName() {
 		return "Transform Phenotype";
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getToolTipText() {
 		return "Transform or standardize phenotypes";
 	}

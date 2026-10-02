@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Creates haplotypes by finding large IBS regions within GBS data.  Starts with the 
@@ -508,16 +509,19 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Extract Inbred Haplotypes by FILLIN";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Creates haplotype alignments based on long IBD regions of inbred lines";
     }
@@ -545,6 +549,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Target file
      */
+    @GeneratedGuiBoilerplate
     public String targetFile() {
         return hmpFile.value();
     }
@@ -558,6 +563,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin targetFile(String value) {
         hmpFile = new PluginParameter<>(hmpFile, value);
         return this;
@@ -569,6 +575,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Output filename
      */
+    @GeneratedGuiBoilerplate
     public String outputFilename() {
         return outFileBase.value();
     }
@@ -582,6 +589,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin outputFilename(String value) {
         outFileBase = new PluginParameter<>(outFileBase, value);
         return this;
@@ -593,6 +601,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Max divergence from founder
      */
+    @GeneratedGuiBoilerplate
     public Double maxDivergenceFromFounder() {
         return maxDistFromFounder.value();
     }
@@ -605,6 +614,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin maxDivergenceFromFounder(Double value) {
         maxDistFromFounder = new PluginParameter<>(maxDistFromFounder, value);
         return this;
@@ -618,6 +628,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Max heterozygosity of output haplotypes
      */
+    @GeneratedGuiBoilerplate
     public Double maxHeterozygosityOfOutputHaplotypes() {
         return maxHetFreq.value();
     }
@@ -633,6 +644,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin maxHeterozygosityOfOutputHaplotypes(Double value) {
         maxHetFreq = new PluginParameter<>(maxHetFreq, value);
         return this;
@@ -645,6 +657,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Min sites to cluster
      */
+    @GeneratedGuiBoilerplate
     public Integer minSitesToCluster() {
         return minSitesForSectionComp.value();
     }
@@ -658,6 +671,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin minSitesToCluster(Integer value) {
         minSitesForSectionComp = new PluginParameter<>(minSitesForSectionComp, value);
         return this;
@@ -669,6 +683,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Max combined error to impute two donors
      */
+    @GeneratedGuiBoilerplate
     public Double maxCombinedErrorToImputeTwoDonors() {
         return maxErrorInCreatingConsensus.value();
     }
@@ -681,6 +696,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin maxCombinedErrorToImputeTwoDonors(Double value) {
         maxErrorInCreatingConsensus = new PluginParameter<>(maxErrorInCreatingConsensus, value);
         return this;
@@ -693,6 +709,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Preferred haplotype size
      */
+    @GeneratedGuiBoilerplate
     public Integer preferredHaplotypeSize() {
         return appoxSitesPerHaplotype.value();
     }
@@ -706,6 +723,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin preferredHaplotypeSize(Integer value) {
         appoxSitesPerHaplotype = new PluginParameter<>(appoxSitesPerHaplotype, value);
         return this;
@@ -717,6 +735,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Min sites to test match
      */
+    @GeneratedGuiBoilerplate
     public Integer minSitesToTestMatch() {
         return minSitesPresentPerHap.value();
     }
@@ -729,6 +748,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin minSitesToTestMatch(Integer value) {
         minSitesPresentPerHap = new PluginParameter<>(minSitesPresentPerHap, value);
         return this;
@@ -739,6 +759,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Max haplotypes per segment
      */
+    @GeneratedGuiBoilerplate
     public Integer maxHaplotypesPerSegment() {
         return maxHaplotypes.value();
     }
@@ -751,6 +772,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin maxHaplotypesPerSegment(Integer value) {
         maxHaplotypes = new PluginParameter<>(maxHaplotypes, value);
         return this;
@@ -761,6 +783,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Min taxa to generate a haplotype
      */
+    @GeneratedGuiBoilerplate
     public Integer minTaxaToGenerateAHaplotype() {
         return minTaxaInGroup.value();
     }
@@ -773,6 +796,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin minTaxaToGenerateAHaplotype(Integer value) {
         minTaxaInGroup = new PluginParameter<>(minTaxaInGroup, value);
         return this;
@@ -783,6 +807,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Max frequency missing per haplotype
      */
+    @GeneratedGuiBoilerplate
     public Double maxFrequencyMissingPerHaplotype() {
         return maximumMissing.value();
     }
@@ -795,6 +820,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin maxFrequencyMissingPerHaplotype(Double value) {
         maximumMissing = new PluginParameter<>(maximumMissing, value);
         return this;
@@ -805,6 +831,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Express system out
      */
+    @GeneratedGuiBoilerplate
     public Boolean supressSystemOut() {
         return nonverboseOutput.value();
     }
@@ -816,6 +843,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin supressSystemOut(Boolean value) {
         nonverboseOutput = new PluginParameter<>(nonverboseOutput, value);
         return this;
@@ -827,6 +855,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return Detailed system out on haplotypes
      */
+    @GeneratedGuiBoilerplate
     public Boolean detailedSystemOutOnHaplotypes() {
         return extendedOutput.value();
     }
@@ -839,6 +868,7 @@ public class FILLINFindHaplotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FILLINFindHaplotypesPlugin detailedSystemOutOnHaplotypes(Boolean value) {
         extendedOutput = new PluginParameter<>(extendedOutput, value);
         return this;

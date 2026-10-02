@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -247,6 +248,7 @@ public class LinkageDisequilibriumPlugin extends AbstractPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = LinkageDisequilibriumPlugin.class.getResource("/net/maizegenetics/analysis/images/LDPlot.gif");
         if (imageURL == null) {
@@ -262,6 +264,7 @@ public class LinkageDisequilibriumPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Linkage Disequilibrium";
     }
@@ -272,6 +275,7 @@ public class LinkageDisequilibriumPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Linkage Disequilibrium";
     }

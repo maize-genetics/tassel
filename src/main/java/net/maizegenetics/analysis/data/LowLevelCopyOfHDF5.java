@@ -51,12 +51,14 @@ public class LowLevelCopyOfHDF5 {
 
         reader.object().copy(Tassel5HDF5Constants.POSITION_MODULE, writer, Tassel5HDF5Constants.POSITION_MODULE);
 
+        // The taxa module must be locked before annotateHDF5File, which reads the taxa
+        // list back (via buildFromHDF5Genotypes) to compute per-taxon coverage/allele stats.
+        HDF5Utils.lockHDF5TaxaModule(writer);
+
         //Precalculated Stats
         GenotypeTableBuilder.annotateHDF5File(writer);
 
-        
         HDF5Utils.lockHDF5GenotypeModule(writer);
-        HDF5Utils.lockHDF5TaxaModule(writer);
         reader.close();
         writer.close();
     }

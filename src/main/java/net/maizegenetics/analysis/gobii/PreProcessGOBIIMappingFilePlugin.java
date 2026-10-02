@@ -20,6 +20,7 @@ import net.maizegenetics.plugindef.AbstractPlugin;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This plugin should be run prior to creating the intermediate files for marker and
@@ -335,16 +336,19 @@ public class PreProcessGOBIIMappingFilePlugin extends AbstractPlugin {
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -370,6 +374,7 @@ public class PreProcessGOBIIMappingFilePlugin extends AbstractPlugin {
      *
      * @return dbConfigFile
      */
+    @GeneratedGuiBoilerplate
     public String dbConfigFile() {
         return dbConfigFile.value();
     }
@@ -381,6 +386,7 @@ public class PreProcessGOBIIMappingFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PreProcessGOBIIMappingFilePlugin dbConfigFile(String value) {
         dbConfigFile = new PluginParameter<>(dbConfigFile, value);
         return this;
@@ -392,6 +398,7 @@ public class PreProcessGOBIIMappingFilePlugin extends AbstractPlugin {
      *
      * @return dataset name
      */
+    @GeneratedGuiBoilerplate
     public String datasetName() {
         return datasetName.value();
     }
@@ -404,6 +411,7 @@ public class PreProcessGOBIIMappingFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PreProcessGOBIIMappingFilePlugin datasetName(String value) {
         datasetName = new PluginParameter<>(datasetName, value);
         return this;
@@ -417,6 +425,7 @@ public class PreProcessGOBIIMappingFilePlugin extends AbstractPlugin {
      *
      * @return mappingFile
      */
+    @GeneratedGuiBoilerplate
     public String mappingFile() {
         return mappingFile.value();
     }
@@ -431,6 +440,7 @@ public class PreProcessGOBIIMappingFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PreProcessGOBIIMappingFilePlugin mappingFile(String value) {
         mappingFile = new PluginParameter<>(mappingFile, value);
         return this;
@@ -442,6 +452,7 @@ public class PreProcessGOBIIMappingFilePlugin extends AbstractPlugin {
      *
      * @return Path of output directory
      */
+    @GeneratedGuiBoilerplate
     public String outputDir() {
         return outputDir.value();
     }
@@ -454,6 +465,7 @@ public class PreProcessGOBIIMappingFilePlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public PreProcessGOBIIMappingFilePlugin outputDir(String value) {
         outputDir = new PluginParameter<>(outputDir, value);
         return this;

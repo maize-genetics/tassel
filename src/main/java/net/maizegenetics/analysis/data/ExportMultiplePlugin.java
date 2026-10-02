@@ -21,6 +21,7 @@ import net.maizegenetics.util.Utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -115,6 +116,7 @@ public class ExportMultiplePlugin extends AbstractPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
@@ -125,6 +127,7 @@ public class ExportMultiplePlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Export Multiple";
     }
@@ -135,6 +138,7 @@ public class ExportMultiplePlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Export multiple data sets to files.";
     }

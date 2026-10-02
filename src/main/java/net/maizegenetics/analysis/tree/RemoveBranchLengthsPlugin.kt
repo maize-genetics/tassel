@@ -8,6 +8,7 @@ import net.maizegenetics.taxa.tree.removeBranchLengths
 import org.apache.logging.log4j.LogManager
 import java.awt.Frame
 import javax.swing.ImageIcon
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 private val myLogger = LogManager.getLogger(RemoveBranchLengthsPlugin::class.java)
 
@@ -26,14 +27,17 @@ class RemoveBranchLengthsPlugin(parentFrame: Frame? = null, isInteractive: Boole
 
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return "Remove Tree Branch Lengths"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return "Remove Tree Branch Lengths"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         return null
     }

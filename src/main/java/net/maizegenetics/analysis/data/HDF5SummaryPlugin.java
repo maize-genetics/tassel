@@ -22,6 +22,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Created by jgw87 on 5/28/14.
@@ -396,98 +397,119 @@ public class HDF5SummaryPlugin extends AbstractPlugin {
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public HDF5SummaryPlugin printAll(Boolean value) {
         printAll = new PluginParameter<>(printAll, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public HDF5SummaryPlugin taxaCount(Boolean value) {
         taxaCount = new PluginParameter<>(taxaCount, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public HDF5SummaryPlugin taxaNames(Boolean value) {
         taxaNames = new PluginParameter<>(taxaNames, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public HDF5SummaryPlugin siteCount(Boolean value) {
         siteCount = new PluginParameter<>(siteCount, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public HDF5SummaryPlugin siteNames(Boolean value) {
         siteNames = new PluginParameter<>(siteNames, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public HDF5SummaryPlugin hasDepth(Boolean value) {
         hasDepth = new PluginParameter<>(hasDepth, value);
         return this;
     }
 
+    @GeneratedGuiBoilerplate
     public HDF5SummaryPlugin rawData(Boolean value) {
         rawData = new PluginParameter<>(rawData, value);
         return this;
     }
 
     //Parameter get functions
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return inputFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return outputFile.value();
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean printAll() {
         return printAll.value();
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean taxaCount() {
         return taxaCount.value();
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean taxaNames() {
         return taxaNames.value();
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean siteCount() {
         return siteCount.value();
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean siteNames() {
         return siteNames.value();
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean tagCount() {
         return tagCount.value();
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean tagSeqs() {
         return tagSeqs.value();
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean hasDepth() {
         return hasDepth.value();
     }
 
+    @GeneratedGuiBoilerplate
     public Boolean rawData() {
         return rawData.value();
     }
 
     //GUI-required methods
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "HDF5 Summary";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "HDF5 Summary";
     }

@@ -8,6 +8,7 @@ import net.maizegenetics.taxa.tree.mergeTrees
 import org.apache.logging.log4j.LogManager
 import java.awt.Frame
 import javax.swing.ImageIcon
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate
 
 private val myLogger = LogManager.getLogger(MergeTreesPlugin::class.java)
 
@@ -26,14 +27,17 @@ class MergeTreesPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fals
 
     }
 
+    @GeneratedGuiBoilerplate
     override fun getToolTipText(): String {
         return "Merge Trees"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getButtonName(): String {
         return "Merge Trees"
     }
 
+    @GeneratedGuiBoilerplate
     override fun getIcon(): ImageIcon? {
         val imageURL = MergeTreesPlugin::class.java.getResource("/net/maizegenetics/analysis/images/Merge.gif")
         return imageURL?.let { ImageIcon(it) }

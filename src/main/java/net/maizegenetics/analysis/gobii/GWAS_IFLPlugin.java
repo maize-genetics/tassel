@@ -31,6 +31,7 @@ import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.DirectoryCrawler;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * The tables populated from this plugin are described in TAS-1162
@@ -344,16 +345,19 @@ public class GWAS_IFLPlugin extends AbstractPlugin
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -387,6 +391,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return Input File
      */
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return inputFile.value();
     }
@@ -403,6 +408,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GWAS_IFLPlugin inputFile(String value) {
         inputFile = new PluginParameter<>(inputFile, value);
         return this;
@@ -414,6 +420,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return Method Name
      */
+    @GeneratedGuiBoilerplate
     public String methodIds() {
         return methodIds.value();
     }
@@ -426,6 +433,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GWAS_IFLPlugin methodIds(String value) {
         methodIds = new PluginParameter<>(methodIds, value);
         return this;
@@ -438,6 +446,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return GWAS Experiment  Name
      */
+    @GeneratedGuiBoilerplate
     public String expID() {
         return expID.value();
     }
@@ -451,6 +460,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GWAS_IFLPlugin expID(String value) {
         expID = new PluginParameter<>(expID, value);
         return this;
@@ -464,6 +474,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return Statistic Names
      */
+    @GeneratedGuiBoilerplate
     public String statNames() {
         return statNames.value();
     }
@@ -478,6 +489,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GWAS_IFLPlugin statNames(String value) {
         statNames = new PluginParameter<>(statNames, value);
         return this;
@@ -489,6 +501,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return Path of output directory
      */
+    @GeneratedGuiBoilerplate
     public String outputDir() {
         return outputDir.value();
     }
@@ -502,6 +515,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GWAS_IFLPlugin outputDir(String value) {
         outputDir = new PluginParameter<>(outputDir, value);
         return this;
@@ -536,6 +550,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return B4R Config File
      */
+    @GeneratedGuiBoilerplate
     public String b4rConfigFile() {
         return b4rConfigFile.value();
     }
@@ -548,6 +563,7 @@ public class GWAS_IFLPlugin extends AbstractPlugin
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GWAS_IFLPlugin b4rConfigFile(String value) {
         b4rConfigFile = new PluginParameter<>(b4rConfigFile, value);
         return this;

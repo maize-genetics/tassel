@@ -15,6 +15,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.PluginParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Created by jgw87 on 6/5/14. This plugin takes a Hapmap or VCF genotype file
@@ -108,6 +109,7 @@ public class SortGenotypeFilePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = SortGenotypeFilePlugin.class.getResource("/net/maizegenetics/analysis/images/sort.gif");
         if (imageURL == null) {
@@ -118,11 +120,13 @@ public class SortGenotypeFilePlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Sort Genotype File";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Sort Genotype File by Positions";
     }
@@ -132,6 +136,7 @@ public class SortGenotypeFilePlugin extends AbstractPlugin {
      *
      * @return Input file
      */
+    @GeneratedGuiBoilerplate
     public String inputFile() {
         return infile.value();
     }
@@ -142,6 +147,7 @@ public class SortGenotypeFilePlugin extends AbstractPlugin {
      * @param value Input file
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SortGenotypeFilePlugin inputFile(String value) {
         infile = new PluginParameter<>(infile, value);
         return this;
@@ -152,6 +158,7 @@ public class SortGenotypeFilePlugin extends AbstractPlugin {
      *
      * @return Output file
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return outfile.value();
     }
@@ -162,6 +169,7 @@ public class SortGenotypeFilePlugin extends AbstractPlugin {
      * @param value Output file
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SortGenotypeFilePlugin outputFile(String value) {
         outfile = new PluginParameter<>(outfile, value);
         return this;
@@ -172,6 +180,7 @@ public class SortGenotypeFilePlugin extends AbstractPlugin {
      *
      * @return File type
      */
+    @GeneratedGuiBoilerplate
     public SupportedFileTypes fileType() {
         return fileType.value();
     }
@@ -182,6 +191,7 @@ public class SortGenotypeFilePlugin extends AbstractPlugin {
      * @param value File type
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public SortGenotypeFilePlugin fileType(SupportedFileTypes value) {
         fileType = new PluginParameter<>(fileType, value);
         return this;

@@ -31,6 +31,7 @@ import net.maizegenetics.util.TableReport;
 import net.maizegenetics.util.TableReportBuilder;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class EqtlAssociationPlugin extends AbstractPlugin {
     private GENOTYPE_TABLE_COMPONENT[] GENOTYPE_COMP = new GENOTYPE_TABLE_COMPONENT[] {
@@ -332,6 +333,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
 
     //abstract plugin methods that need to be overridden
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL =
                 EqtlAssociationPlugin.class.getResource("/net/maizegenetics/analysis/images/speed.gif");
@@ -343,11 +345,13 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Fast Association";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Use a fixed effect linear model to test variants quickly.";
     }
@@ -361,6 +365,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public TableReport runPlugin(DataSet input) {
         return (TableReport) performFunction(input).getData(0).getData();
     }
@@ -370,6 +375,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return MaxPValue
      */
+    @GeneratedGuiBoilerplate
     public Double maxPValue() {
         return maxp.value();
     }
@@ -382,6 +388,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public EqtlAssociationPlugin maxPValue(Double value) {
         maxp = new PluginParameter<>(maxp, value);
         return this;
@@ -394,6 +401,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return Additive Only Model
      */
+    @GeneratedGuiBoilerplate
     public Boolean additiveOnlyModel() {
         return addOnly.value();
     }
@@ -408,6 +416,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public EqtlAssociationPlugin additiveOnlyModel(Boolean value) {
         addOnly = new PluginParameter<>(addOnly, value);
         return this;
@@ -419,6 +428,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return Genotype Component
      */
+    @GeneratedGuiBoilerplate
     public GENOTYPE_TABLE_COMPONENT genotypeComponent() {
         return myGenotypeTable.value();
     }
@@ -432,6 +442,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public EqtlAssociationPlugin genotypeComponent(GENOTYPE_TABLE_COMPONENT value) {
         myGenotypeTable = new PluginParameter<>(myGenotypeTable, value);
         return this;
@@ -446,6 +457,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return Write to file
      */
+    @GeneratedGuiBoilerplate
     public Boolean writeToFile() {
         return saveAsFile.value();
     }
@@ -461,6 +473,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public EqtlAssociationPlugin writeToFile(Boolean value) {
         saveAsFile = new PluginParameter<>(saveAsFile, value);
         return this;
@@ -472,6 +485,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return reportFilename.value();
     }
@@ -484,6 +498,7 @@ public class EqtlAssociationPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public EqtlAssociationPlugin outputFile(String value) {
         reportFilename = new PluginParameter<>(reportFilename, value);
         return this;

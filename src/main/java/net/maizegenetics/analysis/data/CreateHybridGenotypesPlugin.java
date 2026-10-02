@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -146,6 +147,7 @@ public class CreateHybridGenotypesPlugin extends AbstractPlugin {
      *
      * @return Hybrid File
      */
+    @GeneratedGuiBoilerplate
     public String hybridFile() {
         return myHybridFile.value();
     }
@@ -157,6 +159,7 @@ public class CreateHybridGenotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public CreateHybridGenotypesPlugin hybridFile(String value) {
         myHybridFile = new PluginParameter<>(myHybridFile, value);
         return this;
@@ -167,6 +170,7 @@ public class CreateHybridGenotypesPlugin extends AbstractPlugin {
      *
      * @return Cross Char
      */
+    @GeneratedGuiBoilerplate
     public String hybridChar() {
         return myHybridChar.value();
     }
@@ -178,6 +182,7 @@ public class CreateHybridGenotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public CreateHybridGenotypesPlugin hybridChar(String value) {
         myHybridChar = new PluginParameter<>(myHybridChar, value);
         return this;
@@ -188,6 +193,7 @@ public class CreateHybridGenotypesPlugin extends AbstractPlugin {
      *
      * @return Numeric Genotype
      */
+    @GeneratedGuiBoilerplate
     public Boolean numeric() {
         return myNumeric.value();
     }
@@ -200,17 +206,20 @@ public class CreateHybridGenotypesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public CreateHybridGenotypesPlugin numeric(Boolean value) {
         myNumeric = new PluginParameter<>(myNumeric, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Create Hybrid Genotypes";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = CreateHybridGenotypesPlugin.class.getResource("/net/maizegenetics/analysis/images/hybrid.gif");
         if (imageURL == null) {
@@ -221,6 +230,7 @@ public class CreateHybridGenotypesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Create Hybrid Genotypes";
     }

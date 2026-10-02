@@ -28,6 +28,7 @@ import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.DirectoryCrawler;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * THis is defined in tas-1098
@@ -421,18 +422,21 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
     }
  
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         // TODO Auto-generated method stub
         return null;
@@ -479,6 +483,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return Breakpoint File
       */
+     @GeneratedGuiBoilerplate
      public String breakFile() {
          return breakFile.value();
      }
@@ -491,6 +496,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public HapBreakpoints_IFLFilePlugin breakFile(String value) {
          breakFile = new PluginParameter<>(breakFile, value);
          return this;
@@ -502,6 +508,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return Breakpoint Set Name
       */
+     @GeneratedGuiBoilerplate
      public String setName() {
          return setName.value();
      }
@@ -515,6 +522,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public HapBreakpoints_IFLFilePlugin setName(String value) {
          setName = new PluginParameter<>(setName, value);
          return this;
@@ -527,6 +535,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return mapset
       */
+     @GeneratedGuiBoilerplate
      public String mapset() {
          return mapset.value();
      }
@@ -540,6 +549,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public HapBreakpoints_IFLFilePlugin mapset(String value) {
          mapset = new PluginParameter<>(mapset, value);
          return this;
@@ -551,6 +561,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return dataset
       */
+     @GeneratedGuiBoilerplate
      public String src_dataset() {
          return src_dataset.value();
      }
@@ -563,6 +574,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public HapBreakpoints_IFLFilePlugin src_dataset(String value) {
          src_dataset = new PluginParameter<>(src_dataset, value);
          return this;
@@ -573,6 +585,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return Path of output directory
       */
+     @GeneratedGuiBoilerplate
      public String outputDir() {
          return outputDir.value();
      }
@@ -586,6 +599,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public HapBreakpoints_IFLFilePlugin outputDir(String value) {
          outputDir = new PluginParameter<>(outputDir, value);
          return this;
@@ -597,6 +611,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return Breakpoint Method
       */
+     @GeneratedGuiBoilerplate
      public String method() {
          return method.value();
      }
@@ -609,6 +624,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public HapBreakpoints_IFLFilePlugin method(String value) {
          method = new PluginParameter<>(method, value);
          return this;
@@ -621,6 +637,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return mappingFile
       */
+     @GeneratedGuiBoilerplate
      public String donorMapFile() {
          return donorMapFile.value();
      }
@@ -636,6 +653,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public HapBreakpoints_IFLFilePlugin donorMapFile(String value) {
          donorMapFile = new PluginParameter<>(donorMapFile, value);
          return this;
@@ -649,6 +667,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return mappingFile
       */
+     @GeneratedGuiBoilerplate
      public String taxaMapFile() {
          return taxaMapFile.value();
      }
@@ -663,6 +682,7 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public HapBreakpoints_IFLFilePlugin taxaMapFile(String value) {
          taxaMapFile = new PluginParameter<>(taxaMapFile, value);
          return this;

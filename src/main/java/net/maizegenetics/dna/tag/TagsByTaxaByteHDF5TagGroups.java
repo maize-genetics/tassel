@@ -408,4 +408,16 @@ public class TagsByTaxaByteHDF5TagGroups extends AbstractTagsByTaxa {
         bufferTagDist(0);
         h5.close();
     }
+
+    /**
+     * Releases the underlying HDF5 writer without flushing the tag-distribution buffer. Use this to
+     * close an instance that was created only to build/populate the file, or that was opened
+     * read-only, where {@link #getFileReadyForClosing()} would fail on an empty buffer.
+     */
+    public void closeWriter() {
+        if (h5 != null) {
+            h5.close();
+            h5 = null;
+        }
+    }
 }

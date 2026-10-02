@@ -43,6 +43,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * @author Terry Casstevens
@@ -353,6 +354,7 @@ public class ExportPlugin extends AbstractPlugin {
      * @return ImageIcon
      */
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = ExportPlugin.class.getResource("/net/maizegenetics/analysis/images/Export16.gif");
         if (imageURL == null) {
@@ -368,6 +370,7 @@ public class ExportPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Save As...";
     }
@@ -378,6 +381,7 @@ public class ExportPlugin extends AbstractPlugin {
      * @return String
      */
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Save data to files.";
     }
@@ -392,6 +396,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return Save As
      */
+    @GeneratedGuiBoilerplate
     public String saveFile() {
         return mySaveFile.value();
     }
@@ -403,6 +408,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ExportPlugin saveFile(String value) {
         mySaveFile = new PluginParameter<>(mySaveFile, value);
         return this;
@@ -422,6 +428,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return Format
      */
+    @GeneratedGuiBoilerplate
     public FileLoadPlugin.TasselFileType fileType() {
         return myFileType.value();
     }
@@ -433,6 +440,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ExportPlugin fileType(FileLoadPlugin.TasselFileType value) {
         myFileType = new PluginParameter<>(myFileType, value);
         return this;
@@ -452,6 +460,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return Keep Depth
      */
+    @GeneratedGuiBoilerplate
     public Boolean keepDepth() {
         return myKeepDepth.value();
     }
@@ -463,6 +472,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ExportPlugin keepDepth(Boolean value) {
         myKeepDepth = new PluginParameter<>(myKeepDepth, value);
         return this;
@@ -473,6 +483,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return Include Taxa Annotations
      */
+    @GeneratedGuiBoilerplate
     public Boolean includeTaxaAnnotations() {
         return myIncludeTaxaAnnotations.value();
     }
@@ -485,6 +496,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ExportPlugin includeTaxaAnnotations(Boolean value) {
         myIncludeTaxaAnnotations = new PluginParameter<>(myIncludeTaxaAnnotations, value);
         return this;
@@ -496,6 +508,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return Include Branch Lengths
      */
+    @GeneratedGuiBoilerplate
     public Boolean includeBranchLengths() {
         return myIncludeBranchLengths.value();
     }
@@ -508,6 +521,7 @@ public class ExportPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ExportPlugin includeBranchLengths(Boolean value) {
         myIncludeBranchLengths = new PluginParameter<>(myIncludeBranchLengths, value);
         return this;

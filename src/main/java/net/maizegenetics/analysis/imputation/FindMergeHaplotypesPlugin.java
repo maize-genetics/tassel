@@ -30,6 +30,7 @@ import java.io.BufferedWriter;
 import java.util.*;
 import java.util.List;
 import java.util.Map.Entry;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Creates haplotypes by finding large IBS regions within GBS data.  Starts with the 
@@ -450,16 +451,19 @@ public class FindMergeHaplotypesPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "ExtractInbredHaplotypes";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Creates haplotype alignments based on long IBD regions of inbred lines";
     }

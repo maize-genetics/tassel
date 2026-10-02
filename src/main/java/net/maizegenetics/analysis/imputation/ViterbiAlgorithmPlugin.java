@@ -10,6 +10,7 @@ import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class ViterbiAlgorithmPlugin extends AbstractPlugin {
 
@@ -77,16 +78,19 @@ public class ViterbiAlgorithmPlugin extends AbstractPlugin {
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public ImageIcon getIcon() {
 		return null;
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getButtonName() {
 		return "Viterbi";
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getToolTipText() {
 		return null;
 	}

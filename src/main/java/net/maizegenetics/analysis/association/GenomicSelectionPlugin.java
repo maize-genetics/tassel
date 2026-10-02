@@ -47,6 +47,7 @@ import net.maizegenetics.taxa.distance.WriteDistanceMatrix;
 
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 
 public class GenomicSelectionPlugin extends AbstractPlugin {
@@ -329,6 +330,7 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = GenomicSelectionPlugin.class.getResource("/net/maizegenetics/analysis/images/LinearAssociation.gif");
         if (imageURL == null) {
@@ -339,11 +341,13 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Genomic Selection";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Predict Phenotypes using G-BLUP for Genomic Selection";
     }
@@ -370,6 +374,7 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
      * Convenience method to run plugin with one return object.
      * @param input
      */
+    @GeneratedGuiBoilerplate
     public DataSet runPlugin(DataSet input) {
         return (DataSet) performFunction(input).getData(0).getData();
     }
@@ -379,6 +384,7 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
      *
      * @return Perform cross-validation
      */
+    @GeneratedGuiBoilerplate
     public Boolean performCrossValidation() {
         return performCrossValidation.value();
     }
@@ -391,6 +397,7 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenomicSelectionPlugin performCrossValidation(Boolean value) {
         performCrossValidation = new PluginParameter<>(performCrossValidation, value);
         return this;
@@ -402,6 +409,7 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
      *
      * @return Number of folds
      */
+    @GeneratedGuiBoilerplate
     public Integer kFolds() {
         return kFolds.value();
     }
@@ -414,6 +422,7 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenomicSelectionPlugin kFolds(Integer value) {
         kFolds = new PluginParameter<>(kFolds, value);
         return this;
@@ -425,6 +434,7 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
      *
      * @return Number of iterations
      */
+    @GeneratedGuiBoilerplate
     public Integer nIterations() {
         return nIterations.value();
     }
@@ -437,6 +447,7 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public GenomicSelectionPlugin nIterations(Integer value) {
         nIterations = new PluginParameter<>(nIterations, value);
         return this;

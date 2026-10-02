@@ -23,6 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Range;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 
 public class FixedEffectLMPlugin extends AbstractPlugin {
@@ -119,11 +120,13 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "GLM";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = FixedEffectLMPlugin.class.getResource("/net/maizegenetics/analysis/images/LinearAssociation.gif");
         if (imageURL == null) {
@@ -134,6 +137,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Use fixed effect model to test associations";
     }
@@ -237,6 +241,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Analyze Phenotype Only
      */
+    @GeneratedGuiBoilerplate
     public Boolean phenotypeOnly() {
         return phenotypeOnly.value();
     }
@@ -250,6 +255,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin phenotypeOnly(Boolean value) {
         phenotypeOnly = new PluginParameter<>(phenotypeOnly, value);
         return this;
@@ -264,6 +270,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Save to file
      */
+    @GeneratedGuiBoilerplate
     public Boolean saveAsFile() {
         return saveAsFile.value();
     }
@@ -279,6 +286,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin saveAsFile(Boolean value) {
         saveAsFile = new PluginParameter<>(saveAsFile, value);
         return this;
@@ -290,6 +298,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Statistics File
      */
+    @GeneratedGuiBoilerplate
     public String siteReportFilename() {
         return siteReportFilename.value();
     }
@@ -302,6 +311,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin siteReportFilename(String value) {
         siteReportFilename = new PluginParameter<>(siteReportFilename, value);
         return this;
@@ -313,6 +323,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Genotype Effect File
      */
+    @GeneratedGuiBoilerplate
     public String alleleReportFilename() {
         return alleleReportFilename.value();
     }
@@ -325,6 +336,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin alleleReportFilename(String value) {
         alleleReportFilename = new PluginParameter<>(alleleReportFilename, value);
         return this;
@@ -336,6 +348,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return max P value
      */
+    @GeneratedGuiBoilerplate
     public Double maxPvalue() {
         return maxPvalue.value();
     }
@@ -348,6 +361,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin maxPvalue(Double value) {
         maxPvalue = new PluginParameter<>(maxPvalue, value);
         return this;
@@ -360,6 +374,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Run Permutations
      */
+    @GeneratedGuiBoilerplate
     public Boolean permute() {
         return permute.value();
     }
@@ -373,6 +388,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin permute(Boolean value) {
         permute = new PluginParameter<>(permute, value);
         return this;
@@ -384,6 +400,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Number of Permutations
      */
+    @GeneratedGuiBoilerplate
     public Integer numberOfPermutations() {
         return numberOfPermutations.value();
     }
@@ -396,6 +413,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin numberOfPermutations(Integer value) {
         numberOfPermutations = new PluginParameter<>(numberOfPermutations, value);
         return this;
@@ -407,6 +425,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Genotype Component
      */
+    @GeneratedGuiBoilerplate
     public GENOTYPE_TABLE_COMPONENT genotypeTable() {
         return myGenotypeTable.value();
     }
@@ -420,6 +439,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin genotypeTable(GENOTYPE_TABLE_COMPONENT value) {
         myGenotypeTable = new PluginParameter<>(myGenotypeTable, value);
         return this;
@@ -431,6 +451,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Minimum Class Size
      */
+    @GeneratedGuiBoilerplate
     public Integer minClassSize() {
         return minClassSize.value();
     }
@@ -444,6 +465,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin minClassSize(Integer value) {
         minClassSize = new PluginParameter<>(minClassSize, value);
         return this;
@@ -455,6 +477,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Bi-Allelic Sites Only
      */
+    @GeneratedGuiBoilerplate
     public Boolean biallelicOnly() {
         return biallelicOnly.value();
     }
@@ -468,6 +491,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin biallelicOnly(Boolean value) {
         biallelicOnly = new PluginParameter<>(biallelicOnly, value);
         return this;
@@ -479,6 +503,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Output Site Stats
      */
+    @GeneratedGuiBoilerplate
     public Boolean siteStatsOutput() {
         return siteStatsOutput.value();
     }
@@ -492,6 +517,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin siteStatsOutput(Boolean value) {
         siteStatsOutput = new PluginParameter<>(siteStatsOutput, value);
         return this;
@@ -502,6 +528,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Site Stat File
      */
+    @GeneratedGuiBoilerplate
     public String siteStatFilename() {
         return siteStatFilename.value();
     }
@@ -513,6 +540,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin siteStatFilename(String value) {
         siteStatFilename = new PluginParameter<>(siteStatFilename, value);
         return this;
@@ -527,6 +555,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return Append Effect Estimates to Stats
      */
+    @GeneratedGuiBoilerplate
     public Boolean appendAddDom() {
         return appendAddDom.value();
     }
@@ -543,6 +572,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin appendAddDom(Boolean value) {
         appendAddDom = new PluginParameter<>(appendAddDom, value);
         return this;
@@ -553,6 +583,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return BLUEs File
      */
+    @GeneratedGuiBoilerplate
     public String bluesReportFilename() {
         return bluesReportFilename.value();
     }
@@ -565,6 +596,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin bluesReportFilename(String value) {
         bluesReportFilename = new PluginParameter<>(bluesReportFilename, value);
         return this;
@@ -575,6 +607,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return ANOVA File
      */
+    @GeneratedGuiBoilerplate
     public String anovaReportFilename() {
         return anovaReportFilename.value();
     }
@@ -587,6 +620,7 @@ public class FixedEffectLMPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FixedEffectLMPlugin anovaReportFilename(String value) {
         anovaReportFilename = new PluginParameter<>(anovaReportFilename, value);
         return this;

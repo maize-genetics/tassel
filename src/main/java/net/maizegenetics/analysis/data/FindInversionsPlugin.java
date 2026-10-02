@@ -33,6 +33,7 @@ import net.maizegenetics.util.TableReportBuilder;
 import net.maizegenetics.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -540,6 +541,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return Window Unit
      */
+    @GeneratedGuiBoilerplate
     public WINDOW_UNIT windowUnit() {
         return myWindowUnit.value();
     }
@@ -551,6 +553,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FindInversionsPlugin windowUnit(WINDOW_UNIT value) {
         myWindowUnit = new PluginParameter<>(myWindowUnit, value);
         return this;
@@ -561,6 +564,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return Step Size
      */
+    @GeneratedGuiBoilerplate
     public Integer stepSize() {
         return myStepSize.value();
     }
@@ -572,6 +576,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FindInversionsPlugin stepSize(Integer value) {
         myStepSize = new PluginParameter<>(myStepSize, value);
         return this;
@@ -582,6 +587,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return Window Size
      */
+    @GeneratedGuiBoilerplate
     public Integer windowSize() {
         return myWindowSize.value();
     }
@@ -593,6 +599,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FindInversionsPlugin windowSize(Integer value) {
         myWindowSize = new PluginParameter<>(myWindowSize, value);
         return this;
@@ -603,6 +610,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return Num PCAs
      */
+    @GeneratedGuiBoilerplate
     public Integer numPCAs() {
         return myNumPCAs.value();
     }
@@ -614,6 +622,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FindInversionsPlugin numPCAs(Integer value) {
         myNumPCAs = new PluginParameter<>(myNumPCAs, value);
         return this;
@@ -624,6 +633,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return myOutputFile.value();
     }
@@ -635,17 +645,20 @@ public class FindInversionsPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public FindInversionsPlugin outputFile(String value) {
         myOutputFile = new PluginParameter<>(myOutputFile, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Find Inversions";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = FindInversionsPlugin.class.getResource("/net/maizegenetics/analysis/images/inversion.gif");
         if (imageURL == null) {
@@ -656,6 +669,7 @@ public class FindInversionsPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Find Inversions";
     }

@@ -19,6 +19,7 @@ import net.maizegenetics.util.Utils;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -69,25 +70,30 @@ public class ListPlugins extends AbstractPlugin {
 
     }
 
+    @GeneratedGuiBoilerplate
     public boolean full() {
         return myFull.value();
     }
 
+    @GeneratedGuiBoilerplate
     public boolean usage() {
         return myUsage.value();
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "List Plugins";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "List Plugins";
     }

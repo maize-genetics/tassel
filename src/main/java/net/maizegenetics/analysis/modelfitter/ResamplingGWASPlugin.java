@@ -28,6 +28,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.stats.linearmodels.BasicShuffler;
 import net.maizegenetics.util.TableReport;
 import net.maizegenetics.util.TableReportBuilder;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class ResamplingGWASPlugin extends AbstractPlugin {
     //input parameters :
@@ -259,6 +260,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL =
                 FixedEffectLMPlugin.class.getResource("/net/maizegenetics/analysis/images/resample.png");
@@ -270,11 +272,13 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Resample GWAS";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "GWAS with resampling";
     }
@@ -297,6 +301,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public TableReport runPlugin(DataSet input) {
         return (TableReport) performFunction(input).getData(0).getData();
     }
@@ -307,6 +312,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return Enter Limit
      */
+    @GeneratedGuiBoilerplate
     public Double enterLimit() {
         return enterLimit.value();
     }
@@ -320,6 +326,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ResamplingGWASPlugin enterLimit(Double value) {
         enterLimit = new PluginParameter<>(enterLimit, value);
         return this;
@@ -332,6 +339,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return Use residuals
      */
+    @GeneratedGuiBoilerplate
     public Boolean useResiduals() {
         return useResiduals.value();
     }
@@ -345,6 +353,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ResamplingGWASPlugin useResiduals(Boolean value) {
         useResiduals = new PluginParameter<>(useResiduals, value);
         return this;
@@ -356,6 +365,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return Number of Iterations
      */
+    @GeneratedGuiBoilerplate
     public Integer numberOfIterations() {
         return numberOfIterations.value();
     }
@@ -368,6 +378,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ResamplingGWASPlugin numberOfIterations(Integer value) {
         numberOfIterations = new PluginParameter<>(numberOfIterations, value);
         return this;
@@ -381,6 +392,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return Resample Proportion
      */
+    @GeneratedGuiBoilerplate
     public Double resampleProportion() {
         return resampleProportion.value();
     }
@@ -395,6 +407,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ResamplingGWASPlugin resampleProportion(Double value) {
         resampleProportion = new PluginParameter<>(resampleProportion, value);
         return this;
@@ -406,6 +419,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return With Replacement
      */
+    @GeneratedGuiBoilerplate
     public Boolean withReplacement() {
         return withReplacement.value();
     }
@@ -418,6 +432,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ResamplingGWASPlugin withReplacement(Boolean value) {
         withReplacement = new PluginParameter<>(withReplacement, value);
         return this;

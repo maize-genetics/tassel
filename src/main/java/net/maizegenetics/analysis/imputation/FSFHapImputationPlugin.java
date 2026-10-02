@@ -14,6 +14,7 @@ import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.TableReport;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class FSFHapImputationPlugin extends AbstractPlugin {
 	
@@ -151,16 +152,19 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public ImageIcon getIcon() {
 		return null;
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getButtonName() {
 		return "Impute By FSFHap";
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getToolTipText() {
 		return "Impute variants in full sib families";
 	}
@@ -176,6 +180,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       * Convenience method to run plugin with one return object.
       */
      // TODO: Replace <Type> with specific type.
+     @GeneratedGuiBoilerplate
      public GenotypeTable runPlugin(DataSet input) {
          return (GenotypeTable) performFunction(input).getData(0).getData();
      }
@@ -185,6 +190,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Pedigrees
       */
+     @GeneratedGuiBoilerplate
      public String pedigrees() {
          return pedigreeFilename.value();
      }
@@ -196,6 +202,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin pedigrees(String value) {
          pedigreeFilename = new PluginParameter<>(pedigreeFilename, value);
          return this;
@@ -206,6 +213,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Cluster
       */
+     @GeneratedGuiBoilerplate
      public Boolean cluster() {
          return useClusterAlgorithm.value();
      }
@@ -217,6 +225,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin cluster(Boolean value) {
          useClusterAlgorithm = new PluginParameter<>(useClusterAlgorithm, value);
          return this;
@@ -227,6 +236,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Window L D
       */
+     @GeneratedGuiBoilerplate
      public Boolean windowLD() {
          return useWindowLD.value();
      }
@@ -238,6 +248,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin windowLD(Boolean value) {
          useWindowLD = new PluginParameter<>(useWindowLD, value);
          return this;
@@ -248,6 +259,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Bc
       */
+     @GeneratedGuiBoilerplate
      public Boolean bc() {
          return useBCFilter.value();
      }
@@ -259,6 +271,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin bc(Boolean value) {
          useBCFilter = new PluginParameter<>(useBCFilter, value);
          return this;
@@ -269,6 +282,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Multbc
       */
+     @GeneratedGuiBoilerplate
      public Boolean multbc() {
          return useMultipleBCFilter.value();
      }
@@ -280,6 +294,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin multbc(Boolean value) {
          useMultipleBCFilter = new PluginParameter<>(useMultipleBCFilter, value);
          return this;
@@ -290,6 +305,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Min Maf
       */
+     @GeneratedGuiBoilerplate
      public Double minMaf() {
          return minMinorAlleleFreq.value();
      }
@@ -301,6 +317,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin minMaf(Double value) {
          minMinorAlleleFreq = new PluginParameter<>(minMinorAlleleFreq, value);
          return this;
@@ -311,6 +328,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Window
       */
+     @GeneratedGuiBoilerplate
      public Integer window() {
          return windowSize.value();
      }
@@ -322,6 +340,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin window(Integer value) {
          windowSize = new PluginParameter<>(windowSize, value);
          return this;
@@ -332,6 +351,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Min R
       */
+     @GeneratedGuiBoilerplate
      public Double minR() {
          return minRforSnps.value();
      }
@@ -344,6 +364,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin minR(Double value) {
          minRforSnps = new PluginParameter<>(minRforSnps, value);
          return this;
@@ -354,6 +375,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Max Missing
       */
+     @GeneratedGuiBoilerplate
      public Double maxMissing() {
          return maxMissing.value();
      }
@@ -366,6 +388,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin maxMissing(Double value) {
          maxMissing = new PluginParameter<>(maxMissing, value);
          return this;
@@ -376,6 +399,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Nohets
       */
+     @GeneratedGuiBoilerplate
      public Boolean nohets() {
          return noHets.value();
      }
@@ -387,6 +411,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin nohets(Boolean value) {
          noHets = new PluginParameter<>(noHets, value);
          return this;
@@ -397,6 +422,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Max Diff
       */
+     @GeneratedGuiBoilerplate
      public Integer maxDiff() {
          return maxDifference.value();
      }
@@ -408,6 +434,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin maxDiff(Integer value) {
          maxDifference = new PluginParameter<>(maxDifference, value);
          return this;
@@ -418,6 +445,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Min Hap
       */
+     @GeneratedGuiBoilerplate
      public Integer minHap() {
          return minHaplotypeCluster.value();
      }
@@ -430,6 +458,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin minHap(Integer value) {
          minHaplotypeCluster = new PluginParameter<>(minHaplotypeCluster, value);
          return this;
@@ -440,6 +469,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Overlap
       */
+     @GeneratedGuiBoilerplate
      public Integer overlap() {
          return overlap.value();
      }
@@ -451,6 +481,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin overlap(Integer value) {
          overlap = new PluginParameter<>(overlap, value);
          return this;
@@ -461,6 +492,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Fillgaps
       */
+     @GeneratedGuiBoilerplate
      public Boolean fillgaps() {
          return fillgaps.value();
      }
@@ -473,6 +505,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin fillgaps(Boolean value) {
          fillgaps = new PluginParameter<>(fillgaps, value);
          return this;
@@ -483,6 +516,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Phet
       */
+     @GeneratedGuiBoilerplate
      public Double phet() {
          return probHeterozygous.value();
      }
@@ -494,6 +528,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin phet(Double value) {
          probHeterozygous = new PluginParameter<>(probHeterozygous, value);
          return this;
@@ -504,6 +539,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Merge
       */
+     @GeneratedGuiBoilerplate
      public Boolean merge() {
          return mergeAlignments.value();
      }
@@ -515,6 +551,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin merge(Boolean value) {
          mergeAlignments = new PluginParameter<>(mergeAlignments, value);
          return this;
@@ -525,6 +562,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Out Parents
       */
+     @GeneratedGuiBoilerplate
      public Boolean outParents() {
          return outParentCalls.value();
      }
@@ -537,6 +575,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin outParents(Boolean value) {
          outParentCalls = new PluginParameter<>(outParentCalls, value);
          return this;
@@ -547,6 +586,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Out Nuc
       */
+     @GeneratedGuiBoilerplate
      public Boolean outNuc() {
          return outNucleotides.value();
      }
@@ -559,6 +599,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin outNuc(Boolean value) {
          outNucleotides = new PluginParameter<>(outNucleotides, value);
          return this;
@@ -569,6 +610,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return Out I U P A C
       */
+     @GeneratedGuiBoilerplate
      public Boolean outIUPAC() {
          return outIUPAC.value();
      }
@@ -580,6 +622,7 @@ public class FSFHapImputationPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public FSFHapImputationPlugin outIUPAC(Boolean value) {
          outIUPAC = new PluginParameter<>(outIUPAC, value);
          return this;

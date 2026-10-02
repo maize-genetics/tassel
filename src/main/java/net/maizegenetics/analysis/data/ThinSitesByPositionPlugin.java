@@ -24,6 +24,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * Plugin to thin out sites based on their physical position on the chromosome.
@@ -129,6 +130,7 @@ public class ThinSitesByPositionPlugin extends AbstractPlugin {
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = HetsToUnknownPlugin.class.getResource("/net/maizegenetics/analysis/images/homozygous.gif");
         if (imageURL == null) {
@@ -139,11 +141,13 @@ public class ThinSitesByPositionPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Thin Sites by Position";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "This sites based on their physical position on the chromosome";
     }
@@ -153,6 +157,7 @@ public class ThinSitesByPositionPlugin extends AbstractPlugin {
      *
      * @return Output file
      */
+    @GeneratedGuiBoilerplate
     public String outFile() {
         return outfile.value();
     }
@@ -164,6 +169,7 @@ public class ThinSitesByPositionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ThinSitesByPositionPlugin outfile(String value) {
         outfile = new PluginParameter<>(outfile, value);
         return this;
@@ -174,6 +180,7 @@ public class ThinSitesByPositionPlugin extends AbstractPlugin {
      *
      * @return Minimum distance
      */
+    @GeneratedGuiBoilerplate
     public Integer minDist() {
         return minDist.value();
     }
@@ -186,6 +193,7 @@ public class ThinSitesByPositionPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public ThinSitesByPositionPlugin minDist(Integer value) {
         minDist = new PluginParameter<>(minDist, value);
         return this;
@@ -206,6 +214,7 @@ public class ThinSitesByPositionPlugin extends AbstractPlugin {
     /**
      * Convenience method to run plugin with one return object.
      */
+    @GeneratedGuiBoilerplate
     public GenotypeTable runPlugin(DataSet input) {
         return (GenotypeTable) performFunction(input).getData(0).getData();
     }

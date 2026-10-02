@@ -36,6 +36,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.SimpleTableReport;
 import net.maizegenetics.util.TableReport;
 import net.maizegenetics.util.TableReportBuilder;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class ParentPhasingPlugin extends AbstractPlugin {
 	private static Logger myLogger = LogManager.getLogger(ParentPhasingPlugin.class);
@@ -281,17 +282,20 @@ public class ParentPhasingPlugin extends AbstractPlugin {
 
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public ImageIcon getIcon() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getButtonName() {
 		return "Phase Parents";
 	}
 
 	@Override
+	@GeneratedGuiBoilerplate
 	public String getToolTipText() {
 		return "Phase parents using progeny genotypes";
 	}

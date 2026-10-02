@@ -45,9 +45,12 @@ import net.maizegenetics.util.Tuple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.biojava.nbio.alignment.Alignments;
+import org.biojava.nbio.core.alignment.matrices.SubstitutionMatrixHelper;
 import org.biojava.nbio.core.alignment.template.AlignedSequence;
 import org.biojava.nbio.core.alignment.template.Profile;
+import org.biojava.nbio.core.alignment.template.SubstitutionMatrix;
 import org.biojava.nbio.core.sequence.DNASequence;
+import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.util.ConcurrencyTools;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
@@ -58,6 +61,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  * This class aligns tags at the same physical location against one another,
@@ -71,6 +75,14 @@ import com.google.common.collect.TreeBasedTable;
 public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
 
     private static final Logger myLogger = LogManager.getLogger(DiscoverySNPCallerPluginV2.class);
+
+    // BioJava's default DNA substitution matrix (nuc-4.4) does a linear compound->index lookup on
+    // every alignment DP cell (~28% of the alignment phase, per profiling). Wrap it in an O(1)
+    // lookup with byte-identical scores, over the DNACompoundSet that new DNASequence(String) uses
+    // (so it passes the compound-set check in Alignments.getMultipleSequenceAlignment). Built once.
+    private static final SubstitutionMatrix<NucleotideCompound> FAST_NUC_4_4 =
+            new IndexedNucleotideSubstitutionMatrix(SubstitutionMatrixHelper.getNuc4_4(),
+                    DNACompoundSet.getDNACompoundSet());
 
     private PluginParameter<String> myInputDB = new PluginParameter.Builder<>("db", null, String.class).guiName("Input GBS Database").required(true).inFile()
             .description("Input Database file if using SQLite").build();
@@ -223,16 +235,19 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Discovery SNP Caller";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Discovery SNP Caller";
     }
@@ -516,7 +531,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
         }
         // Alignments.getmultipleSequenceAlignment aligns the tags against each other using
         // the ClustalW algorithm
-        Profile<DNASequence, NucleotideCompound> profile = Alignments.getMultipleSequenceAlignment(lst);
+        Profile<DNASequence, NucleotideCompound> profile = Alignments.getMultipleSequenceAlignment(lst, FAST_NUC_4_4);
         if(printDebug) System.out.printf("Clustalw:%n%s%n", profile);
         for (AlignedSequence<DNASequence, NucleotideCompound> compounds : profile) {
             ImmutableList tagList=(ImmutableList)compounds.getOriginalSequence().getUserCollection();
@@ -701,6 +716,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return Input Tags by Taxa File
      */
+    @GeneratedGuiBoilerplate
     public String inputDB() {
         return myInputDB.value();
     }
@@ -713,6 +729,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 inputDB(String value) {
         myInputDB = new PluginParameter<>(myInputDB, value);
         return this;
@@ -723,6 +740,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return Min Minor Allele Freq
      */
+    @GeneratedGuiBoilerplate
     public Double minMinorAlleleFreq() {
         return myMinMinorAlleleFreq.value();
     }
@@ -734,6 +752,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 minMinorAlleleFreq(Double value) {
         myMinMinorAlleleFreq = new PluginParameter<>(myMinMinorAlleleFreq, value);
         return this;
@@ -744,6 +763,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return Min Locus Coverage
      */
+    @GeneratedGuiBoilerplate
     public Double minLocusCoverage() {
         return myMinLocusCoverage.value();
     }
@@ -756,6 +776,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 minLocusCoverage(Double value) {
         myMinLocusCoverage = new PluginParameter<>(myMinLocusCoverage, value);
         return this;
@@ -772,6 +793,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return Reference Genome File
      */
+    @GeneratedGuiBoilerplate
     public String referenceGenomeFile() {
         return myRefGenome.value();
     }
@@ -789,6 +811,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 referenceGenomeFile(String value) {
         myRefGenome = new PluginParameter<>(myRefGenome, value);
         return this;
@@ -799,6 +822,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return Start Chromosome
      */
+    @GeneratedGuiBoilerplate
     public Chromosome startChromosome() {
         return myStartChr.value();
     }
@@ -810,6 +834,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 startChromosome(Chromosome value) {
         myStartChr = new PluginParameter<>(myStartChr, value);
         return this;
@@ -820,6 +845,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return End Chromosome
      */
+    @GeneratedGuiBoilerplate
     public Chromosome endChromosome() {
         return myEndChr.value();
     }
@@ -831,6 +857,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 endChromosome(Chromosome value) {
         myEndChr = new PluginParameter<>(myEndChr, value);
         return this;
@@ -863,6 +890,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return Include Gaps
      */
+    @GeneratedGuiBoilerplate
     public Boolean includeGaps() {
         return myIncludeGaps.value();
     }
@@ -875,6 +903,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 includeGaps(Boolean value) {
         myIncludeGaps = new PluginParameter<>(myIncludeGaps, value);
         return this;
@@ -915,6 +944,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return Maxmimum Gap alignment ratio
      */
+    @GeneratedGuiBoilerplate
     public Double gapAlignmentThreshold() {
         return myGapAlignmentThreshold.value();
     }
@@ -932,6 +962,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 gapAlignmentThreshold(Double value) {
         myGapAlignmentThreshold = new PluginParameter<>(myGapAlignmentThreshold, value);
         return this;
@@ -942,6 +973,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return MaxTagsPerCutSite
      */
+    @GeneratedGuiBoilerplate
     public Integer maxTagsPerCutSite() {
         return maxTagsPerCutSite.value();
     }
@@ -955,6 +987,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 maxTagsPerCutSite(Integer value) {
     	maxTagsPerCutSite = new PluginParameter<>(maxTagsPerCutSite, value);
         return this;
@@ -973,6 +1006,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return deleteOldData
      */
+    @GeneratedGuiBoilerplate
     public Boolean deleteOldData() {
         return myDeleteOldData.value();
     }
@@ -985,6 +1019,7 @@ public class DiscoverySNPCallerPluginV2 extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public DiscoverySNPCallerPluginV2 deleteOldData(Boolean value) {
         myDeleteOldData = new PluginParameter<>(myDeleteOldData, value);
         return this;

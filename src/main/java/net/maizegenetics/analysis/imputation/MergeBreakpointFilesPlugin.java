@@ -30,6 +30,7 @@ import net.maizegenetics.plugindef.PluginListener;
 import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.util.LoggingUtils;
 import net.maizegenetics.util.Utils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class MergeBreakpointFilesPlugin extends AbstractPlugin {
     private static Logger myLogger = LogManager.getLogger(MergeBreakpointFilesPlugin.class);
@@ -271,17 +272,20 @@ public class MergeBreakpointFilesPlugin extends AbstractPlugin {
     }
     
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Merge breakpoint files";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Merge selected breakpoint files.";
     }
@@ -345,6 +349,7 @@ public class MergeBreakpointFilesPlugin extends AbstractPlugin {
      *
      * @return Select Files to Merge
      */
+    @GeneratedGuiBoilerplate
     public Boolean selectFiles() {
         return selectFiles.value();
     }
@@ -358,6 +363,7 @@ public class MergeBreakpointFilesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeBreakpointFilesPlugin selectFiles(Boolean value) {
         selectFiles = new PluginParameter<>(selectFiles, value);
         return this;
@@ -369,6 +375,7 @@ public class MergeBreakpointFilesPlugin extends AbstractPlugin {
      *
      * @return List of files to merge
      */
+    @GeneratedGuiBoilerplate
     public String selectedFilesList() {
         return selectedFilesList.value();
     }
@@ -382,6 +389,7 @@ public class MergeBreakpointFilesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeBreakpointFilesPlugin selectedFilesList(String value) {
         selectedFilesList = new PluginParameter<>(selectedFilesList, value);
         return this;
@@ -393,6 +401,7 @@ public class MergeBreakpointFilesPlugin extends AbstractPlugin {
      *
      * @return Output File
      */
+    @GeneratedGuiBoilerplate
     public String outputFile() {
         return outputFile.value();
     }
@@ -405,6 +414,7 @@ public class MergeBreakpointFilesPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public MergeBreakpointFilesPlugin outputFile(String value) {
         outputFile = new PluginParameter<>(outputFile, value);
         return this;

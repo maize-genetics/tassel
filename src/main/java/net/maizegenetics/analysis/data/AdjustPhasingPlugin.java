@@ -28,6 +28,7 @@ import net.maizegenetics.util.OpenBitSet;
 import net.maizegenetics.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 /**
  *
@@ -176,6 +177,7 @@ public class AdjustPhasingPlugin extends AbstractPlugin {
      *
      * @return Input VCF File
      */
+    @GeneratedGuiBoilerplate
     public String inputVCFFile() {
         return myInputVCFFile.value();
     }
@@ -187,6 +189,7 @@ public class AdjustPhasingPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AdjustPhasingPlugin inputVCFFile(String value) {
         myInputVCFFile = new PluginParameter<>(myInputVCFFile, value);
         return this;
@@ -197,6 +200,7 @@ public class AdjustPhasingPlugin extends AbstractPlugin {
      *
      * @return Hapcut Dir
      */
+    @GeneratedGuiBoilerplate
     public String hapcutDir() {
         return myHapcutDir.value();
     }
@@ -208,6 +212,7 @@ public class AdjustPhasingPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AdjustPhasingPlugin hapcutDir(String value) {
         myHapcutDir = new PluginParameter<>(myHapcutDir, value);
         return this;
@@ -218,6 +223,7 @@ public class AdjustPhasingPlugin extends AbstractPlugin {
      *
      * @return Output VCF File
      */
+    @GeneratedGuiBoilerplate
     public String outputVCFFile() {
         return myOutputVCFFile.value();
     }
@@ -229,22 +235,26 @@ public class AdjustPhasingPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public AdjustPhasingPlugin outputVCFFile(String value) {
         myOutputVCFFile = new PluginParameter<>(myOutputVCFFile, value);
         return this;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         return null;
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Adjust Phasing";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Adjust Phasing";
     }

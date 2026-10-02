@@ -29,6 +29,7 @@ import net.maizegenetics.plugindef.PluginParameter;
 import net.maizegenetics.plugindef.GeneratePluginCode;
 import net.maizegenetics.util.TableReport;
 import net.maizegenetics.util.TableReportUtils;
+import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
 
 public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
     //needs to set the following parameters in StepwiseAdditiveModelFitter:
@@ -374,6 +375,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public ImageIcon getIcon() {
         URL imageURL = StepwiseOLSModelFitterPlugin.class.getResource("stepwise.gif");
         if (imageURL == null) {
@@ -384,11 +386,13 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getButtonName() {
         return "Stepwise-Multithread";
     }
 
     @Override
+    @GeneratedGuiBoilerplate
     public String getToolTipText() {
         return "Fit a model using stepwise forward-backward regression.";
     }
@@ -407,6 +411,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Model selection criterion
       */
+     @GeneratedGuiBoilerplate
      public CRITERION modelCriterion() {
          return modelCriterion.value();
      }
@@ -421,6 +426,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin modelCriterion(CRITERION value) {
          modelCriterion = new PluginParameter<>(modelCriterion, value);
          return this;
@@ -433,6 +439,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Fit using residuals
       */
+     @GeneratedGuiBoilerplate
      public Boolean useResiduals() {
          return useResiduals.value();
      }
@@ -446,6 +453,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin useResiduals(Boolean value) {
          useResiduals = new PluginParameter<>(useResiduals, value);
          return this;
@@ -459,6 +467,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Use permutations
       */
+     @GeneratedGuiBoilerplate
      public Boolean usePermutations() {
          return usePermutations.value();
      }
@@ -474,6 +483,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin usePermutations(Boolean value) {
          usePermutations = new PluginParameter<>(usePermutations, value);
          return this;
@@ -485,6 +495,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Number of permutations
       */
+     @GeneratedGuiBoilerplate
      public Integer numberOfPermutations() {
          return numberOfPermutations.value();
      }
@@ -497,6 +508,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin numberOfPermutations(Integer value) {
          numberOfPermutations = new PluginParameter<>(numberOfPermutations, value);
          return this;
@@ -507,6 +519,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Alpha for permutations
       */
+     @GeneratedGuiBoilerplate
      public Double permutationAlpha() {
          return permutationAlpha.value();
      }
@@ -519,6 +532,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin permutationAlpha(Double value) {
          permutationAlpha = new PluginParameter<>(permutationAlpha, value);
          return this;
@@ -532,6 +546,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return enterLimit
       */
+     @GeneratedGuiBoilerplate
      public Double enterLimit() {
          return enterLimit.value();
      }
@@ -547,6 +562,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin enterLimit(Double value) {
          enterLimit = new PluginParameter<>(enterLimit, value);
          return this;
@@ -560,6 +576,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return exitLimit
       */
+     @GeneratedGuiBoilerplate
      public Double exitLimit() {
          return exitLimit.value();
      }
@@ -574,6 +591,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin exitLimit(Double value) {
          exitLimit = new PluginParameter<>(exitLimit, value);
          return this;
@@ -586,6 +604,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Max SNPs/markers
       */
+     @GeneratedGuiBoilerplate
      public Integer maxTerms() {
          return maxTerms.value();
      }
@@ -600,6 +619,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin maxTerms(Integer value) {
          maxTerms = new PluginParameter<>(maxTerms, value);
          return this;
@@ -611,6 +631,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Is Nested
       */
+     @GeneratedGuiBoilerplate
      public Boolean isNested() {
          return isNested.value();
      }
@@ -623,6 +644,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin isNested(Boolean value) {
          isNested = new PluginParameter<>(isNested, value);
          return this;
@@ -635,6 +657,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Nesting factor
       */
+     @GeneratedGuiBoilerplate
      public String nestingFactor() {
          return nestingFactor.value();
      }
@@ -648,6 +671,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin nestingFactor(List<String> value) {
          nestingFactor = new PluginParameter<>(nestingFactor, value);
          return this;
@@ -659,6 +683,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Genotype Component
       */
+     @GeneratedGuiBoilerplate
      public GENOTYPE_TABLE_COMPONENT genotypeTable() {
          return myGenotypeTable.value();
      }
@@ -672,6 +697,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin genotypeTable(GENOTYPE_TABLE_COMPONENT value) {
          myGenotypeTable = new PluginParameter<>(myGenotypeTable, value);
          return this;
@@ -682,6 +708,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Create anova reports
       */
+     @GeneratedGuiBoilerplate
      public Boolean createAnova() {
          return createAnova.value();
      }
@@ -694,6 +721,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin createAnova(Boolean value) {
          createAnova = new PluginParameter<>(createAnova, value);
          return this;
@@ -705,6 +733,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Create effects report
       */
+     @GeneratedGuiBoilerplate
      public Boolean createEffects() {
          return createEffects.value();
      }
@@ -717,6 +746,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin createEffects(Boolean value) {
          createEffects = new PluginParameter<>(createEffects, value);
          return this;
@@ -728,6 +758,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Create prescan effects
       */
+     @GeneratedGuiBoilerplate
      public Boolean createEffectsPrescan() {
          return createEffectsPrescan.value();
      }
@@ -740,6 +771,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin createEffectsPrescan(Boolean value) {
          createEffectsPrescan = new PluginParameter<>(createEffectsPrescan, value);
          return this;
@@ -751,6 +783,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Create step report
       */
+     @GeneratedGuiBoilerplate
      public Boolean createStep() {
          return createStep.value();
      }
@@ -763,6 +796,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin createStep(Boolean value) {
          createStep = new PluginParameter<>(createStep, value);
          return this;
@@ -776,6 +810,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Create residuals
       */
+     @GeneratedGuiBoilerplate
      public Boolean createResiduals() {
          return createResiduals.value();
      }
@@ -790,6 +825,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin createResiduals(Boolean value) {
          createResiduals = new PluginParameter<>(createResiduals, value);
          return this;
@@ -800,6 +836,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Write to files
       */
+     @GeneratedGuiBoilerplate
      public Boolean writeFiles() {
          return writeFiles.value();
      }
@@ -812,6 +849,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin writeFiles(Boolean value) {
          writeFiles = new PluginParameter<>(writeFiles, value);
          return this;
@@ -823,6 +861,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return Base file path
       */
+     @GeneratedGuiBoilerplate
      public String outputName() {
          return outputName.value();
      }
@@ -836,6 +875,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
       *
       * @return this plugin
       */
+     @GeneratedGuiBoilerplate
      public StepwiseAdditiveModelFitterPlugin outputName(String value) {
          outputName = new PluginParameter<>(outputName, value);
          return this;
@@ -849,6 +889,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
      *
      * @return Fit AddDom Model
      */
+    @GeneratedGuiBoilerplate
     public Boolean fitAddDom() {
         return fitAddDom.value();
     }
@@ -863,6 +904,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseAdditiveModelFitterPlugin fitAddDom(Boolean value) {
         fitAddDom = new PluginParameter<>(fitAddDom, value);
         return this;
@@ -876,6 +918,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
      *
      * @return Minimum number of heterozygotes
      */
+    @GeneratedGuiBoilerplate
     public Integer minHets() {
         return minHets.value();
     }
@@ -891,6 +934,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseAdditiveModelFitterPlugin minHets(Integer value) {
         minHets = new PluginParameter<>(minHets, value);
         return this;
@@ -903,6 +947,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
      *
      * @return Impute Dominance Score
      */
+    @GeneratedGuiBoilerplate
     public Boolean imputedDominance() {
         return imputedDominance.value();
     }
@@ -917,6 +962,7 @@ public class StepwiseAdditiveModelFitterPlugin extends AbstractPlugin {
      *
      * @return this plugin
      */
+    @GeneratedGuiBoilerplate
     public StepwiseAdditiveModelFitterPlugin imputedDominance(Boolean value) {
         imputedDominance = new PluginParameter<>(imputedDominance, value);
         return this;
