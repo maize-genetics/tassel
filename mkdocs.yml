@@ -2,7 +2,7 @@
 site_name: TASSEL 5
 site_description: Trait Analysis by aSSociation, Evolution and Linkage
 site_author: Buckler Lab
-# site_url: https://www.maizegenetics.net/tassel
+site_url: https://tassel.maizegenetics.net
 
 # Repository configuration
 repo_name: tassel
