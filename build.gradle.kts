@@ -270,10 +270,8 @@ tasks {
             // RNA sequencing — need sequencing DB fixtures
             "**/analysis/rna/*Test.class",
             // Hardcoded paths / heavy fixtures (not in test data release)
-            "**/ThinSitesByPositionPluginTest.class",
             "**/LDKNNiImputationPluginTest.class",
             "**/GenomeFeatureBuilderTest.class",
-            "**/BasicGenotypeMergeRuleTest.class",
             "**/GenomeAnnosDBQueryToPositionListPluginTest.class",
             // Performance variant with hardcoded /Volumes/... path; math covered by MLMTest
             "**/FastMultithreadedAssociationPluginTest.class",
