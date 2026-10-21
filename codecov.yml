@@ -1,0 +1,54 @@
+# Codecov configuration. Reference: https://docs.codecov.com/docs/codecovyml-reference
+#
+# The default branch (develop) is set in the Codecov repository settings UI;
+# codecov.yml has no key for it.
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto        # compare with the base commit
+        threshold: 0.5%
+        informational: true
+    patch:
+      default:
+        target: 70%
+        informational: true
+
+component_management:
+  individual_components:
+    - component_id: statistics
+      name: Statistics
+      paths:
+        - "src/main/java/net/maizegenetics/stats/**"
+        - "src/main/java/net/maizegenetics/matrixalgebra/**"
+        - "src/main/java/net/maizegenetics/analysis/association/**"
+        - "src/main/java/net/maizegenetics/analysis/distance/**"
+        - "src/main/java/net/maizegenetics/analysis/modelfitter/**"
+    - component_id: genotype
+      name: Genotype data and I/O
+      paths:
+        - "src/main/java/net/maizegenetics/dna/snp/**"
+        - "src/main/java/net/maizegenetics/dna/map/**"
+        - "src/main/java/net/maizegenetics/taxa/**"
+        - "src/main/java/net/maizegenetics/phenotype/**"
+    - component_id: imputation
+      name: Imputation
+      paths:
+        - "src/main/java/net/maizegenetics/analysis/imputation/**"
+    - component_id: gbs
+      name: GBS
+      paths:
+        - "src/main/java/net/maizegenetics/analysis/gbs/**"
+        - "src/main/java/net/maizegenetics/dna/tag/**"
+    - component_id: data_plugins
+      name: Data and filter plugins
+      paths:
+        - "src/main/java/net/maizegenetics/analysis/data/**"
+        - "src/main/java/net/maizegenetics/analysis/filter/**"
+    - component_id: framework
+      name: Plugin framework, pipeline and utilities
+      paths:
+        - "src/main/java/net/maizegenetics/plugindef/**"
+        - "src/main/java/net/maizegenetics/pipeline/**"
+        - "src/main/java/net/maizegenetics/util/**"

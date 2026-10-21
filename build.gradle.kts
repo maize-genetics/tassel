@@ -284,39 +284,6 @@ tasks {
         println(jvmArgs)
     }
 
-    // Runs the GBSv2 test suite against real Chr9 datasets in dataFiles/
-    // (see docs/llm_notes/gbs-tests/).
-    // The rehabilitated GBSv2 tests self-generate their data via GBSSimData and also run in the
-    // main `test` suite; these tasks additionally exercise them against the downloaded datasets.
-    //
-    // The dataset is passed to the test JVM as -Dgbs.test.dataset and read by
-    // GBSConstants.RAW_SEQ_CURRENT_TEST:
-    //   * gbsTestSmall -> Chr9_10-200000   (~200 KB, fast; use for iterative work/CI)
-    //   * gbsTestLarge -> Chr9_10-20000000 (~20 MB, slow; nightly / full validation)
-    // `gbsTest` is kept as a back-compat alias for the large dataset.
-    // Tests that need inputs only present in the 20 MB dataset (the bowtie-aligned SAM and
-    // the ProductionSNPCaller/imputation expected results) self-skip on the small dataset
-    // via JUnit Assume guards keyed on GBSConstants.RAW_SEQ_CURRENT_TEST — see those tests.
-    fun registerGbsTest(taskName: String, dataset: String, taskDescription: String) =
-        register<Test>(taskName) {
-            description = taskDescription
-            group = "verification"
-            testClassesDirs = sourceSets["test"].output.classesDirs
-            classpath = sourceSets["test"].runtimeClasspath
-            useJUnit()
-            include("**/analysis/gbs/v2/*Test.class")
-            jvmArgs = listOf("-Xmx10g", "-Dgbs.test.dataset=$dataset")
-            ignoreFailures = true
-            testLogging {
-                events("passed", "skipped", "failed")
-                exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.SHORT
-            }
-        }
-
-    registerGbsTest("gbsTestSmall", "Chr9_10-200000/", "Runs the GBSv2 tests on the small 200 KB dataset (fast; 20 MB-only tests self-skip).")
-    registerGbsTest("gbsTestLarge", "Chr9_10-20000000/", "Runs the full GBSv2 test suite on the 20 MB dataset (slow).")
-    registerGbsTest("gbsTest", "Chr9_10-20000000/", "Alias for gbsTestLarge (full 20 MB dataset).")
-
     // ---------------------------------------------------------------------------
     // fetchTestData — download and extract the tassel_test_data release archive
     // into dataFiles/ (git-ignored). Run once after a clean checkout before
@@ -566,6 +533,15 @@ configurations["archives"].artifacts.removeIf { it.name == "${project.name}-shad
 kover {
     useJacoco()
 
+    // Coverage is measured from `test` alone. Kover's report tasks depend on every
+    // instrumented Test task, so leaving statisticsTest instrumented would re-run it
+    // in the coverage job even though it already runs as its own required CI job.
+    currentProject {
+        instrumentation {
+            disabledForTestTasks.add("statisticsTest")
+        }
+    }
+
     reports {
         // Exclude GUI components so coverage reflects the exercised analysis/
         // pipeline logic rather than Swing wiring.
@@ -587,13 +563,13 @@ kover {
         // Measure BRANCH coverage (decision paths exercised) instead of raw line
         // counting -- a far more meaningful signal for TASSEL's numeric and
         // pipeline logic. Not wired into `check`, but CI does run koverVerify,
-        // and because the broad `test` task ignores failures this bound is what
-        // the coverage job actually gates on. Branch coverage sits around 24%,
-        // so raise the bound as that improves rather than leaving slack here.
+        // and this bound is what the coverage job gates on. Keep it one point
+        // below measured branch coverage (24.46% on develop, Oct 2026) and raise
+        // it as coverage improves rather than leaving slack here.
         verify {
             rule {
                 bound {
-                    minValue = 18
+                    minValue = 23
                     coverageUnits = CoverageUnit.BRANCH
                 }
             }
