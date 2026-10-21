@@ -272,8 +272,6 @@ tasks {
             // RNA sequencing — need sequencing DB fixtures
             "**/analysis/rna/*Test.class",
             // Hardcoded paths / heavy fixtures (not in test data release)
-            "**/LDKNNiImputationPluginTest.class",
-            "**/GenomeFeatureBuilderTest.class",
             "**/GenomeAnnosDBQueryToPositionListPluginTest.class",
             // Dev-only utility class with hardcoded file paths, not a runnable test
             "**/CreateFastaOrFastqFiles.class",
