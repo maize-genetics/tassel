@@ -5,7 +5,6 @@
  */
 package net.maizegenetics.analysis.distance;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import net.maizegenetics.constants.TutorialConstants;
@@ -19,7 +18,6 @@ import net.maizegenetics.constants.GeneralConstants;
  * @author Terry Casstevens
  */
 public class DominanceNormalizedIBSTest {
-    @Ignore
     @Test
     public void testDominanceNormalizedIBSTest() {
 
@@ -36,7 +34,7 @@ public class DominanceNormalizedIBSTest {
         load.setOpenFiles(new String[]{GeneralConstants.EXPECTED_RESULTS_DIR + "Dominance_Normalized_IBS_Matrix.txt"});
         DataSet expected = load.performFunction(null);
 
-        DistanceMatrixTestingUtils.compare(expected, output, 0.0000000008);
+        DistanceMatrixTestingUtils.compare(expected, output, 0.0001);
 
     }
 

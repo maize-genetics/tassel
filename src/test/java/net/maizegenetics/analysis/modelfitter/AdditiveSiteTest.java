@@ -12,7 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class AdditiveSiteTest {
-    @Ignore
+    @Ignore("#40: getCovariate returns raw allele counts instead of mean-centered counts")
     @Test
     public void testGenotypeAdditiveSite() {
         byte AA = NucleotideAlignmentConstants.getNucleotideDiploidByte("AA");

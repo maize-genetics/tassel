@@ -22,7 +22,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class StepwiseAdditiveModelFitterTest {
-    @Ignore
+    @Ignore("#40: stepwise ANOVA mean square differs from expected results")
     @Test
     public void test() {
         StepwiseAdditiveModelFitterPlugin samfPlugin = new StepwiseAdditiveModelFitterPlugin();
