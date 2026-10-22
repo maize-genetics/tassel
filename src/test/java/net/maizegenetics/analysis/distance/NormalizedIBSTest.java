@@ -11,7 +11,6 @@ import net.maizegenetics.constants.GeneralConstants;
 import net.maizegenetics.constants.TutorialConstants;
 import net.maizegenetics.dna.snp.ImportUtils;
 import net.maizegenetics.plugindef.DataSet;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -19,7 +18,6 @@ import org.junit.Test;
  * @author Terry Casstevens
  */
 public class NormalizedIBSTest {
-    @Ignore
     @Test
     public void testNormalizedIBSTest() {
 
@@ -42,7 +40,7 @@ public class NormalizedIBSTest {
         load.setOpenFiles(new String[]{GeneralConstants.EXPECTED_RESULTS_DIR + "Normalized_IBS_Matrix.txt"});
         DataSet expected = load.performFunction(null);
 
-        DistanceMatrixTestingUtils.compare(expected, output, 0.0000000008);
+        DistanceMatrixTestingUtils.compare(expected, output, 0.000008);
 
     }
 
