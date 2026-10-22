@@ -9,18 +9,34 @@ import java.util.LinkedList;
 import net.maizegenetics.matrixalgebra.decomposition.EigenvalueDecomposition;
 import net.maizegenetics.matrixalgebra.decomposition.SingularValueDecomposition;
 
+import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class DoubleMatrixTest {
 	DoubleMatrix A, B;
 	double mintol = Double.MIN_NORMAL * 100; //maximum difference tolerated between two doubles
 	double relaxedTol = 1e-12;
+	private DoubleMatrixFactory.FactoryType savedType;
 	
 	@Before
-	public void setUp() throws Exception {
-		
+	public void saveFactory() {
+		savedType = DoubleMatrixFactory.DEFAULT.getType();
+	}
+
+	@After
+	public void restoreFactory() {
+		DoubleMatrixFactory.setDefault(savedType);
+	}
+
+	private static boolean canLoadTasselBlas() {
+		try {
+			System.loadLibrary("TasselBlas");
+			return true;
+		} catch (UnsatisfiedLinkError | SecurityException e) {
+			return false;
+		}
 	}
 
 	@Test
@@ -39,9 +55,9 @@ public class DoubleMatrixTest {
 		runTests();
 	}
 
-	@Ignore
 	@Test
 	public void testBlas() {
+		Assume.assumeTrue(canLoadTasselBlas());
 		System.out.println("Testing BLAS");
 		DoubleMatrixFactory.setDefault(DoubleMatrixFactory.FactoryType.blas);
 		intializeTestMatrices();
