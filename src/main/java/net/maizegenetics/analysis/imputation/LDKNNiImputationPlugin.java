@@ -169,8 +169,11 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
     }
 
     private Multimap<Position, Position> getHighLDMap(GenotypeTable genotypeTable, int numberOfSNPs) {
-        Multimap<Position, Position> highLDMap = ArrayListMultimap.create();
         final int numberOfSites = genotypeTable.numberOfSites();
+        // ArrayListMultimap is not thread-safe, so the parallel loop fills one slot per site
+        // and the multimap is assembled afterwards.
+        @SuppressWarnings("unchecked")
+        final List<Position>[] highLDSites = new List[numberOfSites];
         LongAdder sites1Kdone=new LongAdder();
         IntStream.range(0, genotypeTable.numberOfSites()).parallel()
                 .forEach(posIndex ->
@@ -194,7 +197,7 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
                     for (LDResult result : highestLD) {
                         positionList.add(genotypeTable.positions().get(result.site2()));
                     }
-                    highLDMap.putAll(genotypeTable.positions().get(posIndex), positionList);
+                    highLDSites[posIndex] = positionList;
                     if((posIndex+1)%1000==0) {
                         sites1Kdone.add(1000);
                         fireProgress((int)(33*sites1Kdone.longValue())/numberOfSites);
@@ -202,6 +205,10 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
                     }
                 });
 
+        Multimap<Position, Position> highLDMap = ArrayListMultimap.create();
+        for (int posIndex = 0; posIndex < numberOfSites; posIndex++) {
+            highLDMap.putAll(genotypeTable.positions().get(posIndex), highLDSites[posIndex]);
+        }
         return highLDMap;
     }
 

@@ -123,9 +123,9 @@ public class GenomeFeatureBuilderTest {
     }
 
     /**
-     * Tests if various exceptions are thrown for not having the required fields. While it's possible to construct these with
-     * some form of ExpectedException, these use try-catch to (1) keep everything in one method easier, and (2) allow
-     * more control over what's tested.
+     * Tests that the feature ID is the only required field, as documented on GenomeFeatureBuilder. While it's possible
+     * to construct these with some form of ExpectedException, these use try-catch to (1) keep everything in one method
+     * easier, and (2) allow more control over what's tested.
      */
     @Test
     public void testMissingFields(){
@@ -139,46 +139,13 @@ public class GenomeFeatureBuilderTest {
                     .contains("Cannot build a feature without a personal identifier"));
         }
 
-        //Test if no valid type entered
-        try{
-            new GenomeFeatureBuilder().id("testID").start(1).stop(1).chromosome(1).build();
-            fail("Uncaught feature type not assigned");
-        }catch(Exception e){
-            assertEquals("Wrong exception for unassigned feature type", UnsupportedOperationException.class, e.getClass());
-            assertTrue("Wrong exception message for unassigned feature type", e.getMessage()
-                    .contains("Cannot build a feature without a feature type"));
-        }
-
-        //Test if no valid chromosome entered
-        try{
-            new GenomeFeatureBuilder().id("testID").type("notype").start(1).stop(1).build();
-            fail("Uncaught feature chromosome not assigned");
-        }catch(Exception e){
-            assertEquals("Wrong exception for unassigned chromosome", UnsupportedOperationException.class, e.getClass());
-            assertTrue("Wrong exception message for unassigned chromosome", e.getMessage()
-                    .contains("Cannot build a feature without a chromosome"));
-        }
-
-        //Test if no valid start position entered
-        try{
-            new GenomeFeatureBuilder().id("testID").type("notype").stop(1).chromosome(1).build();
-            fail("Uncaught feature start position not assigned");
-        }catch(Exception e){
-            assertEquals("Wrong exception for unassigned start position", UnsupportedOperationException.class, e.getClass());
-            assertTrue("Wrong exception message for unassigned start position", e.getMessage()
-                    .contains("Cannot build a feature without a start position"));
-        }
-
-        //Test if no valid stop position entered
-        try{
-            new GenomeFeatureBuilder().id("testID").type("notype").start(1).chromosome(1).build();
-            fail("Uncaught feature stop position not assigned");
-        }catch(Exception e){
-            assertEquals("Wrong exception for unassigned stop position", UnsupportedOperationException.class, e.getClass());
-            assertTrue("Wrong exception message for unassigned stop position", e.getMessage()
-                    .contains("Cannot build a feature without a stop position"));
-        }
-
+        //Test that type, chromosome, start and stop are optional
+        assertEquals("Feature without type", "NA",
+                new GenomeFeatureBuilder().id("testID").start(1).stop(1).chromosome(1).build().type());
+        assertEquals("Feature without chromosome", "NA",
+                new GenomeFeatureBuilder().id("testID").type("notype").start(1).stop(1).build().chromosome());
+        new GenomeFeatureBuilder().id("testID").type("notype").stop(1).chromosome(1).build();
+        new GenomeFeatureBuilder().id("testID").type("notype").start(1).chromosome(1).build();
     }
 
     /**
