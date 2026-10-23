@@ -61,22 +61,13 @@ task, and with it the CI job and the nightly health check.
 ## The GBSv2 suite
 
 The GBSv2 tests self-generate deterministic inputs through `GBSSimData`, so they
-run as part of the broad `test` task without any extra setup. Two additional
-tasks exercise the same classes against the real Chr9 datasets in `dataFiles/`:
+run as part of the broad `test` task without any extra setup. None of them read
+the real Chr9 FASTQ files, and there is no separate GBS test task. To run just
+this suite:
 
 ```bash
-./gradlew gbsTestSmall   # Chr9_10-200000, ~200 KB — fast, use while iterating
-./gradlew gbsTestLarge   # Chr9_10-20000000, ~20 MB — slow, full validation
+./gradlew test --tests 'net.maizegenetics.analysis.gbs.v2.*'
 ```
-
-`gbsTest` is a back-compat alias for `gbsTestLarge`. The dataset reaches the
-test JVM as `-Dgbs.test.dataset` and is read by
-`GBSConstants.RAW_SEQ_CURRENT_TEST`, which must be set before that class loads.
-A handful of tests need inputs that only ship with the 20 MB dataset and
-self-skip on the small one through JUnit `Assume` guards.
-
-Both tasks run with `ignoreFailures = true`, so check the reports under
-`build/reports/tests/` rather than relying on the build's exit status.
 
 Background on how these tests were rehabilitated is in
 `docs/llm_notes/gbs-tests/` (internal notes, excluded from the docs site).
@@ -97,6 +88,17 @@ exercised analytical logic.
 ```
 
 The HTML report is written under `build/reports/kover/`.
+
+Coverage is measured from the `test` task only. `statisticsTest` is excluded
+from Kover instrumentation, so generating a report doesn't re-run the
+statistics gate (CI already runs it as its own job).
+
+`koverVerify` fails if branch coverage drops below the `minValue` bound in the
+`kover` block of `build.gradle.kts`. The bound is kept one point below the
+measured branch coverage, which is the report-level `BRANCH` counter in
+`build/reports/kover/report.xml` (covered ÷ (covered + missed)). When coverage
+improves, raise the bound to match and log the new value in the coverage
+tracking issue.
 
 !!! tip "Excluding generated GUI boilerplate"
     Auto-generated plugin accessors and GUI hook methods are annotated with
