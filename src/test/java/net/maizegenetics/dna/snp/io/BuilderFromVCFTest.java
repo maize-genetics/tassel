@@ -5,8 +5,9 @@ import static org.junit.Assert.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -14,8 +15,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import net.maizegenetics.constants.GeneralConstants;
+import net.maizegenetics.constants.TutorialConstants;
+import net.maizegenetics.dna.snp.AlignmentTestingUtils;
 import net.maizegenetics.dna.snp.ExportUtils;
 import net.maizegenetics.dna.snp.GenotypeTable;
+import net.maizegenetics.dna.snp.GenotypeTableBuilder;
 import net.maizegenetics.dna.snp.io.BuilderFromVCF;
 import net.maizegenetics.util.BuilderFromVCFUtil;
 
@@ -56,25 +60,16 @@ public class BuilderFromVCFTest {
 		assertNotNull("Standard VCF Test Table should not be null",table);
 	}
 	
-	//Test to make sure it catches when a haploid is encountered
-	//SuccessCondition: BuilderFromVCF throws an exception with an appropriate error message
-	//TODO fix this as we can now load haploid entries
-	@Ignore
+	//Test that a haploid-style missing entry (".:.:.:.:.") loads as a missing genotype
+	//SuccessCondition: BuilderFromVCF builds the table and the entry is unknown
 	@Test
 	public void tas_509Test() {
 	    String fileName = directoryName+"tas_509VCF1.vcf";
 	    BuilderFromVCF builder = BuilderFromVCF.getBuilder(fileName);
-	    thrown.expect(IllegalStateException.class);
-	    thrown.expectMessage("java.lang.IllegalStateException: Error Processing VCF block: Found haploid information for the element: .:.:.:.:..\nExpected a diploid entry.");
 	    GenotypeTable table = builder.buildAndSortInMemory();
-	    /*
-	    try{
-		GenotypeTable table = builder.buildAndSortInMemory();
-		fail("Should have thrown an exception at the string \".:.:.:.:.\"");
-	    }catch(IllegalStateException e) {
-		    assertEquals(e.getMessage(),"java.lang.IllegalStateException: Error Processing VCF block: Found haploid information for the element: .:.:.:.:..\nExpected a diploid entry.");
-		}
-		*/
+	    assertEquals(2, table.numberOfSites());
+	    assertEquals("T", table.genotypeAsString(0, 0));
+	    assertEquals(GenotypeTable.UNKNOWN_DIPLOID_ALLELE, table.genotype(0, 1));
 	}
 	
 	//Test for Missing FORMAT Tag
@@ -215,7 +210,6 @@ public class BuilderFromVCFTest {
             }
 	}
 	
-	@Ignore
 	@Test
 	public void singleLineIndelTest() {
 	    //Test createSmallCallTable
@@ -230,20 +224,49 @@ public class BuilderFromVCFTest {
 	    variants.add("TGATATATAGCGGTTCC");
 	    variants.add("TGATATGTAGCAGTTCC");
 	    char[][] smallCallTable = BuilderFromVCFUtil.createSmallCallTable(variants);
-	    
-	    for(char[] variant : smallCallTable) {
-	        System.out.println(Arrays.toString(variant));
+
+	    String[] expected = {"T----------------", "TGATATGTAGCGGTTCC", "TGATATCTAGCGGTTCC", "G----------------",
+	            "TAATATGTACCTGTTCC", "TGATATATAGCGGTTCC", "TGATATGTAGCAGTTCC"};
+	    assertEquals(expected.length, smallCallTable.length);
+	    for(int i = 0; i < expected.length; i++) {
+	        assertEquals(expected[i], new String(smallCallTable[i]));
 	    }
 	}
-	
-	@Ignore
+
+	//Test that converting a VCF with depth straight to HDF5 keeps the genotypes
+	//SuccessCondition: the HDF5 file has the same genotypes as the in-memory build
 	@Test
-	public void kellyTest() {
-	    //String fileName = "/Users/zrm22/Desktop/KellyTests/merged_flt_c1.imputed.vcf";
-	    String fileName = "/Users/zrm22/Desktop/KellyTests/TestVCFFileNewExpanded.vcf";
-            
-	    String outName = "/Users/zrm22/Desktop/KellyTests/output.h5";
+	public void convertToHDF5KeepDepthGenotypesTest() throws Exception {
+	    String fileName = TutorialConstants.TUTORIAL_DIR + "mdp_genotype_w_depth.vcf";
+	    String outName = GeneralConstants.TEMP_DIR + "vcfWithDepthToHDF5Genotypes.h5";
+	    Files.deleteIfExists(Paths.get(outName));
+
+	    GenotypeTable expected = BuilderFromVCF.getBuilder(fileName).keepDepth().build();
 	    BuilderFromVCF.getBuilder(fileName).convertToHDF5(outName).keepDepth().build();
+	    AlignmentTestingUtils.alignmentsEqual(expected, GenotypeTableBuilder.getInstance(outName));
+	}
+
+	//Test that converting a VCF with depth straight to HDF5 keeps the allele depths
+	//SuccessCondition: the HDF5 file has the same depths as the in-memory build
+	@Ignore("#36: GenotypeTableBuilder.addSiteBlock never writes blockDepths, so convertToHDF5().keepDepth() drops depth")
+	@Test
+	public void convertToHDF5KeepDepthTest() throws Exception {
+	    String fileName = TutorialConstants.TUTORIAL_DIR + "mdp_genotype_w_depth.vcf";
+	    String outName = GeneralConstants.TEMP_DIR + "vcfWithDepthToHDF5.h5";
+	    Files.deleteIfExists(Paths.get(outName));
+
+	    GenotypeTable expected = BuilderFromVCF.getBuilder(fileName).keepDepth().build();
+	    BuilderFromVCF.getBuilder(fileName).convertToHDF5(outName).keepDepth().build();
+	    GenotypeTable fromHDF5 = GenotypeTableBuilder.getInstance(outName);
+
+	    assertTrue("Expected depth in the VCF fixture", expected.hasDepth());
+	    assertTrue("HDF5 file lost the allele depths", fromHDF5.hasDepth());
+	    for(int t = 0; t < expected.numberOfTaxa(); t++) {
+	        for(int s = 0; s < expected.numberOfSites(); s++) {
+	            assertArrayEquals("Depth differs at taxon " + t + " site " + s,
+	                    expected.depthForAlleles(t, s), fromHDF5.depthForAlleles(t, s));
+	        }
+	    }
 	}
 	
 	@Test
