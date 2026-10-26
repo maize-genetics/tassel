@@ -31,6 +31,13 @@ public class BuilderFromGVCFTest {
     String agpv4FileName = GeneralConstants.DATA_DIR + "CandidateTests/CHR8_Zea_mays.AGPv4.dna.toplevel.fa.gz";
     String fullGVCFFileName = GeneralConstants.DATA_DIR + "CandidateTests/VCFFiles/B73_haplotype_caller_output.g.vcf.gz";
 
+    //Not in tassel_test_data; see docs/developer/missing-test-data.md
+    String w22GVCFFileName = GeneralConstants.DATA_DIR + "CandidateTests/VCFFiles/W22_haplotype_caller_output.g.vcf.gz";
+    String fullAgpv4FileName = GeneralConstants.DATA_DIR + "CandidateTests/Zea_mays.AGPv4.dna.toplevel.fa.gz";
+    String fullAgpv3FileName = GeneralConstants.DATA_DIR + "CandidateTests/Zea_mays.AGPv3.29.dna.genome.fa.gz";
+    String chr8GeneAnchorsFileName = GeneralConstants.DATA_DIR + "CandidateTests/anchorsFile_chr8_genesExactCoordinates.csv";
+    String chr8MergedAnchorsFileName = GeneralConstants.DATA_DIR + "CandidateTests/anchorsFile_chr8_MergedPlus1000orGapDiffcoordinates.csv";
+
     @Test
     public void testSmallGVCF() {
         String fileName = directoryName + "refBlockDepthAboveFive.g.vcf";
@@ -283,7 +290,6 @@ public class BuilderFromGVCFTest {
     public void testHetInsertions() {
         //Test region is here
         //8:105839363:105844126
-        //String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf";
         String gvcfFileName = fullGVCFFileName;
         String refFileName = agpv4FileName;
         try {
@@ -342,7 +348,6 @@ public class BuilderFromGVCFTest {
     @Test
     public void testHetDeletions() {
         //8:83443248:83445925
-        //String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf";
         String gvcfFileName = fullGVCFFileName;
         String refFileName = agpv4FileName;
         try {
@@ -409,7 +414,6 @@ public class BuilderFromGVCFTest {
     @Test
     public void testHetSNPs() {
         //8:15917882:15920151
-//        String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf";
         String gvcfFileName = fullGVCFFileName;
         String refFileName = agpv4FileName;
         try {
@@ -469,7 +473,6 @@ public class BuilderFromGVCFTest {
         //Should be 1 N exported..maybe we change this to a number of Ns
         //A good region is here:
         //8:8937202:8939694
-//        String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf";
         String gvcfFileName = fullGVCFFileName;
         String refFileName = agpv4FileName;
         try {
@@ -496,7 +499,6 @@ public class BuilderFromGVCFTest {
     public void testRefHomozygous() {
         //should match reference
         //8:15484032:15486280
-//        String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf";
         String gvcfFileName = fullGVCFFileName;
         String refFileName = agpv4FileName;
         try {
@@ -529,7 +531,6 @@ public class BuilderFromGVCFTest {
         //put Ns in the where this is true
         //Good test sequence is here:
         //8:62915759:62918979
-//        String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf";
         String gvcfFileName = fullGVCFFileName;
         String refFileName = agpv4FileName;
         try {
@@ -583,7 +584,6 @@ public class BuilderFromGVCFTest {
         //Put alt alleles in
         //good test sequence is here:
         //8:103920155:103926901
-//        String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf";
         String gvcfFileName = fullGVCFFileName;
         String refFileName = agpv4FileName;
         try {
@@ -636,13 +636,12 @@ public class BuilderFromGVCFTest {
         }
     }
 
-    //TODO fix for git upload
-    @Ignore
+    @Ignore("#36: needs the W22 GVCF and full AGPv4 genome, which are not in tassel_test_data")
     @Test
     public void pullRealV4Sequence() {
-        String fileName = "/Users/zrm22/PanGenome/W22SentieonTest/W22_haplotype_caller_output.g.vcf";
-        String refFileName = "/Users/zrm22/PanGenome/W22SentieonTest/Zea_mays.AGPv4.dna.toplevel.fa.gz";
-        String outputFileName = "/Users/zrm22/PanGenome/W22SentieonTest/outputTest2.fa";
+        String fileName = w22GVCFFileName;
+        String refFileName = fullAgpv4FileName;
+        String outputFileName = GeneralConstants.TEMP_DIR + "outputTest2.fa";
         try {
             GVCFGenomeSequence sequence =  (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, fileName);
             sequence.writeFASTA(outputFileName);
@@ -651,14 +650,13 @@ public class BuilderFromGVCFTest {
         }
     }
 
-    //TODO fix for git repo
-    @Ignore
+    @Ignore("#36: needs the W22 GVCF, full AGPv4 genome and chr8 gene-anchor CSV, which are not in tassel_test_data")
     @Test
     public void pullW22FASTASequence() {
-        String refFileName = "/Users/zrm22/PanGenome/W22SentieonTest/Zea_mays.AGPv4.dna.toplevel.fa.gz";
-        String outputFileName = "/Users/zrm22/PanGenome/FASTAGeneration/W22Chr8NoFilteringFullFileTry1.fa";
-        String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/W22_haplotype_caller_output.g.vcf";
-        String intervalFileName = "/Users/zrm22/PanGenome/FASTAGeneration/anchorsFile_chr8_genesExactCoordinates.csv";
+        String refFileName = fullAgpv4FileName;
+        String outputFileName = GeneralConstants.TEMP_DIR + "W22Chr8NoFilteringFullFileTry1.fa";
+        String gvcfFileName = w22GVCFFileName;
+        String intervalFileName = chr8GeneAnchorsFileName;
 
         try{
             System.out.println("Creating GVCFSequence object");
@@ -695,16 +693,16 @@ public class BuilderFromGVCFTest {
             e.printStackTrace();
         }
     }
-    //TODO fix for git upload
-    @Ignore
+
+    @Ignore("#36: needs the full AGPv4 genome and chr8 gene-anchor CSV, which are not in tassel_test_data")
     @Test
     public void pullB73FASTASequence() {
-        String refFileName = "/Users/zrm22/PanGenome/W22SentieonTest/Zea_mays.AGPv4.dna.toplevel.fa.gz";
-        String outputFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73Chr8NoFilteringFullFileADTest6.fa";
-        String outputFileName2 = "/Users/zrm22/PanGenome/FASTAGeneration/B73Chr8NoFilteringFullFileADTest6Ref.fa";
+        String refFileName = fullAgpv4FileName;
+        String outputFileName = GeneralConstants.TEMP_DIR + "B73Chr8NoFilteringFullFileADTest6.fa";
+        String outputFileName2 = GeneralConstants.TEMP_DIR + "B73Chr8NoFilteringFullFileADTest6Ref.fa";
 
-        String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf";
-        String intervalFileName = "/Users/zrm22/PanGenome/FASTAGeneration/anchorsFile_chr8_genesExactCoordinates.csv";
+        String gvcfFileName = fullGVCFFileName;
+        String intervalFileName = chr8GeneAnchorsFileName;
 
         try{
             System.out.println("Creating GVCFSequence object");
@@ -760,16 +758,15 @@ public class BuilderFromGVCFTest {
         }
     }
 
-    //TODO fix for git upload
-    @Ignore
+    @Ignore("#36: needs the full AGPv4 genome and chr8 merged-anchor CSV; GVCF region stats are also disabled")
     @Test
     public void pullB73FASTASequenceFullGVCF() {
-        String refFileName = "/Users/zrm22/PanGenome/W22SentieonTest/Zea_mays.AGPv4.dna.toplevel.fa.gz";
-        String outputFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73Chr8NoFilteringFullFileADMergedAnchors.fa";
+        String refFileName = fullAgpv4FileName;
+        String outputFileName = GeneralConstants.TEMP_DIR + "B73Chr8NoFilteringFullFileADMergedAnchors.fa";
 
-        String gvcfFileName = "/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf";
-        String intervalFileName = "/Users/zrm22/PanGenome/FASTAGeneration/anchorsFile_chr8_MergedPlus1000orGapDiffcoordinates.csv";
-        String statFileName = "/Users/zrm22/PanGenome/FASTAGeneration/statsFileMergedAnchors.csv";
+        String gvcfFileName = fullGVCFFileName;
+        String intervalFileName = chr8MergedAnchorsFileName;
+        String statFileName = GeneralConstants.TEMP_DIR + "statsFileMergedAnchors.csv";
         try{
             System.out.println("Creating GVCFSequence object");
             GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
@@ -829,17 +826,16 @@ public class BuilderFromGVCFTest {
         }
     }
 
-    //TODO fix for git upload
-    @Ignore
+    @Ignore("#36: needs the full AGPv4 genome, which is not in tassel_test_data; this generated the CHR8 AGPv4 fixture")
     @Test
     public void getChr8FromB73V4() {
-        GenomeSequence sequence = GenomeSequenceBuilder.instance("/Users/zrm22/PanGenome/W22SentieonTest/Zea_mays.AGPv4.dna.toplevel.fa.gz");
+        GenomeSequence sequence = GenomeSequenceBuilder.instance(fullAgpv4FileName);
         Object[] chrs = sequence.chromosomes().toArray();
         for(int i = 0; i < chrs.length; i++) {
             if(((Chromosome)chrs[i]).getChromosomeNumber()==8) {
                 String sequenceString = ""+NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence((Chromosome)chrs[i],1,181122637));
                 try {
-                    BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/zrm22/PanGenome/W22SentieonTest/CHR8_Zea_mays.AGPv4.dna.toplevel.fa"));
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(GeneralConstants.TEMP_DIR + "CHR8_Zea_mays.AGPv4.dna.toplevel.fa"));
 
                     writer.write(">8 dna:chromosome chromosome:AGPv4:8:1:181122637:1 REF");
                     writer.newLine();
@@ -855,17 +851,16 @@ public class BuilderFromGVCFTest {
         }
     }
 
-    //TODO fix for git upload
-    @Ignore
+    @Ignore("#36: needs the full AGPv3 genome, which is not in tassel_test_data; this generated the CHR8 AGPv3 fixture")
     @Test
     public void getChr8FromB73V3() {
-        GenomeSequence sequence = GenomeSequenceBuilder.instance("/Users/zrm22/PanGenome/LynnsFiles/Zea_mays.AGPv3.29.dna.genome.fa.gz");
+        GenomeSequence sequence = GenomeSequenceBuilder.instance(fullAgpv3FileName);
         Object[] chrs = sequence.chromosomes().toArray();
         for(int i = 0; i < chrs.length; i++) {
             if(((Chromosome)chrs[i]).getChromosomeNumber()==8) {
                 String sequenceString = ""+NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence((Chromosome)chrs[i],1,175377492));
                 try {
-                    BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/zrm22/PanGenome/W22SentieonTest/CHR8_Zea_mays.AGPv3.dna.toplevel.fa"));
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(GeneralConstants.TEMP_DIR + "CHR8_Zea_mays.AGPv3.dna.toplevel.fa"));
 
                     writer.write(">8 dna:chromosome chromosome:AGPv3:8:1:175377492:1");
                     writer.newLine();
@@ -880,73 +875,6 @@ public class BuilderFromGVCFTest {
             }
         }
     }
-
-    //TODO fix for git upload
-    @Ignore
-    @Test
-    public void compareB73AnchorRegions() {
-        String referenceHaplotypeFile = "/Users/zrm22/PanGenome/FASTAGeneration/ref_chr8_anchorsExactGenes.fa";
-        String gatkHaplotypeFile = "/Users/zrm22/PanGenome/FASTAGeneration/B73Chr8NoFilteringFullFile.fa";
-        try {
-            BufferedReader referenceReader = new BufferedReader(new FileReader(referenceHaplotypeFile));
-            BufferedReader gatkReader = new BufferedReader(new FileReader(gatkHaplotypeFile));
-
-
-            HashMap<String, String> refTagToSequenceMap = new HashMap<>();
-            HashMap<String, String> gatkTagToSequenceMap = new HashMap<>();
-
-            String refString = "";
-            while((refString = referenceReader.readLine())!=null) {
-                //1-8:76622:81307
-                String[] refTagSplitDash = refString.split("-");
-                //String[] refTagSplitDashColon = refTagSplitDash[1].split(":");
-
-                String tag = refTagSplitDash[1];
-
-                String sequence = referenceReader.readLine();
-                refTagToSequenceMap.put(tag,sequence);
-            }
-
-            String gatkString = "";
-            while((gatkString=gatkReader.readLine())!=null) {
-//                String[]
-            }
-
-
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @Ignore
-    @Test
-    public void pullChr8GVCF() {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("/Users/zrm22/PanGenome/FASTAGeneration/B73_haplotype_caller_output.g.vcf"));
-            BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/zrm22/PanGenome/FASTAGeneration/Chr8_B73_haplotype_caller_output.g.vcf"));
-
-            String currLine = "";
-            while((currLine = reader.readLine())!=null) {
-                if(currLine.startsWith("#CHROM")) {
-                    writer.write(currLine);
-                    writer.newLine();
-                    break;
-                }
-                else {
-                    writer.write(currLine);
-                    writer.newLine();
-                }
-            }
-//            while((currLine = reader.readLine())!=null) {
-//                if(currLine.startsWith("8"))
-//            }
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
 
 //TODO clean up these old tests
 
@@ -996,10 +924,11 @@ public class BuilderFromGVCFTest {
 //
 //    }
 
+    @Ignore("#36: needs the W22 GVCF and full AGPv4 genome, which are not in tassel_test_data")
     @Test
     public void pullAnchor2kFromW22() {
-        String gvcfFileName = "/Volumes/ZackBackup/Temp/Pangenome/DBTests/W22_haplotype_caller_output.g.vcf";
-        String refFileName = "/Users/zrm22/ReferencePlus/Datasets/B73Ref/Zea_mays.AGPv4.dna.toplevel.fa";
+        String gvcfFileName = w22GVCFFileName;
+        String refFileName = fullAgpv4FileName;
         try {
             GVCFGenomeSequence sequence = (GVCFGenomeSequence) GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
             System.out.println("Loading Reference sequence");
@@ -1027,7 +956,5 @@ public class BuilderFromGVCFTest {
             e.printStackTrace();
         }
     }
-
-
 
 }
