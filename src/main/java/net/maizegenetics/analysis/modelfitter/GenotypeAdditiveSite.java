@@ -14,19 +14,23 @@ import net.maizegenetics.taxa.Taxon;
 
 /**
  * GenotypeAdditiveSite is an AdditiveSite that takes a byte[] array of genotypes as input and converts them
- * to a double[] array. It codes the homozygous major as 2, homozygous minor as 0 and het as 1. It then subtracts the mean
- * value from all elements of the array and sets missing to zero (now the mean). For efficient storage, the values of 0,1,2,3
- * are stored in a byte array which indexes the double values.
+ * to a double[] array. It codes the homozygous major as 2, homozygous minor as 0 and het as 1. By default it then subtracts
+ * the mean value from all elements of the array and sets missing to zero (now the mean). Without centering, missing is set
+ * to the mean and the other values are left as 0, 1, 2, which AddPlusDomModelEffect needs to derive the dominance covariate.
+ * For efficient storage, the values of 0,1,2,3 are stored in a byte array which indexes the double values.
  */
 public class GenotypeAdditiveSite extends AbstractAdditiveSite {
 
     private static final long serialVersionUID = -7891486608129027827L;
     private int[] bitStore;
     private double[] byteConversion;
+    private final boolean centered;
     protected int ntaxa;
     protected int[] taxaIndex = null;
 
     /**
+     * Creates a site whose covariate is centered on its mean.
+     *
      * @param site						the site index from the originating GenotypeTable
      * @param genotype					genotypeAllTaxa for this site
      * @param majorAllele				major allele
@@ -35,12 +39,25 @@ public class GenotypeAdditiveSite extends AbstractAdditiveSite {
     public GenotypeAdditiveSite(int site, String chr, int pos, String id,
             CRITERION selectionCriterion, byte[] genotype,
             byte majorAllele, double majorAlleleFrequency) {
+        this(site, chr, pos, id, selectionCriterion, genotype, majorAllele, majorAlleleFrequency, true);
+    }
+
+    /**
+     * @param site						the site index from the originating GenotypeTable
+     * @param genotype					genotypeAllTaxa for this site
+     * @param majorAllele				major allele
+     * @param majorAlleleFrequency		major allele frequency
+     * @param centered					if true, subtract the mean from the covariate. If false, the covariate is the
+     *                                  major allele count (0, 1, 2) with missing values set to the mean.
+     */
+    public GenotypeAdditiveSite(int site, String chr, int pos, String id,
+            CRITERION selectionCriterion, byte[] genotype,
+            byte majorAllele, double majorAlleleFrequency, boolean centered) {
         super(site, chr, pos, id, selectionCriterion);
+        this.centered = centered;
         byte unknown = GenotypeTable.UNKNOWN_DIPLOID_ALLELE;
         ntaxa = genotype.length;
-        double mean = 2 * majorAlleleFrequency;
-//        byteConversion = new double[] { -mean, 1 - mean, 2 - mean, 0 };
-        byteConversion = new double[] { 0,1,2,mean };  //changed for AddPlusDom
+        byteConversion = covariateValues(2 * majorAlleleFrequency);
 
         int numberOfInts = ntaxa / 16;
         int remainder = ntaxa % 16;
@@ -79,11 +96,13 @@ public class GenotypeAdditiveSite extends AbstractAdditiveSite {
 
     //private constructor for making a copy
     private GenotypeAdditiveSite(int site, String chr, int pos, String id,
-                                 CRITERION selectionCriterion, int[] bitStore, int ntaxa, double[] byteConversion) {
+                                 CRITERION selectionCriterion, int[] bitStore, int ntaxa, double[] byteConversion,
+                                 boolean centered) {
         super(site, chr, pos, id, selectionCriterion);
         this.bitStore = bitStore;
         this.ntaxa = ntaxa;
         this.byteConversion = byteConversion;
+        this.centered = centered;
     }
 
     @Override
@@ -98,9 +117,14 @@ public class GenotypeAdditiveSite extends AbstractAdditiveSite {
         double numerator = (double) (2 * counts[2] + counts[1]);
         double denominator = numerator + (counts[1] + 2 * counts[0]);
         double majorAlleleFreq = numerator / denominator;
-        double mean = 2 * majorAlleleFreq;
-//        byteConversion = new double[] { -mean, 1 - mean, 2 - mean, 0 };
-        byteConversion = new double[] { 0,1,2,mean };  //changed for AddPlusDom
+        byteConversion = covariateValues(2 * majorAlleleFreq);
+    }
+
+    //covariate values indexed by genotype index: 0 = homozygous minor, 1 = het, 2 = homozygous major, 3 = missing
+    private double[] covariateValues(double mean) {
+        if (centered)
+            return new double[] { -mean, 1 - mean, 2 - mean, 0 };
+        return new double[] { 0, 1, 2, mean };
     }
 
     private int genotypeIndex(int n) {
@@ -206,6 +230,6 @@ public class GenotypeAdditiveSite extends AbstractAdditiveSite {
     public AdditiveSite copy() {
         return new GenotypeAdditiveSite(siteIndex, chrName, position, name,
                 selectionCriterion, Arrays.copyOf(bitStore, bitStore.length), ntaxa,
-                Arrays.copyOf(byteConversion, byteConversion.length));
+                Arrays.copyOf(byteConversion, byteConversion.length), centered);
     }
 }
