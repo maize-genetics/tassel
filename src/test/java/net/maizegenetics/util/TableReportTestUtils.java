@@ -112,6 +112,7 @@ public class TableReportTestUtils {
      * for which they will be considered equal Before comparing the two values,
      * both are divided by the first value. This provides for appropriate
      * comparison of values that are very different from 1, such as p-values.
+     * An expected value of zero is compared by absolute difference instead.
      */
     public static void compareTableReportValues(TableReport expected, TableReport observed, double delta) {
         long numRows = expected.getRowCount();
@@ -135,9 +136,7 @@ public class TableReportTestUtils {
                         d1 = Double.parseDouble(expectedValue.toString());
                     }
                     double d2 = (Double) observedValue;
-                    double d3 = d1 / d1;
-                    double d4 = d2 / d1;
-                    assertEquals("Observed is Double: Different Values in Distance Matrix: Row: " + r + " Column: " + c, d3, d4, delta);
+                    assertRatioEquals("Observed is Double: Different Values in Distance Matrix: Row: " + r + " Column: " + c, d1, d2, delta);
                 } else if (observedValue instanceof Float) {
                     double d1 = -1.0;
                     if (expectedValue instanceof Double) {
@@ -148,9 +147,7 @@ public class TableReportTestUtils {
                         d1 = Double.parseDouble(expectedValue.toString());
                     }
                     double d2 = ((Float) observedValue).doubleValue();
-                    double d3 = d1 / d1;
-                    double d4 = d2 / d1;
-                    assertEquals("Observed is Float: Different Values in Distance Matrix: Row: " + r + " Column: " + c, d3, d4, delta);
+                    assertRatioEquals("Observed is Float: Different Values in Distance Matrix: Row: " + r + " Column: " + c, d1, d2, delta);
                 } else if (expectedValue instanceof Double) {
                     double d1 = (Double) expectedValue;
                     double d2 = -1.0;
@@ -161,9 +158,7 @@ public class TableReportTestUtils {
                     } else {
                         d2 = Double.parseDouble(observedValue.toString());
                     }
-                    double d3 = d1 / d1;
-                    double d4 = d2 / d1;
-                    assertEquals("Expected is Double: Different Values in Distance Matrix: Row: " + r + " Column: " + c, d3, d4, delta);
+                    assertRatioEquals("Expected is Double: Different Values in Distance Matrix: Row: " + r + " Column: " + c, d1, d2, delta);
                 } else if (expectedValue instanceof Float) {
                     double d1 = ((Float) expectedValue).doubleValue();
                     double d2 = -1.0;
@@ -174,13 +169,19 @@ public class TableReportTestUtils {
                     } else {
                         d2 = Double.parseDouble(observedValue.toString());
                     }
-                    double d3 = d1 / d1;
-                    double d4 = d2 / d1;
-                    assertEquals("Expected is Float: Different Values in Distance Matrix: Row: " + r + " Column: " + c, d3, d4, delta);
+                    assertRatioEquals("Expected is Float: Different Values in Distance Matrix: Row: " + r + " Column: " + c, d1, d2, delta);
                 } else {
                     assertEquals("Comparing as Strings: Different Values in Distance Matrix: Row: " + r + " Column: " + c, expectedValue.toString(), observedValue.toString());
                 }
             }
+        }
+    }
+
+    private static void assertRatioEquals(String message, double expected, double observed, double delta) {
+        if (expected == 0.0) {
+            assertEquals(message, expected, observed, delta);
+        } else {
+            assertEquals(message, expected / expected, observed / expected, delta);
         }
     }
 
