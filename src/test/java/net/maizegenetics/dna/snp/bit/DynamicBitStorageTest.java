@@ -95,7 +95,7 @@ public class DynamicBitStorageTest {
         if(testHDF5Byte) readBytesToTestHDF5(outFile);
     }
 
-    @Ignore
+    @Ignore("benchmark: times per-taxon allele presence against setUp; the speed ratios it asserts depend on the machine")
     @Test
     public void testGetAllelePresenceForAllSites() throws Exception {
        long time=System.nanoTime();
@@ -192,7 +192,7 @@ public class DynamicBitStorageTest {
         System.out.println("BitTranspose Time:"+totalTime/1e9+"s  AvgPerObj:"+timePerObj+"ns");
     }
 
-    @Ignore
+    @Ignore("benchmark: times per-site allele presence against setUp; the speed ratios it asserts depend on the machine")
     @Test
     public void testGetAllelePresenceForAllTaxa() throws Exception {
         long time=System.nanoTime();
@@ -223,7 +223,7 @@ public class DynamicBitStorageTest {
         Assert.assertTrue("SBit Access Time Longer Than Expected:"+timePerObj+"ns and relative rate:"+relativeRate,relativeRate>20);
     }
 
-   @Ignore
+    @Ignore("benchmark: times copying and pivoting a byte[taxa][sites] matrix into a 1D array; calls no TASSEL code")
     @Test
     public void pivotMatrixTo1Dim() {
         long time=System.nanoTime();
@@ -249,7 +249,7 @@ public class DynamicBitStorageTest {
         System.out.println("Pivot 1DByte Matrix Time:"+totalTime/1e9+"s  AvgPerObj:"+timePerObj+"ns");
     }
 
-    @Ignore
+    @Ignore("benchmark: times transposing a byte[taxa][sites] matrix whole and in 64-site blocks; calls no TASSEL code")
     @Test
     public void pivotMatrixTo2Dim() {
         long time=System.nanoTime();
@@ -279,7 +279,7 @@ public class DynamicBitStorageTest {
     }
 
 
-    @Ignore
+    @Ignore("benchmark: times a cache-blocked transpose of a 10,000 x 10,000 byte array; calls no TASSEL code")
     @Test
     public void pivotMatrixTo2Dim64() {
         long time=System.nanoTime();
