@@ -1,55 +1,70 @@
 package net.maizegenetics.dna.snp.io;
 
+import net.maizegenetics.constants.GeneralConstants;
+import net.maizegenetics.constants.TutorialConstants;
 import net.maizegenetics.dna.snp.GenotypeTable;
 import net.maizegenetics.dna.snp.GenotypeTableBuilder;
-import net.maizegenetics.taxa.TaxaListBuilder;
-import net.maizegenetics.taxa.Taxon;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 /**
- * Defines xxxx
- *
  * @author Ed Buckler
  */
 public class BuilderFromGenotypeHDF5Test {
 
-    @Test@Ignore
-    public void testMergeToMutableHDF5() throws Exception {
-        String root="/Users/edbuckler/SolexaAnal/HapMapV2/"; // dev-only path; test is @Ignored
-        int r=new Random().nextInt(1000);
+    //Not in tassel_test_data; see docs/developer/missing-test-data.md
+    private static final String HAPMAP_V2_CHR8_H5 = GeneralConstants.DATA_DIR + "CandidateTests/maizeHapMapV2_B73RefGenV2_201203028_chr8.hmp.h5";
 
-        String infileRoot=root+"test/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.h5";
-        String outfile=root+"test/merge"+r+".hmp.h5";;
-        int startChr=8;
-        int endChr=10;
-        System.out.println("combineHapMapV2");
-        String[] infiles=new String[endChr-startChr+1];
-        for (int i = startChr; i <= endChr; i++) {
-            infiles[i-startChr] = infileRoot.replace("XXXX", ""+i);
-            System.out.println("Including "+infiles[i-startChr]);
+    @Test
+    public void testMergeToMutableHDF5() throws Exception {
+        //chrom3 lists the same taxa as the others in a different order, so the merge has to remap taxa
+        String[] hapmaps = {"mdp_genotype_chrom3_taxa_diff_order.hmp.txt", "mdp_genotype_chrom8.hmp.txt", "mdp_genotype_chrom10.hmp.txt"};
+        GenotypeTable[] sources = new GenotypeTable[hapmaps.length];
+        String[] infiles = new String[hapmaps.length];
+        int expectedSites = 0;
+        for (int i = 0; i < hapmaps.length; i++) {
+            sources[i] = BuilderFromHapMap.getBuilder(TutorialConstants.TUTORIAL_DIR + hapmaps[i]).build();
+            infiles[i] = GeneralConstants.TEMP_DIR + "mergeToMutableSource" + i + ".h5";
+            Files.deleteIfExists(Paths.get(infiles[i]));
+            GenotypeTableBuilder.getInstance(sources[i], infiles[i]);
+            expectedSites += sources[i].numberOfSites();
         }
-        System.out.println("Starting Export");
+        String outfile = GeneralConstants.TEMP_DIR + "mergeToMutable.h5";
+        Files.deleteIfExists(Paths.get(outfile));
+
         BuilderFromGenotypeHDF5.mergeToMutableHDF5(infiles, outfile);
 
-
+        GenotypeTable merged = GenotypeTableBuilder.getInstance(outfile);
+        Assert.assertEquals("Merged site count", expectedSites, merged.numberOfSites());
+        Assert.assertEquals("Merged taxa count", sources[0].numberOfTaxa(), merged.numberOfTaxa());
+        for (GenotypeTable source : sources) {
+            int[] mergedTaxon = new int[source.numberOfTaxa()];
+            for (int t = 0; t < source.numberOfTaxa(); t++) {
+                mergedTaxon[t] = merged.taxa().indexOf(source.taxa().get(t));
+                Assert.assertTrue("Taxon missing from merge: " + source.taxaName(t), mergedTaxon[t] >= 0);
+            }
+            for (int s = 0; s < source.numberOfSites(); s++) {
+                int mergedSite = merged.positions().indexOf(source.positions().get(s));
+                Assert.assertTrue("Site missing from merge: " + source.positions().get(s), mergedSite >= 0);
+                for (int t = 0; t < source.numberOfTaxa(); t++) {
+                    Assert.assertEquals("Genotype differs for " + source.taxaName(t) + " at " + source.positions().get(s),
+                            source.genotype(t, s), merged.genotype(mergedTaxon[t], mergedSite));
+                }
+            }
+        }
     }
 
-    @Test@Ignore
+    @Ignore("benchmark: needs the maize HapMap v2 chr8 HDF5 file, which is not in tassel_test_data (#36)")
+    @Test
     public void testDeflationBySite() throws Exception {
-        String root="/Users/edbuckler/SolexaAnal/HapMapV2/";
-
-        String infileRoot=root+"test/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.h5";
-        int startChr=8;
-        GenotypeTable a=GenotypeTableBuilder.getInstance(infileRoot.replace("XXXX", ""+startChr));
+        GenotypeTable a=GenotypeTableBuilder.getInstance(HAPMAP_V2_CHR8_H5);
         int bS=1<<16;
         for (int block=0; block<10; block++) {
             long time=System.nanoTime();
@@ -96,14 +111,10 @@ public class BuilderFromGenotypeHDF5Test {
 
     }
 
-    @Test@Ignore
+    @Ignore("benchmark: needs the maize HapMap v2 chr8 HDF5 file, which is not in tassel_test_data (#36)")
+    @Test
     public void testDeflation() throws Exception {
-        String root="/Users/edbuckler/SolexaAnal/HapMapV2/"; // dev-only path; test is @Ignored
-        int r=new Random().nextInt(1000);
-
-        String infileRoot=root+"test/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.h5";
-        int startChr=8;
-        GenotypeTable a=GenotypeTableBuilder.getInstance(infileRoot.replace("XXXX", ""+startChr));
+        GenotypeTable a=GenotypeTableBuilder.getInstance(HAPMAP_V2_CHR8_H5);
   //      Deflater compresser = new Deflater(1);
         byte[] base=Arrays.copyOf(a.genotypeAllSites(0),1000);
 
@@ -137,58 +148,4 @@ public class BuilderFromGenotypeHDF5Test {
 //        compresser.end();
 
     }
-
-
-    @Test@Ignore
-    public void testHMPtoHDF5() throws Exception {
-        String root="/Users/edbuckler/SolexaAnal/HapMapV2/"; // dev-only path; test is @Ignored
-        String hmpFiles=root+"AGP2/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.txt.gz";
-        String h5Files=root+"test/maizeHapMapV2_B73RefGenV2_201203028_chrXXXX.hmp.h5";
-        int startChr=9;
-        int endChr=10;
-        System.out.println("combineHapMapV2");
-
-        for (int i = startChr; i <= endChr; i++) {
-            String infile = hmpFiles.replace("XXXX", ""+i);
-            String outfile = h5Files.replace("XXXX", ""+i);
-            System.out.println("Reading "+infile);
-            GenotypeTable a=BuilderFromHapMap.getBuilder(infile).build();
-            TaxaListBuilder tlb=new TaxaListBuilder();
-            Map<Taxon, Integer> taxaWithDups= new HashMap();
-            for (int t = 0; t < a.taxa().size(); t++) {
-                Taxon theT=a.taxa().get(t);
-                if(taxaWithDups.containsKey(theT)) {
-                    int cnt=taxaWithDups.get(theT);
-                    cnt++;
-                    Taxon newT=new Taxon.Builder(theT).name(theT.getName()+"C"+cnt).build();
-                    tlb.add(newT);
-                    taxaWithDups.put(theT,cnt);
-                } else {
-                    tlb.add(theT);
-                    taxaWithDups.put(theT,1);
-                }
-            }
-            System.out.println("Writing "+outfile);
-            GenotypeTableBuilder.getInstance(a.genotypeMatrix(), a.positions(), tlb.build(), outfile);
-        }
-
-    }
-
-    public static void main(String[] args) {
-        String infileRoot=args[0];
-        String outfile=args[1];
-        int startChr=1;
-        int endChr=10;
-        System.out.println("combineHapMapV2");
-        String[] infiles=new String[endChr-startChr+1];
-        for (int i = startChr; i <= endChr; i++) {
-            infiles[i-startChr] = infileRoot.replace("XXXX", ""+i);
-            System.out.println("Including "+infiles[i-startChr]);
-        }
-        System.out.println("Starting Export");
-        BuilderFromGenotypeHDF5.mergeToMutableHDF5(infiles, outfile);
-
-    }
 }
-
-
