@@ -14,15 +14,14 @@ import net.maizegenetics.phenotype.Phenotype;
 import net.maizegenetics.phenotype.PhenotypeBuilder;
 import net.maizegenetics.plugindef.DataSet;
 import net.maizegenetics.plugindef.Datum;
+import net.maizegenetics.stats.linearmodels.BasicShuffler;
 import net.maizegenetics.util.TableReport;
 import net.maizegenetics.util.TableReportTestUtils;
 import net.maizegenetics.util.TableReportUtils;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class StepwiseAdditiveModelFitterTest {
-    @Ignore("#40: stepwise ANOVA mean square differs from expected results")
     @Test
     public void test() {
         StepwiseAdditiveModelFitterPlugin samfPlugin = new StepwiseAdditiveModelFitterPlugin();
@@ -42,6 +41,8 @@ public class StepwiseAdditiveModelFitterTest {
         GenotypePhenotype genoPheno = new GenotypePhenotypeBuilder().genotype(geno).phenotype(pheno).intersect().build();
         
         DataSet inputData = new DataSet(new Datum("name",  genoPheno, "comment"), null);
+        //the plugin's permutation test, on by default, replaces enterLimit and exitLimit with values from random shuffles
+        BasicShuffler.reset();
         DataSet outData = samfPlugin.performFunction(inputData);
         
         //expected results

@@ -54,10 +54,11 @@ public class StepwiseAddDomModelFitter extends StepwiseAdditiveModelFitter {
                             })
                             .collect(Collectors.toList());
         } else {  // use genotype
+            //AddPlusDomModelEffect derives dominance from the uncentered allele count
             mySites =
                     IntStream.range(0, myGenotype.numberOfSites())
                             .mapToObj(s -> new GenotypeAdditiveSite(s, myGenotype.chromosomeName(s), myGenotype.chromosomalPosition(s), myGenotype.siteName(s),
-                                    modelSelectionCriterion, myGenoPheno.genotypeAllTaxa(s), myGenotype.majorAllele(s), myGenotype.majorAlleleFrequency(s)))
+                                    modelSelectionCriterion, myGenoPheno.genotypeAllTaxa(s), myGenotype.majorAllele(s), myGenotype.majorAlleleFrequency(s), false))
                             .collect(Collectors.toList());
         }
 
