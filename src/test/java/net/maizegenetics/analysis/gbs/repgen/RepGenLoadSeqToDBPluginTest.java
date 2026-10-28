@@ -241,7 +241,7 @@ public class RepGenLoadSeqToDBPluginTest {
     // file created from bowtie into the GBS expected dir under
     //  bowtie2.1/tagsForAlign910auto.sam
     // This allows users without bowtie to run these tests
-    @Ignore
+    @Ignore("#43: runs a bowtie2 binary from a developer's machine; its output is in the archive as bowtie2.1/tagsForAlign910auto.sam")
     @Test
     public void runBowtie() throws Exception{
         String cmd=nextGenDir+"AGPv3/bowtie2-2.2.3/bowtie2 " +
