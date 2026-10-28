@@ -155,8 +155,6 @@ public class FastMultithreadedAssociationPluginTest {
         int ntraits = 10;
         double maxP = 0.01;
         
-        //output file
-//        String outfile = "/Volumes/Macintosh HD 2/temp/fast_assoc_test.txt";
         String filename = "dataFiles/CandidateTests/mdp_traits_nomissing.txt";
         Phenotype initialPhenotype = new PhenotypeBuilder().fromFile(filename).build().get(0);
         PhenotypeAttribute myTaxaAttr = initialPhenotype.taxaAttribute();
@@ -183,8 +181,6 @@ public class FastMultithreadedAssociationPluginTest {
         
         FastMultithreadedAssociationPlugin fastmap = new FastMultithreadedAssociationPlugin(null, false);
         fastmap.maxp(maxP);
-//        fastmap.saveAsFile(true);
-//        fastmap.reportFilename(outfile);
         fastmap.maxThreads(4);
         DataSet inputData = new DataSet(new Datum("myGenoPheno", myGenoPheno, ""), null);
         int nsites = myGenotype.numberOfSites();

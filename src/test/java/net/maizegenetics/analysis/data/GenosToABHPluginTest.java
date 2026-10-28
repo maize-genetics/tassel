@@ -352,14 +352,4 @@ public class GenosToABHPluginTest{
         }   
         return resultsMap;
     }
-    
-//  @Test
-//  public void GenosToABHPluginCallLargeData() {
-//      new GenosToABHPlugin()
-//      .infile("/Users/lcj34/development/hackathon_2015/filt_informsites.hmp.txt")
-//      .outfile("/Users/lcj34/development/hackathon_2015/genosToABH_noParents.csv")
-//      .parentA("/Users/lcj34/development/hackathon_2015/parentAFile.txt")
-//      .parentB("/Users/lcj34/development/hackathon_2015/parentBFile.txt")
-//      .performFunction(null);
-//  }
 }
