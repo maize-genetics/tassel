@@ -1,19 +1,23 @@
 package net.maizegenetics.analysis.data;
 
+import com.google.common.collect.ImmutableMap;
+import net.maizegenetics.constants.GBSConstants;
 import net.maizegenetics.constants.GeneralConstants;
 import net.maizegenetics.constants.TutorialConstants;
 import net.maizegenetics.dna.snp.AlignmentTestingUtils;
 import net.maizegenetics.dna.snp.ExportUtils;
+import net.maizegenetics.dna.snp.FilterGenotypeTable;
 import net.maizegenetics.dna.snp.GenotypeTable;
 import net.maizegenetics.dna.snp.ImportUtils;
 import net.maizegenetics.dna.snp.io.BuilderFromHapMap;
 import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.taxa.TaxaListBuilder;
 import net.maizegenetics.taxa.TaxaListIOUtils;
-import org.junit.Ignore;
+import net.maizegenetics.taxa.Taxon;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -23,9 +27,7 @@ import java.io.File;
  * @author Ed Buckler
  */
 public class LowLevelCopyOfHDF5Test {
-    private String bigTest="/Volumes/BucklerFastBig5/GBS27play/hmp/AllZeaGBSv27wDepth_tassel5.t5.h5";
-    private String bigTestOut="/Volumes/BucklerFastBig5/GBS27play/hmp/MARS27.t5.h5";
-    private String bigSubTaxaList="/Volumes/BucklerFastBig5/GBS27play/hmp/jasonTaxa.txt";
+    private static final String GBS_DEPTH_HDF5=GeneralConstants.DATA_DIR+"GenotypeTableTests/maize_chr9_10.h5";
     public static String EXPORT_TEMP_DIR = GeneralConstants.TEMP_DIR + "ExportUtilsTest/";
     public static String HAPMAP_TEMP_FILENAME = "temp_hapmap.hmp.txt";
 
@@ -97,14 +99,26 @@ public class LowLevelCopyOfHDF5Test {
 //        System.out.printf("Rate of low level copy %g in bp/ns%n", bpPerNS2);
     }
 
-    @Ignore
     @Test
     public void testSubsetGenotypesToNewFile() throws Exception {
-        //  GenotypeTable gt=ImportUtils.readGuessFormat(bigTest);
-        TaxaList tl=TaxaListIOUtils.readTaxaAnnotationFile(bigSubTaxaList, "<Name>");
-        System.out.println(tl.numberOfTaxa());
-        LowLevelCopyOfHDF5.subsetGenotypesToNewFile(bigTest, bigTestOut,tl);
-        //  System.out.println(gt.numberOfTaxa());
+        clearTestFolder();
+        String subsetFile=EXPORT_TEMP_DIR+"gbsSubsetDepth.t5.h5";
+        // One flowcell's samples from the GBS key file; the key lists one sample that the HDF5 file lacks.
+        TaxaList tl=TaxaListIOUtils.readTaxaAnnotationFile(GBSConstants.GBS_TESTING_KEY_FILE, "FullSampleName",
+                ImmutableMap.of("Flowcell", "C08L7ACXX"), true);
+        LowLevelCopyOfHDF5.subsetGenotypesToNewFile(GBS_DEPTH_HDF5, subsetFile, tl);
 
+        GenotypeTable orig=ImportUtils.readGuessFormat(GBS_DEPTH_HDF5);
+        int expectedTaxa=0;
+        for (Taxon taxon : tl) {
+            if (orig.taxa().indexOf(taxon.getName())>=0) expectedTaxa++;
+        }
+        assertTrue("Expected the key file to select a strict subset of the HDF5 taxa",
+                expectedTaxa>0 && expectedTaxa<orig.numberOfTaxa() && expectedTaxa<tl.numberOfTaxa());
+
+        GenotypeTable subset=ImportUtils.readGuessFormat(subsetFile);
+        assertEquals("Subset file has an unexpected number of taxa", expectedTaxa, subset.numberOfTaxa());
+        assertTrue("Subset file lost its depth", subset.hasDepth());
+        AlignmentTestingUtils.alignmentsEqual(FilterGenotypeTable.getInstance(orig, subset.taxa()), subset);
     }
 }
