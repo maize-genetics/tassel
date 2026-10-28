@@ -265,14 +265,11 @@ tasks {
             "**/analysis/gbs/repgen/RepGenAlignerPluginTest.class",     // hardcoded dev paths + external data
             "**/analysis/gbs/repgen/RepGenLDAnalysisPluginTest.class",  // hardcoded dev paths + external data
             "**/analysis/gbs/repgen/RampSeqAlignFromBlastTest.class",   // needs external BLAST output
-            "**/util/ConvertOldFastqToModernFormatTest.class",          // hardcoded /Volumes and /Users input paths
             // External database integration — need live Postgres / MonetDB instances
             "**/analysis/gobii/*Test.class",
             "**/analysis/monetdb/*Test.class",
             // RNA sequencing — need sequencing DB fixtures
             "**/analysis/rna/*Test.class",
-            // Hardcoded paths / heavy fixtures (not in test data release)
-            "**/GenomeAnnosDBQueryToPositionListPluginTest.class",
             // Dev-only utility class with hardcoded file paths, not a runnable test
             "**/CreateFastaOrFastqFiles.class",
         )
