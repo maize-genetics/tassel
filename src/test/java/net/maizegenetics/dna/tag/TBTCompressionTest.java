@@ -15,7 +15,7 @@ import java.util.Random;
  * Created by edbuckler on 5/19/14.
  */
 public class TBTCompressionTest {
-    private String testInTBT= GBSConstants.GBS_TEMP_SEQ_TO_TBT_HDF5_PLUGIN_FILE;
+    private String testInTBT= GBSConstants.GBS_EXPECTED_SEQ_TO_TBT_HDF5_PLUGIN_FILE;
     private static final String outName= GeneralConstants.TEMP_DIR+"RANDcompTest.h5";
     private static String outFile;
 
@@ -28,8 +28,8 @@ public class TBTCompressionTest {
     }
 
 
+    @Ignore("benchmark: compares TBT HDF5 file size after rewriting with deflation")
     @Test
-    @Ignore
     public void testStandardSize() throws Exception {
         TagsByTaxaByteHDF5TaxaGroups expectedTBT = new TagsByTaxaByteHDF5TaxaGroups(testInTBT);
         System.out.printf("Input File:  Taxa:%d Tags:%d%n", expectedTBT.getTaxaCount(), expectedTBT.getTagCount());
@@ -64,7 +64,7 @@ public class TBTCompressionTest {
         System.out.printf("File size:%d%n", newFileSize);
     }
 
-    @Ignore
+    @Ignore("benchmark: times reading the TBT file; needs the file testStandardSize writes")
     @Test
     public void testReadRate() throws Exception {
         TagsByTaxaByteHDF5TaxaGroups expectedTBT = new TagsByTaxaByteHDF5TaxaGroups(testInTBT);
