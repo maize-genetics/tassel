@@ -16,8 +16,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.zip.GZIPOutputStream;
@@ -38,20 +36,25 @@ public class ImportUtilsTest {
 
 
     private void createManySiteGenotypeTable() {
-        if(!Files.exists(Paths.get(largeHapMap))) {
-            GenotypeTable inGT=ImportUtils.readFromHapmap(infileName);
-            int inflationSize=100;
-            GenotypeTableBuilder outGTB=GenotypeTableBuilder.getSiteIncremental(inGT.taxa());
-            for (int i=0; i<inflationSize; i++) {
-                int chrBase=100*i;
-                for (int s=0; s<inGT.numberOfSites(); s++) {
-                    Position p=new GeneralPosition.Builder(new Chromosome(""+(chrBase+inGT.chromosome(s).getChromosomeNumber())),inGT.chromosomalPosition(s)).build();
-                    outGTB.addSite(p,inGT.genotypeAllTaxa(s));
-                }
+        GenotypeTable allTaxaGT=ImportUtils.readFromHapmap(infileName);
+        //Keep every site but only a few taxa. The sites have to span several HDF5 blocks for the
+        //VCF to HDF5 conversion to exercise its multi-block path, but the taxa count only adds run time.
+        int numTaxa=16;
+        TaxaListBuilder taxaSubset=new TaxaListBuilder();
+        for (int t=0; t<numTaxa; t++) taxaSubset.add(allTaxaGT.taxa().get(t));
+        GenotypeTable inGT=FilterGenotypeTable.getInstance(allTaxaGT, taxaSubset.build());
+        int inflationSize=100;
+        GenotypeTableBuilder outGTB=GenotypeTableBuilder.getSiteIncremental(inGT.taxa());
+        for (int i=0; i<inflationSize; i++) {
+            int chrBase=100*i;
+            for (int s=0; s<inGT.numberOfSites(); s++) {
+                Position p=new GeneralPosition.Builder(new Chromosome(""+(chrBase+inGT.chromosome(s).getChromosomeNumber())),inGT.chromosomalPosition(s)).build();
+                outGTB.addSite(p,inGT.genotypeAllTaxa(s));
             }
-            ExportUtils.writeToHapmap(outGTB.build(),largeHapMap);
-            ExportUtils.writeToVCF(outGTB.build(),largeVCF,false);
         }
+        GenotypeTable manySiteGT=outGTB.build();
+        ExportUtils.writeToHapmap(manySiteGT,largeHapMap);
+        ExportUtils.writeToVCF(manySiteGT,largeVCF,false);
     }
 
     @Test

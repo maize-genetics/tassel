@@ -7,12 +7,12 @@ package net.maizegenetics.dna.snp;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import net.maizegenetics.constants.GeneralConstants;
 import net.maizegenetics.constants.TutorialConstants;
 import net.maizegenetics.dna.map.PositionListBuilder;
 import net.maizegenetics.dna.snp.genotypecall.GenotypeCallTableBuilder;
-import net.maizegenetics.dna.snp.genotypecall.GenotypeTest;
 import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.taxa.TaxaListBuilder;
 import net.maizegenetics.taxa.Taxon;
@@ -73,16 +73,36 @@ public class GenotypeTableStreamTest {
     @Test
     public void testBigGenotypeStream() throws IOException {
         System.out.println("Testing SuperByteMatrixMultiple Genotype Stream...");
+        // More than Integer.MAX_VALUE genotypes, so the calls are stored in a SuperByteMatrixMultiple
         int numTaxa = 30000;
         int numSites = 74000;
         GenotypeCallTableBuilder builder = GenotypeCallTableBuilder.getUnphasedNucleotideGenotypeBuilder(numTaxa, numSites);
-        GenotypeTest.setRandomNucleotideData(builder);
+
+        // Filling and checking all 2.2 billion genotypes takes minutes, so only check the first and last
+        // taxa and those on either side of the boundary between SuperByteMatrixMultiple's backing arrays.
+        int taxaPerBackingArray = Integer.MAX_VALUE / numSites;
+        int[] taxaToCheck = {0, 1, taxaPerBackingArray - 1, taxaPerBackingArray, taxaPerBackingArray + 1, builder.getTaxaCount() - 1};
+        Random random = new Random(20150313L);
+        for (int t : taxaToCheck) {
+            for (int s = 0; s < numSites; s++) {
+                builder.setBase(t, s, randomNucleotideGenotype(random));
+            }
+        }
+
         TaxaListBuilder taxaBuilder = new TaxaListBuilder();
         for (int t = 0; t < numTaxa; t++) {
             taxaBuilder.add(new Taxon("taxon" + t));
         }
         GenotypeTable genotypes = GenotypeTableBuilder.getInstance(builder.build(), PositionListBuilder.getInstance(numSites), taxaBuilder.build());
-        testTaxaStream(genotypes);
+        for (int t : taxaToCheck) {
+            testTaxaStream(genotypes, t);
+        }
+    }
+
+    private static byte randomNucleotideGenotype(Random random) {
+        int first = random.nextInt(7);
+        int second = random.nextInt(7);
+        return (byte) (((first == 6 ? 0xF : first) << 4) | (second == 6 ? 0xF : second));
     }
 
     private void testStream(GenotypeTable genotypes) {
@@ -97,11 +117,16 @@ public class GenotypeTableStreamTest {
 
     private void testTaxaStream(GenotypeTable genotypes) {
         for (int t = 0; t < genotypes.numberOfTaxa(); t++) {
-            List<Byte> stream = genotypes.streamGenotype(t).collect(Collectors.toList());
-            int count = 0;
-            for (int s = 0; s < genotypes.numberOfSites(); s++) {
-                assertEquals("Genotypes don't match stream at taxon: " + t + "  site: " + s, genotypes.genotype(t, s), stream.get(count++).byteValue());
-            }
+            testTaxaStream(genotypes, t);
+        }
+    }
+
+    private void testTaxaStream(GenotypeTable genotypes, int t) {
+        List<Byte> stream = genotypes.streamGenotype(t).collect(Collectors.toList());
+        assertEquals("Stream length for taxon: " + t, genotypes.numberOfSites(), stream.size());
+        int count = 0;
+        for (int s = 0; s < genotypes.numberOfSites(); s++) {
+            assertEquals("Genotypes don't match stream at taxon: " + t + "  site: " + s, genotypes.genotype(t, s), stream.get(count++).byteValue());
         }
     }
 }
