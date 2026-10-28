@@ -38,6 +38,24 @@ public class BuilderFromGVCFTest {
     String chr8GeneAnchorsFileName = GeneralConstants.DATA_DIR + "CandidateTests/anchorsFile_chr8_genesExactCoordinates.csv";
     String chr8MergedAnchorsFileName = GeneralConstants.DATA_DIR + "CandidateTests/anchorsFile_chr8_MergedPlus1000orGapDiffcoordinates.csv";
 
+    //Loading these takes about 40 seconds, so the tests share one copy. Tests must not modify them.
+    private static GVCFGenomeSequence b73GVCFSequence;
+    private static GenomeSequence agpv4Sequence;
+
+    private GVCFGenomeSequence b73GVCFSequence() throws Exception {
+        if (b73GVCFSequence == null) {
+            b73GVCFSequence = (GVCFGenomeSequence) GVCFGenomeSequenceBuilder.instance(agpv4FileName, fullGVCFFileName);
+        }
+        return b73GVCFSequence;
+    }
+
+    private GenomeSequence agpv4Sequence() {
+        if (agpv4Sequence == null) {
+            agpv4Sequence = GenomeSequenceBuilder.instance(agpv4FileName);
+        }
+        return agpv4Sequence;
+    }
+
     @Test
     public void testSmallGVCF() {
         String fileName = directoryName + "refBlockDepthAboveFive.g.vcf";
@@ -290,14 +308,9 @@ public class BuilderFromGVCFTest {
     public void testHetInsertions() {
         //Test region is here
         //8:105839363:105844126
-        String gvcfFileName = fullGVCFFileName;
-        String refFileName = agpv4FileName;
         try {
-            System.out.println("Loading in GCVF");
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-            System.out.println("Loading in ref");
-            GenomeSequence refSequence = (GenomeSequence)GenomeSequenceBuilder.instance(refFileName);
-            System.out.println("Done loadin in files");
+            GVCFGenomeSequence sequence = b73GVCFSequence();
+            GenomeSequence refSequence = agpv4Sequence();
             HashMap<String, Chromosome> chrMap = new HashMap<>();
 
 
@@ -348,11 +361,9 @@ public class BuilderFromGVCFTest {
     @Test
     public void testHetDeletions() {
         //8:83443248:83445925
-        String gvcfFileName = fullGVCFFileName;
-        String refFileName = agpv4FileName;
         try {
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-            GenomeSequence refSequence = (GenomeSequence)GenomeSequenceBuilder.instance(refFileName);
+            GVCFGenomeSequence sequence = b73GVCFSequence();
+            GenomeSequence refSequence = agpv4Sequence();
             HashMap<String, Chromosome> chrMap = new HashMap<>();
 
 
@@ -414,11 +425,9 @@ public class BuilderFromGVCFTest {
     @Test
     public void testHetSNPs() {
         //8:15917882:15920151
-        String gvcfFileName = fullGVCFFileName;
-        String refFileName = agpv4FileName;
         try {
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-            GenomeSequence refSequence = (GenomeSequence)GenomeSequenceBuilder.instance(refFileName);
+            GVCFGenomeSequence sequence = b73GVCFSequence();
+            GenomeSequence refSequence = agpv4Sequence();
             HashMap<String, Chromosome> chrMap = new HashMap<>();
 
 
@@ -473,10 +482,8 @@ public class BuilderFromGVCFTest {
         //Should be 1 N exported..maybe we change this to a number of Ns
         //A good region is here:
         //8:8937202:8939694
-        String gvcfFileName = fullGVCFFileName;
-        String refFileName = agpv4FileName;
         try {
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
+            GVCFGenomeSequence sequence = b73GVCFSequence();
             HashMap<String, Chromosome> chrMap = new HashMap<>();
 
 
@@ -499,11 +506,9 @@ public class BuilderFromGVCFTest {
     public void testRefHomozygous() {
         //should match reference
         //8:15484032:15486280
-        String gvcfFileName = fullGVCFFileName;
-        String refFileName = agpv4FileName;
         try {
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-            GenomeSequence refSequence = (GenomeSequence)GenomeSequenceBuilder.instance(refFileName);
+            GVCFGenomeSequence sequence = b73GVCFSequence();
+            GenomeSequence refSequence = agpv4Sequence();
 
             HashMap<String, Chromosome> chrMap = new HashMap<>();
 
@@ -531,11 +536,9 @@ public class BuilderFromGVCFTest {
         //put Ns in the where this is true
         //Good test sequence is here:
         //8:62915759:62918979
-        String gvcfFileName = fullGVCFFileName;
-        String refFileName = agpv4FileName;
         try {
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-            GenomeSequence refSequence = (GenomeSequence)GenomeSequenceBuilder.instance(refFileName);
+            GVCFGenomeSequence sequence = b73GVCFSequence();
+            GenomeSequence refSequence = agpv4Sequence();
             HashMap<String, Chromosome> chrMap = new HashMap<>();
 
 
@@ -584,13 +587,9 @@ public class BuilderFromGVCFTest {
         //Put alt alleles in
         //good test sequence is here:
         //8:103920155:103926901
-        String gvcfFileName = fullGVCFFileName;
-        String refFileName = agpv4FileName;
         try {
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-            System.out.println("Loading Reference sequence");
-            GenomeSequence refSequence = (GenomeSequence)GenomeSequenceBuilder.instance(refFileName);
-            System.out.println("Done loading Ref");
+            GVCFGenomeSequence sequence = b73GVCFSequence();
+            GenomeSequence refSequence = agpv4Sequence();
             HashMap<String, Chromosome> chrMap = new HashMap<>();
 
 
