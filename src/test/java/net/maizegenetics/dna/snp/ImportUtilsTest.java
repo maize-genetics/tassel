@@ -16,14 +16,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import static org.junit.Assert.assertEquals;
@@ -109,7 +105,6 @@ public class ImportUtilsTest {
     }
 
 
-    @Ignore
     @Test
     public void testReadFromHapmap() throws Exception {
         long time=System.nanoTime();
@@ -117,23 +112,6 @@ public class ImportUtilsTest {
         long totalTime=System.nanoTime()-time;
         double timePerObj=(double)totalTime/(double)(a.numberOfTaxa()*a.numberOfSites());
         System.out.printf("ReadFromHapmap in Alignment 4.0 in %gs wiht site rate of %gns/bp %n", totalTime / 1e9, timePerObj);
-
-    }
-
-   @Ignore
-    @Test
-    public void testBuilderFromVCF() throws Exception {
-        long time=System.nanoTime();
-        String vcfIn="/Users/edbuckler/SolexaAnal/HapMap3/genotyping/HapMap2_taxa_bqc20_q5_bwamem_rlxd/thr.all_c10_bqc20_q5_bwamem_rlxd.inGBS.gz";
-        GenotypeTable a=BuilderFromVCF.getBuilder(vcfIn).build();
-        long totalTime=System.nanoTime()-time;
-        double timePerObj=(double)totalTime/(double)(a.numberOfTaxa()*a.numberOfSites());
-        System.out.printf("BuilderFromVCF in Alignment 5 in %gs with site rate of %gns/bp %n", totalTime / 1e9, timePerObj);
-        time=System.nanoTime();
-        GenotypeTable a3=BuilderFromVCF.getBuilder(vcfIn).build();
-        totalTime=System.nanoTime()-time;
-        timePerObj=(double)totalTime/(double)(a3.numberOfTaxa()*a3.numberOfSites());
-        System.out.printf("BuilderFromVCF in Alignment 5 in %gs with site rate of %gns/bp %n", totalTime / 1e9, timePerObj);
 
     }
 
@@ -259,7 +237,7 @@ public class ImportUtilsTest {
 //
 //    }
 
-    @Ignore
+    @Ignore("benchmark: times reading the tutorial HapMap file into memory")
     @Test
     public void speedFileTests() {
         long time=System.nanoTime();
@@ -286,35 +264,6 @@ public class ImportUtilsTest {
                     w.write(sx);
                 }
                 w.close(); }
-            long totalTime=System.nanoTime()-time;
-            System.out.printf("ImportUtil ReadText data timing %gs %d %n", totalTime/1e9, lines);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Ignore
-    @Test
-    public void speedFileTests2() {
-        long time=System.nanoTime();
-        try {
-            InputStream gzipOS=new GZIPInputStream(new FileInputStream(infileName));
-            ReadableByteChannel in = Channels.newChannel(gzipOS);
-            ByteBuffer buf = ByteBuffer.allocate(100_000_000);
-            int bytesRead = in.read(buf);
-            int lines=0;
-            //time=System.nanoTime();
-            while (bytesRead != -1) {
-                System.out.println("Read "+bytesRead);
-                buf.flip();
-                byte[] b=new byte[100_000_001];
-                int i=0;
-                buf.get(b,0,buf.limit());
-                buf.clear();
-                bytesRead = in.read(buf);
-                lines++;
-            }
-
             long totalTime=System.nanoTime()-time;
             System.out.printf("ImportUtil ReadText data timing %gs %d %n", totalTime/1e9, lines);
         } catch (IOException e) {

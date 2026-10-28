@@ -355,6 +355,7 @@ tasks {
         "net.maizegenetics.analysis.modelfitter.AdditiveSiteTest",
         // Matrix algebra
         "net.maizegenetics.matrixalgebra.Matrix.DoubleMatrixTest",
+        "net.maizegenetics.matrixalgebra.decomposition.EJMLEigenvalueDecompositionTest",
         // Numeric transforms
         "net.maizegenetics.analysis.numericaltransform.ImputationByMeanTest",
         "net.maizegenetics.analysis.numericaltransform.kNearestNeighborsTest",
