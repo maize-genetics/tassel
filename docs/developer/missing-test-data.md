@@ -104,9 +104,11 @@ described below.
 `GenomeSequenceBuilder` holds every chromosome of the reference in memory, and
 several of these methods load the reference twice (once through the GVCF
 builder, once directly). The test JVM is capped at 10 GB (`-Xmx10g` in
-`build.gradle.kts`). `BuilderFromGVCFTest` is already one of the slowest classes
+`build.gradle.kts`). `BuilderFromGVCFTest` used to be one of the slowest classes
 in the suite ([#37](https://github.com/maize-genetics/tassel/issues/37)),
-because each method reloads its GVCF and reference.
+because each method reloaded its GVCF and reference. The active methods that use
+the B73 GVCF now share one loaded copy; re-enabled methods should share their
+inputs the same way.
 
 ### The GVCF tests don't check anything yet
 
