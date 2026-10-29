@@ -21,14 +21,11 @@ import net.maizegenetics.dna.snp.io.BuilderFromVCF;
 import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.taxa.TaxaListBuilder;
 import net.maizegenetics.taxa.Taxon;
-import net.maizegenetics.dna.snp.io.VCFUtil;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.*;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,7 +83,6 @@ public class ExportUtilsTest {
     /**
      * Test of writeToHapmap method, of class ExportUtils.
      */
-    @Ignore
     @Test
     public void testWriteToHapmap() throws IOException {
         System.out.println("Testing Export to Hapmap...");
@@ -102,7 +98,6 @@ public class ExportUtilsTest {
 
         AlignmentTestingUtils.alignmentsEqual(expResult, result);
     }
-    @Ignore
     @Test
     public void testHDF5WithDepth() throws Exception {
         clearTestFolder();
@@ -1666,87 +1661,6 @@ public class ExportUtilsTest {
                 System.out.println(""+i);
             }
         }
-    }
-    
-    @Ignore
-    @Test
-    public void find4190Depth() {
-        for(int i = 0; i<1000000;i++) {
-            if(AlleleDepthUtil.depthByteToInt((byte)i)==4190) {
-                System.out.println(i);
-            }
-        }
-        
-    }
-    @Ignore
-    @Test
-    public void find29Depth() {
-        for(int i = 0; i<500;i++) {
-            if(AlleleDepthUtil.depthByteToInt((byte)i)==29) {
-                System.out.println(i);
-            }
-        }
-        
-    }
-    
-    @Ignore
-    @Test
-    public void calcScores() {
-        clearTestFolder();
-        
-        try {
-            BufferedWriter homo0HeatMapWriter = new BufferedWriter(new FileWriter(EXPORT_TEMP_DIR+"homo0HM.csv"));
-            BufferedWriter hetHeatMapWriter = new BufferedWriter(new FileWriter(EXPORT_TEMP_DIR+"het01HM.csv"));
-            BufferedWriter homo1HeatMapWriter = new BufferedWriter(new FileWriter(EXPORT_TEMP_DIR+"homo1HM.csv"));
-            
-            homo0HeatMapWriter.write(", ");
-            hetHeatMapWriter.write(", ");
-            homo1HeatMapWriter.write(", ");
-            
-            for(int i = 0; i<256; i++) {
-                homo0HeatMapWriter.write(i+", ");
-                hetHeatMapWriter.write(i+", ");
-                homo1HeatMapWriter.write(i+", ");
-            }
-            
-            homo0HeatMapWriter.newLine();
-            hetHeatMapWriter.newLine();
-            homo1HeatMapWriter.newLine();
-            
-            for(int i = 0; i < 256; i++) {
-                homo0HeatMapWriter.write(i+", ");
-                hetHeatMapWriter.write(i+", ");
-                homo1HeatMapWriter.write(i+", ");
-                for(int j = 0; j < 256; j++) {
-                    int[] scores = VCFUtil.getScore(i,j);
-                    homo0HeatMapWriter.write(scores[0]+", ");
-                    hetHeatMapWriter.write(scores[1]+", ");
-                    homo1HeatMapWriter.write(scores[2]+", ");
-                }
-                homo0HeatMapWriter.newLine();
-                hetHeatMapWriter.newLine();
-                homo1HeatMapWriter.newLine();
-              
-            }
-            homo0HeatMapWriter.close();
-            hetHeatMapWriter.close();
-            homo1HeatMapWriter.close();
-        }catch(IOException e) {
-            System.out.println(e);
-        }
-        
-        System.out.println((byte)4190);
-        System.out.println((byte)-115);
-        System.out.println(AlleleDepthUtil.depthIntToByte(4190));
-        
-        System.out.println(AlleleDepthUtil.depthByteToInt((byte)-115));
-        
-        System.out.println(Arrays.toString(VCFUtil.getScore(29, 51)));
-        System.out.println(Arrays.toString(VCFUtil.getScore(500, 50)));
-        System.out.println(Arrays.toString(VCFUtil.getScore(28,AlleleDepthUtil.depthByteToInt((byte)4190))));
-        System.out.println(Arrays.toString(VCFUtil.getScore(28,AlleleDepthUtil.depthByteToInt((byte)338))));
-        
-        System.out.println(AlleleDepthUtil.depthIntToByte(4190));
     }
     
     public GenotypeCallTable generateSmallCallTable(String[][] calls) {
