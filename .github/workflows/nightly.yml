@@ -100,7 +100,9 @@ jobs:
           curl -L \
             -o tassel_test_data_v1.tar.gz \
             https://github.com/maize-genetics/tassel_test_data/releases/download/v1.0.0/tassel_test_data_v1.tar.gz
-          tar -xzf tassel_test_data_v1.tar.gz
+          # The archive was packed on macOS and carries AppleDouble `._*` entries,
+          # which GNU tar extracts as real files that tests then pick up.
+          tar -xzf tassel_test_data_v1.tar.gz --exclude='._*'
 
       # Health check: a failing test suite fails the nightly and stops the
       # subsequent build/publish steps, signalling that develop is broken.

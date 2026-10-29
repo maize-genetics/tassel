@@ -2,7 +2,6 @@ package net.maizegenetics.util;
 
 import junit.framework.Assert;
 import net.maizegenetics.constants.TutorialConstants;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -10,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class DirectoryCrawlerTest {
-    @Ignore
     @Test
     public void testGlobRegex() throws Exception {
 
