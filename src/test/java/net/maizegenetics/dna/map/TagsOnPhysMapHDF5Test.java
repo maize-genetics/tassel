@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 /**
  * Test for {@link TagsOnPhysMapHDF5}.
  *
- * <p>Originally this test read multi-GB TOPM fixtures from hard-coded {@code /Volumes/LaCie/...}
+ * <p>Originally this test read multi-GB TOPM fixtures from hard-coded external-drive
  * paths that are not part of the test-data release, and asserted chromosome sets tied to the old
  * AllZeaGBS build. It now derives its fixtures at runtime from the present binary TOPM
  * ({@link GBSConstants#GBS_EXPECTED_DISCOVERY_SNP_CALLER_PLUGIN_TOPM_OUT_FILE}): it writes a text
