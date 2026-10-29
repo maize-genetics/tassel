@@ -15,7 +15,6 @@ import net.maizegenetics.dna.tag.SAMUtils;
 import net.maizegenetics.dna.tag.Tag;
 import net.maizegenetics.dna.tag.TagBuilder;
 import net.maizegenetics.util.Tuple;
-import org.junit.Ignore;
 
 import org.junit.Test;
 
@@ -26,22 +25,23 @@ import org.junit.Test;
  */
 public class SAMToGBSdbPluginTest {
 
-    // bowtie2 default cases (with or without the -M option)
+    // bowtie2 default cases (with or without the -M option). Read names use the
+    // "tagSeq=<original tag>" form that TagExportToFastqPlugin writes and parseRow reads.
     String[] bowtie2 = {
         // forward strand perfect match:
-        "length=64count=309	0	chr10	9373084	11	64M	*	0	0	CAGCAAAATAAATTACAAAACAAAGTGTGATCTACAGGTACCTGTAAGCCTGCTATCTGCTACG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:128	XS:i:120	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:64	YT:Z:UU",
+        "tagSeq=CAGCAAAATAAATTACAAAACAAAGTGTGATCTACAGGTACCTGTAAGCCTGCTATCTGCTACG	0	chr10	9373084	11	64M	*	0	0	CAGCAAAATAAATTACAAAACAAAGTGTGATCTACAGGTACCTGTAAGCCTGCTATCTGCTACG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:128	XS:i:120	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:64	YT:Z:UU",
         // reverse strand, 51 bp, perfect match (13433871+51M-1 = 13433921):
-        "length=51count=974	16	chr9	13433871	32	51M	*	0	0	CAGCAGACATTAGGAGGCTATGGCCTTAGCACTGGGAGTGCTTGTTTGCTG	fffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:102	XS:i:86	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:51	YT:Z:UU",
+        "tagSeq=CAGCAAACAAGCACTCCCAGTGCTAAGGCCATAGCCTCCTAATGTCTGCTG	16	chr9	13433871	32	51M	*	0	0	CAGCAGACATTAGGAGGCTATGGCCTTAGCACTGGGAGTGCTTGTTTGCTG	fffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:102	XS:i:86	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:51	YT:Z:UU",
         // reverse strand, soft clipping by 2 bases on both ends, one mismatch (19773189+60M+2S-1 = 19773250):
-        "length=64count=14	16	chr10	19773189	18	2S60M2S	*	0	0	GCTGTCTCCCAGGACGGCAAAAAGAAGAAGAAGAACCACGACTATGAGAGGACACAGTTTGCTG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:112	XS:i:80	XN:i:0	XM:i:1	XO:i:0	XG:i:0	NM:i:1	MD:Z:12T47	YT:Z:UU",
+        "tagSeq=CAGCAAACTGTGTCCTCTCATAGTCGTGGTTCTTCTTCTTCTTTTTGCCGTCCTGGGAGACAGC	16	chr10	19773189	18	2S60M2S	*	0	0	GCTGTCTCCCAGGACGGCAAAAAGAAGAAGAAGAACCACGACTATGAGAGGACACAGTTTGCTG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:112	XS:i:80	XN:i:0	XM:i:1	XO:i:0	XG:i:0	NM:i:1	MD:Z:12T47	YT:Z:UU",
         // multiple alighments of equal score:
-        "length=62count=29	0	2	219523831	1	62M	*	0	0	CAGCAAAAAAATCTGAGAGCGGCAAGCGGCAAGGAGATGAAAGATCTCCAGTTAAGCGGCAG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:116	XS:i:116	XN:i:0	XM:i:1	XO:i:0	XG:i:0	NM:i:1	MD:Z:18A43	YT:Z:UU",
+        "tagSeq=CAGCAAAAAAATCTGAGAGCGGCAAGCGGCAAGGAGATGAAAGATCTCCAGTTAAGCGGCAG	0	2	219523831	1	62M	*	0	0	CAGCAAAAAAATCTGAGAGCGGCAAGCGGCAAGGAGATGAAAGATCTCCAGTTAAGCGGCAG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:116	XS:i:116	XN:i:0	XM:i:1	XO:i:0	XG:i:0	NM:i:1	MD:Z:18A43	YT:Z:UU",
         // no alignment:
-        "length=64count=3137	4	*	0	0	*	*	0	0	CAGCAAAAAAATCCTTGCCCATGTAGGAGAACCGATTTGGCTCTCCCACATGAGCAAGGTCTTG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	YT:Z:UU",
+        "tagSeq=CAGCAAAAAAATCCTTGCCCATGTAGGAGAACCGATTTGGCTCTCCCACATGAGCAAGGTCTTG	4	*	0	0	*	*	0	0	CAGCAAAAAAATCCTTGCCCATGTAGGAGAACCGATTTGGCTCTCCCACATGAGCAAGGTCTTG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	YT:Z:UU",
         // no alignment, but reverse complemented anyway:
-        "length=64count=3137	20	*	0	0	*	*	0	0	CAGCAAAAAAATCCTTGCCCATGTAGGAGAACCGATTTGGCTCTCCCACATGAGCAAGGTCTTG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	YT:Z:UU",
+        "tagSeq=CAAGACCTTGCTCATGTGGGAGAGCCAAATCGGTTCTCCTACATGGGCAAGGATTTTTTTGCTG	20	*	0	0	*	*	0	0	CAGCAAAAAAATCCTTGCCCATGTAGGAGAACCGATTTGGCTCTCCCACATGAGCAAGGTCTTG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	YT:Z:UU",
         // only one good alignment (no "XS:i:#" entry):
-        "length=64count=109	0	1	224071175	44	64M	*	0	0	CAGCAAAAAAATCTAGATCATCTACCGACAGCCTTTCATGGAATACAATAATTTGTCTGTCTTC	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:128	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:64	YT:Z:UU",
+        "tagSeq=CAGCAAAAAAATCTAGATCATCTACCGACAGCCTTTCATGGAATACAATAATTTGTCTGTCTTC	0	1	224071175	44	64M	*	0	0	CAGCAAAAAAATCTAGATCATCTACCGACAGCCTTTCATGGAATACAATAATTTGTCTGTCTTC	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	AS:i:128	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:64	YT:Z:UU",
 //        // ya got any more?:
 //        "",
     };
@@ -55,16 +55,16 @@ public class SAMToGBSdbPluginTest {
         TagBuilder.instance("CAGCAAAAAAATCTAGATCATCTACCGACAGCCTTTCATGGAATACAATAATTTGTCTGTCTTC").build(),
 //        TagBuilder.instance("").build(),
     };
+    // null means parseRow returns the tag with no position
     Position[] bowtie2ExpPositions = {
         new GeneralPosition.Builder(new Chromosome("10"),9373084).addAnno("forward","true").addAnno("cigar","64M").addAnno("supportvalue","128").addAnno("mappingapproach","Bowtie2").strand((byte)1).build(),
-        new GeneralPosition.Builder(new Chromosome("9"),13433871+51-1).addAnno("forward","false").addAnno("cigar","51M").addAnno("supportvalue","102").addAnno("mappingapproach","Bowtie2").strand((byte)1).build(),
-        new GeneralPosition.Builder(new Chromosome("10"),19773189+60+2-1).addAnno("forward","false").addAnno("cigar","2S60M2S").addAnno("supportvalue","112").addAnno("mappingapproach","Bowtie2").strand((byte)1).build(),
-        // this next one (multiple alighments of equal score) probably should be null (so it is commented out and replaced by null):
-//        new GeneralPosition.Builder(new Chromosome("2"),219523831).addAnno("forward","true").addAnno("cigar","62M").addAnno("supportvalue","116").addAnno("mappingapproach","Bowtie2").strand((byte)1).build(),
+        new GeneralPosition.Builder(new Chromosome("9"),13433871+51-1).addAnno("forward","false").addAnno("cigar","51M").addAnno("supportvalue","102").addAnno("mappingapproach","Bowtie2").strand((byte)0).build(),
+        new GeneralPosition.Builder(new Chromosome("10"),19773189+60+2-1).addAnno("forward","false").addAnno("cigar","2S60M2S").addAnno("supportvalue","112").addAnno("mappingapproach","Bowtie2").strand((byte)0).build(),
+        // equal-score alignments are kept: MAPQ is 1 and minMAPQ defaults to 0
+        new GeneralPosition.Builder(new Chromosome("2"),219523831).addAnno("forward","true").addAnno("cigar","62M").addAnno("supportvalue","116").addAnno("mappingapproach","Bowtie2").strand((byte)1).build(),
         null,
         null,
-        null,
-        new GeneralPosition.Builder(new Chromosome("1"),-1).addAnno("forward","true").addAnno("cigar","64M").addAnno("supportvalue","128").addAnno("mappingapproach","Bowtie2").strand((byte)1).build(),
+        new GeneralPosition.Builder(new Chromosome("1"),224071175).addAnno("forward","true").addAnno("cigar","64M").addAnno("supportvalue","128").addAnno("mappingapproach","Bowtie2").strand((byte)1).build(),
 //        new GeneralPosition.Builder(new Chromosome(""),-1).addAnno("forward","").addAnno("cigar","").addAnno("supportvalue","").addAnno("mappingapproach","Bowtie2").strand((byte)1).build(),
     };
 
@@ -187,32 +187,6 @@ public class SAMToGBSdbPluginTest {
         TagBuilder.instance("CAGCCGGACTAGCAAAACAAGTGCGTAAAATCGAAGTCTTCCTCAAAGGACCATCCATGCAAAA").build(),
 //        TagBuilder.instance("").build(),
     };
-    
-    // bwa cases
-    String[] bwa = {
-        // same tag as the first bowtie2 -k 5 case above (X0:i:10 = 10 best hits, but only 1 reported):
-        "length=64count=1731	0	chr4	34593346	0	64M	*	0	0	CAGCCGGACTAGCAAAACAAGTGCGTAAAATCGAAGTCTTCCTCAAAGGACCATCCATGCAAAA	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	XT:A:R	NM:i:4	X0:i:10	X1:i:0	XM:i:4	XO:i:0	XG:i:0	MD:Z:25C21A3T4G7",
-        // another tag with multiple positions reported (requires parseResult to return Tuple<Tag,Optional<Position>[]>):
-        "length=64count=17	16	chr1	149645339	18	64M	*	0	0	CTGCACCCTTGGGCGACTTTTGCACGGAGAGTGGTTTTGTGCACTTATTTTGCTAGTCCGGCTG	ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff	XT:A:U	NM:i:1	X0:i:1	X1:i:3	XM:i:1	XO:i:0	XG:i:0	MD:Z:49G14	XA:Z:chr4,+98993172,64M,2;chr4,-33326770,64M,2;chr2,-51515187,64M,2;",
-//        "",
-    };
-    Tag[] bwaExpTags = {
-        TagBuilder.instance("CAGCCGGACTAGCAAAACAAGTGCGTAAAATCGAAGTCTTCCTCAAAGGACCATCCATGCAAAA").build(),
-        TagBuilder.instance("CAGCCGGACTAGCAAAATAAGTGCACAAAACCACTCTCCGTGCAAAAGTCGCCCAAGGGTGCAG").build(),
-//        TagBuilder.instance("").build(),
-    };
-    Position[] bwaExpPositions1 = {
-        new GeneralPosition.Builder(new Chromosome("4"),34593346).addAnno("forward","true").addAnno("cigar","64M").addAnno("supportvalue","-4").addAnno("mappingapproach","bwa").strand((byte)1).build(),
-//        new GeneralPosition.Builder(new Chromosome(""),0).addAnno("forward","").addAnno("cigar","").addAnno("supportvalue","").addAnno("mappingapproach","bwa").strand((byte)1).build(),
-    };
-    Position[] bwaExpPositions2 = {
-        new GeneralPosition.Builder(new Chromosome("1"),149645339+64-1).addAnno("forward","false").addAnno("cigar","64M").addAnno("supportvalue","-1").addAnno("mappingapproach","bwa").strand((byte)1).build(),
-        new GeneralPosition.Builder(new Chromosome("4"),98993172).addAnno("forward","true").addAnno("cigar","64M").addAnno("supportvalue","-2").addAnno("mappingapproach","bwa").strand((byte)1).build(),
-        new GeneralPosition.Builder(new Chromosome("4"),33326770+64-1).addAnno("forward","false").addAnno("cigar","64M").addAnno("supportvalue","-2").addAnno("mappingapproach","bwa").strand((byte)1).build(),
-        new GeneralPosition.Builder(new Chromosome("2"),51515187+64-1).addAnno("forward","false").addAnno("cigar","64M").addAnno("supportvalue","-2").addAnno("mappingapproach","bwa").strand((byte)1).build(),
-//        new GeneralPosition.Builder(new Chromosome(""),0).addAnno("forward","").addAnno("cigar","").addAnno("supportvalue","").addAnno("mappingapproach","bwa").strand((byte)1).build(),
-    };
-    Position[][] bwaExpPositions = {bwaExpPositions1, bwaExpPositions2};
 
     @Test
     public void testAdjustForClipping() throws Exception {
@@ -262,8 +236,6 @@ public class SAMToGBSdbPluginTest {
         assertEquals(expectedReturn,actualReturn);
     }
     
-    // Working on this one
-    @Ignore
     @Test
     public void testParseRow() throws Exception {
         // use reflection to access the private method SAMToGBSdbPlugin.parseRow(String inputLine)
@@ -278,15 +250,20 @@ public class SAMToGBSdbPluginTest {
         for (int i = 0; i < bowtie2.length; i++) {
             System.out.println("bowtie2 line: "+i);
             Tuple<Tag,Optional<Position>> parsedResult = (Tuple<Tag,Optional<Position>>) parseRow.invoke(SAMToGBSdb,(Object) bowtie2[i]);
+            Assert.assertNotNull("No result at testCase"+i, parsedResult);
             Assert.assertEquals("Tags at testCase"+i+" differ:", bowtie2ExpTags[i], parsedResult.x);
-        //    Assert.assertEquals("Positions at testCase"+i+" differ:", Optional.of(bowtie2ExpPositions[i]), parsedResult.y);
-        //    Map.Entry<String, String>[] expAnnos = bowtie2ExpPositions[i].getAnnotation().getAllAnnotationEntries();
-        //    for (Entry<String, String> expEntry : expAnnos) {
-        //        Assert.assertTrue(
-        //            "Position annotation "+expEntry.getKey()+"="+expEntry.getValue()+ " not present in testCase"+i,
-        //            parsedResult.y.get().getAnnotation().isAnnotatedWithValue(expEntry.getKey(),expEntry.getValue())
-        //        );
-        //    }
+            if (bowtie2ExpPositions[i] == null) {
+                Assert.assertFalse("Unexpected position at testCase"+i, parsedResult.y.isPresent());
+                continue;
+            }
+            Assert.assertEquals("Positions at testCase"+i+" differ:", Optional.of(bowtie2ExpPositions[i]), parsedResult.y);
+            Map.Entry<String, String>[] expAnnos = bowtie2ExpPositions[i].getAnnotation().getAllAnnotationEntries();
+            for (Entry<String, String> expEntry : expAnnos) {
+                Assert.assertTrue(
+                    "Position annotation "+expEntry.getKey()+"="+expEntry.getValue()+ " not present in testCase"+i,
+                    parsedResult.y.get().getAnnotation().isAnnotatedWithValue(expEntry.getKey(),expEntry.getValue())
+                );
+            }
         }
         
         // // bowtie2 -k 5 cases
@@ -319,33 +296,6 @@ public class SAMToGBSdbPluginTest {
         // }
     }
     
-    //Skipping this test for now. There isn't a parseBWARow method any more, but is there some functionality here that should be incorporated into other tests?
-    @Ignore
-    @Test
-    public void testParseBWARow() throws Exception {
-        // use reflection to access the private method SAMToGBSdbPlugin.parseBWARow(String inputLine)
-        SAMToGBSdbPlugin SAMToGBSdb = new SAMToGBSdbPlugin();
-        Class SAMToGBSdbClass = SAMToGBSdb.getClass();
-        Method parseBWARow = SAMToGBSdbClass.getDeclaredMethod("parseBWARow", new Class[] {String.class});
-        parseBWARow.setAccessible(true);
-        
-        // bwa test cases (returns an array of Optional<Position>'s for each SAM row)
-        for (int t = 0; t < bwa.length; t++) {
-            Tuple<Tag,Optional<Position>[]> parsedResult = (Tuple<Tag,Optional<Position>[]>) parseBWARow.invoke(SAMToGBSdb,(Object) bwa[t]);
-            Assert.assertEquals("Tags at testCase"+t+" differ:", bwaExpTags[t], parsedResult.x);
-            for (int p = 0; p < parsedResult.y.length; p++) {
-                Assert.assertEquals("Positions at testCase"+t+", position"+p+" differ:", Optional.of(bwaExpPositions[t][p]), parsedResult.y[p]);
-                Map.Entry<String, String>[] expAnnos = bwaExpPositions[t][p].getAnnotation().getAllAnnotationEntries();
-                for (Entry<String, String> expEntry : expAnnos) {
-                    Assert.assertTrue(
-                        "Position annotation "+expEntry.getKey()+"="+expEntry.getValue()+ " not present in testCase"+t,
-                        parsedResult.y[p].get().getAnnotation().isAnnotatedWithValue(expEntry.getKey(),expEntry.getValue())
-                    );
-                }
-            }
-        }
-    }
-
     @Test
     public void testHasMinAlignLength() throws Exception {
         // use reflection to access the private method SAMToGBSdbPlugin.hasMinAlignLength(String inputLine)

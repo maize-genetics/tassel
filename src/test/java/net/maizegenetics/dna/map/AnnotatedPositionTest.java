@@ -67,7 +67,7 @@ public class AnnotatedPositionTest {
         assertTrue(cp1.compareTo(cp2) < 0);
     }
 
-    @Ignore
+    @Ignore("benchmark: times building and sorting 2,000,000 positions")
     @Test
     public void testTime() throws Exception {
         int objNum=2_000_000;
@@ -98,7 +98,7 @@ public class AnnotatedPositionTest {
         }
     }
 
-    @Ignore
+    @Ignore("benchmark: measures memory per position for 2,000,000 positions")
     @Test
     public void testMemory() throws Exception {
         int objNum=2000000;

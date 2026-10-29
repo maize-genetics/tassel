@@ -141,7 +141,6 @@ public class ReImputeUpdatedTaxaByFILLINPluginTest {
     /**
      * Test of processData method, of class ReImputeUpdatedTaxaByFILLINPlugin.
      */
-    @Ignore
     @Test
     public void testProcessData() {
 

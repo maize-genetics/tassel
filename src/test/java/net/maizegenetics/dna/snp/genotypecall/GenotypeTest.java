@@ -155,7 +155,7 @@ public class GenotypeTest {
         }
     }
 
-    @Ignore
+    @Ignore("benchmark: times iterating and transposing a 10,000 x 100,000 genotype table; the time limits depend on the machine")
     @Test
     public void iterateAllBases() {
         int numTaxa = 10000;
@@ -190,7 +190,7 @@ public class GenotypeTest {
         Assert.assertTrue("GenotypeTest: iterateAllBases transposed: " + timeToIterate + " sec. longer than expected: 7.0", timeToIterate < 7.0);
     }
 
-    @Ignore
+    @Ignore("benchmark: times majorAlleleForAllSites on a 10,000 x 100,000 genotype table; the time limit depends on the machine")
     @Test
     public void getMajorAlleleForAllSites() {
         int numTaxa = 10000;

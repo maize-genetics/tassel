@@ -305,7 +305,9 @@ tasks {
             }.result.get()
             logger.lifecycle("Extracting TASSEL test data archive…")
             providers.exec {
-                commandLine("tar", "-xzf", tarball.absolutePath)
+                // The archive carries macOS AppleDouble `._*` entries that GNU tar would
+                // extract as real files, breaking tests that list data directories.
+                commandLine("tar", "-xzf", tarball.absolutePath, "--exclude=._*")
             }.result.get()
             tarball.delete()
             logger.lifecycle("Test data extracted to dataFiles/")
