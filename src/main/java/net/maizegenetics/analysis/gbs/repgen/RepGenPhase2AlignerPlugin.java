@@ -171,7 +171,7 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
         if (myDBFile.isEmpty() || !Files.exists(Paths.get(inputDB()))) {
             throw new IllegalArgumentException("RepGenPhase2AlignerPlugin: postProcessParameters: Input DB not set or found");
         }
-        if (primers.isEmpty() || !Files.exists(Paths.get(inputDB()))) {
+        if (primers.isEmpty() || !Files.exists(Paths.get(primers()))) {
             throw new IllegalArgumentException("RepGenPhase2AlignerPlugin: postProcessParameters: Primer file not set or found");
         }
         if (!refGenome.isEmpty()) {
@@ -312,26 +312,6 @@ public class RepGenPhase2AlignerPlugin extends AbstractPlugin {
                       + kmersForChrom + ",total refTagsCreated " + refTagsCreated + ", no ref tag created " + noRefTagCreated);  
               });
                    
-            // LCJ - below is debug!  Writes to my cbsu dir
-            String refTagOutFile = "/home/lcj34/repGen_outputFiles/allChroms_refTagsFromPrimers.txt";
-//            // LCJ - this one writes to laptop
-//            //String refTagOutFile = "/Users/lcj34/notes_files/repgen/junit_phase2Aligner/chrom" + chrom.getName() + "_refTagsFromPrimers.txt";
-            BufferedWriter refwr = Utils.getBufferedWriter(refTagOutFile);                  
-            try {
-                for (Map.Entry<Tag, Position> entry : refTagPositionMap.entries()) {
-                    int position = entry.getValue().getPosition();
-                    String chromname = entry.getValue().getChromosome().getName();
-                    Tag refTag = entry.getKey();
-                    String refData = chromname + "\t" + position + "\t" + refTag.sequence() + "\n";
-                    refwr.write(refData);
-                }
-                refwr.close();
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-            // LCJ - end debug
-            
             System.out.println("Finished with refs from primers, total time:" + (System.nanoTime() - time)/1e9 + " seconds.\n");
             time = System.nanoTime();
             
