@@ -479,9 +479,7 @@ public class BuilderFromGVCFTest {
     }
     @Test
     public void test0Coverage() {
-        //Should be 1 N exported..maybe we change this to a number of Ns
-        //A good region is here:
-        //8:8937202:8939694
+        //8:8937202-8939694 is inside the zero-depth block 8:8931596-8946845, so every site is exported as N
         try {
             GVCFGenomeSequence sequence = b73GVCFSequence();
             HashMap<String, Chromosome> chrMap = new HashMap<>();
@@ -494,7 +492,7 @@ public class BuilderFromGVCFTest {
             String pulledSequence = ""+NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chrMap.get("8"),
                     8937202,8939694));
 
-            Assert.assertEquals("Zero coverage test fails:","N",pulledSequence);
+            Assert.assertEquals("Zero coverage test fails:","N".repeat(8939694 - 8937202 + 1),pulledSequence);
 
         }
         catch(Exception e) {
