@@ -33,6 +33,7 @@ import net.maizegenetics.analysis.gbs.neobio.PairwiseAlignment;
 import net.maizegenetics.analysis.gbs.neobio.PairwiseAlignmentAlgorithm;
 import net.maizegenetics.analysis.gbs.neobio.ScoringScheme;
 import net.maizegenetics.analysis.gbs.neobio.SmithWaterman;
+import net.maizegenetics.dna.BaseEncoder;
 import net.maizegenetics.dna.map.Chromosome;
 import net.maizegenetics.dna.map.GeneralPosition;
 import net.maizegenetics.dna.map.GenomeSequence;
@@ -239,10 +240,8 @@ public class RampSeqAlignFromBlastTags extends AbstractPlugin {
             return false;
         }
         
-        byte[] forwardRCBytes = NucleotideAlignmentConstants.reverseComplementAlleleByteArray(forwardP.getBytes());
-        String forwardPRC = new String(forwardRCBytes);
-        byte[] reverseRCBytes = NucleotideAlignmentConstants.reverseComplementAlleleByteArray(reverseP.getBytes());
-        String reversePRC = new String(reverseRCBytes);
+        String forwardPRC = BaseEncoder.getReverseComplement(forwardP);
+        String reversePRC = BaseEncoder.getReverseComplement(reverseP);
         // we have the map from which to create ref tags.
         
         int count = 0;

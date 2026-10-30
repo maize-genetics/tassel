@@ -235,45 +235,6 @@ tasks {
             }
         }
 
-        exclude(
-            // GBS Bucket C — kept excluded by design. Bucket A/B GBS tests (and now
-            // ProductionSNPCallerPluginV2Test) self-generate their data via GBSSimData
-            // (no downloads/aligners) and run in this suite.
-            //
-            // NOTE: the jhdf5 native library IS available — cisd:jhdf5:19.04.1 bundles
-            // natives for amd64-Linux and aarch64/x86_64-Mac, and non-excluded HDF5 tests
-            // (AlignmentBuilderTest, AddReferenceAlleleToHDF5PluginTest, PositionHDF5ListTest,
-            // MigrateHDF5FromT4T5Test) already write/read .h5 and pass. The tests below are
-            // excluded for their real blockers, not the native lib.
-            //
-            // NOTE: the legacy GBSv1 pipeline tests (SeqToTBTHDF5PluginTest, ModifyTBTHDF5PluginTest,
-            // DiscoverySNPCallerPluginTest, ProductionSNPCallerPluginTest, ProductionPipelineMainTest)
-            // were rehabilitated to self-generate deterministic data via GBSv1SimData (built on the
-            // GBSSimData approach) and assert on pipeline properties instead of downloaded golden
-            // fixtures / MD5 hashes, so they now run in this suite.
-            //
-            // NOTE: the GBSv1 tag-pipeline tests (FastqToTagCountPluginTest, MergeMultipleTagCountPluginTest,
-            // TagCountToFastqPluginTest, SAMConverterPluginTest) and the GBSv2 tests
-            // (GBSv2BiologyCompareTest, EvaluateSNPCallQualityOfPipelineTest) were likewise rehabilitated
-            // to self-generate deterministic data via GBSSimData/GBSv1SimData and assert on pipeline
-            // properties (tag-list sanity, distinct-tag counts, unique alignment positions, injected
-            // SNP-locus counts) instead of golden .cnt/.fq.gz/.topm hashes or real-maize biological
-            // fixtures, so they now run in this suite.
-            //
-            // -- hardcoded dev-machine paths / external tools (PEAR/BWA, maize AGPv4, /Users/lcj34) --
-            "**/analysis/gbs/repgen/RepGenLoadSeqToDBPluginTest.class", // hardcoded dev paths + external data
-            "**/analysis/gbs/repgen/RepGenAlignerPluginTest.class",     // hardcoded dev paths + external data
-            "**/analysis/gbs/repgen/RepGenLDAnalysisPluginTest.class",  // hardcoded dev paths + external data
-            "**/analysis/gbs/repgen/RampSeqAlignFromBlastTest.class",   // needs external BLAST output
-            // External database integration — need live Postgres / MonetDB instances
-            "**/analysis/gobii/*Test.class",
-            "**/analysis/monetdb/*Test.class",
-            // RNA sequencing — need sequencing DB fixtures
-            "**/analysis/rna/*Test.class",
-            // Dev-only utility class with hardcoded file paths, not a runnable test
-            "**/CreateFastaOrFastqFiles.class",
-        )
-
         jvmArgs = baseArgs
 
         println(jvmArgs)

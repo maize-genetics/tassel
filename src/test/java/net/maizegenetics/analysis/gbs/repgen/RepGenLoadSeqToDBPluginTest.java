@@ -1,5 +1,5 @@
 /*
- * FastqToTagCountPluginTest
+ * RepGenLoadSeqToDBPluginTest
  */
 package net.maizegenetics.analysis.gbs.repgen;
 
@@ -12,82 +12,186 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-import org.junit.Test;
 import org.junit.Ignore;
-import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
+import org.junit.Test;
 
-//import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.maizegenetics.analysis.gbs.repgen.RepGenLoadSeqToDBPlugin.TagCountQualityScoreMap;
 import net.maizegenetics.analysis.gbs.v2.DiscoverySNPCallerPluginV2;
 import net.maizegenetics.analysis.gbs.v2.GBSUtils;
 import net.maizegenetics.analysis.gbs.v2.SAMToGBSdbPlugin;
 import net.maizegenetics.analysis.gbs.v2.TagExportToFastqPlugin;
+import net.maizegenetics.constants.GeneralConstants;
 import net.maizegenetics.dna.map.Chromosome;
-import net.maizegenetics.dna.map.Position;
 import net.maizegenetics.dna.tag.RepGenDataWriter;
 import net.maizegenetics.dna.tag.RepGenSQLite;
 import net.maizegenetics.dna.tag.Tag;
 import net.maizegenetics.dna.tag.TagBuilder;
 import net.maizegenetics.dna.tag.TaxaDistribution;
+import net.maizegenetics.taxa.TaxaList;
 import net.maizegenetics.util.DirectoryCrawler;
 import net.maizegenetics.util.LoggingUtils;
 import net.maizegenetics.util.Tuple;
 import net.maizegenetics.util.Utils;
 
 /**
- * Testing of the pipeline using repeat GBS data
- * 
- * Changes made to use the RepGenSchema.  All calls to gbvs2 plugins
- * using db created in RepGenLoadSeqToDBPlugin will fail due to
- * calling TagSQLite vs RepGenSQLite.
+ * Loads the {@link RepGenSimData} reads into a RepGen database and checks the tags, per-taxon depths,
+ * average quality strings and the reads that must be filtered out.
+ * <p>
+ * The ignored tests below are the original developer runs on the ANP68 rAmpSeq data. They are kept for
+ * reference until #43 decides whether the RepGen pipeline stays. Calls to GBSv2 plugins on a database made by
+ * RepGenLoadSeqToDBPlugin fail, because those plugins open it as a TagDataSQLite rather than a RepGenSQLite.
  * 
  * @author Ed Buckler
  */
 public class RepGenLoadSeqToDBPluginTest {
-//    public static final String nextGenDir="/Users/edbuckler/SolexaAnal/";
-//    public static final String repGenInputDir="/Users/edbuckler/SolexaAnal/rGBS/Maize3/";
-//    public static final String repGenInputDir="/Volumes/Nextgen/rGBS/160429_M01032_0387_000000000-ANP68/";
-    public static final String nextGenDir="/Users/lcj34/notes_files/repGen/";
-   // public static final String repGenInputDir="/Users/lcj34/notes_files/repGen/repGen_files/";
-    public static final String repGenInputDir="/Volumes/Samsung_T1/repgen/single_fastq/"; // was anp68_Locus9_fastq
-    private final static String outTagFasta=repGenInputDir + "tagsForAlign.fa.gz";
-    private final static String inTagSAM=repGenInputDir + "tagsForAlignauto.sam";
 
-    //public static final String repGenDB_FILE=rGBSInputDir+"rGBSx.db";
-    //public static final String repGenDB_FILE="/Users/edbuckler/SolexaAnal/repGen/rGBSx.db";
-    public static final String repGenDB_FILE=nextGenDir + "repGen.db"; // remember - can't write to Samsung drive - SQL barfs!
-    //public static final String repGen_TESTING_KEY_FILE=repGenInputDir+"repGen.key.txt";
-    public static final String repGen_TESTING_KEY_FILE=nextGenDir +"repGen_keyFiles/anp68_locus9_key.txt";
-    public static final String rGBS_VCF=repGenInputDir+"repGenOutput2.vcf";
+    private static final int MIN_KMER_COUNT = 5;
 
+    private static final String nextGenDir = GeneralConstants.DATA_DIR + "RepGen/";
+    private static final String repGenInputDir = nextGenDir + "single_fastq/";
+    private static final String repGenOutputDir = GeneralConstants.TEMP_DIR + "RepGen/";
+    private static final String outTagFasta = repGenOutputDir + "tagsForAlign.fa.gz";
+    private static final String inTagSAM = repGenOutputDir + "tagsForAlignauto.sam";
+    private static final String repGenDB_FILE = repGenOutputDir + "repGen.db";
+    private static final String repGen_TESTING_KEY_FILE = nextGenDir + "repGen_keyFiles/anp68_locus9_key.txt";
+    private static final String rGBS_VCF = repGenOutputDir + "repGenOutput2.vcf";
 
-    public RepGenLoadSeqToDBPluginTest() {
+    @Test
+    public void testcalculateTagAveQS() {
+        String qulSeq1 = "ABD;->DFABF-../9";
+        String qulSeq2 = "BBD;->DEABF-../9";
+        String qulSeq3 = "GB-;->DFABF-../G";
+        Tag tag1 = TagBuilder.instance("GCACAAGTTGTCCTGC").build();
+        Tag tag2 = TagBuilder.instance("ATCGAGCCTGGCCTGC").build();
+
+        TagCountQualityScoreMap tagCntQSMap = new TagCountQualityScoreMap(100, 0.95f, 128, 1);
+        tagCntQSMap.put(tag1, Collections.synchronizedList(new ArrayList<>(List.of(qulSeq1, qulSeq1, qulSeq1))));
+        tagCntQSMap.put(tag2, Collections.synchronizedList(new ArrayList<>(List.of(qulSeq1, qulSeq2, qulSeq3))));
+
+        Map<Tag, Tuple<Integer, String>> tagInfoMap = RepGenLoadSeqToDBPlugin.calculateTagAveQS(tagCntQSMap, 33);
+
+        assertEquals(2, tagInfoMap.size());
+        assertEquals(3, tagInfoMap.get(tag1).x.intValue());
+        assertEquals("Averaging three identical quality strings returns the original", qulSeq1, tagInfoMap.get(tag1).y);
+        assertEquals(3, tagInfoMap.get(tag2).x.intValue());
+        // Per-base mean of the Phred scores, truncated: e.g. the first base is (32 + 33 + 38) / 3 = 34, 'C'.
+        assertEquals("CB<;->DEABF-../=", tagInfoMap.get(tag2).y);
     }
 
-    
+    /**
+     * Test of performFunction method, of class RepGenLoadSeqToDBPlugin.
+     */
+    @Test
+    public void testRepGenLoadSeqToDBPlugin() throws Exception {
+        RepGenSimData data = RepGenSimData.createUnder("load");
+        String db = loadDB(data, MIN_KMER_COUNT);
+
+        Map<String, TaxaDistribution> tagTaxa;
+        TaxaList taxaList;
+        RepGenSQLite repGenData = new RepGenSQLite(db);
+        try {
+            taxaList = repGenData.getTaxaList();
+            tagTaxa = repGenData.getAllTagsTaxaMap().entrySet().stream()
+                    .collect(Collectors.toMap(e -> e.getKey().sequence(), Map.Entry::getValue));
+        } finally {
+            repGenData.close();
+        }
+
+        assertEquals(RepGenSimData.TAXA.length, taxaList.numberOfTaxa());
+        assertEquals("Two alleles per amplicon; errors, private alleles, low counts, short reads and N reads are dropped",
+                data.expectedTags.keySet(), tagTaxa.keySet());
+        for (String discarded : data.discardedSequences) {
+            assertFalse(tagTaxa.containsKey(discarded));
+        }
+        assertFalse("Total depth is below minKmerCount", tagTaxa.containsKey(data.lowCountTag.sequence));
+
+        for (Map.Entry<String, RepGenSimData.ExpectedTag> entry : data.expectedTags.entrySet()) {
+            String sequence = entry.getKey();
+            assertEquals("Tags are truncated to the kmer length", RepGenSimData.KMER_LENGTH, sequence.length());
+            int[] depths = tagTaxa.get(sequence).depths();
+            for (int taxon = 0; taxon < RepGenSimData.TAXA.length; taxon++) {
+                int index = taxaList.indexOf(RepGenSimData.TAXA[taxon]);
+                assertEquals("Depth of " + RepGenSimData.TAXA[taxon], entry.getValue().depths[taxon], depths[index]);
+            }
+        }
+
+        Map<String, Tuple<Integer, String>> stored = readTagQualities(db);
+        assertEquals(data.expectedTags.size(), stored.size());
+        for (Map.Entry<String, RepGenSimData.ExpectedTag> entry : data.expectedTags.entrySet()) {
+            Tuple<Integer, String> instancesAndQuality = stored.get(entry.getKey());
+            assertEquals(entry.getValue().totalDepth(), instancesAndQuality.x.intValue());
+            assertEquals(entry.getValue().averageQuality(), instancesAndQuality.y);
+        }
+    }
+
+    @Test
+    public void testMinKmerCount() throws Exception {
+        RepGenSimData data = RepGenSimData.createUnder("loadMinKmerCount");
+
+        RepGenSQLite repGenData = new RepGenSQLite(loadDB(data, data.lowCountTag.totalDepth()));
+        try {
+            TaxaList taxaList = repGenData.getTaxaList();
+            Map<Tag, TaxaDistribution> tagTaxa = repGenData.getAllTagsTaxaMap();
+            assertEquals(data.expectedTags.size() + 1, tagTaxa.size());
+            int[] depths = tagTaxa.get(TagBuilder.instance(data.lowCountTag.sequence).build()).depths();
+            for (int taxon = 0; taxon < RepGenSimData.TAXA.length; taxon++) {
+                assertEquals(data.lowCountTag.depths[taxon], depths[taxaList.indexOf(RepGenSimData.TAXA[taxon])]);
+            }
+        } finally {
+            repGenData.close();
+        }
+    }
+
+    static String loadDB(RepGenSimData data, int minKmerCount) {
+        String db = data.dir.resolve("repGen.db").toString();
+        new RepGenLoadSeqToDBPlugin()
+                .inputDirectory(data.fastqDir.toString())
+                .outputDatabaseFile(db)
+                .keyFile(data.keyFile.toString())
+                .kmerLength(RepGenSimData.KMER_LENGTH)
+                .minKmerCount(minKmerCount)
+                .maximumKmerNumber(10_000)
+                .performFunction(null);
+        return db;
+    }
+
+    /** Tag sequence to (number of instances, average quality string), read straight from the tag table. */
+    private static Map<String, Tuple<Integer, String>> readTagQualities(String db) throws Exception {
+        Map<String, Tuple<Integer, String>> result = new HashMap<>();
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + db);
+             ResultSet rs = connection.createStatement()
+                     .executeQuery("select sequence, seqlen, qualityScore, numTagInstances from tag where isReference = 0")) {
+            while (rs.next()) {
+                String sequence = TagBuilder.instance(rs.getBytes("sequence"), rs.getShort("seqlen")).build().sequence();
+                result.put(sequence, new Tuple<>(rs.getInt("numTagInstances"), rs.getString("qualityScore")));
+            }
+        }
+        return result;
+    }
+
     // This test written to create a key file when needed.
     // WIll there always be the same number of underscores in the file names ??
     // Can I always pull the FullSampleName from the 5th  tokenized place in the file?
+    @Ignore("#43: writes a key file for the AYH7H run's FASTQ files, which are not in tassel_test_data; "
+            + "a utility that asserts nothing. RepGenSimData writes the key file the tests above use")
     @Test
     public void testCreateKeyFileFromFastq() {
         LoggingUtils.setupDebugLogging();
         System.out.println("Begin testCreateKeyFileFromFastq");
         
-        //String inputDir="/Volumes/Samsung_T1/repgen/160429_M01032_0387_000000000-ANP68/";
-        String inputDir = "/Volumes/Samsung_T1/repgen/170111_M01032_0465_000000000-AYH7H/";
-        //String outputFile = "/Users/lcj34/notes_files/repGen/repGen_keyfiles/anp68_locus9_key.txt";
-        //String outputFile = "/Users/lcj34/notes_files/repGen/repGen_keyfiles/all_locus_key.txt"; // MAY BE WRONG - DE_2 sample !!
-        String outputFile = "/Users/lcj34/notes_files/repGen/repGen_keyfiles/ije_key.txt";
+        String inputDir = nextGenDir + "170111_M01032_0465_000000000-AYH7H/";
+        String outputFile = repGenOutputDir + "ije_key.txt";
         
         List<Path> directoryFiles= DirectoryCrawler.listPaths(GBSUtils.inputFileGlob, Paths.get(inputDir).toAbsolutePath());
         if(directoryFiles.isEmpty()) {
@@ -116,116 +220,10 @@ public class RepGenLoadSeqToDBPluginTest {
         System.out.println("Key File written to " + outputFile);
     }
 
-    @Test
-    public void testcalculateTagAveQS() throws Exception {
-        String tagSeq1 = "GCACAAGTTGTCCTGC";
-        String tagSeq2 = "ATCGAGCCTGGCCTGC";
-        String qulSeq1 = "ABD;->DFABF-../9";
-        String qulSeq2 = "GB-;->DFABF-../G";
-        Tag tag1 = TagBuilder.instance(tagSeq1).build();
-        Tag tag2 = TagBuilder.instance(tagSeq2).build();
-        
-        TagCountQualityScoreMap tagCntQSMap = new TagCountQualityScoreMap(50000000,0.95f, 128, 4);
-        List<String> tagScores1 =  Collections.synchronizedList(new ArrayList<String>());
-        tagScores1.add(qulSeq1); // add same one 3 times
-        tagScores1.add(qulSeq1);
-        tagScores1.add(qulSeq1);
-        tagCntQSMap.put(tag1, tagScores1);
-        
-        List<String> tagScores2 =  Collections.synchronizedList(new ArrayList<String>());
-        tagScores2.add(qulSeq2); // add same one 3 times
-        tagScores2.add(qulSeq2);
-        tagScores2.add(qulSeq2);
-        tagCntQSMap.put(tag2, tagScores2);
-
-        // First test:  Create a couple tags.
-        // Create a score string for each of the tags.
-        // Add the score string to each tag multiple times
-        // test that the calculated average score value equals the original score value.
-        // This shows we added/divided correctly and got original result back
-                 
-        
-        Map<Tag,Tuple<Integer,String>> tagInfoMap= callCalculateTagAveQS(tagCntQSMap);
-        // TODO then fix the print statements below to test values we expect
-//        tagInfoMap.forEach((t,s) -> {
-//            String tagSeq = t.sequence();
-//            String tagScore = s.y;
-//            int numInstances = s.x;
-//            assertEquals(3,numInstances);
-//            if (tagSeq.equals(tagSeq1)) {
-//                assertTrue(qulSeq1.equals(tagScore));
-//                System.out.println("testcalculateTagAveQS: tag1 score matches as expected");
-//            } else if (tagSeq.equals(tagSeq2)) {
-//                assertTrue(qulSeq2.equals(tagScore));
-//                System.out.println("testcalculateTagAveQS: tag2 score matches as expected");
-//            } else {
-//                System.out.println("testcalculateTagAveQS: Tag from calculateTagAveQS does not match either tag we passed in !!");
-//            }
-//            
-//        });
-
-    }
-    
-    private Map<Tag,Tuple<Integer,String>> callCalculateTagAveQS(TagCountQualityScoreMap tagCntQSMap) throws Exception {
-        RepGenLoadSeqToDBPlugin repGenLoadSeqToDBPlugin = new RepGenLoadSeqToDBPlugin();
-        Class theClass = repGenLoadSeqToDBPlugin.getClass();
-        
-        // lcj - this is debug
-        Method[] methods = theClass.getDeclaredMethods();
-        for(int i = 0; i < methods.length; i++) {
-           System.out.println("method = " + methods[i].toString());
-        }
-        // lcj end debug
-        
-        // Have not been able to get this call to work.  Still working on it.
-        Class tagCntMap = Class.forName("net.maizegenetics.analysis.gbs.repgen.RepGenLoadSeqToDBPlugin$TagCountQualityScoreMap");
-       // Constructor constructor = tagCntMap.getDeclaredConstructor(RepGenLoadSeqToDBPlugin.class);
-        return null;
-
-//        Object obj = constructor.newInstance(repGenLoadSeqToDBPlugin);
-//          // this call isn't working ....
-//        Method theMethod = theClass.getDeclaredMethod("calculateTagAveQS", new Class[] {obj.class, int.class} );
-//        // need to call the method with proper arguments.
-//        theMethod.setAccessible(true);
-//
-//        int qualityScoreBase = 33;
-//        // Hard coding true - need to fix this
-//        return (Map<Tag,Tuple<Integer,String>>)theMethod.invoke(repGenLoadSeqToDBPlugin,(Object)tagCntQSMap,qualityScoreBase);
-    }
-
-    
-    /**
-     * Test of performFunction method, of class RepGenLoadSeqToDBPlugin.
-     */
-    @Test
-    public void testRepGenLoadSeqToDBPlugin() {
-        LoggingUtils.setupDebugLogging();
-        System.out.println(Paths.get(repGenDB_FILE).toAbsolutePath().toString());
-        try{
-            Files.deleteIfExists(Paths.get(repGenDB_FILE));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        long time=System.nanoTime();
-        System.out.println();
-
-        new RepGenLoadSeqToDBPlugin()
-                .inputDirectory(repGenInputDir)
-                .outputDatabaseFile(repGenDB_FILE)
-                .keyFile(repGen_TESTING_KEY_FILE)
-                .kmerLength(150)
-                .minKmerCount(10)
-                //.minimumQualityScore(20)  //todo needs to be fixed
-                //.deleteOldData(true)
-                //.maximumMapMemoryInMb(5500)
-                .performFunction(null);
-        System.out.printf("TotalTime %g sec%n", (double) (System.nanoTime() - time) / 1e9);
-        //String outName= GeneralConstants.TEMP_DIR+"TaxaTest.db";
-        //TagsByTaxaHDF5Builder.create(, (Map<Tag,TaxaDistribution>)ds.getData(0).getData(),null);
-    }
-
     // NOTE:  These will fail until all plugins use the RepGenSchema.
     // Everyone plugin that is gbsv2 will fail.
+    @Ignore("#43: TagExportToFastqPlugin is a GBSv2 plugin and can't read a RepGen database; this also needs "
+            + "a database loaded from the ANP68 reads, which are not in tassel_test_data")
     @Test
     public void testTagExportPlugin() throws Exception {
         LoggingUtils.setupDebugLogging();
@@ -259,6 +257,8 @@ public class RepGenLoadSeqToDBPluginTest {
         }
     }
 
+    @Ignore("#43: runs a bwa binary against the full AGPv3 genome on a developer's machine; neither is in "
+            + "tassel_test_data, and it only prints bwa's stderr")
     @Test
     public void runBWA() throws Exception{
         String cmd=nextGenDir+"bwa/bwa aln " +
@@ -274,9 +274,10 @@ public class RepGenLoadSeqToDBPluginTest {
         {
             System.out.println(line);
         }
-        //"/Users/edbuckler/SolexaAnal/bwa/bwa samse /Users/edbuckler/SolexaAnal/AGPv3/wholegenome/Zea_mays.AGPv3.22.dna_sm.genome.fa.gz /Users/edbuckler/SolexaAnal/rGBS/Maize3/tagsForAlignauto.sai /Users/edbuckler/SolexaAnal/rGBS/Maize3/tagsForAlign.fa.gz > /Users/edbuckler/SolexaAnal/rGBS/Maize3/tagsForAlignauto.sam"
     }
 
+    @Ignore("#43: SAMToGBSdbPlugin is a GBSv2 plugin and can't write to a RepGen database; this also needs "
+            + "the SAM from runBowtie")
     @Test
     public void testSAMImportPlugin() throws Exception {
         LoggingUtils.setupDebugLogging();
@@ -288,6 +289,8 @@ public class RepGenLoadSeqToDBPluginTest {
                 .performFunction(null);
     }
 
+    @Ignore("#43: DiscoverySNPCallerPluginV2 is a GBSv2 plugin and can't read a RepGen database; this also needs "
+            + "a database loaded from the ANP68 reads, which are not in tassel_test_data")
     @Test
     public void runCaller() throws Exception{
 
@@ -310,6 +313,8 @@ public class RepGenLoadSeqToDBPluginTest {
 //        System.out.printf("Power:%g TypeIError:%g RatioP/E:%g %n",power,typeIError,power/typeIError);
     }
 
+    @Ignore("#43: RGBSProductionSNPCallerPlugin opens the database as a GBSv2 TagDataSQLite and needs SNP "
+            + "positions, which a RepGen database never has; this also needs the ANP68 reads, which are not in tassel_test_data")
     @Test
     public void testProcessData() throws Exception {
         //  This test assumes the database has already been populated.
@@ -349,6 +354,8 @@ public class RepGenLoadSeqToDBPluginTest {
     // This is initial testing of method to create averaged quality score.
     // Need to get the reflection method working to call RepGenLoadSeqToDB:calculateTagAveQS to work.
     // Leaving this here to show there was some testing of calculateTagAveQS's algorithm 
+    @Ignore("#43: hand-computes quality-score averaging without calling the plugin; RepGenQualityScoreUnitTest "
+            + "and testcalculateTagAveQS above cover RepGenLoadSeqToDBPlugin.calculateTagAveQS")
     @Test
     public void testCreateQualityScore () {
         String qualSFFShort1 = "ABD;->DFABF-../9";
@@ -435,14 +442,16 @@ public class RepGenLoadSeqToDBPluginTest {
         System.out.println("LCJ - original qualSFFSHort is              : " + qualSFFShort1);             
     }
     
+    @Ignore("#43: needs a developer's RepGen database of all ANP68 loci, which is not in tassel_test_data; "
+            + "writes the tag sequences to a file and asserts nothing")
     @Test
     public void checkTagSequences() {
         System.out.println("LCJ - begin checkTagSequences ...");
-        String mydb = "/Users/lcj34/notes_files/repgen/repGen_allLocus_justLoading.db";
+        String mydb = nextGenDir + "repGen_allLocus_justLoading.db";
         RepGenDataWriter repGenData=new RepGenSQLite(mydb);
         Set<Tag> tagsToAlign = repGenData.getTags();
         System.out.println("LCJ - number of tags in db: " + tagsToAlign.size());
-        String outputFile = "/Users/lcj34/notes_files/repgen/ed_debug_out/allLocusTags_c100mintaxa5batch100.txt";
+        String outputFile = repGenOutputDir + "allLocusTags_c100mintaxa5batch100.txt";
         
         
         // Write the tags to a file

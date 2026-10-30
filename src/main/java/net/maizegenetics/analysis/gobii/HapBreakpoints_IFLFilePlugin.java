@@ -272,8 +272,8 @@ public class HapBreakpoints_IFLFilePlugin extends AbstractPlugin {
             String breakSetFile = outputDir() +  setName() + ".breakpoint_set";
             BufferedWriter writerhap = Utils.getBufferedWriter(hapbrkFile);
             BufferedWriter writerbrkset = Utils.getBufferedWriter(breakSetFile);
-            BufferedWriter taxaNotFoundbw = Utils.getBufferedWriter("/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/gobii_ifl_files/gobii_hapbreakpoints/taxaNotFound.txt");
-            BufferedWriter taxaFoundbw = Utils.getBufferedWriter("/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/gobii_ifl_files/gobii_hapbreakpoints/taxaFound.txt");
+            BufferedWriter taxaNotFoundbw = Utils.getBufferedWriter(outputDir() + setName() + ".taxaNotFound.txt");
+            BufferedWriter taxaFoundbw = Utils.getBufferedWriter(outputDir() + setName() + ".taxaFound.txt");
             
             
             // Create header lines for each intermediate file

@@ -8,8 +8,10 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
+import net.maizegenetics.constants.GeneralConstants;
 import net.maizegenetics.util.LoggingUtils;
 import net.maizegenetics.util.Utils;
 
@@ -18,6 +20,8 @@ import net.maizegenetics.util.Utils;
  *
  */
 public class MonetDB_IFLFilePluginTest {
+    @Ignore("#41: needs a live GOBII Postgres database (dbConfigFile_maize3newschema.txt) holding dataset "
+            + "ZeaGBSv27_20160209_AGPv2_282; not in tassel_test_data. GOBIIDbUtilsTest covers the failed-connection path")
     @Test
     public void testMonetdbIFLFileCreation() throws Exception {
         // NOTE: the outfiledir includes the prefix for the intermeidate files, e.g. DS_1 or DS_3
@@ -28,10 +32,8 @@ public class MonetDB_IFLFilePluginTest {
         //       SNPs called.
         // Dataset4 is the WGS for the 282 MAIZE, from a vcf file.
         // Dataset5 is the WGS for unimp.
-      String outfiledir = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/gobii_ifl_files/gobii_maize3newschema/DS_1";
-        //String outfiledir = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/gobii_ifl_files/gobii_hapbreakpoints/DS_3";
-        String configFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/dbConfigFile_maize3newschema.txt";
-        //String configFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/dbConfigFile_hapbreakpoints.txt";
+      String outfiledir = GeneralConstants.TEMP_DIR + "gobii_ifl_files/gobii_maize3newschema/DS_1";
+        String configFile = GeneralConstants.DATA_DIR + "GOBII/dbConfigFile_maize3newschema.txt";
      // String datasetName = "ZeaGBSv27impV5_20160209_AGPv2_282";
         //String datasetName = "ZeaWGSraw_hmp321_20160628_AGPv3_282";
         String datasetName = "ZeaGBSv27_20160209_AGPv2_282";
@@ -51,12 +53,14 @@ public class MonetDB_IFLFilePluginTest {
         
     }
     
+    @Ignore("#41: splits the header of the 282 WGS VCF, which is not in tassel_test_data, into one taxon per line; "
+            + "a file utility that calls no TASSEL plugin and asserts nothing")
     @Test
     public void testMonetdbNumTaxa() throws Exception {
         DataOutputStream writerDNA = null;
         BufferedReader dnasampleBR = null;
-        String headerFile = "/Volumes/Samsung_T1/gobii_files/wgs_282_vcf/fastqTest/vcfHeader.txt";
-        String headerOut = "/Volumes/Samsung_T1/gobii_files/wgs_282_vcf/fastqTest/vcfHeader_perline.txt";
+        String headerFile = GeneralConstants.DATA_DIR + "GOBII/wgs_282_vcf/fastqTest/vcfHeader.txt";
+        String headerOut = GeneralConstants.TEMP_DIR + "vcfHeader_perline.txt";
         try {
             dnasampleBR = Utils.getBufferedReader(headerFile);
             String mline = dnasampleBR.readLine(); 

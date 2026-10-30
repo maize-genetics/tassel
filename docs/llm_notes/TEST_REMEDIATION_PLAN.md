@@ -20,14 +20,21 @@ Delivered:
 - The GBSv2 block named in phase 4 has been worked through: those tests now
   self-generate deterministic inputs instead of depending on golden fixtures, and
   the legacy GBS v1 and PanA pipelines were removed outright.
-- Every remaining exclusion in `build.gradle.kts` carries a reason.
+- `build.gradle.kts` no longer excludes any test classes. The RNA, RepGen, GOBII
+  and MonetDB tests that read files from developers' machines
+  ([#24](https://github.com/maize-genetics/tassel/issues/24)) now run on small
+  inputs from the test-data archive or ones they generate. The MonetDB tests
+  never needed a database: those plugins only write binary files for loading.
+  The GOBII plugins that do nothing but load into Postgres are tested only up to
+  the failed connection. The original developer-run tests that need a live
+  database, external aligners or full genomes are kept but `@Ignore`d, pending
+  the retire-or-test decisions in
+  [#41](https://github.com/maize-genetics/tassel/issues/41) (GOBII) and
+  [#43](https://github.com/maize-genetics/tassel/issues/43) (RepGen).
 
 Still open:
 
 - The broad `test` task remains `ignoreFailures = true`.
-- The GOBII and MonetDB tests are still excluded; they need live Postgres/MonetDB
-  instances, and no decision has been recorded on containerising them versus
-  formally marking them integration-only.
 - Coverage is still near the floor. The bound is now 18% *branch* coverage under
   the JaCoCo engine, which is not comparable to the 15% *line* figure quoted below.
 - Release and nightly packaging still skip the gate (`-x statisticsTest`), which

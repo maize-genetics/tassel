@@ -52,7 +52,6 @@ public class LowLevelCopyOfHDF5Test {
         clearTestFolder();
         int reps=2;
         GenotypeTable a=BuilderFromHapMap.getBuilder(TutorialConstants.HAPMAP_FILENAME).sortTaxa().build(); //need a sort taxa method to make the two approaches equal
-     //   GenotypeTable a=BuilderFromHapMap.getBuilder("/Users/edbuckler/Development/Tassel4TestingGit/dataFiles/CandidateTests/Ames105v26.chr10.hmp.txt.gz").sortTaxa().build();
         System.out.println("Testing low level copy of HDF5 with Depth");
         GenotypeTable aWithDepth=AlignmentTestingUtils.createRandomDepthForGenotypeTable(a, 1);
         ExportUtils.writeGenotypeHDF5(aWithDepth, EXPORT_TEMP_DIR+"smDepth.t5.h5", true);

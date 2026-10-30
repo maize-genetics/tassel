@@ -261,24 +261,6 @@ public class RepGenAlignerPlugin extends AbstractPlugin {
                 createRefTagsForAlignment(chromHits, chrom, chromMaximaMap, refTagPositionMap);
             }
             
-            // LCJ - below is debug!  Writes to my cbsu dir
-            String refTagOutFile = "/home/lcj34/repGen_outputFiles/allChroms_refTagsOrigAligner.txt";
-            // LCJ - this one writes to laptop
-            //String refTagOutFile = "/Users/lcj34/notes_files/repgen/junit_phase2Aligner/chrom" + chrom.getName() + "_refTagsFromPrimers.txt";
-            BufferedWriter refwr = Utils.getBufferedWriter(refTagOutFile);                  
-            try {
-                for (Map.Entry<Tag, Position> entry : refTagPositionMap.entries()) {
-                    int position = entry.getValue().getPosition();
-                    String chromname = entry.getValue().getChromosome().getName();
-                    Tag refTag = entry.getKey();
-                    String refData = chromname + "\t" + position + "\t" + refTag.sequence() + "\n";
-                    refwr.write(refData);
-                }
-                refwr.close();
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
             System.out.println("\nNumber of distinct refTags to be loaded into db: " 
               + refTagPositionMap.keySet().size() + " total refTags: " + refTagPositionMap.size());
             // add ref and mapping approach to db, then reference tags
@@ -457,16 +439,6 @@ public class RepGenAlignerPlugin extends AbstractPlugin {
         // oh - it returns the capacity of the set, which might be more than
         // the size I set it to if we're storing bits in words.
         
-       // String peakOutFile = "/Users/lcj34/notes_files/repgen/junit2_out/chrom" + chrom + "_peaklist400.txt";
-        String peakOutFile = "/home/lcj34/repGen_outputFiles/chrom" + chrom + "_peaklist400.txt";
-        BufferedWriter peakwr = Utils.getBufferedWriter(peakOutFile);
-        String header = "peakStart,numHits\n"; // csv for R input
-        try {
-            peakwr.write(header);
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
         long chromSize = chromHits.size(); 
         
         // This holds the moving sums for specific positions.  The key is
@@ -545,36 +517,8 @@ public class RepGenAlignerPlugin extends AbstractPlugin {
             Collection<Integer> values = movingSumMap.get(peak);
             List<Integer> positionsInPeak = new ArrayList<Integer>(values);
             Collections.sort(positionsInPeak);
-            // LCJ - debug
-//            if ( positionsInPeak.size() >= 400) {
-//                String peakData = positionsInPeak.size() + "\tpeak " + peak + "\tstart idx: " + positionsInPeak.get(0) + "\tend idx: " 
-//                        + positionsInPeak.get(positionsInPeak.size()-1) + "\n";
-//                   try {
-//                       peakwr.write(peakData);
-//                   } catch (Exception e) {
-//                       // TODO Auto-generated catch block
-//                       e.printStackTrace();
-//                   }
-//            }
-            String peakData =  positionsInPeak.get(0) + "," + positionsInPeak.size() + "\n";
-
-            try {
-                peakwr.write(peakData);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            // LCJ - end debug
- 
             storeRefTagPositions( peak,positionsInPeak, chromMaximaMap, chrom,chromSize,refTagPositionMap);
         });
-               
-        try {
-            peakwr.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         // write out to a file for debug.  The cluster maxima positions are printed
         // for each cluster.  These used to create ref tags.  File output shows  the 
         // number of reference tags created for each chromosome, as well as the spacing 
