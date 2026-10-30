@@ -23,10 +23,6 @@ This downloads and extracts the `tassel_test_data` release archive from
 [maize-genetics/tassel_test_data](https://github.com/maize-genetics/tassel_test_data).
 The task is a no-op if `dataFiles/` already exists and is non-empty.
 
-A few ignored tests need files that aren't in the archive yet. They're listed,
-with what's needed to re-enable them, in
-[Tests waiting on missing test data](missing-test-data.md).
-
 !!! note "OpenBLAS required for statistics tests"
     The statistical tests exercise native BLAS routines. Install OpenBLAS (see
     [Building from Source](building-from-source.md#installing-openblas)) or set
@@ -165,6 +161,3 @@ instead of an issue:
 `./gradlew checkIgnoreReasons` fails on a bare `@Ignore` or on a reason that
 starts with neither form. It runs in the required statistics gate and as part
 of `./gradlew check`. Annotations inside comments are not checked.
-
-Tests waiting on files that aren't in the test-data archive are also listed in
-[Tests waiting on missing test data](missing-test-data.md).
