@@ -13,12 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
+import net.maizegenetics.constants.GeneralConstants;
 import net.maizegenetics.dna.map.Chromosome;
 import net.maizegenetics.dna.map.GeneralPosition;
 import net.maizegenetics.dna.map.GenomeSequence;
@@ -39,21 +41,23 @@ import net.maizegenetics.util.Utils;
  */
 public class CreateFastaOrFastqFiles {
     
-    public static final String nextGenDir="/Users/lcj34/notes_files/repGen/";
+    public static final String nextGenDir=GeneralConstants.DATA_DIR + "RepGen/";
+    public static final String outputDir=GeneralConstants.TEMP_DIR + "RepGen/LDmetric_graphs/";
     
     public static final String repGenDB_FILE=nextGenDir + "repGen.db";
     
-    // public static final String referenceGenome = "/Volumes/Samsung_T1/machineLearningFiles/refGenomeFiles/Zea_mays.AGPv3.29.dna.genome.fa.gz";
-     public static final String referenceGenome = "/Volumes/Samsung_T1/machineLearningFiles/refGenomeFiles/Zea_mays.AGPv4.dna.genome.fa";
+     public static final String referenceGenome = GeneralConstants.DATA_DIR + "CandidateTests/Zea_mays.AGPv4.dna.toplevel.fa.gz";
     
+     @Ignore("#43: needs the full AGPv4 genome and the filtered BLAST results for the ANP68 Locus9 R1 tags, which are "
+             + "not in tassel_test_data; checks BLAST hits against the reference by printing counts and asserts nothing")
      @Test
      public void verifyRefTag() {
          System.out.println("Begin verifyRefTag");
          GenomeSequence myRefSequence = GenomeSequenceBuilder.instance(referenceGenome);
     
-         String chromStartEndFile = "/Users/lcj34/notes_files/repGen/LDmetric_graphs/blast_files/justChromStartEndQuery_sorted2.txt";
-         String indexNums = "/Users/lcj34/notes_files/repGen/LDmetric_graphs/blast_files/blast_nodups_fastaLineNums.txt";
-         String tagSeqs = "/Users/lcj34/notes_files/repGen/LDmetric_graphs/blast_files/nfLynnnButAlignedByBlast.txt";
+         String chromStartEndFile = nextGenDir + "LDmetric_graphs/blast_files/justChromStartEndQuery_sorted2.txt";
+         String indexNums = nextGenDir + "LDmetric_graphs/blast_files/blast_nodups_fastaLineNums.txt";
+         String tagSeqs = outputDir + "nfLynnnButAlignedByBlast.txt";
          BufferedReader rdIndex = Utils.getBufferedReader(indexNums);
          BufferedReader rdTags = Utils.getBufferedReader(tagSeqs);
          BufferedReader rdChroms = Utils.getBufferedReader(chromStartEndFile);
@@ -130,21 +134,21 @@ public class CreateFastaOrFastqFiles {
      }
      
 
+    @Ignore("#43: needs a RepGen database loaded from the ANP68 Locus9 reads, which are not in tassel_test_data; "
+            + "writes the tags as FASTA for BLAST and asserts nothing")
     @Test
     public void createFastaFromDBTags() {
 
         LoggingUtils.setupDebugLogging();
 
         String repGenDB = nextGenDir + "repGen.db";
-        //String repGenDB = "/Volumes/Samsung_T1/repgen/rampSeq_dbs/anp68ijeR2_LoadMinTaxa10.db"; // LCJ - correct this - put real db !!
         System.out.println("Begin createFastFromDBTags");
         
         RepGenDataWriter repGenData=new RepGenSQLite(repGenDB);
         Set<Tag> tagsToAlign = repGenData.getTags();
         List<Tag> tagList = new ArrayList<Tag>(tagsToAlign);
         
-        String outputFile = "/Users/lcj34/notes_files/repgen/LDmetric_graphs/single_fastq.fasta";
-       // String outputFile = "/Users/lcj34/notes_files/repgen/LDmetric_graphs/output_files/anp68_ijeR2Tags.fasta"; // LCJ - get a real output file!
+        String outputFile = outputDir + "single_fastq.fasta";
         BufferedWriter bw = Utils.getBufferedWriter(outputFile);
         
         try {
@@ -161,14 +165,16 @@ public class CreateFastaOrFastqFiles {
         }        
     }
     
+    @Ignore("#43: needs the ANP68 Locus9 R1 tag list, which is not in tassel_test_data; "
+            + "rewrites a one-tag-per-line file as FASTA and asserts nothing")
     @Test
     public void createFastaFromFile() {
         LoggingUtils.setupDebugLogging();
         System.out.println("Begin createFastaFromFile");
  
 
-        String inputFile = "/Users/lcj34/notes_files/repgen/LDmetric_graphs/output_files/Locus9R1Tags.fasta";
-        String outputFile = "/Users/lcj34/notes_files/repgen/LDmetric_graphs/output_files/allTagsNotFoundR1.fasta"; // LCJ - get a real output file!
+        String inputFile = nextGenDir + "LDmetric_graphs/output_files/Locus9R1Tags.fasta";
+        String outputFile = outputDir + "allTagsNotFoundR1.fasta";
         BufferedWriter bw = Utils.getBufferedWriter(outputFile);
         BufferedReader rw = Utils.getBufferedReader(inputFile);
         
@@ -190,17 +196,19 @@ public class CreateFastaOrFastqFiles {
         }  
 
     }
+    @Ignore("#43: needs the RepGen database loaded from the ANP68 Locus9 R1 reads with minTaxa 2, which is not in "
+            + "tassel_test_data; counts tags without the forward primer and asserts nothing")
     @Test
     public void countForwardPrimersFromTagFile() {
         LoggingUtils.setupDebugLogging();
-        String repGenDB = "/Volumes/Samsung_T1/repgen/rampSeq_dbs/repGen_Locus9R1_justLoadMinTaxa2.db"; // LCJ - correct this - put real db !!
+        String repGenDB = nextGenDir + "rampSeq_dbs/repGen_Locus9R1_justLoadMinTaxa2.db";
         System.out.println("Begin createFastFromDBTags");
         
         RepGenDataWriter repGenData=new RepGenSQLite(repGenDB);
         Set<Tag> tagsToAlign = repGenData.getTags();
         List<Tag> tagList = new ArrayList<Tag>(tagsToAlign);
         
-        String outputFile = "/Users/lcj34/notes_files/repgen/LDmetric_graphs/output_files/tagsWithoutForwardPrimer.fasta"; // LCJ - get a real output file!
+        String outputFile = outputDir + "tagsWithoutForwardPrimer.fasta";
         BufferedWriter bw = Utils.getBufferedWriter(outputFile);
         
         try {
@@ -221,6 +229,8 @@ public class CreateFastaOrFastqFiles {
        
     }
     
+    @Ignore("#43: needs the filtered BLAST line numbers for the ANP68 Locus9 R1 tags, which are not in tassel_test_data, "
+            + "and the FASTA that createFastaFromFile writes; extracts tag sequences and asserts nothing")
     @Test
     public void createTagFileFromFasta() {
         // I want to create a list of tag sequences, one per line
@@ -234,10 +244,10 @@ public class CreateFastaOrFastqFiles {
         System.out.println("Begin createTagFileFromFasta");
  
 
-        String tagFastaFile = "/Users/lcj34/notes_files/repgen/LDmetric_graphs/output_files/allTagsNotFoundR1.fasta";
-        String indexFile = "/Users/lcj34/notes_files/repgen/LDmetric_graphs/blast_files/blast_nodups_fastaLineNums.txt";
+        String tagFastaFile = outputDir + "allTagsNotFoundR1.fasta";
+        String indexFile = nextGenDir + "LDmetric_graphs/blast_files/blast_nodups_fastaLineNums.txt";
         
-        String outputFile = "/Users/lcj34/notes_files/repgen/LDmetric_graphs/blast_files/nfLynnnButAlignedByBlast.txt"; 
+        String outputFile = outputDir + "nfLynnnButAlignedByBlast.txt"; 
         BufferedWriter bw = Utils.getBufferedWriter(outputFile);
         BufferedReader rw = Utils.getBufferedReader(indexFile);
         

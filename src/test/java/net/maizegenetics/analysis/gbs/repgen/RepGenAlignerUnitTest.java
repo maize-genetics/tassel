@@ -19,10 +19,8 @@ import net.maizegenetics.dna.tag.Tag;
 import net.maizegenetics.dna.tag.TagBuilder;
 
 /**
- * Pure-unit coverage for {@link RepGenAlignerPlugin} extracted from {@code RepGenAlignerPluginTest}
- * (which is excluded because its other tests require hardcoded dev-machine paths and external data).
- * This class contains only the self-contained kmer-seed generation test and therefore runs in CI
- * without any external data.
+ * Pure-unit coverage for {@link RepGenAlignerPlugin} extracted from {@code RepGenAlignerPluginTest}:
+ * the kmer-seed generation test, which needs no input files.
  *
  * @author lcj34 (original), extracted for CI unit coverage
  */

@@ -9,8 +9,8 @@ import org.junit.Test;
 
 /**
  * Pure-unit coverage for the averaged quality-score algorithm used by RepGen loading, extracted from
- * {@code RepGenLoadSeqToDBPluginTest} (which is excluded because its other tests require hardcoded
- * dev-machine paths and external data). This test is fully self-contained and runs in CI.
+ * {@code RepGenLoadSeqToDBPluginTest}, which now tests the plugin's own
+ * {@code calculateTagAveQS} on the same quality strings. This test is fully self-contained.
  *
  * @author lcj34 (original), extracted for CI unit coverage
  */
