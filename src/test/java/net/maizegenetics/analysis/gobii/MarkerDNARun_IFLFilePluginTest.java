@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
+import net.maizegenetics.constants.GeneralConstants;
 import net.maizegenetics.util.LoggingUtils;
 import net.maizegenetics.util.Utils;
 
@@ -25,19 +27,20 @@ import net.maizegenetics.util.Utils;
  *
  */
 public class MarkerDNARun_IFLFilePluginTest {
+    private static final String GOBII_DIR = GeneralConstants.DATA_DIR + "GOBII/";
+
+    @Ignore("#41: needs a live GOBII Postgres database (dbConfigFile_maize2.txt), the 282 WGS germplasm mapping file, "
+            + "the 282 WGS VCF and the full AGPv3 reference; none are in tassel_test_data. "
+            + "GOBIIDbUtilsTest covers the failed-connection path")
     @Test
     public void testMarkerDNARunFileCreation() throws Exception {
-      String configFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/dbConfigFile_maize2.txt";
+      String configFile = GOBII_DIR + "dbConfigFile_maize2.txt";
 
       // LCJ - change this outfileDir when you change databases.
-      String outfiledir = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/gobii_ifl_files/";
+      String outfiledir = GeneralConstants.TEMP_DIR + "gobii_ifl_files/";
       
-      //String mappingFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/cinta_282Maize_files/Sample_germplasm_information_282_v3_forGBS.txt";
-      String mappingFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/cinta_282Maize_files/Sample_germplasm_information_282_v3_forWGS.txt";
-     // String inputFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/cinta_282Maize_files/ZeaGBSv27impV5_20160209_AGPv2_282.hmp.txt";
-      //String inputFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/cinta_282Maize_files/ZeaGBSv27_20160209_AGPv2_282.hmp.txt";
-      //String inputFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/cinta_282Maize_files/ZeaGBSv27impV5_20150803_AGPv3_282.hmp.txt";
-      String inputFile = "/Volumes/Samsung_T1/gobii_files/wgs_282_vcf/fastq";
+      String mappingFile = GOBII_DIR + "cinta_282Maize_files/Sample_germplasm_information_282_v3_forWGS.txt";
+      String inputFile = GOBII_DIR + "wgs_282_vcf/fastq";
       
       String datasetName = "ZeaWGSraw_hmp321_20160628_AGPv3_282"; // pick correct one from db !!
       //String expName = "282Maize_gbsv2";
@@ -47,8 +50,8 @@ public class MarkerDNARun_IFLFilePluginTest {
       String refName = "Maize_AGPv3"; // change reference as needed
       String projectId = "1";
 
-      String agpv2Ref = "/Volumes/Samsung_T1/gobii_files/reference_files/maize_agpv2.fa";
-      String agpv3Ref = "/Volumes/Samsung_T1/gobii_files/reference_files/maize_agpv3.fa";
+      String agpv2Ref = GOBII_DIR + "reference_files/maize_agpv2.fa";
+      String agpv3Ref = GOBII_DIR + "reference_files/maize_agpv3.fa";
         
         System.out.println("MarkerDNARunFromHMP_IFLFilePluginTest: begin testMarkerDNARunFileCreation");
         // Call the plugin - verify files can be created
@@ -71,12 +74,15 @@ public class MarkerDNARun_IFLFilePluginTest {
         System.out.println("\nMarkerDNARunFromHMP_IFLFilePluginTest: finished testMarkerDNARunFileCreation");
         
     }
+
+    @Ignore("#41: needs a live GOBII Postgres database (dbConfigFile_maize2.txt), its marker/DNA-run mapping file "
+            + "and the Maize282 ZeaGBSv27 HapMap; none are in tassel_test_data. Prints taxa only and asserts nothing")
     @Test
     public void checkTaxaList() throws Exception {
         // Compare names with taxa list
-        String dbConfigFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/dbConfigFile_maize2.txt";
-        String mappingFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_cinta_filesToLoad/markerDNARUn_mapping_282raw_v2.txt";
-        String inputFileComments = "/Users/lcj34/notes_files/gobiiANDBms/gobii_curator_training/Maize282_ZeaGBSv27raw_MAF02_AGPv2.hmp.txt";
+        String dbConfigFile = GOBII_DIR + "dbConfigFile_maize2.txt";
+        String mappingFile = GOBII_DIR + "gobii_cinta_filesToLoad/markerDNARUn_mapping_282raw_v2.txt";
+        String inputFileComments = GOBII_DIR + "gobii_curator_training/Maize282_ZeaGBSv27raw_MAF02_AGPv2.hmp.txt";
         
         MarkerDNARun_IFLFilePlugin caller = new MarkerDNARun_IFLFilePlugin();
         
@@ -130,10 +136,12 @@ public class MarkerDNARun_IFLFilePluginTest {
         }
     }
     
+    @Ignore("#41: queries a live GOBII Postgres database (dbConfigFile_maize2.txt) for platform 4 marker names; "
+            + "a database export utility rather than a test, and it asserts nothing")
     @Test
     public void testMarkerNames() throws Exception {
-      String configFile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/dbConfigFile_maize2.txt";
-      String outfile = "/Users/lcj34/notes_files/gobiiANDBms/gobii_loading/hmpv3_markers.txt";
+      String configFile = GOBII_DIR + "dbConfigFile_maize2.txt";
+      String outfile = GeneralConstants.TEMP_DIR + "hmpv3_markers.txt";
       
       // Grab marker names for v3 prior to adding vcf 321 for 282
       // Get db connection.  needed to query for table ids based on name
