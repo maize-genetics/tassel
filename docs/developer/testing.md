@@ -23,10 +23,6 @@ This downloads and extracts the `tassel_test_data` release archive from
 [maize-genetics/tassel_test_data](https://github.com/maize-genetics/tassel_test_data).
 The task is a no-op if `dataFiles/` already exists and is non-empty.
 
-A few ignored tests need files that aren't in the archive yet. They're listed,
-with what's needed to re-enable them, in
-[Tests waiting on missing test data](missing-test-data.md).
-
 !!! note "OpenBLAS required for statistics tests"
     The statistical tests exercise native BLAS routines. Install OpenBLAS (see
     [Building from Source](building-from-source.md#installing-openblas)) or set
@@ -121,7 +117,8 @@ with JDK 21 and OpenBLAS installed. It has three jobs:
    success to branch protection while a workflow skipped by `paths:` stays
    pending forever and would block docs-only pull requests.
 2. **Statistics gate (required)** — installs OpenBLAS, downloads the test data,
-   and runs `./gradlew statisticsTest`. Must be green to merge.
+   runs `./gradlew checkIgnoreReasons` (see [Ignoring a test](#ignoring-a-test)),
+   then runs `./gradlew statisticsTest`. Must be green to merge.
 3. **TASSEL 5 CI** — runs
    `./gradlew clean test koverXmlReport koverVerify --continue` and uploads
    coverage to Codecov. It fails if any test fails or if `koverVerify` reports
@@ -144,3 +141,23 @@ with JDK 21 and OpenBLAS installed. It has three jobs:
 - If a new statistical test should be enforced, add its fully-qualified class
   name to the `statisticsClasses` list in `build.gradle.kts` so it becomes part
   of the required gate.
+
+## Ignoring a test
+
+Every `@Ignore` must say why the test is skipped, so skipped tests don't drop
+out of sight. Start the reason with the issue that tracks re-enabling it:
+
+```java
+@Ignore("#41: needs a live GOBII Postgres database")
+```
+
+A benchmark that is only meant to be run by hand uses the `benchmark:` prefix
+instead of an issue:
+
+```java
+@Ignore("benchmark: times reading the tutorial HapMap file into memory")
+```
+
+`./gradlew checkIgnoreReasons` fails on a bare `@Ignore` or on a reason that
+starts with neither form. It runs in the required statistics gate and as part
+of `./gradlew check`. Annotations inside comments are not checked.

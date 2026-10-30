@@ -172,7 +172,82 @@ tasks {
     // statisticsTest is the required CI gate; wire it into `check` so
     // `./gradlew check` enforces it without running the full non-blocking suite.
     named("check") {
-        dependsOn("statisticsTest")
+        dependsOn("statisticsTest", "checkIgnoreReasons")
+    }
+
+    // ---------------------------------------------------------------------------
+    // checkIgnoreReasons — every @Ignore in src/test must say why the test is
+    // skipped: @Ignore("#123: reason") links the issue that tracks re-enabling it,
+    // and @Ignore("benchmark: reason") marks a test meant to be run by hand.
+    // Annotations inside comments or string literals are not counted.
+    //
+    // Usage:  ./gradlew checkIgnoreReasons
+    // ---------------------------------------------------------------------------
+    register("checkIgnoreReasons") {
+        group = "verification"
+        description = "Fails if an @Ignore in src/test has no issue reference or benchmark: prefix."
+        val testSources = fileTree("src/test") { include("**/*.java", "**/*.kt") }
+        inputs.files(testSources)
+
+        doLast {
+            // Blanks comments and string/char literal contents, keeping every offset
+            // and newline, so a match in the result points at the same place in the source.
+            fun codeOnly(src: String): String {
+                val out = StringBuilder(src.length)
+                fun blank(from: Int, to: Int) {
+                    for (j in from until to) out.append(if (src[j] == '\n') '\n' else ' ')
+                }
+                var i = 0
+                while (i < src.length) {
+                    val end = when {
+                        src.startsWith("//", i) ->
+                            src.indexOf('\n', i).let { if (it < 0) src.length else it }
+                        src.startsWith("/*", i) ->
+                            src.indexOf("*/", i + 2).let { if (it < 0) src.length else it + 2 }
+                        src.startsWith("\"\"\"", i) ->
+                            src.indexOf("\"\"\"", i + 3).let { if (it < 0) src.length else it + 3 }
+                        src[i] == '"' || src[i] == '\'' -> {
+                            var j = i + 1
+                            while (j < src.length && src[j] != src[i] && src[j] != '\n') {
+                                if (src[j] == '\\') j++
+                                j++
+                            }
+                            minOf(j + 1, src.length)
+                        }
+                        else -> -1
+                    }
+                    if (end < 0) {
+                        out.append(src[i])
+                        i++
+                    } else {
+                        blank(i, end)
+                        i = end
+                    }
+                }
+                return out.toString()
+            }
+
+            val annotation = Regex("""@Ignore\b""")
+            val withReason = Regex("""@Ignore\s*\(\s*"(#\d+|benchmark:)""")
+            val violations = testSources.files.sorted().flatMap { file ->
+                val src = file.readText()
+                annotation.findAll(codeOnly(src))
+                    .filterNot { withReason.matchesAt(src, it.range.first) }
+                    .map { match ->
+                        val line = src.substring(0, match.range.first).count { it == '\n' } + 1
+                        "${file.relativeTo(projectDir)}:$line"
+                    }
+                    .toList()
+            }
+
+            if (violations.isNotEmpty()) {
+                throw GradleException(
+                    "Every @Ignore needs a reason that starts with an issue reference or \"benchmark:\", " +
+                        "for example @Ignore(\"#123: needs a live database\"). Missing in:\n" +
+                        violations.joinToString("\n") { "  $it" }
+                )
+            }
+        }
     }
 
     // Compile with Java 21 bytecode target

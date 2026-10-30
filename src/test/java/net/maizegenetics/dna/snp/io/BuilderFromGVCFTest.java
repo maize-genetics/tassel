@@ -7,13 +7,11 @@ import net.maizegenetics.dna.snp.FilterAndMaskGVCFGenomeSequence;
 import net.maizegenetics.dna.snp.NucleotideAlignmentConstants;
 import net.maizegenetics.util.BitSet;
 import net.maizegenetics.util.OpenBitSet;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static org.junit.Assert.assertNotNull;
@@ -31,12 +29,11 @@ public class BuilderFromGVCFTest {
     String agpv4FileName = GeneralConstants.DATA_DIR + "CandidateTests/CHR8_Zea_mays.AGPv4.dna.toplevel.fa.gz";
     String fullGVCFFileName = GeneralConstants.DATA_DIR + "CandidateTests/VCFFiles/B73_haplotype_caller_output.g.vcf.gz";
 
-    //Not in tassel_test_data; see docs/developer/missing-test-data.md
-    String w22GVCFFileName = GeneralConstants.DATA_DIR + "CandidateTests/VCFFiles/W22_haplotype_caller_output.g.vcf.gz";
-    String fullAgpv4FileName = GeneralConstants.DATA_DIR + "CandidateTests/Zea_mays.AGPv4.dna.toplevel.fa.gz";
-    String fullAgpv3FileName = GeneralConstants.DATA_DIR + "CandidateTests/Zea_mays.AGPv3.29.dna.genome.fa.gz";
-    String chr8GeneAnchorsFileName = GeneralConstants.DATA_DIR + "CandidateTests/anchorsFile_chr8_genesExactCoordinates.csv";
-    String chr8MergedAnchorsFileName = GeneralConstants.DATA_DIR + "CandidateTests/anchorsFile_chr8_MergedPlus1000orGapDiffcoordinates.csv";
+    //Made-up two-chromosome genome for the multi-chromosome tests. On chromosome 1 the sample is
+    //homozygous T at site 11 and has no GVCF records for sites 21-24; chromosome 2 matches the reference.
+    private static final String SIM_CHR1 = "ACGTACGTACGTACGTACGTACGTACGTAC";
+    private static final String SIM_CHR2 = "TTGGCCAATTGGCCAATTGGCCAATTGGCC";
+    private static final String SIM_SAMPLE_CHR1 = SIM_CHR1.substring(0, 10) + "T" + SIM_CHR1.substring(11);
 
     //Loading these takes about 40 seconds, so the tests share one copy. Tests must not modify them.
     private static GVCFGenomeSequence b73GVCFSequence;
@@ -54,6 +51,33 @@ public class BuilderFromGVCFTest {
             agpv4Sequence = GenomeSequenceBuilder.instance(agpv4FileName);
         }
         return agpv4Sequence;
+    }
+
+    private GVCFGenomeSequence simulatedGVCFSequence() throws Exception {
+        Path dir = Paths.get(GeneralConstants.TEMP_DIR, "BuilderFromGVCFTest");
+        Files.createDirectories(dir);
+        Path reference = dir.resolve("simulatedReference.fa");
+        Files.write(reference, Arrays.asList(">1", SIM_CHR1, ">2", SIM_CHR2));
+
+        String refBlockFormat = "GT:DP:GQ:MIN_DP:PL\t0/0:40:99:38:0,89,1385";
+        Path gvcf = dir.resolve("simulatedSample.g.vcf");
+        Files.write(gvcf, Arrays.asList(
+                "##fileformat=VCFv4.2",
+                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tSIM",
+                "1\t1\t.\tA\t<NON_REF>\t.\t.\tEND=10\t" + refBlockFormat,
+                "1\t11\t.\tG\tT,<NON_REF>\t600\t.\tDP=40\tGT:AD:DP:GQ:PL\t1/1:0,40,0:40:99:641,0,456,691,519,1210",
+                "1\t12\t.\tT\t<NON_REF>\t.\t.\tEND=20\t" + refBlockFormat,
+                "1\t25\t.\tA\t<NON_REF>\t.\t.\tEND=30\t" + refBlockFormat,
+                "2\t1\t.\tT\t<NON_REF>\t.\t.\tEND=30\t" + refBlockFormat));
+
+        return (GVCFGenomeSequence) GVCFGenomeSequenceBuilder.instance(reference.toString(), gvcf.toString());
+    }
+
+    private static Chromosome chromosomeNamed(GenomeSequence sequence, String name) {
+        return sequence.chromosomes().stream()
+                .filter(chr -> chr.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No chromosome " + name));
     }
 
     @Test
@@ -479,9 +503,7 @@ public class BuilderFromGVCFTest {
     }
     @Test
     public void test0Coverage() {
-        //Should be 1 N exported..maybe we change this to a number of Ns
-        //A good region is here:
-        //8:8937202:8939694
+        //8:8937202-8939694 is inside the zero-depth block 8:8931596-8946845, so every site is exported as N
         try {
             GVCFGenomeSequence sequence = b73GVCFSequence();
             HashMap<String, Chromosome> chrMap = new HashMap<>();
@@ -494,7 +516,7 @@ public class BuilderFromGVCFTest {
             String pulledSequence = ""+NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chrMap.get("8"),
                     8937202,8939694));
 
-            Assert.assertEquals("Zero coverage test fails:","N",pulledSequence);
+            Assert.assertEquals("Zero coverage test fails:","N".repeat(8939694 - 8937202 + 1),pulledSequence);
 
         }
         catch(Exception e) {
@@ -635,244 +657,44 @@ public class BuilderFromGVCFTest {
         }
     }
 
-    @Ignore("#36: needs the W22 GVCF and full AGPv4 genome, which are not in tassel_test_data")
+    //Pulls regions from both chromosomes of one loaded sequence, as the old anchor-region harnesses did
+    //SuccessCondition: covered sites come from the sample, the uncovered sites 21-24 of chromosome 1 are N
     @Test
-    public void pullRealV4Sequence() {
-        String fileName = w22GVCFFileName;
-        String refFileName = fullAgpv4FileName;
-        String outputFileName = GeneralConstants.TEMP_DIR + "outputTest2.fa";
-        try {
-            GVCFGenomeSequence sequence =  (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, fileName);
-            sequence.writeFASTA(outputFileName);
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void pullRegionsAcrossChromosomes() throws Exception {
+        GVCFGenomeSequence sequence = simulatedGVCFSequence();
+        Chromosome chr1 = chromosomeNamed(sequence, "1");
+        Chromosome chr2 = chromosomeNamed(sequence, "2");
+
+        Assert.assertEquals("Region around the SNP", SIM_SAMPLE_CHR1.substring(4, 15),
+                NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chr1, 5, 15)));
+        Assert.assertEquals("Region across the uncovered sites", SIM_CHR1.substring(17, 20) + "NNNN" + SIM_CHR1.substring(24, 27),
+                NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chr1, 18, 27)));
+        Assert.assertEquals("Region on chromosome 2", SIM_CHR2.substring(2, 8),
+                NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chr2, 3, 8)));
+        Assert.assertEquals("Region on chromosome 1 pulled after chromosome 2", SIM_SAMPLE_CHR1.substring(0, 12),
+                NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chr1, 1, 12)));
     }
 
-    @Ignore("#36: needs the W22 GVCF, full AGPv4 genome and chr8 gene-anchor CSV, which are not in tassel_test_data")
+    //Writes the sample's covered regions of every chromosome to FASTA
+    //SuccessCondition: one record per run of consecutive covered sites, with the sample's sequence
     @Test
-    public void pullW22FASTASequence() {
-        String refFileName = fullAgpv4FileName;
-        String outputFileName = GeneralConstants.TEMP_DIR + "W22Chr8NoFilteringFullFileTry1.fa";
-        String gvcfFileName = w22GVCFFileName;
-        String intervalFileName = chr8GeneAnchorsFileName;
+    public void writeFASTAOfAllChromosomes() throws Exception {
+        GVCFGenomeSequence sequence = simulatedGVCFSequence();
+        Path outFile = Paths.get(GeneralConstants.TEMP_DIR, "BuilderFromGVCFTest", "simulatedSample.fa");
+        sequence.writeFASTA(outFile.toString());
 
-        try{
-            System.out.println("Creating GVCFSequence object");
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-            HashMap<String, Chromosome> chrMap = new HashMap<>();
+        Map<String, String> expected = new HashMap<>();
+        expected.put(">Chr_1_StartSite_1_EndSite_20", SIM_SAMPLE_CHR1.substring(0, 20));
+        expected.put(">Chr_1_StartSite_25_EndSite_30", SIM_CHR1.substring(24, 30));
+        expected.put(">Chr_2_StartSite_1_EndSite_30", SIM_CHR2);
 
-
-            Object[] chrs = sequence.chromosomes().toArray();
-            for(int i = 0; i < chrs.length; i++) {
-                chrMap.put(""+((Chromosome)chrs[i]).getChromosomeNumber(),(Chromosome)chrs[i]);
-            }
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName));
-            BufferedReader reader = new BufferedReader(new FileReader(intervalFileName));
-
-            String currentLine = reader.readLine();
-            int lineCounter = 0;
-
-            while((currentLine = reader.readLine())!=null) {
-                if(lineCounter%100==0) {
-                    System.out.println("Counter: "+lineCounter);
-                }
-                lineCounter++;
-                String[] currentLineSplit = currentLine.split(",");
-                writer.write(">"+currentLineSplit[0]+":"+currentLineSplit[1]+":"+currentLineSplit[2]);
-                writer.newLine();
-                writer.write(""+NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chrMap.get(currentLineSplit[0]),
-                        Integer.parseInt(currentLineSplit[1]),Integer.parseInt(currentLineSplit[2]))));
-                writer.newLine();
-            }
-            writer.close();
+        List<String> lines = Files.readAllLines(outFile);
+        Map<String, String> written = new HashMap<>();
+        for (int i = 0; i + 1 < lines.size(); i += 2) {
+            written.put(lines.get(i), lines.get(i + 1));
         }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Ignore("#36: needs the full AGPv4 genome and chr8 gene-anchor CSV, which are not in tassel_test_data")
-    @Test
-    public void pullB73FASTASequence() {
-        String refFileName = fullAgpv4FileName;
-        String outputFileName = GeneralConstants.TEMP_DIR + "B73Chr8NoFilteringFullFileADTest6.fa";
-        String outputFileName2 = GeneralConstants.TEMP_DIR + "B73Chr8NoFilteringFullFileADTest6Ref.fa";
-
-        String gvcfFileName = fullGVCFFileName;
-        String intervalFileName = chr8GeneAnchorsFileName;
-
-        try{
-            System.out.println("Creating GVCFSequence object");
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-
-            GenomeSequence refSequence = (GenomeSequence)GenomeSequenceBuilder.instance(refFileName);
-            HashMap<String, Chromosome> chrMap = new HashMap<>();
-
-            Object[] chrs = sequence.chromosomes().toArray();
-            for(int i = 0; i < chrs.length; i++) {
-                chrMap.put(""+((Chromosome)chrs[i]).getChromosomeNumber(),(Chromosome)chrs[i]);
-            }
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName));
-            BufferedWriter writer2 = new BufferedWriter(new FileWriter(outputFileName2));
-            BufferedReader reader = new BufferedReader(new FileReader(intervalFileName));
-
-            String currentLine = reader.readLine();
-            int lineCounter = 0;
-
-            while((currentLine = reader.readLine())!=null) {
-                if(lineCounter%10==0) {
-                    System.out.println("Counter: "+lineCounter);
-                }
-                lineCounter++;
-                String[] currentLineSplit = currentLine.split(",");
-                String pulledSequence = ""+NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chrMap.get(currentLineSplit[0]),
-                        Integer.parseInt(currentLineSplit[1]),Integer.parseInt(currentLineSplit[2])));
-
-                writer.write(">" + currentLineSplit[0] + ":" + currentLineSplit[1] + ":" + currentLineSplit[2]);
-                writer.newLine();
-                writer.write(pulledSequence);
-                String pulledSequenceRef = ""+NucleotideAlignmentConstants.nucleotideBytetoString(refSequence.chromosomeSequence(chrMap.get(currentLineSplit[0]),
-                        Integer.parseInt(currentLineSplit[1]),Integer.parseInt(currentLineSplit[2])));
-                writer.newLine();
-                writer.write(pulledSequenceRef);
-                writer.newLine();
-
-
-                writer2.write(">" + currentLineSplit[0] + ":" + currentLineSplit[1] + ":" + currentLineSplit[2]);
-                writer2.newLine();
-                writer2.write(pulledSequenceRef);
-                writer2.newLine();
-                if(lineCounter==20) {
-                    break;
-                }
-            }
-            writer.close();
-            writer2.close();
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Ignore("#36: needs the full AGPv4 genome and chr8 merged-anchor CSV; GVCF region stats are also disabled")
-    @Test
-    public void pullB73FASTASequenceFullGVCF() {
-        String refFileName = fullAgpv4FileName;
-        String outputFileName = GeneralConstants.TEMP_DIR + "B73Chr8NoFilteringFullFileADMergedAnchors.fa";
-
-        String gvcfFileName = fullGVCFFileName;
-        String intervalFileName = chr8MergedAnchorsFileName;
-        String statFileName = GeneralConstants.TEMP_DIR + "statsFileMergedAnchors.csv";
-        try{
-            System.out.println("Creating GVCFSequence object");
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence)GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-            System.out.println("Created Genome Sequence");
-            HashMap<String, Chromosome> chrMap = new HashMap<>();
-
-            Object[] chrs = sequence.chromosomes().toArray();
-            for(int i = 0; i < chrs.length; i++) {
-                chrMap.put(""+((Chromosome)chrs[i]).getChromosomeNumber(),(Chromosome)chrs[i]);
-            }
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName));
-            BufferedWriter statsWriter = new BufferedWriter(new FileWriter(statFileName));
-            BufferedReader reader = new BufferedReader(new FileReader(intervalFileName));
-
-            String currentLine = reader.readLine();
-            int lineCounter = 0;
-            statsWriter.write("ID,RequestedSize, ExportedSize,HetCount,AltCount,Depth,GQ,Min_Depth,ZeroCoverageCount,HomoRefCount,HomoAltLowDepthCount,HomoAltHighDepthCount");
-            statsWriter.newLine();
-
-            while((currentLine = reader.readLine())!=null) {
-                if(lineCounter%10==0) {
-                    System.out.println("Counter: "+lineCounter);
-                }
-                lineCounter++;
-                String[] currentLineSplit = currentLine.split(",");
-                String pulledSequence = ""+NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chrMap.get(currentLineSplit[0]),
-                        Integer.parseInt(currentLineSplit[1]),Integer.parseInt(currentLineSplit[2])));
-
-                writer.write(">" + currentLineSplit[0] + ":" + currentLineSplit[1] + ":" + currentLineSplit[2]);
-                writer.newLine();
-                writer.write(pulledSequence);
-                writer.newLine();
-
-                statsWriter.write(currentLineSplit[0] + ":" + currentLineSplit[1] + ":" + currentLineSplit[2]+",");
-                HashMap<String, Integer> stats = sequence.getPreviousRegionStats();
-                statsWriter.write(stats.get("RefSize")+",");
-                statsWriter.write(stats.get("Size")+",");
-                statsWriter.write(stats.get("HetCount")+",");
-                statsWriter.write(stats.get("AltCount")+",");
-                statsWriter.write(stats.get("Depth")+",");
-                statsWriter.write(stats.get("GQ")+",");
-                statsWriter.write(stats.get("Min_Depth")+",");
-                statsWriter.write(stats.get("ZeroCoverageCount")+",");
-                statsWriter.write(stats.get("HomoRefCount")+",");
-                statsWriter.write(stats.get("HomoAltLowDepthCount")+",");
-                statsWriter.write(""+stats.get("HomoAltHighDepthCount"));
-                statsWriter.newLine();
-                sequence.resetCounters();
-
-            }
-            writer.close();
-            statsWriter.close();
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Ignore("#36: needs the full AGPv4 genome, which is not in tassel_test_data; this generated the CHR8 AGPv4 fixture")
-    @Test
-    public void getChr8FromB73V4() {
-        GenomeSequence sequence = GenomeSequenceBuilder.instance(fullAgpv4FileName);
-        Object[] chrs = sequence.chromosomes().toArray();
-        for(int i = 0; i < chrs.length; i++) {
-            if(((Chromosome)chrs[i]).getChromosomeNumber()==8) {
-                String sequenceString = ""+NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence((Chromosome)chrs[i],1,181122637));
-                try {
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(GeneralConstants.TEMP_DIR + "CHR8_Zea_mays.AGPv4.dna.toplevel.fa"));
-
-                    writer.write(">8 dna:chromosome chromosome:AGPv4:8:1:181122637:1 REF");
-                    writer.newLine();
-                    writer.write(sequenceString);
-                    writer.newLine();
-
-                    writer.close();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @Ignore("#36: needs the full AGPv3 genome, which is not in tassel_test_data; this generated the CHR8 AGPv3 fixture")
-    @Test
-    public void getChr8FromB73V3() {
-        GenomeSequence sequence = GenomeSequenceBuilder.instance(fullAgpv3FileName);
-        Object[] chrs = sequence.chromosomes().toArray();
-        for(int i = 0; i < chrs.length; i++) {
-            if(((Chromosome)chrs[i]).getChromosomeNumber()==8) {
-                String sequenceString = ""+NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence((Chromosome)chrs[i],1,175377492));
-                try {
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(GeneralConstants.TEMP_DIR + "CHR8_Zea_mays.AGPv3.dna.toplevel.fa"));
-
-                    writer.write(">8 dna:chromosome chromosome:AGPv3:8:1:175377492:1");
-                    writer.newLine();
-                    writer.write(sequenceString);
-                    writer.newLine();
-
-                    writer.close();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        Assert.assertEquals("FASTA should have one header and one sequence line per region", expected.size() * 2, lines.size());
+        Assert.assertEquals(expected, written);
     }
 
 //TODO clean up these old tests
@@ -922,38 +744,5 @@ public class BuilderFromGVCFTest {
 //        //TODO also check to make sure the calls are correct for each position and taxa
 //
 //    }
-
-    @Ignore("#36: needs the W22 GVCF and full AGPv4 genome, which are not in tassel_test_data")
-    @Test
-    public void pullAnchor2kFromW22() {
-        String gvcfFileName = w22GVCFFileName;
-        String refFileName = fullAgpv4FileName;
-        try {
-            GVCFGenomeSequence sequence = (GVCFGenomeSequence) GVCFGenomeSequenceBuilder.instance(refFileName, gvcfFileName);
-            System.out.println("Loading Reference sequence");
-            GenomeSequence refSequence = (GenomeSequence) GenomeSequenceBuilder.instance(refFileName);
-            System.out.println("Done loading Ref");
-            HashMap<String, Chromosome> chrMap = new HashMap<>();
-
-
-            Object[] chrs = sequence.chromosomes().toArray();
-            for (int i = 0; i < chrs.length; i++) {
-                chrMap.put("" + ((Chromosome) chrs[i]).getChromosomeNumber(), (Chromosome) chrs[i]);
-            }
-            String pulledSequence = "" + NucleotideAlignmentConstants.nucleotideBytetoString(sequence.chromosomeSequence(chrMap.get("1"),
-                    37964752, 37965359));
-//            37,964,752-37,965,359
-            System.out.println(pulledSequence);
-
-            String pulledSequenceRef = "" + NucleotideAlignmentConstants.nucleotideBytetoString(refSequence.chromosomeSequence(chrMap.get("1"),
-                    37964752, 37965359));
-
-            System.out.println(">B73Seq");
-            System.out.println(pulledSequenceRef);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }

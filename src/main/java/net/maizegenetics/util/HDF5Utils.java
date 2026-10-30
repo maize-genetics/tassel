@@ -341,6 +341,27 @@ public final class HDF5Utils {
         writeHDF5EntireArray(callsPath, h5w, depth[0].length, Tassel5HDF5Constants.BLOCK_SIZE, depth);
     }
 
+    /**
+     * Writes one site block of a taxon's depth, creating the taxon's depth matrix
+     * (6 alleles by numberOfSites) the first time any block is written. Sites in
+     * blocks that are never written read back as 0.
+     *
+     * @param depth depth[allele][siteIndex], where the site is startSite + siteIndex
+     */
+    public static void writeHDF5GenotypesDepthBlock(IHDF5Writer h5w, String taxon, int numberOfSites, int startSite, byte[][] depth) {
+        if (isHDF5GenotypeLocked(h5w) == true) {
+            throw new UnsupportedOperationException("Trying to write to a locked HDF5 file");
+        }
+        if (startSite % Tassel5HDF5Constants.BLOCK_SIZE != 0) {
+            throw new IllegalStateException("Taxa Depth Start Site not a multiple of the block size");
+        }
+        String depthPath = Tassel5HDF5Constants.getGenotypesDepthPath(taxon);
+        if (!h5w.exists(depthPath)) {
+            h5w.int8().createMatrix(depthPath, depth.length, numberOfSites, 6, Math.min(Tassel5HDF5Constants.BLOCK_SIZE, numberOfSites), Tassel5HDF5Constants.intDeflation);
+        }
+        writeHDF5Block(depthPath, h5w, Tassel5HDF5Constants.BLOCK_SIZE, startSite / Tassel5HDF5Constants.BLOCK_SIZE, depth);
+    }
+
     public static byte[] getHDF5Alleles(IHDF5Reader reader, WHICH_ALLELE allele) {
         return reader.int8().readMatrixBlockWithOffset(Tassel5HDF5Constants.ALLELE_FREQ_ORD, 1, getHDF5PositionNumber(reader),
                 (long) allele.index(), 0)[0];
