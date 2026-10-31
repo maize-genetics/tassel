@@ -107,10 +107,7 @@ jobs:
       # Health check: a failing test suite fails the nightly and stops the
       # subsequent build/publish steps, signalling that develop is broken.
       - name: Run test suite (nightly health check)
-        run: ./gradlew clean test --continue
-        env:
-          JAVA_TOOL_OPTIONS: >
-            -Djava.library.path=/usr/lib/x86_64-linux-gnu
+        run: ./gradlew clean test --continue -PtasselBlas
 
       - name: Read version from Gradle build file
         run: |
