@@ -8,6 +8,7 @@ There are two test entry points with very different roles:
 | Task | Blocking? | Purpose |
 | ---- | --------- | ------- |
 | `./gradlew statisticsTest` | **Yes** (CI gate) | Verifies TASSEL's numeric results against R-validated expected values. |
+| `./gradlew statisticsTestBlas` | **Yes** (CI gate) | Runs the same classes on the native BLAS backend. |
 | `./gradlew test` | Yes | Runs the full suite, including pipeline and I/O tests. |
 
 ## Fetching test data
@@ -27,10 +28,11 @@ A few ignored tests need files that aren't in the archive yet. They're listed,
 with what's needed to re-enable them, in
 [Tests waiting on missing test data](missing-test-data.md).
 
-!!! note "OpenBLAS required for statistics tests"
-    The statistical tests exercise native BLAS routines. Install OpenBLAS (see
-    [Building from Source](building-from-source.md#installing-openblas)) or set
-    `BLAS_LIB_PATH` before running them.
+!!! note "Native libraries"
+    `statisticsTest` and `test` run on the pure-Java EJML backend and need no
+    native libraries. Only `statisticsTestBlas` and `-PtasselBlas` need a C
+    compiler and BLAS (see
+    [Native BLAS backend](building-from-source.md#native-blas-backend)).
 
 ## The statistics gate (required)
 
@@ -51,6 +53,25 @@ written to:
 
 If you change any analysis or statistics code, run this gate locally before
 opening a pull request.
+
+### Against native BLAS
+
+`statisticsTestBlas` runs the same classes with `DoubleMatrixFactory`
+defaulting to the native TasselBlas backend, so BLAS/LAPACK results are held to
+the same expected values as EJML. It builds the library first with
+`buildTasselBlas`.
+
+```bash
+./gradlew statisticsTestBlas
+```
+
+Reports go to `build/reports/tests/statisticsTestBlas/` and
+`build/test-results/statisticsTestBlas/`.
+
+`DoubleMatrixTest.testBlas` normally skips when TasselBlas can't load. In
+`statisticsTestBlas`, and in any test task run with `-PtasselBlas`, Gradle
+builds the library and the test fails instead, so a broken native build can't
+pass unnoticed. The rest of the `test` suite stays on EJML either way.
 
 ## The full suite
 
@@ -93,9 +114,11 @@ exercised analytical logic.
 
 The HTML report is written under `build/reports/kover/`.
 
-Coverage is measured from the `test` task only. `statisticsTest` is excluded
-from Kover instrumentation, so generating a report doesn't re-run the
-statistics gate (CI already runs it as its own job).
+Coverage is measured from the `test` task only. `statisticsTest` and
+`statisticsTestBlas` are excluded from Kover instrumentation, so generating a
+report doesn't re-run the statistics gates (CI already runs them as their own
+job). CI passes `-PtasselBlas` to `test`, so the BLAS classes are covered
+through `DoubleMatrixTest`.
 
 `koverVerify` fails if branch coverage drops below the `minValue` bound in the
 `kover` block of `build.gradle.kts`. The bound is kept one point below the
@@ -121,9 +144,10 @@ with JDK 21 and OpenBLAS installed. It has three jobs:
    success to branch protection while a workflow skipped by `paths:` stays
    pending forever and would block docs-only pull requests.
 2. **Statistics gate (required)** — installs OpenBLAS, downloads the test data,
-   and runs `./gradlew statisticsTest`. Must be green to merge.
+   and runs `./gradlew statisticsTest`, then `./gradlew statisticsTestBlas`.
+   Must be green to merge.
 3. **TASSEL 5 CI** — runs
-   `./gradlew clean test koverXmlReport koverVerify --continue` and uploads
+   `./gradlew clean test koverXmlReport koverVerify --continue -PtasselBlas` and uploads
    coverage to Codecov. It fails if any test fails or if `koverVerify` reports
    coverage below the gate.
 

@@ -66,6 +66,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
+      # buildTasselBlas compiles the TasselBlas JNI library against OpenBLAS.
       - name: Install OpenBLAS
         run: |
           sudo apt-get update
@@ -98,15 +99,19 @@ jobs:
 
       - name: Run statistics gate (ignoreFailures = false)
         run: ./gradlew statisticsTest
-        env:
-          BLAS_LIB_PATH: /usr/lib/x86_64-linux-gnu
+
+      # Same classes with the native TasselBlas backend as the default matrix factory.
+      - name: Run statistics gate against native BLAS
+        run: ./gradlew statisticsTestBlas
 
       - name: Upload statistics test report
         uses: actions/upload-artifact@v7
         if: always()
         with:
           name: statistics-test-report
-          path: build/reports/tests/statisticsTest/
+          path: |
+            build/reports/tests/statisticsTest/
+            build/reports/tests/statisticsTestBlas/
 
       - name: Publish statistics test results
         uses: mikepenz/action-junit-report@v6
@@ -114,6 +119,15 @@ jobs:
         with:
           report_paths: '**/build/test-results/statisticsTest/TEST-*.xml'
           check_name: Statistics Gate
+          job_summary: true
+          detailed_summary: true
+
+      - name: Publish native BLAS statistics test results
+        uses: mikepenz/action-junit-report@v6
+        if: always()
+        with:
+          report_paths: '**/build/test-results/statisticsTestBlas/TEST-*.xml'
+          check_name: Statistics Gate (native BLAS)
           job_summary: true
           detailed_summary: true
 
@@ -165,10 +179,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
+      # -PtasselBlas builds TasselBlas so DoubleMatrixTest covers the BLAS classes; the rest
+      # of the suite stays on EJML.
       - name: Run tests, generate Kover report & verify coverage gate
-        run: ./gradlew clean test koverXmlReport koverVerify --continue
-        env:
-          BLAS_LIB_PATH: /usr/lib/x86_64-linux-gnu
+        run: ./gradlew clean test koverXmlReport koverVerify --continue -PtasselBlas
 
       - name: Upload HTML test report
         uses: actions/upload-artifact@v7

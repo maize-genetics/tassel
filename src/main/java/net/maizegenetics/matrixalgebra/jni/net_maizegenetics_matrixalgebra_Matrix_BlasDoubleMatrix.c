@@ -10,20 +10,36 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#ifdef __APPLE__
 #include <vecLib/cblas.h>
+#else
+#include <cblas.h>
+#endif
 #include <limits.h>
 #include "net_maizegenetics_matrixalgebra_Matrix_BlasDoubleMatrix.h"
 
-extern void dgesvd_(char *jobu, char *jobvt, int *m, int *n, double A[], int *lda, double S[], double U[],
-                    int *ldu, double VT[], int *ldvt, double work[], int *lwork, int *info);
+// gfortran-built LAPACK (OpenBLAS on Linux) takes a hidden length argument after the
+// other arguments for every CHARACTER argument, and newer gfortran releases can read it
+// even for single characters. Accelerate's LAPACK has no such arguments.
+#ifdef __APPLE__
+#define FCLEN
+#define FCONE
+#else
+#include <stddef.h>
+#define FCLEN , size_t
+#define FCONE , (size_t) 1
+#endif
 
-extern void dsyevr_(char *jobz, char *range, char *uplo, int *n, double A[], int *lda, double *vl, double *vu, int *il, int *iu, double *abstol, int *m, double w[], double z[], int *ldz, int isuppz[], double work[], int *lwork, int iwork[], int *liwork, int *info);
+extern void dgesvd_(char *jobu, char *jobvt, int *m, int *n, double A[], int *lda, double S[], double U[],
+                    int *ldu, double VT[], int *ldvt, double work[], int *lwork, int *info FCLEN FCLEN);
+
+extern void dsyevr_(char *jobz, char *range, char *uplo, int *n, double A[], int *lda, double *vl, double *vu, int *il, int *iu, double *abstol, int *m, double w[], double z[], int *ldz, int isuppz[], double work[], int *lwork, int iwork[], int *liwork, int *info FCLEN FCLEN FCLEN);
 
 extern void dgelsd_(int *M, int *N, int *NRHS, double A[], int *LDA, double B[], int *LDB, double S[], double *RCOND, int *RANK, double WORK[], int *LWORK, int IWORK[], int *INFO);
 
 extern void dgelsy_(int *M, int *N, int *NRHS, double A[], int *LDA, double B[], int *LDB, int JPVT[], double *RCOND, int *RANK, double WORK[], int *LWORK, int *INFO);
 
-extern void dgesdd_(char *JOBZ, int *M, int *N, double A[], int *LDA, double S[], double U[], int *LDU, double *VT, int *LDVT, double WORK[], int *LWORK, int IWORK[], int *INFO);
+extern void dgesdd_(char *JOBZ, int *M, int *N, double A[], int *LDA, double S[], double U[], int *LDU, double *VT, int *LDVT, double WORK[], int *LWORK, int IWORK[], int *INFO FCLEN);
 
 JNIEXPORT void JNICALL Java_net_maizegenetics_matrixalgebra_Matrix_BlasDoubleMatrix_multMatrices
 (JNIEnv *env, jclass myclass, jdoubleArray A, jint nrowsA, jint ncolsA, jdoubleArray B, jint nrowsB, jint ncolsB, jdoubleArray C, jdouble alpha, jdouble beta, jboolean transA, jboolean transB) {
@@ -133,8 +149,7 @@ JNIEXPORT jint JNICALL Java_net_maizegenetics_matrixalgebra_Matrix_BlasDoubleMat
     int lwork = -1;
     int info = 0;
     int *JPVT;
-    JPVT = malloc(n * sizeof(int));
-    memset(JPVT, 0, n);
+    JPVT = calloc(n, sizeof(int));
     
     dgelsy_(&m, &n, &nrhs, aptr, &lda, bptr, &ldb, JPVT, &rcond, &RANK, worksize, &lwork, &info);
     
@@ -183,13 +198,13 @@ JNIEXPORT jint JNICALL Java_net_maizegenetics_matrixalgebra_Matrix_BlasDoubleMat
     int* iwork;
     iwork = malloc(liwork * sizeof(int));
     
-    dgesdd_(&JOBZ, &M, &N, aptr, &LDA, sptr, uptr, &LDU, vtptr, &LDVT, worksize, &lwork, iwork, &info);
+    dgesdd_(&JOBZ, &M, &N, aptr, &LDA, sptr, uptr, &LDU, vtptr, &LDVT, worksize, &lwork, iwork, &info FCONE);
     
     lwork = worksize[0];
     double* work;
     work = malloc(lwork * sizeof(double));
     
-    dgesdd_(&JOBZ, &M, &N, aptr, &LDA, sptr, uptr, &LDU, vtptr, &LDVT, work, &lwork, iwork, &info);
+    dgesdd_(&JOBZ, &M, &N, aptr, &LDA, sptr, uptr, &LDU, vtptr, &LDVT, work, &lwork, iwork, &info FCONE);
     
     free(iwork);
     free(work);
@@ -224,12 +239,12 @@ JNIEXPORT jint JNICALL Java_net_maizegenetics_matrixalgebra_Matrix_BlasDoubleMat
     int lwork = -1;
     int info = 0;
     
-    dgesvd_(&JOBU, &JOBVT, &M, &N, aptr, &LDA, sptr, uptr, &LDU, vtptr, &LDVT, worksize, &lwork, &info);
+    dgesvd_(&JOBU, &JOBVT, &M, &N, aptr, &LDA, sptr, uptr, &LDU, vtptr, &LDVT, worksize, &lwork, &info FCONE FCONE);
     
     lwork = worksize[0];
     double *work;
     work = malloc(lwork * sizeof(double));
-    dgesvd_(&JOBU, &JOBVT, &M, &N, aptr, &LDA, sptr, uptr, &LDU, vtptr, &LDVT, work, &lwork, &info);
+    dgesvd_(&JOBU, &JOBVT, &M, &N, aptr, &LDA, sptr, uptr, &LDU, vtptr, &LDVT, work, &lwork, &info FCONE FCONE);
     
     free(work);
     
@@ -270,7 +285,7 @@ JNIEXPORT jint JNICALL Java_net_maizegenetics_matrixalgebra_Matrix_BlasDoubleMat
     int liwork = -1;
     int info = 0;
     
-    dsyevr_(&jobz, &range, &uplo, &N, Aptr, &lda, &vl, &vu, &il, &iu, &abstol, &M, Wptr, Zptr, &ldz, isuppz, worksize, &lwork, iworksize, &liwork, &info);
+    dsyevr_(&jobz, &range, &uplo, &N, Aptr, &lda, &vl, &vu, &il, &iu, &abstol, &M, Wptr, Zptr, &ldz, isuppz, worksize, &lwork, iworksize, &liwork, &info FCONE FCONE FCONE);
     
     lwork = worksize[0];
     liwork = iworksize[0];
@@ -280,7 +295,7 @@ JNIEXPORT jint JNICALL Java_net_maizegenetics_matrixalgebra_Matrix_BlasDoubleMat
     iwork = malloc(liwork * sizeof(int));
     
     dsyevr_(&jobz, &range, &uplo, &N, Aptr, &lda, &vl, &vu, &il, &iu, &abstol, &M, Wptr, Zptr, &ldz, isuppz,
-            work, &lwork, iwork, &liwork, &info);
+            work, &lwork, iwork, &liwork, &info FCONE FCONE FCONE);
     
     free(isuppz);
     free(iwork);

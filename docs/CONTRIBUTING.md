@@ -190,7 +190,7 @@ Opening or updating a PR that touches `src/**` triggers the CI workflow (JDK 21 
     ./gradlew test
     ```
 
-The statistical tests exercise native BLAS routines, so you will need OpenBLAS installed (see [Building from Source](developer/building-from-source.md#installing-openblas)).
+These run on the pure-Java EJML backend and need no native libraries. CI also runs the statistics gate against the native BLAS backend (`./gradlew statisticsTestBlas`), which needs a C compiler and, on Linux, OpenBLAS (see [Building from Source](developer/building-from-source.md#native-blas-backend)).
 
 For full details on the test layout, coverage reports, what CI runs, and how to add an enforced test, see the [Testing guide](developer/testing.md).
 

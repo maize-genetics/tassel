@@ -25,8 +25,8 @@ published to Maven Central. Use the latest stable release for real work.
 
 If you want to build this from the source, TASSEL needs **Java 21**. 
 A Gradle wrapper (`./gradlew`) is included, so a local Gradle installation is 
-not required. A native BLAS library (**OpenBLAS**) is optional but 
-recommended for fast matrix operations.
+not required. An optional native BLAS backend can be built with 
+`./gradlew buildTasselBlas`.
 
 Build the runnable JAR and launch the graphical interface:
 
@@ -35,7 +35,7 @@ Build the runnable JAR and launch the graphical interface:
 ./gradlew run     # launch the GUI
 ```
 
-For prerequisites (including OpenBLAS setup), command-line pipelines, and the
+For prerequisites (including the native BLAS backend), command-line pipelines, and the
 standalone distribution, see the documentation links below.
 
 ## Documentation
