@@ -188,6 +188,66 @@ tasks {
         }
     }
 
+    // ---------------------------------------------------------------------------
+    // buildTasselBlas — compile the TasselBlas JNI library behind BlasDoubleMatrix
+    // from src/main/java/net/maizegenetics/matrixalgebra/jni. macOS links Apple's
+    // Accelerate framework; Linux links OpenBLAS (Debian/Ubuntu: libopenblas-dev).
+    //
+    // It is not part of the default build. statisticsTestBlas always loads it, and
+    // -PtasselBlas loads it in every other Test task as well. Wherever it is loaded,
+    // DoubleMatrixTest.testBlas fails instead of skipping if the library won't load.
+    //
+    // Usage:  ./gradlew buildTasselBlas
+    //         ./gradlew test -PtasselBlas
+    // ---------------------------------------------------------------------------
+    val tasselBlasDir = layout.buildDirectory.dir("native/tasselblas")
+    val buildTasselBlas = register<Exec>("buildTasselBlas") {
+        group = "build"
+        description = "Compiles the TasselBlas JNI library (native BLAS/LAPACK backend for DoubleMatrix)."
+
+        val os = System.getProperty("os.name").lowercase(Locale.ROOT)
+        val isMac = "mac" in os
+        val jniDir = file("src/main/java/net/maizegenetics/matrixalgebra/jni")
+        val source = jniDir.resolve("net_maizegenetics_matrixalgebra_Matrix_BlasDoubleMatrix.c")
+        val library = tasselBlasDir.map { it.file(System.mapLibraryName("TasselBlas")) }
+        val javaHome = project.extensions.getByType<JavaToolchainService>()
+            .compilerFor { languageVersion.set(JavaLanguageVersion.of(21)) }
+            .map { it.metadata.installationPath.asFile }
+
+        inputs.files(fileTree(jniDir) { include("*.c", "*.h") })
+        outputs.file(library)
+
+        executable = "cc"
+        argumentProviders.add(CommandLineArgumentProvider {
+            val jniInclude = javaHome.get().resolve("include")
+            // Accelerate marks the classic CBLAS interface deprecated as of macOS 13.3. Its
+            // replacement needs 13.3+, so stay on the classic one and silence the warning.
+            val platformArgs = if (isMac) {
+                listOf("-dynamiclib", "-Wno-deprecated-declarations", "-I${jniInclude.resolve("darwin")}")
+            } else {
+                listOf("-shared", "-I${jniInclude.resolve("linux")}")
+            }
+            val libraries = if (isMac) listOf("-framework", "Accelerate") else listOf("-lopenblas", "-lm")
+            listOf("-O2", "-fPIC", "-I$jniInclude") + platformArgs +
+                listOf(source.path, "-o", library.get().asFile.path) + libraries
+        })
+
+        doFirst {
+            if (!isMac && "linux" !in os) {
+                throw GradleException("buildTasselBlas supports macOS and Linux only (found $os).")
+            }
+            library.get().asFile.parentFile.mkdirs()
+        }
+    }
+
+    fun Test.loadTasselBlas() {
+        inputs.files(buildTasselBlas).withPropertyName("tasselBlas")
+        systemProperty("java.library.path", tasselBlasDir.get().asFile.path)
+        systemProperty("tassel.blas.required", "true")
+    }
+
+    val useTasselBlas = providers.gradleProperty("tasselBlas").map { it != "false" }.getOrElse(false)
+
     // Mirrors GeneralConstants.TEMP_DIR, which many tests write their outputs into.
     // It is git-ignored, so it is absent on a fresh checkout; a plugin whose outFile
     // parameter points into a missing directory calls System.exit(1) and takes the
@@ -199,45 +259,14 @@ tasks {
         doFirst {
             file("tempDir").mkdirs()
         }
+        if (useTasselBlas) loadTasselBlas()
     }
 
     test {
-        val baseArgs = mutableListOf("-Xmx10g")
-
-        // Detect path to BLAS native library
-        val overrideDir: String? = System.getenv("BLAS_LIB_PATH")
-        if (!overrideDir.isNullOrBlank()) {
-            baseArgs += "-Djava.library.path=$overrideDir"
-        } else {
-            val os = System.getProperty("os.name").lowercase(Locale.ROOT)
-            val nativeDir = when {
-                "mac" in os -> {
-                    val intel = "/usr/local/opt/openblas/lib"
-                    val silicon = "/opt/homebrew/opt/openblas/lib"
-                    when {
-                        file(intel).exists() -> intel
-                        file(silicon).exists() -> silicon
-                        else -> {
-                            logger.warn("Neither $intel nor $silicon exists. BLAS tests may fail unless BLAS_LIB_PATH is set.")
-                            ""
-                        }
-                    }
-                }
-                "linux" in os -> "/usr/lib/x86_64-linux-gnu"
-                else -> {
-                    logger.warn("Unrecognized OS: $os. BLAS tests may fail unless BLAS_LIB_PATH is set.")
-                    ""
-                }
-            }
-
-            if (nativeDir.isNotBlank()) {
-                baseArgs += "-Djava.library.path=$nativeDir"
-            }
-        }
-
-        jvmArgs = baseArgs
-
-        println(jvmArgs)
+        jvmArgs = listOf("-Xmx10g")
+        // DoubleMatrixFactory picks BLAS whenever TasselBlas loads. Pin the suite to EJML so
+        // -PtasselBlas doesn't change what it tests; DoubleMatrixTest selects BLAS itself.
+        systemProperty("tassel.matrix.factory", "ejml")
     }
 
     // ---------------------------------------------------------------------------
@@ -324,35 +353,13 @@ tasks {
         "net.maizegenetics.analysis.numericaltransform.TransformDataPluginTest",
     )
 
-    register<Test>("statisticsTest") {
+    fun Test.statisticsGate(matrixFactory: String) {
         group = "verification"
-        description = "Runs the statistical-correctness test gate with ignoreFailures = false."
         dependsOn("testClasses")
         testClassesDirs = sourceSets["test"].output.classesDirs
         classpath = sourceSets["test"].runtimeClasspath
-
-        val baseArgs = mutableListOf("-Xmx10g")
-        val overrideDir: String? = System.getenv("BLAS_LIB_PATH")
-        if (!overrideDir.isNullOrBlank()) {
-            baseArgs += "-Djava.library.path=$overrideDir"
-        } else {
-            val os = System.getProperty("os.name").lowercase(Locale.ROOT)
-            val nativeDir = when {
-                "mac" in os -> {
-                    val intel = "/usr/local/opt/openblas/lib"
-                    val silicon = "/opt/homebrew/opt/openblas/lib"
-                    when {
-                        file(intel).exists() -> intel
-                        file(silicon).exists() -> silicon
-                        else -> ""
-                    }
-                }
-                "linux" in os -> "/usr/lib/x86_64-linux-gnu"
-                else -> ""
-            }
-            if (nativeDir.isNotBlank()) baseArgs += "-Djava.library.path=$nativeDir"
-        }
-        jvmArgs = baseArgs
+        jvmArgs = listOf("-Xmx10g")
+        systemProperty("tassel.matrix.factory", matrixFactory)
 
         filter {
             statisticsClasses.forEach { includeTestsMatching(it) }
@@ -369,9 +376,27 @@ tasks {
         }
 
         reports {
-            html.outputLocation.set(layout.buildDirectory.dir("reports/tests/statisticsTest"))
-            junitXml.outputLocation.set(layout.buildDirectory.dir("test-results/statisticsTest"))
+            html.outputLocation.set(layout.buildDirectory.dir("reports/tests/$name"))
+            junitXml.outputLocation.set(layout.buildDirectory.dir("test-results/$name"))
         }
+    }
+
+    register<Test>("statisticsTest") {
+        description = "Runs the statistical-correctness test gate with ignoreFailures = false."
+        statisticsGate("ejml")
+    }
+
+    // ---------------------------------------------------------------------------
+    // statisticsTestBlas — the same gate with DoubleMatrixFactory defaulting to the
+    // native TasselBlas backend, so BLAS/LAPACK results are held to the same
+    // expected values as EJML. Builds the library first (see buildTasselBlas).
+    //
+    // Usage:  ./gradlew statisticsTestBlas
+    // ---------------------------------------------------------------------------
+    register<Test>("statisticsTestBlas") {
+        description = "Runs the statistical-correctness test gate against the native TasselBlas backend."
+        statisticsGate("blas")
+        loadTasselBlas()
     }
 
     register("printVersion") {
@@ -493,11 +518,11 @@ kover {
     useJacoco()
 
     // Coverage is measured from `test` alone. Kover's report tasks depend on every
-    // instrumented Test task, so leaving statisticsTest instrumented would re-run it
-    // in the coverage job even though it already runs as its own required CI job.
+    // instrumented Test task, so leaving the statistics gates instrumented would re-run
+    // them in the coverage job even though they already run as their own required CI job.
     currentProject {
         instrumentation {
-            disabledForTestTasks.add("statisticsTest")
+            disabledForTestTasks.addAll("statisticsTest", "statisticsTestBlas")
         }
     }
 
