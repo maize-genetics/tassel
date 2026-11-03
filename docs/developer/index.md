@@ -35,7 +35,7 @@ TASSEL is written primarily in **Java** (with some **Kotlin**) and built with
 | Java (JDK)    | **21** — the build compiles to Java 21 bytecode via a Gradle toolchain |
 | Kotlin        | 2.1.x (configured by the Gradle Kotlin plugin)                        |
 | Build system  | **Gradle** — use the bundled wrapper (`./gradlew`); no local install  |
-| Native BLAS   | **OpenBLAS** (optional, recommended) for fast matrix operations       |
+| Native BLAS   | Optional **TasselBlas** JNI library (Accelerate on macOS, OpenBLAS on Linux) |
 | VCS           | **Git** / GitHub                                                       |
 | Recommended IDE | IntelliJ IDEA (imports the Gradle project directly)                 |
 
@@ -54,4 +54,4 @@ cd tassel
 ```
 
 See [Building from Source](building-from-source.md) for prerequisites (including
-OpenBLAS setup) and more detail.
+the optional native BLAS backend) and more detail.

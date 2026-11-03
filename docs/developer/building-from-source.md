@@ -10,35 +10,52 @@ Gradle installation — the wrapper downloads the correct version automatically.
 | ----------- | ------- |
 | **Java 21 (JDK)** | The build uses a Gradle toolchain targeting Java 21 and compiles to Java 21 bytecode. Verify with `java -version`. |
 | **Git** | Needed to clone the repository. Verify with `git --version`. |
-| **OpenBLAS** (optional, recommended) | A native BLAS library that accelerates matrix operations and is required by some statistical tests. |
+| **C compiler and BLAS** (optional) | Only needed to build the native BLAS backend described below. |
 
-### Installing OpenBLAS
+### Native BLAS backend
 
-Some analyses (kinship, MLM, PCA, and the statistical test suite) call into a
-native BLAS library through JNI. Installing OpenBLAS is optional for a plain
-build, but recommended for full functionality and required to run the
-statistics test gate.
+TASSEL's matrix code runs on [EJML](https://ejml.org/), a pure-Java library,
+unless the optional **TasselBlas** JNI library is on `java.library.path`.
+TasselBlas calls the platform's BLAS and LAPACK instead. You don't need it to
+build, run, or test TASSEL; it's needed only for the native BLAS variant of the
+statistics gate.
+
+The `buildTasselBlas` task compiles it into `build/native/tasselblas/` with the
+system C compiler (`cc`):
 
 === "macOS"
 
+    Links Apple's Accelerate framework, which ships with macOS. If `cc` is
+    missing, install the Xcode command-line tools:
+
     ```bash
-    brew install openblas
+    xcode-select --install
     ```
 
 === "Linux (Debian/Ubuntu)"
 
+    Links OpenBLAS:
+
     ```bash
     sudo apt-get update
-    sudo apt-get install -y libopenblas-dev
+    sudo apt-get install -y build-essential libopenblas-dev
     ```
 
-The build and test tasks auto-detect common install locations
-(`/opt/homebrew/opt/openblas/lib` and `/usr/local/opt/openblas/lib` on macOS,
-`/usr/lib/x86_64-linux-gnu` on Linux). If your library lives elsewhere, point at
-it with the `BLAS_LIB_PATH` environment variable:
+Windows is not supported.
 
 ```bash
-export BLAS_LIB_PATH=/path/to/dir/containing/libopenblas
+./gradlew buildTasselBlas       # compile the library only
+./gradlew statisticsTestBlas    # statistics gate on BLAS (builds the library first)
+./gradlew test -PtasselBlas     # full suite, with DoubleMatrixTest's BLAS case required
+```
+
+When TasselBlas loads, `DoubleMatrixFactory` uses BLAS by default. To pick the
+backend explicitly, set the `tassel.matrix.factory` system property to `ejml`,
+`colt`, or `blas`. To use the library outside Gradle, pass its directory to the
+JVM:
+
+```bash
+java -Djava.library.path=build/native/tasselblas -jar build/libs/sTASSEL.jar
 ```
 
 ## Getting the source
@@ -130,6 +147,8 @@ the full pipeline command language, see the
 | `./gradlew run` | Launch the Swing GUI. |
 | `./gradlew test` | Run the full (non-blocking) test suite. |
 | `./gradlew statisticsTest` | Run the enforced statistical-correctness gate. |
+| `./gradlew statisticsTestBlas` | Run the same gate on the native BLAS backend. |
+| `./gradlew buildTasselBlas` | Compile the optional TasselBlas JNI library. |
 | `./gradlew koverHtmlReport` | Generate an HTML code-coverage report. |
 | `./gradlew dokkaGenerate` | Generate API documentation with Dokka. |
 | `./gradlew shadowJar` | Assemble the self-contained `jar-with-dependencies` JAR. |
@@ -140,8 +159,11 @@ Run `./gradlew tasks` to see the full list.
 
 ## Common issues
 
-- **`UnsatisfiedLinkError` / BLAS failures** — OpenBLAS is not installed or not
-  found. Install it (see above) or set `BLAS_LIB_PATH`.
+- **`buildTasselBlas` can't find `cblas.h` or `-lopenblas`** — on Linux,
+  install `libopenblas-dev` (see [Native BLAS backend](#native-blas-backend)).
+- **`TasselBlas failed to load` in `DoubleMatrixTest`** — the library was built
+  but the JVM couldn't load it. The assertion message carries the underlying
+  `UnsatisfiedLinkError`, which names the missing file or symbol.
 - **Wrong Java version** — the toolchain targets Java 21. Make sure a JDK 21 is
   installed and discoverable; Gradle can auto-provision a toolchain, but a local
   JDK 21 avoids surprises.

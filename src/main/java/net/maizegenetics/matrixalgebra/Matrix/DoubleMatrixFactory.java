@@ -14,19 +14,47 @@ public class DoubleMatrixFactory {
 	public enum FactoryType {ejml, jblas, colt, blas};
 	private FactoryType myType;
 	public static DoubleMatrixFactory DEFAULT;
+
+	/**
+	 * System property that selects the default factory: {@code ejml}, {@code colt} or {@code blas}.
+	 * When it is not set, BLAS is used if the TasselBlas library loads and EJML otherwise.
+	 */
+	public static final String FACTORY_PROPERTY = "tassel.matrix.factory";
 	
 	static{
+		DEFAULT = new DoubleMatrixFactory(initialType());
+	}
+
+	private static FactoryType initialType() {
+		String requested = System.getProperty(FACTORY_PROPERTY);
+		if (requested != null && !requested.isBlank()) {
+			switch (requested.trim().toLowerCase()) {
+				case "ejml":
+					myLogger.info("Using EJML for DoubleMatrix operations (" + FACTORY_PROPERTY + "=" + requested + ")");
+					return FactoryType.ejml;
+				case "colt":
+					myLogger.info("Using Colt for DoubleMatrix operations (" + FACTORY_PROPERTY + "=" + requested + ")");
+					return FactoryType.colt;
+				case "blas":
+					break;
+				default:
+					myLogger.warn("Ignoring " + FACTORY_PROPERTY + "=" + requested + "; expected ejml, colt or blas.");
+			}
+		}
+		return loadTasselBlas() ? FactoryType.blas : FactoryType.ejml;
+	}
+
+	private static boolean loadTasselBlas() {
 		try {
 			System.loadLibrary("TasselBlas");
-			DEFAULT = new DoubleMatrixFactory(FactoryType.blas);
 			myLogger.info("Using BLAS/LAPACK for DoubleMatrix operations");
+			return true;
 		} catch (UnsatisfiedLinkError err) {
-			DEFAULT = new DoubleMatrixFactory(FactoryType.ejml);
 			myLogger.info("TasselBlas library for system-specific BLAS/LAPACK not found. Using system-independent EJML for DoubleMatrix operations.");
 		} catch (SecurityException se) {
-			DEFAULT = new DoubleMatrixFactory(FactoryType.ejml);
 			myLogger.info("No permission to load blasDoubleMatrix library. Using EJML for DoubleMatrix operations.");
 		}
+		return false;
 	}
 	
 	public DoubleMatrixFactory(FactoryType type) {

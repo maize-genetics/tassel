@@ -30,12 +30,12 @@ public class DoubleMatrixTest {
 		DoubleMatrixFactory.setDefault(savedType);
 	}
 
-	private static boolean canLoadTasselBlas() {
+	private static String tasselBlasLoadError() {
 		try {
 			System.loadLibrary("TasselBlas");
-			return true;
+			return null;
 		} catch (UnsatisfiedLinkError | SecurityException e) {
-			return false;
+			return e.toString();
 		}
 	}
 
@@ -57,7 +57,13 @@ public class DoubleMatrixTest {
 
 	@Test
 	public void testBlas() {
-		Assume.assumeTrue(canLoadTasselBlas());
+		String loadError = tasselBlasLoadError();
+		// Set by Gradle when it builds the library, so a broken native build fails here instead of skipping.
+		if (Boolean.getBoolean("tassel.blas.required")) {
+			assertNull("TasselBlas failed to load", loadError);
+		} else {
+			Assume.assumeTrue(loadError == null);
+		}
 		System.out.println("Testing BLAS");
 		DoubleMatrixFactory.setDefault(DoubleMatrixFactory.FactoryType.blas);
 		intializeTestMatrices();
