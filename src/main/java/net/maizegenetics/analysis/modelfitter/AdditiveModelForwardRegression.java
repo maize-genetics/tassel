@@ -21,6 +21,8 @@ public class AdditiveModelForwardRegression extends AbstractForwardRegression {
     double highestSS;
     int bestSite;
     int maxThreads;
+    // ForkJoinPool workers are daemon threads that exit after 60 s idle, so an
+    // abandoned pool needs no explicit shutdown.
     ForkJoinPool myPool = null;
     
     public AdditiveModelForwardRegression(GenotypePhenotype data, int maxThreads) {
@@ -214,12 +216,6 @@ public class AdditiveModelForwardRegression extends AbstractForwardRegression {
             return false;
         }
 
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        if (myPool != null) myPool.shutdown();
-        super.finalize();
     }
 
 }
