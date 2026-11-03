@@ -6,13 +6,14 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Range;
 import net.maizegenetics.analysis.popgen.LDResult;
 import net.maizegenetics.analysis.popgen.LinkageDisequilibrium;
+import net.maizegenetics.dna.WHICH_ALLELE;
 import net.maizegenetics.dna.map.Position;
 import net.maizegenetics.dna.map.PositionList;
 import net.maizegenetics.dna.map.PositionListBuilder;
 import net.maizegenetics.dna.snp.*;
 import net.maizegenetics.plugindef.*;
-import net.maizegenetics.taxa.Taxon;
-import net.maizegenetics.util.Tuple;
+import net.maizegenetics.stats.statistics.FisherExact;
+import net.maizegenetics.util.BitSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +22,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.LongAdder;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static net.maizegenetics.dna.snp.GenotypeTable.UNKNOWN_DIPLOID_ALLELE;
@@ -111,11 +111,15 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
                 double[] taxaCoverage = IntStream.range(0, ldGenoTable.numberOfTaxa()).sequential()  //used determine when insufficient overlap is likely
                         .mapToDouble(t -> (double) ldGenoTable.totalNonMissingForTaxon(t) / (double) numberSites)
                         .toArray();
+                final byte[][] ldGenotypes = new byte[ldGenoTable.numberOfTaxa()][];
+                for (int t = 0; t < ldGenotypes.length; t++) {
+                    ldGenotypes[t] = ldGenoTable.genotypeAllSites(t);
+                }
                 for (int taxon = 0; taxon < currGenos.length; taxon++) {
                     newGenos[taxon] = currGenos[taxon];
                     if (currGenos[taxon] == UNKNOWN_DIPLOID_ALLELE) {  //starting imputing
-                        Multimap<Double, Byte> closeGenotypes = getClosestNonMissingTaxa(genotypeTable.taxa().get(taxon), genotypeTable,
-                                ldGenoTable, position, taxaCoverage, knnTaxa());
+                        Multimap<Double, Byte> closeGenotypes = getClosestNonMissingTaxa(taxon, currGenos, ldGenotypes,
+                                taxaCoverage, knnTaxa());
                         if (closeGenotypes.isEmpty()) {  //this is empty when two few high LD sites are shared between the target taxon and all others
                             newGenos[taxon] = UNKNOWN_DIPLOID_ALLELE;
                         } else {
@@ -139,33 +143,54 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
 
     /**
      * Create a multimap of distances between the target taxon with the closest observed genotypes.  Distance is calculated
-     * between the target taxon and all other taxa for the ldGenoTable (subset of high LD sites).
-     * @param inputTaxon Taxon being imputed
-     * @param genotypeTable Master genotype table
-     * @param ldGenoTable Subset genotype table with only the high LD sites
-     * @param targetPosition The position in the master genotype table being imputed.
+     * between the target taxon and all other taxa over the high LD sites.
+     * @param inputTaxonIdx Index of the taxon being imputed
+     * @param targetGenotypes Genotypes of every taxon at the site being imputed
+     * @param ldGenotypes Genotypes of every taxon at the high LD sites, indexed by taxon
+     * @param inputCoverage Fraction of the high LD sites scored in each taxon
      * @param numberOfTaxa number of genotypes to retain
      * @return Map of distance to genotype call for the target position
      */
-    private Multimap<Double, Byte> getClosestNonMissingTaxa(Taxon inputTaxon, GenotypeTable genotypeTable, GenotypeTable ldGenoTable,
-                                                            Position targetPosition, double[] inputCoverage, int numberOfTaxa) {
-        final int targetPosIdx = genotypeTable.positions().indexOf(targetPosition);
-        final int inputTaxonIdx = genotypeTable.taxa().indexOf(inputTaxon);
-        byte[] inputTaxonGenotypes = ldGenoTable.genotypeAllSites(inputTaxonIdx);
-       // double inputTaxonCoverage=(double)ldGenoTable.totalNonMissingForTaxon(inputTaxonIdx)/(double)ldGenoTable.numberOfSites();
+    private static Multimap<Double, Byte> getClosestNonMissingTaxa(int inputTaxonIdx, byte[] targetGenotypes, byte[][] ldGenotypes,
+                                                                   double[] inputCoverage, int numberOfTaxa) {
+        final byte[] inputTaxonGenotypes = ldGenotypes[inputTaxonIdx];
+        final int numberOfLDSites = inputTaxonGenotypes.length;
 
-        MinMaxPriorityQueue<Tuple<Double, Byte>> topTaxa = IntStream.range(0, genotypeTable.numberOfTaxa())
-                .filter(closeTaxonIdx -> closeTaxonIdx != inputTaxonIdx)  //do not test itself
-                .filter(closeTaxonIdx -> inputCoverage[closeTaxonIdx] * inputCoverage[inputTaxonIdx]*(double)ldGenoTable.numberOfSites()>10)  //skip tests with
-                .filter(closeTaxonIdx -> genotypeTable.genotype(closeTaxonIdx, targetPosIdx) != GenotypeTable.UNKNOWN_DIPLOID_ALLELE)  //ignore taxa with the genotype not scored
- /*Bad*/ //               .mapToObj(closeTaxonIdx -> new Tuple<>(IBSDistanceMatrix.computeHetDistances(inputTaxonGenotypes, ldGenoTable.genotypeAllSites(closeTaxonIdx), 10)[0], genotypeTable.genotype(closeTaxonIdx, targetPosIdx)))
- /*Best*/.mapToObj(closeTaxonIdx -> new Tuple<>(dist(inputTaxonGenotypes, ldGenoTable.genotypeAllSites(closeTaxonIdx), 10)[0], genotypeTable.genotype(closeTaxonIdx, targetPosIdx)))  //calculate the distance
-/*Best*/ //                .mapToObj(closeTaxonIdx -> new Tuple<>(LDKNNiImputationPluginEd.distance(inputTaxonGenotypes, ldGenoTable.genotypeAllSites(closeTaxonIdx), 10)[0], genotypeTable.genotype(closeTaxonIdx, targetPosIdx)))
-                .filter(distanceTaxon -> !Double.isNaN(distanceTaxon.x))  //skip is too few sites (<10 results in NaN)
-                .collect(Collectors.toCollection(() -> MinMaxPriorityQueue.maximumSize(numberOfTaxa).create()));
+        //The numberOfTaxa smallest (distance, genotype) pairs, in ascending order
+        final double[] topDistances = new double[numberOfTaxa];
+        final byte[] topGenotypes = new byte[numberOfTaxa];
+        int size = 0;
+        for (int closeTaxonIdx = 0; closeTaxonIdx < targetGenotypes.length; closeTaxonIdx++) {
+            if (closeTaxonIdx == inputTaxonIdx) continue;  //do not test itself
+            //skip tests with too little overlap; written as !(x > 10) so a NaN coverage is skipped too
+            if (!(inputCoverage[closeTaxonIdx] * inputCoverage[inputTaxonIdx] * (double) numberOfLDSites > 10)) continue;
+            final byte genotype = targetGenotypes[closeTaxonIdx];
+            if (genotype == GenotypeTable.UNKNOWN_DIPLOID_ALLELE) continue;  //ignore taxa with the genotype not scored
+            final double distance = dist(inputTaxonGenotypes, ldGenotypes[closeTaxonIdx], 10)[0];
+            if (Double.isNaN(distance)) continue;  //skip is too few sites (<10 results in NaN)
+            if (size == numberOfTaxa
+                    && compareDistanceGenotype(distance, genotype, topDistances[size - 1], topGenotypes[size - 1]) >= 0) {
+                continue;
+            }
+            int i = (size < numberOfTaxa) ? size++ : size - 1;
+            while (i > 0 && compareDistanceGenotype(distance, genotype, topDistances[i - 1], topGenotypes[i - 1]) < 0) {
+                topDistances[i] = topDistances[i - 1];
+                topGenotypes[i] = topGenotypes[i - 1];
+                i--;
+            }
+            topDistances[i] = distance;
+            topGenotypes[i] = genotype;
+        }
         final Multimap<Double, Byte> distGenoMap = ArrayListMultimap.create();
-        topTaxa.stream().forEach(distGeno -> distGenoMap.put(distGeno.x, distGeno.y));
+        for (int i = 0; i < size; i++) {
+            distGenoMap.put(topDistances[i], topGenotypes[i]);
+        }
         return distGenoMap;
+    }
+
+    private static int compareDistanceGenotype(double distance1, byte genotype1, double distance2, byte genotype2) {
+        int result = Double.compare(distance1, distance2);
+        return (result != 0) ? result : Byte.compare(genotype1, genotype2);
     }
 
     private Multimap<Position, Position> getHighLDMap(GenotypeTable genotypeTable, int numberOfSNPs) {
@@ -174,6 +199,13 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
         // and the multimap is assembled afterwards.
         @SuppressWarnings("unchecked")
         final List<Position>[] highLDSites = new List[numberOfSites];
+        final BitSet[] majorPresence = new BitSet[numberOfSites];
+        final BitSet[] minorPresence = new BitSet[numberOfSites];
+        for (int site = 0; site < numberOfSites; site++) {
+            majorPresence[site] = genotypeTable.allelePresenceForAllTaxa(site, WHICH_ALLELE.Major);
+            minorPresence[site] = genotypeTable.allelePresenceForAllTaxa(site, WHICH_ALLELE.Minor);
+        }
+        final FisherExact fisherExact = FisherExact.getInstance((2 * genotypeTable.numberOfTaxa()) + 10);
         LongAdder sites1Kdone=new LongAdder();
         IntStream.range(0, genotypeTable.numberOfSites()).parallel()
                 .forEach(posIndex ->
@@ -187,7 +219,8 @@ public class LDKNNiImputationPlugin extends AbstractPlugin {
                         if(maxDistance()>-1 && Math.abs(genotypeTable.chromosomalPosition(posIndex)-genotypeTable.chromosomalPosition(site2))>maxDistance()) {
                             continue;
                         }
-                        LDResult ld = LinkageDisequilibrium.calculateBitLDForHaplotype(false, 20, genotypeTable, posIndex, site2);
+                        LDResult ld = LinkageDisequilibrium.getLDForSitePair(majorPresence[posIndex], minorPresence[posIndex],
+                                majorPresence[site2], minorPresence[site2], 2, 20, -1.0f, fisherExact, posIndex, site2);
                         if (Double.isNaN(ld.r2())) {
                             continue;
                         }
