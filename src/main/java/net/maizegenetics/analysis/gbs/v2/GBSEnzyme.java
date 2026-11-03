@@ -9,6 +9,7 @@ package net.maizegenetics.analysis.gbs.v2;
  *
  * @deprecated use EnzymeList.Enzyme.
  */
+@Deprecated
 public class GBSEnzyme {
     private final String theEnzyme;
     private final String[] initialCutSiteRemnant;
@@ -19,6 +20,7 @@ public class GBSEnzyme {
      * @param enzyme The name of the enzyme (case insensitive)
      * @deprecated use EnzymeList.getEnzyme(enzyme)
      */
+    @Deprecated
     public GBSEnzyme(String enzyme) {
         EnzymeList list = new EnzymeList();
         EnzymeList.Enzyme e = list.getEnzyme(enzyme);

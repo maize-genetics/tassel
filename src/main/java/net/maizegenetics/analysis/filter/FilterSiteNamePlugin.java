@@ -48,6 +48,7 @@ import net.maizegenetics.plugindef.GeneratedGuiBoilerplate;
  * 
  * @author Terry Casstevens
  */
+@Deprecated
 public class FilterSiteNamePlugin extends AbstractPlugin {
 
     private static final Logger myLogger = LogManager.getLogger(FilterSiteNamePlugin.class);
