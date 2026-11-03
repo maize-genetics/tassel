@@ -5,6 +5,7 @@ package net.maizegenetics.popgen;
 
 import net.maizegenetics.constants.GeneralConstants;
 import net.maizegenetics.constants.TutorialConstants;
+import net.maizegenetics.dna.WHICH_ALLELE;
 import net.maizegenetics.dna.snp.GenotypeTable;
 import net.maizegenetics.dna.snp.GenotypeTableBuilder;
 import net.maizegenetics.dna.snp.ImportUtils;
@@ -13,6 +14,8 @@ import net.maizegenetics.dna.snp.genotypecall.GenotypeCallTableBuilder;
 import net.maizegenetics.dna.map.Chromosome;
 import net.maizegenetics.dna.map.GeneralPosition;
 import net.maizegenetics.dna.map.PositionListBuilder;
+import net.maizegenetics.stats.statistics.FisherExact;
+import net.maizegenetics.util.BitSet;
 import net.maizegenetics.util.TableReport;
 import net.maizegenetics.util.TableReportUtils;
 import net.maizegenetics.taxa.TaxaListBuilder;
@@ -21,10 +24,12 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import net.maizegenetics.analysis.popgen.LDResult;
 import net.maizegenetics.analysis.popgen.LinkageDisequilibrium;
 import net.maizegenetics.util.TableReportTestUtils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -72,6 +77,43 @@ public class LinkageDisequilibriumTest {
         System.out.println(result);
         assertEquals(Double.NaN, result, 0.001);
         seqs[1] = "CAA";
+    }
+
+    /**
+     * LDKNNiImputationPlugin calls getLDForSitePair with precomputed allele bitsets in place of
+     * calculateBitLDForHaplotype(false, 20, ...), so the two must give the same result.
+     */
+    @Test
+    public void testCalculateBitLDForHaplotypeMatchesGetLDForSitePair() {
+        GenotypeTable genotypes = ImportUtils.readFromHapmap(TutorialConstants.HAPMAP_CHR_9_10_FILENAME, null);
+        FisherExact fisherExact = FisherExact.getInstance((2 * genotypes.numberOfTaxa()) + 10);
+        int numSites = Math.min(40, genotypes.numberOfSites());
+        int pairsWithR2 = 0;
+        for (int site1 = 0; site1 < numSites; site1++) {
+            BitSet site1Major = genotypes.allelePresenceForAllTaxa(site1, WHICH_ALLELE.Major);
+            BitSet site1Minor = genotypes.allelePresenceForAllTaxa(site1, WHICH_ALLELE.Minor);
+            for (int site2 = 0; site2 < numSites; site2++) {
+                if (site1 == site2) {
+                    continue;
+                }
+                LDResult expected = LinkageDisequilibrium.getLDForSitePair(site1Major, site1Minor,
+                        genotypes.allelePresenceForAllTaxa(site2, WHICH_ALLELE.Major),
+                        genotypes.allelePresenceForAllTaxa(site2, WHICH_ALLELE.Minor),
+                        2, 20, -1.0f, fisherExact, site1, site2);
+                LDResult actual = LinkageDisequilibrium.calculateBitLDForHaplotype(false, 20, genotypes, site1, site2);
+                String pair = "site1: " + site1 + " site2: " + site2;
+                assertEquals("r2 differs: " + pair, expected.r2(), actual.r2(), 0.0f);
+                assertEquals("D' differs: " + pair, expected.dPrime(), actual.dPrime(), 0.0f);
+                assertEquals("P differs: " + pair, expected.p(), actual.p(), 0.0f);
+                assertEquals("n differs: " + pair, expected.n(), actual.n());
+                assertEquals("site1 differs: " + pair, site1, actual.site1());
+                assertEquals("site2 differs: " + pair, site2, actual.site2());
+                if (!Float.isNaN(actual.r2())) {
+                    pairsWithR2++;
+                }
+            }
+        }
+        assertTrue("Expected some site pairs with a defined r2", pairsWithR2 > 0);
     }
 
     /**

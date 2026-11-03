@@ -7,8 +7,11 @@ import net.maizegenetics.dna.snp.FilterAndMaskGVCFGenomeSequence;
 import net.maizegenetics.dna.snp.NucleotideAlignmentConstants;
 import net.maizegenetics.util.BitSet;
 import net.maizegenetics.util.OpenBitSet;
+import net.maizegenetics.util.Utils;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,15 +38,75 @@ public class BuilderFromGVCFTest {
     private static final String SIM_CHR2 = "TTGGCCAATTGGCCAATTGGCCAATTGGCC";
     private static final String SIM_SAMPLE_CHR1 = SIM_CHR1.substring(0, 10) + "T" + SIM_CHR1.substring(11);
 
-    //Loading these takes about 40 seconds, so the tests share one copy. Tests must not modify them.
+    //Chromosome 8 regions the tests read from the B73 GVCF. A test that reads another region must add it here.
+    private static final int[][] B73_REGIONS = {
+            {8937202, 8939694},     //test0Coverage
+            {15484032, 15486280},   //testRefHomozygous
+            {15917882, 15920151},   //testHetSNPs
+            {62915759, 62918979},   //testAltHomozygousDP1or2
+            {83443248, 83445925},   //testHetDeletions
+            {103920155, 103926901}, //testAltHomozygousDPAbove3
+            {105839363, 105844126}  //testHetInsertions
+    };
+
+    //The tests share one copy of these. Tests must not modify them.
     private static GVCFGenomeSequence b73GVCFSequence;
     private static GenomeSequence agpv4Sequence;
 
     private GVCFGenomeSequence b73GVCFSequence() throws Exception {
         if (b73GVCFSequence == null) {
-            b73GVCFSequence = (GVCFGenomeSequence) GVCFGenomeSequenceBuilder.instance(agpv4FileName, fullGVCFFileName);
+            b73GVCFSequence = (GVCFGenomeSequence) GVCFGenomeSequenceBuilder.instance(agpv4FileName, b73RegionsGVCF());
         }
         return b73GVCFSequence;
+    }
+
+    //GVCFGenomeSequenceBuilder indexes records in 10 kb bins and finds a region through the bin holding
+    //its start and the bin after its end. Keeping those whole bins makes lookups on the copy take the
+    //same path as on the full file.
+    private static final int GVCF_INDEX_BIN = 10_000;
+
+    //Parsing all 12 million records of the full GVCF takes about 20 seconds, so the tests read
+    //a copy that keeps only the records in the index bins around B73_REGIONS.
+    private String b73RegionsGVCF() throws Exception {
+        Path dir = Paths.get(GeneralConstants.TEMP_DIR, "BuilderFromGVCFTest");
+        Files.createDirectories(dir);
+        Path regionsGVCF = dir.resolve("B73_regions.g.vcf");
+        try (BufferedReader reader = Utils.getBufferedReader(fullGVCFFileName);
+             BufferedWriter writer = Files.newBufferedWriter(regionsGVCF)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("#") || overlapsB73RegionBins(line)) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+            }
+        }
+        return regionsGVCF.toString();
+    }
+
+    private static boolean overlapsB73RegionBins(String record) {
+        if (!record.startsWith("8\t")) {
+            return false;
+        }
+        int posEnd = record.indexOf('\t', 2);
+        int idEnd = record.indexOf('\t', posEnd + 1);
+        int refEnd = record.indexOf('\t', idEnd + 1);
+        int altEnd = record.indexOf('\t', refEnd + 1);
+        int qualEnd = record.indexOf('\t', altEnd + 1);
+        int filterEnd = record.indexOf('\t', qualEnd + 1);
+        int infoEnd = record.indexOf('\t', filterEnd + 1);
+        int start = Integer.parseInt(record.substring(2, posEnd));
+        int end = record.startsWith("END=", filterEnd + 1)
+                ? Integer.parseInt(record.substring(filterEnd + 5, infoEnd).split(";", 2)[0])
+                : start + (refEnd - idEnd - 1) - 1;
+        for (int[] region : B73_REGIONS) {
+            int binsStart = (region[0] / GVCF_INDEX_BIN) * GVCF_INDEX_BIN;
+            int binsEnd = (region[1] / GVCF_INDEX_BIN + 2) * GVCF_INDEX_BIN - 1;
+            if (start <= binsEnd && end >= binsStart) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private GenomeSequence agpv4Sequence() {
