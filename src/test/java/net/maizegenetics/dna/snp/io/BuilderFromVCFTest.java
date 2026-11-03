@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -248,7 +247,6 @@ public class BuilderFromVCFTest {
 
 	//Test that converting a VCF with depth straight to HDF5 keeps the allele depths
 	//SuccessCondition: the HDF5 file has the same depths as the in-memory build
-	@Ignore("#36: GenotypeTableBuilder.addSiteBlock never writes blockDepths, so convertToHDF5().keepDepth() drops depth")
 	@Test
 	public void convertToHDF5KeepDepthTest() throws Exception {
 	    String fileName = TutorialConstants.TUTORIAL_DIR + "mdp_genotype_w_depth.vcf";
