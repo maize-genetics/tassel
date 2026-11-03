@@ -47,6 +47,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.regex.Pattern;
 
 /**
@@ -119,6 +120,10 @@ abstract public class AbstractPlugin implements Plugin {
             fireDataSetReturned(new PluginEvent(output, getClass()));
             return output;
 
+        } catch (CancellationException e) {
+            myWasCancelled = true;
+            myLogger.info(e.getMessage());
+            return null;
         } catch (Exception e) {
 
             if (isInteractive()) {
@@ -1994,9 +1999,28 @@ abstract public class AbstractPlugin implements Plugin {
             throw new IllegalArgumentException("AbstractPlugin: fireProgress: percent must be between 0 and 100 inclusive.  arg: " + percent);
         }
 
+        // performFunction reports 100 from its finally block, so throwing there would
+        // replace whatever exception is already propagating.
+        if (percent < 100) {
+            checkCancelled();
+        }
+
         Datum percentage = new Datum("Percent", percent, null);
         fireProgress(new PluginEvent(new DataSet(percentage, this)));
 
+    }
+
+    /**
+     * Throws CancellationException if the thread running this plugin has been interrupted,
+     * which is how the progress panel's Cancel button asks a plugin to stop. Long-running
+     * loops that don't report progress can call this directly.
+     *
+     * @throws CancellationException if the current thread is interrupted
+     */
+    protected void checkCancelled() {
+        if (Thread.currentThread().isInterrupted()) {
+            throw new CancellationException(getClass().getName() + " was cancelled");
+        }
     }
 
     @Override
