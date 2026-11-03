@@ -91,6 +91,7 @@ public class GenotypeTableBuilder {
     //Fields for incremental sites
     private final TaxaList taxaList;
     private PositionListBuilder posListBuilder = null;
+    private int hdf5NumberOfSites = 0;
     private boolean isTaxaMerge = false; //if in taxa merge mode, this only works with TAXA_INC build type;//, GENO_EDIT}; //GENO_EDIT is not
     private GenotypeMergeRule mergeRule = null;
     private boolean isHDF5 = false;
@@ -179,6 +180,7 @@ public class GenotypeTableBuilder {
         this.taxaList = taxaList;
         setupGenotypeTaxaInHDF5(writer);
         posListBuilder = new PositionListBuilder(numberOfSites);
+        hdf5NumberOfSites = numberOfSites;
         byte[] missingGenotypes = new byte[numberOfSites];
         Arrays.fill(missingGenotypes, GenotypeTable.UNKNOWN_DIPLOID_ALLELE);
         for (Taxon taxon : taxaList) {
@@ -528,7 +530,7 @@ public class GenotypeTableBuilder {
      * @param startSite start site for positioning blocks correction
      * @param blkPositionList
      * @param blockGenotypes array of genotypes[taxonIndex][siteIndex] true site=startSite+siteIndex
-     * @param blockDepths
+     * @param blockDepths array of depths[taxonIndex][allele][siteIndex], or null when depth isn't kept
      */
     public synchronized void addSiteBlock(int startSite, PositionList blkPositionList, byte[][] blockGenotypes, byte[][][] blockDepths) {
         if ((myBuildType != BuildType.SITE_INC) || (isHDF5 == false)) {
@@ -544,6 +546,9 @@ public class GenotypeTableBuilder {
         }
         for (int t = 0; t < taxaList.numberOfTaxa(); t++) {
             HDF5Utils.replaceHDF5GenotypesCalls(writer, taxaList.taxaName(t), startSite, blockGenotypes[t]);
+            if (blockDepths != null) {
+                HDF5Utils.writeHDF5GenotypesDepthBlock(writer, taxaList.taxaName(t), hdf5NumberOfSites, startSite, blockDepths[t]);
+            }
         }
     }
 

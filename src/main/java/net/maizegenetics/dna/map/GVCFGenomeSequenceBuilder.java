@@ -425,16 +425,16 @@ class HalfByteGenomeSequenceGVCF implements GVCFGenomeSequence{
         int endIndex = 0;
 
         boolean addingAtStart = false;
-        if(listOfChrPositions.size()>0) {
-            for (int i = 1; i < gvcfAnnotationsAndCalls.size(); i++) {
-                if (gvcfAnnotationsAndCalls.get(i).getPosition() == listOfChrPositions.get(0).getPosition()) {
-                    if (checkPositionCoverage(gvcfAnnotationsAndCalls.get(i - 1), startSiteFinal)) {
-                        startIndex = i-1;
-                        listOfChrPositions.add(0,gvcfAnnotationsAndCalls.get(startIndex));
-                        addingAtStart = true;
-                    }
-                    break;
-                }
+        //A block that starts before startSite can still cover it, including when the whole region is inside the block
+        int startSearch = gvcfAnnotationsAndCalls.siteOfPhysicalPosition(startSiteFinal, chrom);
+        if (startSearch < 0 && startSearch != Integer.MIN_VALUE) {
+            int previousIndex = -(startSearch + 1) - 1;
+            if (previousIndex >= 0
+                    && gvcfAnnotationsAndCalls.get(previousIndex).getChromosome().equals(chrom)
+                    && checkPositionCoverage(gvcfAnnotationsAndCalls.get(previousIndex), startSiteFinal)) {
+                startIndex = previousIndex;
+                listOfChrPositions.add(0, gvcfAnnotationsAndCalls.get(startIndex));
+                addingAtStart = true;
             }
         }
 

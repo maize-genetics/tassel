@@ -96,6 +96,9 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
+      - name: Check every @Ignore has a reason
+        run: ./gradlew checkIgnoreReasons
+
       - name: Run statistics gate (ignoreFailures = false)
         run: ./gradlew statisticsTest
         env:
