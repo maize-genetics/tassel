@@ -95,7 +95,7 @@ public class AdditiveSiteStorePlugin extends AbstractPlugin {
                 } 
             };
 
-            out.writeObject(new Integer(siteList.size()));
+            out.writeObject(Integer.valueOf(siteList.size()));
             
             ArrayList<String> taxaNameList = new ArrayList<>();
             for (Taxon taxon : myGenotype.taxa()) taxaNameList.add(taxon.getName());

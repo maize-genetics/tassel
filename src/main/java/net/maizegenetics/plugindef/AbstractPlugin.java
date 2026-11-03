@@ -244,19 +244,19 @@ abstract public class AbstractPlugin implements Plugin {
                 input = input.replace(String.valueOf(groupingSeparator), "");
                 char decimalSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getDecimalSeparator();
                 input = input.replace(String.valueOf(decimalSeparator), ".");
-                return (T) new Integer(new BigDecimal(input).intValueExact());
+                return (T) Integer.valueOf(new BigDecimal(input).intValueExact());
             } else if (outputClass.isAssignableFrom(Double.class)) {
                 char groupingSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getGroupingSeparator();
                 input = input.replace(String.valueOf(groupingSeparator), "");
                 char decimalSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getDecimalSeparator();
                 input = input.replace(String.valueOf(decimalSeparator), ".");
-                return (T) new Double(new BigDecimal(input).doubleValue());
+                return (T) Double.valueOf(new BigDecimal(input).doubleValue());
             } else if (outputClass.isAssignableFrom(Float.class)) {
                 char groupingSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getGroupingSeparator();
                 input = input.replace(String.valueOf(groupingSeparator), "");
                 char decimalSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getDecimalSeparator();
                 input = input.replace(String.valueOf(decimalSeparator), ".");
-                return (T) new Double(new BigDecimal(input).floatValue());
+                return (T) Double.valueOf(new BigDecimal(input).floatValue());
             } else if (outputClass.isAssignableFrom(List.class)) {
                 return (T) getListFromString(input);
             } else if (outputClass.isAssignableFrom(SortedSet.class)) {
@@ -309,7 +309,7 @@ abstract public class AbstractPlugin implements Plugin {
                 if (input.length() != 1) {
                     throw new IllegalArgumentException("Should be one character");
                 }
-                return (T) new Character(input.charAt(0));
+                return (T) Character.valueOf(input.charAt(0));
             } else {
                 return outputClass.getConstructor(String.class).newInstance(input);
             }

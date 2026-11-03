@@ -266,7 +266,7 @@ public class GenomicSelectionPlugin extends AbstractPlugin {
                     double rval = Pearsons.correlation(testPredictions,testObserved);
 //                    double blupRval = Pearsons.correlation(testBlups,testObserved);  //debug
                     rValues[rValueIndex++] = rval;
-                    myReportBuilder.add(new Object[]{traitname, new Integer(iter), new Integer(fold), new Double(rval)});
+                    myReportBuilder.add(new Object[]{traitname, Integer.valueOf(iter), Integer.valueOf(fold), Double.valueOf(rval)});
                     startFold = endFold;
                     computeCount++;
                     if (computeCount % updateProgressValue == 0) fireProgress(Math.min(100, computeCount/updateProgressValue));

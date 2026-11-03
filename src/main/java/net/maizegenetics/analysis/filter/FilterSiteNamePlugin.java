@@ -217,9 +217,9 @@ public class FilterSiteNamePlugin extends AbstractPlugin {
     
     private PhenotypeAttribute convertSiteToFactor(int site, GenotypeTable geno) {
     	final int ntaxa = geno.numberOfTaxa();
-    	final Byte unknownByte = new Byte(GenotypeTable.UNKNOWN_DIPLOID_ALLELE);
+    	final Byte unknownByte = Byte.valueOf(GenotypeTable.UNKNOWN_DIPLOID_ALLELE);
     	byte[] byteGeno = geno.genotypeAllTaxa(site);
-    	Map<Byte, Long> genoMap = IntStream.range(0, ntaxa).mapToObj(i -> new Byte(byteGeno[i]))
+    	Map<Byte, Long> genoMap = IntStream.range(0, ntaxa).mapToObj(i -> Byte.valueOf(byteGeno[i]))
     			.filter(g -> !g.equals(unknownByte))
     			.collect(Collectors.groupingBy(g -> g, Collectors.counting()));
     	double totalGenoCount = genoMap.values().stream().mapToInt(v -> v.intValue()).sum();

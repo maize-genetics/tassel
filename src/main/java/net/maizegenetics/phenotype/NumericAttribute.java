@@ -76,7 +76,7 @@ public class NumericAttribute implements PhenotypeAttribute {
 	
 	@Override
 	public Object value(int obs) {
-		return new Float(values[obs]);
+		return Float.valueOf(values[obs]);
 	}
 
 	@Override

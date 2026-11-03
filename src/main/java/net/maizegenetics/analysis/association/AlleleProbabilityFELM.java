@@ -95,15 +95,15 @@ public class AlleleProbabilityFELM extends AbstractFixedEffectLM {
         rowData[columnCount++] = siteName;	
         rowData[columnCount++] = myGenoPheno.genotypeTable().chromosomeName(myCurrentSite);
         rowData[columnCount++] = myGenoPheno.genotypeTable().chromosomalPosition(myCurrentSite);
-        rowData[columnCount++] = new Double(F);
-        rowData[columnCount++] = new Double(p);
-        rowData[columnCount++] = new Double(rsq);
-        rowData[columnCount++] = new Double(markerSSdf[1]);
-        rowData[columnCount++] = new Double(markerSSdf[0]/markerSSdf[1]);
-        rowData[columnCount++] = new Double(errorSSdf[1]);
-        rowData[columnCount++] = new Double(errorSSdf[0]/errorSSdf[1]);
-        rowData[columnCount++] = new Double(modelSSdf[1]);
-        rowData[columnCount++] = new Double(modelSSdf[0]/modelSSdf[1]);
+        rowData[columnCount++] = Double.valueOf(F);
+        rowData[columnCount++] = Double.valueOf(p);
+        rowData[columnCount++] = Double.valueOf(rsq);
+        rowData[columnCount++] = Double.valueOf(markerSSdf[1]);
+        rowData[columnCount++] = Double.valueOf(markerSSdf[0]/markerSSdf[1]);
+        rowData[columnCount++] = Double.valueOf(errorSSdf[1]);
+        rowData[columnCount++] = Double.valueOf(errorSSdf[0]/errorSSdf[1]);
+        rowData[columnCount++] = Double.valueOf(modelSSdf[1]);
+        rowData[columnCount++] = Double.valueOf(modelSSdf[0]/modelSSdf[1]);
         siteReportBuilder.add(rowData);
         
         //add results to allele report
@@ -117,8 +117,8 @@ public class AlleleProbabilityFELM extends AbstractFixedEffectLM {
             rowData[columnCount++] = myGenoPheno.genotypeTable().chromosomeName(myCurrentSite);
             rowData[columnCount++] = myGenoPheno.genotypeTable().chromosomalPosition(myCurrentSite);
             rowData[columnCount++] = typeNameMap.get(typeList.get(a));
-            if (a < numberOfAllelesInModel) rowData[columnCount++] = new Double(beta[firstEstimateIndex + a]);
-            else rowData[columnCount++] = new Double(0.0);
+            if (a < numberOfAllelesInModel) rowData[columnCount++] = Double.valueOf(beta[firstEstimateIndex + a]);
+            else rowData[columnCount++] = Double.valueOf(0.0);
             alleleReportBuilder.add(rowData);
         }
      

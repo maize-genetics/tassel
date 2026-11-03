@@ -241,8 +241,8 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
 			for (int i = 0; i < nEigenvalues; i++) {
 				tableData[i][0] = String.format("%d",i+1);
 				tableData[i][1] = Double.valueOf(eigenvalues[i]);
-				tableData[i][2] = new Double(eigenvalues[i]/sumvalues);
-				tableData[i][3] = new Double(cumulativeEigenvalues[i]/sumvalues);
+				tableData[i][2] = Double.valueOf(eigenvalues[i]/sumvalues);
+				tableData[i][3] = Double.valueOf(cumulativeEigenvalues[i]/sumvalues);
 			}
 			
 			nameBuilder = new StringBuilder();
@@ -265,7 +265,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
 			Object[][] tableData = new Object[nrows][ncol];
 			for (int r = 0; r < nrows; r++) {
 				tableData[r][0] = data.get(r).name();
-				for (int c = 1; c < ncol; c++) tableData[r][c] = new Double(eigenvectors.get(r, c - 1));
+				for (int c = 1; c < ncol; c++) tableData[r][c] = Double.valueOf(eigenvectors.get(r, c - 1));
 			}
 			
 			nameBuilder = new StringBuilder();
@@ -341,9 +341,9 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
 			double sumvalues = cumulativeEigenvalues[nEigenvalues - 1];
 			for (int i = 0; i < nEigenvalues; i++) {
 				tableData[i][0] = String.format("%d",i);
-				tableData[i][1] = new Double(eigenvalues[i]);
-				tableData[i][2] = new Double(eigenvalues[i]/sumvalues);
-				tableData[i][3] = new Double(cumulativeEigenvalues[i]/sumvalues);
+				tableData[i][1] = Double.valueOf(eigenvalues[i]);
+				tableData[i][2] = Double.valueOf(eigenvalues[i]/sumvalues);
+				tableData[i][3] = Double.valueOf(cumulativeEigenvalues[i]/sumvalues);
 			}
 			
 			nameBuilder = new StringBuilder();
@@ -366,7 +366,7 @@ public class PrincipalComponentsPlugin extends AbstractPlugin {
 			Object[][] tableData = new Object[nrows][ncol];
 			for (int r = 0; r < nrows; r++) {
 				tableData[r][0] = myGenotype.positions().siteName(r);
-				for (int c = 1; c < ncol; c++) tableData[r][c] = new Double(eigenvectors.get(r, c - 1));
+				for (int c = 1; c < ncol; c++) tableData[r][c] = Double.valueOf(eigenvectors.get(r, c - 1));
 			}
 			
 			nameBuilder = new StringBuilder();

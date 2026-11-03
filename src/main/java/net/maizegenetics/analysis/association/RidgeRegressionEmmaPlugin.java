@@ -171,7 +171,7 @@ public class RidgeRegressionEmmaPlugin extends AbstractPlugin {
             Object[][] blupTable = new Object[numberOfMarkers][2];
             for (int i = 0; i < numberOfMarkers; i++) {
                 blupTable[i][0] = markerNames[i];
-                blupTable[i][1] = new Double(markerBlups[i]);
+                blupTable[i][1] = Double.valueOf(markerBlups[i]);
             }
             SimpleTableReport str = new SimpleTableReport("Marker BLUPs for " + dataset.getName(), new String[]{"Marker", phenoName + "_BLUP"}, blupTable);
             datumName = dataset.getName() + "_marker BLUPs_" + phenoName;

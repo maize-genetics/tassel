@@ -370,7 +370,7 @@ public abstract class AbstractFixedEffectLM implements FixedEffectLM {
 			if (ndx < 0) ndx = -(ndx + 1);
 			double permPval = (double) (ndx + 1) / (double) numberOfPermutations;
 			if (permPval > 1) permPval = 1;
-			row[permpvalueColumn] = new Double(permPval);
+			row[permpvalueColumn] = Double.valueOf(permPval);
 			
 		}
 	}

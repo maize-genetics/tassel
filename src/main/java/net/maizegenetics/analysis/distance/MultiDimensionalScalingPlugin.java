@@ -80,7 +80,7 @@ public class MultiDimensionalScalingPlugin extends AbstractPlugin {
             String[] colnames = new String[]{"PC", "eigenvalue"};
             TableReportBuilder reportBuilder = TableReportBuilder.getInstance("", colnames);
             for (int i = 0; i < numberOfAxesToReport; i++) {
-                reportBuilder.add(new Object[]{new Integer(i + 1), new Double(myMDS.getEigenvalue(i))});
+                reportBuilder.add(new Object[]{Integer.valueOf(i + 1), Double.valueOf(myMDS.getEigenvalue(i))});
             }
             name = "MDS_Eigenvalues_" + myDatum.getName();
             comment = "Eigenvalues from MDS analysis of " + myDatum.getName();

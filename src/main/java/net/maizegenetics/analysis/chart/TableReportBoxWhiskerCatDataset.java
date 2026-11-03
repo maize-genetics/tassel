@@ -42,7 +42,7 @@ public class TableReportBoxWhiskerCatDataset extends DefaultBoxAndWhiskerCategor
       int cat=theCategories.indexOf(theTable.getValueAt(i, seriesCategory));
       Double d;
       for(int x=0; x<seriesY.length; x++){
-        try {d=new Double(theTable.getValueAt(i,seriesY[x]).toString());
+        try {d=Double.valueOf(theTable.getValueAt(i,seriesY[x]).toString());
             if(d.isNaN()==false) catData[cat][x].add(d);}
         catch (NumberFormatException ex) {}
       }

@@ -203,14 +203,14 @@ public class GenotypeAdditiveSite extends AbstractAdditiveSite {
             int nsites = geno.numberOfSites();
             int ntaxa = geno.numberOfTaxa();
             
-            out.writeObject(new Integer(ntaxa));
+            out.writeObject(Integer.valueOf(ntaxa));
             
             //for now just serialize taxon name, since Taxon is not serializeable
             TaxaList myTaxa = geno.taxa();
             for (Taxon t : myTaxa) 
                 out.writeObject(t.getName());
             
-            out.writeObject(new Integer(nsites));
+            out.writeObject(Integer.valueOf(nsites));
             
             for (int s = 0; s < nsites; s++) {
                 GenotypeAdditiveSite mySite = new GenotypeAdditiveSite(s, geno.chromosomeName(s), geno.chromosomalPosition(s), geno.siteName(s), AdditiveSite.CRITERION.pval, geno.genotypeAllTaxa(s), geno.majorAllele(s), geno.majorAlleleFrequency(s));
