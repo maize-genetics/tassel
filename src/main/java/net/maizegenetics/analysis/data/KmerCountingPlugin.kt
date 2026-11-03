@@ -62,6 +62,10 @@ class KmerCountingPlugin(parentFrame: Frame? = null, isInteractive: Boolean = fa
     }
 
     private val countTreeMap by lazy { HashMap<String, Any>() }
+
+    // Each level of countTreeMap nests the next level's map as its values, and the last
+    // level holds counts, so the value types can't be expressed statically.
+    @Suppress("UNCHECKED_CAST")
     private fun countTree(kmer: String) {
 
         var currentMap: HashMap<String, Any> = countTreeMap
