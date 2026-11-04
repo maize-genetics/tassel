@@ -283,7 +283,7 @@ public class StepwiseAddDomModelFitter extends StepwiseAdditiveModelFitter {
 
         //add values to permutation report : "Trait","p-value"
         Arrays.stream(minP).forEach(d -> permutationReportBuilder.add(new Object[] {
-                currentTraitName, new Double(d) }));
+                currentTraitName, Double.valueOf(d) }));
 
     }
 
@@ -306,8 +306,8 @@ public class StepwiseAddDomModelFitter extends StepwiseAdditiveModelFitter {
             row[col++] = myGenotype.siteName(mySite.siteNumber());
             row[col++] = myGenotype.positions().chromosomeName(mySite.siteNumber());
             row[col++] = myGenotype.positions().get(mySite.siteNumber()).getPosition();
-            row[col++] = new Double(beta[betaCount++]);
-            if (adModelEffect.getEffectSize() == 2) row[col++] = new Double(beta[betaCount++]);
+            row[col++] = Double.valueOf(beta[betaCount++]);
+            if (adModelEffect.getEffectSize() == 2) row[col++] = Double.valueOf(beta[betaCount++]);
             else row[col++] = "NA";
             if (CI)
                 markerEffectCIReportBuilder.add(row);

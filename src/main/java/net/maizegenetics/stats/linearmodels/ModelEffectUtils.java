@@ -83,7 +83,7 @@ public class ModelEffectUtils {
     	for (int i = 0; i < nLevels; i++) {
     		Integer ndx = levelMap.get(originalLevels[i]);
     		if (ndx == null) {
-    			ndx = new Integer(levelMap.size());
+    			ndx = Integer.valueOf(levelMap.size());
     			levelMap.put(originalLevels[i], ndx);
     		}
     		intLevels[i] = ndx.intValue();
@@ -98,7 +98,7 @@ public class ModelEffectUtils {
     	for (int i = 0; i < nLevels; i++) {
     		Integer ndx = levelMap.get(originalLevels[i]);
     		if (ndx == null) {
-    			ndx = new Integer(levelMap.size());
+    			ndx = Integer.valueOf(levelMap.size());
     			levelMap.put(originalLevels[i], ndx);
     		}
     		intLevels[i] = ndx.intValue();
@@ -192,7 +192,7 @@ public class ModelEffectUtils {
     	for (T level:originalLevels) {
     		Integer ndx = levelMap.get(level);
     		if (ndx == null) {
-    			ndx = new Integer(levelMap.size());
+    			ndx = Integer.valueOf(levelMap.size());
     			levelMap.put(level, ndx);
     		}
     		intLevels[count++] = ndx.intValue();

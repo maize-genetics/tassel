@@ -250,16 +250,26 @@ tasks {
         }
     }
 
-    // Compile with Java 21 bytecode target
+    // Compile with Java 21 bytecode target. The default build fails on any warning javac
+    // reports out of the box, which covers [removal] and [dep-ann]. -PlintAll instead lists
+    // every deprecation and unchecked warning without failing, for working through the
+    // backlog; -Xmaxwarns lifts javac's default cap of 100 so the full count shows.
+    val lintAll = providers.gradleProperty("lintAll").isPresent
     withType<JavaCompile> {
         sourceCompatibility = "21"
         targetCompatibility = "21"
+        if (lintAll) {
+            options.compilerArgs.addAll(listOf("-Xlint:deprecation,unchecked", "-Xmaxwarns", "10000"))
+        } else {
+            options.compilerArgs.add("-Werror")
+        }
     }
 
     // Optional: Kotlin compile target
     withType<KotlinCompile> {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
+            allWarningsAsErrors.set(true)
         }
     }
 

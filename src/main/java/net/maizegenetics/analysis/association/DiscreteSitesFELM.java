@@ -155,24 +155,24 @@ public class DiscreteSitesFELM extends AbstractFixedEffectLM {
             rowData[columnCount++] = siteName;
             rowData[columnCount++] = myGenoPheno.genotypeTable().chromosomeName(myCurrentSite);
             rowData[columnCount++] = myGenoPheno.genotypeTable().chromosomalPosition(myCurrentSite);
-            rowData[columnCount++] = new Double(F);
-            rowData[columnCount++] = new Double(p);
+            rowData[columnCount++] = Double.valueOf(F);
+            rowData[columnCount++] = Double.valueOf(p);
             if (permute) rowData[columnCount++] = "";
-            rowData[columnCount++] = new Double(markerSSdf[0]/totalSSdf[0]);
-            rowData[columnCount++] = new Double(Fadd);
-            rowData[columnCount++] = new Double(padd);
-            rowData[columnCount++] = new Double(Fdom);
-            rowData[columnCount++] = new Double(pdom);
-            rowData[columnCount++] = new Double(markerSSdf[1]);
-            rowData[columnCount++] = new Double(markerSSdf[0]/markerSSdf[1]);
-            rowData[columnCount++] = new Double(errorSSdf[1]);
-            rowData[columnCount++] = new Double(errorSSdf[0]/errorSSdf[1]);
-            rowData[columnCount++] = new Double(modelSSdf[1]);
-            rowData[columnCount++] = new Double(modelSSdf[0]/modelSSdf[1]);
-            rowData[columnCount++] = new Integer(myCurrentSiteMinimumClassSize);
+            rowData[columnCount++] = Double.valueOf(markerSSdf[0]/totalSSdf[0]);
+            rowData[columnCount++] = Double.valueOf(Fadd);
+            rowData[columnCount++] = Double.valueOf(padd);
+            rowData[columnCount++] = Double.valueOf(Fdom);
+            rowData[columnCount++] = Double.valueOf(pdom);
+            rowData[columnCount++] = Double.valueOf(markerSSdf[1]);
+            rowData[columnCount++] = Double.valueOf(markerSSdf[0]/markerSSdf[1]);
+            rowData[columnCount++] = Double.valueOf(errorSSdf[1]);
+            rowData[columnCount++] = Double.valueOf(errorSSdf[0]/errorSSdf[1]);
+            rowData[columnCount++] = Double.valueOf(modelSSdf[1]);
+            rowData[columnCount++] = Double.valueOf(modelSSdf[0]/modelSSdf[1]);
+            rowData[columnCount++] = Integer.valueOf(myCurrentSiteMinimumClassSize);
             if (appendAddDomEffects) {
-            	rowData[columnCount++] = new Double(addEffect);
-            	rowData[columnCount++] = new Double(domEffect);
+            	rowData[columnCount++] = Double.valueOf(addEffect);
+            	rowData[columnCount++] = Double.valueOf(domEffect);
             }
             siteReportBuilder.add(rowData);
             if (permute) siteTableReportRows.add(rowData);
@@ -189,10 +189,10 @@ public class DiscreteSitesFELM extends AbstractFixedEffectLM {
             		rowData[columnCount++] = siteName;
             		rowData[columnCount++] = myGenoPheno.genotypeTable().chromosomeName(myCurrentSite);
             		rowData[columnCount++] = myGenoPheno.genotypeTable().chromosomalPosition(myCurrentSite);
-            		rowData[columnCount++] = new Integer(alleleCounts[a]);
+            		rowData[columnCount++] = Integer.valueOf(alleleCounts[a]);
             		rowData[columnCount++] = markerIds.get(a);
-            		if (a < numberOfAlleles - 1) rowData[columnCount++] = new Double(beta[firstEstimateIndex + a]);
-            		else rowData[columnCount++] = new Double(0.0);
+            		if (a < numberOfAlleles - 1) rowData[columnCount++] = Double.valueOf(beta[firstEstimateIndex + a]);
+            		else rowData[columnCount++] = Double.valueOf(0.0);
             		alleleReportBuilder.add(rowData);
             	}
             }

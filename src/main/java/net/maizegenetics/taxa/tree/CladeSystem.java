@@ -131,7 +131,7 @@ public class CladeSystem {
 				if (cladeSystems[j].hasClade(clade)) cladeCount += 1;
 			}
 			double pr = (double)cladeCount / (double)cladeSystems.length; 
-			tree.setAttribute(node, AttributeNode.CLADE_PROBABILITY, new Double(pr));	
+			tree.setAttribute(node, AttributeNode.CLADE_PROBABILITY, Double.valueOf(pr));	
 		}
 	}
 	

@@ -50,7 +50,7 @@ public class TableReportStatCategoryDataset extends DefaultStatisticalCategoryDa
       int cat=theCategories.indexOf(currentRow[seriesCategory]);
       Double d;
       for(int x=0; x<seriesY.length; x++){
-        try {d=new Double(currentRow[seriesY[x]].toString());
+        try {d=Double.valueOf(currentRow[seriesY[x]].toString());
             if(d.isNaN()==false) catData[cat][x].add(d);
         }
         catch (NumberFormatException ex) {}

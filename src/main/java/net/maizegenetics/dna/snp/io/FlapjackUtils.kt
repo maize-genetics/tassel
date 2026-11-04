@@ -50,12 +50,12 @@ fun writeToFlapjack(genotypes: GenotypeTable, filename: String, delimiter: Char 
 
                 for (site in 0 until genotypes.numberOfSites()) {
                     mapWriter.write(genotypes.siteName(site))
-                    mapWriter.write(delimiter.toInt())
+                    mapWriter.write(delimiter.code)
                     mapWriter.write(genotypes.chromosomeName(site))
-                    mapWriter.write(delimiter.toInt())
+                    mapWriter.write(delimiter.code)
                     mapWriter.write(Integer.toString(genotypes.chromosomalPosition(site)))
                     mapWriter.write("\n")
-                    genoWriter.write(delimiter.toInt())
+                    genoWriter.write(delimiter.code)
                     genoWriter.write(genotypes.siteName(site))
                 }
 
@@ -69,7 +69,7 @@ fun writeToFlapjack(genotypes: GenotypeTable, filename: String, delimiter: Char 
 
                 for (site in 0 until genotypes.numberOfSites()) {
 
-                    genoWriter.write(delimiter.toInt())
+                    genoWriter.write(delimiter.code)
 
                     val alleles = genotypes.genotypeArray(taxa, site)
                     when (alleles.size) {

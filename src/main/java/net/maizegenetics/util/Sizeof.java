@@ -60,7 +60,6 @@ public class Sizeof {
     private static void _runGC() throws Exception {
         long usedMem1 = usedMemory(), usedMem2 = Long.MAX_VALUE;
         for (int i = 0; (usedMem1 < usedMem2) && (i < 500); ++i) {
-            s_runtime.runFinalization();
             s_runtime.gc();
             Thread.currentThread().yield();
 

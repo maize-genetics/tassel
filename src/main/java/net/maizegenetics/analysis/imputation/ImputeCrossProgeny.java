@@ -262,11 +262,11 @@ public class ImputeCrossProgeny {
 		int nsites = progenyStateGeno.numberOfSites();
 		
 		Map<Byte, Byte> stateMap = new HashMap<>();
-		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("A"), new Byte((byte) 0));
-		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("C"), new Byte((byte) 1));
-		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("G"), new Byte((byte) 2));
-		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("T"), new Byte((byte) 3));
-		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("NN"), new Byte((byte) 4));
+		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("A"), Byte.valueOf((byte) 0));
+		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("C"), Byte.valueOf((byte) 1));
+		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("G"), Byte.valueOf((byte) 2));
+		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("T"), Byte.valueOf((byte) 3));
+		stateMap.put(NucleotideAlignmentConstants.getNucleotideDiploidByte("NN"), Byte.valueOf((byte) 4));
 
 		Map<String, String[]> plotInfoMap = new HashMap<>();
 		for (String[] plot:plotList) {

@@ -170,6 +170,7 @@ public abstract class AbstractPETags implements PETags {
      * @param contigFastaFileS
      * @deprecated 
      */
+    @Deprecated
     public void mkFastaFile (String tagsFFastaFileS, String tagsBFastaFileS, String contigFastaFileS) {
         try {
             BufferedWriter bwf = new BufferedWriter (new FileWriter (tagsFFastaFileS), 65536);

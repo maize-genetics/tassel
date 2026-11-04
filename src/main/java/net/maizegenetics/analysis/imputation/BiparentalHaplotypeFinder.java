@@ -111,10 +111,10 @@ public class BiparentalHaplotypeFinder {
 			
 			row[col++] = myPopulationData.name;
 			row[col++] = myPopulationData.original.chromosomeName(pos);
-			row[col++] = new Integer(myPopulationData.original.chromosomalPosition(pos));
-			row[col++] = new Integer(c + 1);
+			row[col++] = Integer.valueOf(myPopulationData.original.chromosomalPosition(pos));
+			row[col++] = Integer.valueOf(c + 1);
 			row[col++] = myCluster.getHaplotypeAsString();
-			row[col++] = new Integer(myCluster.getSize());
+			row[col++] = Integer.valueOf(myCluster.getSize());
 			reportBuilder.add(row);
 		}
 	}

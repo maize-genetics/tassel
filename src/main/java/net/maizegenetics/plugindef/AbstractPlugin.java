@@ -47,6 +47,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.regex.Pattern;
 
 /**
@@ -119,6 +120,10 @@ abstract public class AbstractPlugin implements Plugin {
             fireDataSetReturned(new PluginEvent(output, getClass()));
             return output;
 
+        } catch (CancellationException e) {
+            myWasCancelled = true;
+            myLogger.info(e.getMessage());
+            return null;
         } catch (Exception e) {
 
             if (isInteractive()) {
@@ -244,19 +249,19 @@ abstract public class AbstractPlugin implements Plugin {
                 input = input.replace(String.valueOf(groupingSeparator), "");
                 char decimalSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getDecimalSeparator();
                 input = input.replace(String.valueOf(decimalSeparator), ".");
-                return (T) new Integer(new BigDecimal(input).intValueExact());
+                return (T) Integer.valueOf(new BigDecimal(input).intValueExact());
             } else if (outputClass.isAssignableFrom(Double.class)) {
                 char groupingSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getGroupingSeparator();
                 input = input.replace(String.valueOf(groupingSeparator), "");
                 char decimalSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getDecimalSeparator();
                 input = input.replace(String.valueOf(decimalSeparator), ".");
-                return (T) new Double(new BigDecimal(input).doubleValue());
+                return (T) Double.valueOf(new BigDecimal(input).doubleValue());
             } else if (outputClass.isAssignableFrom(Float.class)) {
                 char groupingSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getGroupingSeparator();
                 input = input.replace(String.valueOf(groupingSeparator), "");
                 char decimalSeparator = DecimalFormatSymbols.getInstance(Locale.getDefault()).getDecimalSeparator();
                 input = input.replace(String.valueOf(decimalSeparator), ".");
-                return (T) new Double(new BigDecimal(input).floatValue());
+                return (T) Double.valueOf(new BigDecimal(input).floatValue());
             } else if (outputClass.isAssignableFrom(List.class)) {
                 return (T) getListFromString(input);
             } else if (outputClass.isAssignableFrom(SortedSet.class)) {
@@ -309,7 +314,7 @@ abstract public class AbstractPlugin implements Plugin {
                 if (input.length() != 1) {
                     throw new IllegalArgumentException("Should be one character");
                 }
-                return (T) new Character(input.charAt(0));
+                return (T) Character.valueOf(input.charAt(0));
             } else {
                 return outputClass.getConstructor(String.class).newInstance(input);
             }
@@ -1994,9 +1999,28 @@ abstract public class AbstractPlugin implements Plugin {
             throw new IllegalArgumentException("AbstractPlugin: fireProgress: percent must be between 0 and 100 inclusive.  arg: " + percent);
         }
 
+        // performFunction reports 100 from its finally block, so throwing there would
+        // replace whatever exception is already propagating.
+        if (percent < 100) {
+            checkCancelled();
+        }
+
         Datum percentage = new Datum("Percent", percent, null);
         fireProgress(new PluginEvent(new DataSet(percentage, this)));
 
+    }
+
+    /**
+     * Throws CancellationException if the thread running this plugin has been interrupted,
+     * which is how the progress panel's Cancel button asks a plugin to stop. Long-running
+     * loops that don't report progress can call this directly.
+     *
+     * @throws CancellationException if the current thread is interrupted
+     */
+    protected void checkCancelled() {
+        if (Thread.currentThread().isInterrupted()) {
+            throw new CancellationException(getClass().getName() + " was cancelled");
+        }
     }
 
     @Override

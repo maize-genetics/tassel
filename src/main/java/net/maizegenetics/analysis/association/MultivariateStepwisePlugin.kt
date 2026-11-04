@@ -343,7 +343,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
             val snpdataForSite = bestModelEffect.id as SnpData
 
 
-            stepsReportBuilder.add(arrayOf(snpdataForSite.name, snpdataForSite.chromosome, snpdataForSite.position,
+            stepsReportBuilder.add(arrayOf<Any>(snpdataForSite.name, snpdataForSite.chromosome, snpdataForSite.position,
                     "add", bestResult[0], bestResult[1], bestResult[2], bestResult[3]))
             return xR.concatenate(bestModelEffect.x, false)
         }
@@ -406,7 +406,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
             val snpdataForSite = bestModelEffect.id as SnpData
 
 
-            stepsReportBuilder.add(arrayOf(snpdataForSite.name, snpdataForSite.chromosome, snpdataForSite.position,
+            stepsReportBuilder.add(arrayOf<Any>(snpdataForSite.name, snpdataForSite.chromosome, snpdataForSite.position,
                     "add", bestStatList[0], bestStatList[1], bestStatList[2], bestStatList[3]))
             return xR.concatenate(bestModelEffect.x, false)
         }
@@ -457,7 +457,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
                 //"SiteID", "Chr", "Position", "action", "approx_F", "num_df", "den_df", "probF"
                 val snpdataForSite = removedEffect.id as SnpData
 
-                stepsReportBuilder.add(arrayOf(snpdataForSite.name, snpdataForSite.chromosome, snpdataForSite.position,
+                stepsReportBuilder.add(arrayOf<Any>(snpdataForSite.name, snpdataForSite.chromosome, snpdataForSite.position,
                         "remove", bestResult[0], bestResult[1], bestResult[2], bestResult[3]))
 
             }
@@ -486,7 +486,7 @@ class MultivariateStepwisePlugin(parentFrame: Frame?, isInteractive: Boolean) : 
             modelEffectList[snp].id
             val snpdataForSite = modelEffectList[snp].id as SnpData
             //                "SiteID", "Chr", "Position", "approx_F", "num_df", "den_df", "probF"
-            manovaReportBuilder.add(arrayOf(snpdataForSite.name, snpdataForSite.chromosome, snpdataForSite.position,
+            manovaReportBuilder.add(arrayOf<Any>(snpdataForSite.name, snpdataForSite.chromosome, snpdataForSite.position,
                     result[0], result[1], result[2], result[3]))
 
         }

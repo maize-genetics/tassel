@@ -457,21 +457,25 @@ public class EnzymeList {
          * This methods is for convenience based on old code. Use Enzyme.name
          * @deprecated 
          */
+        @Deprecated
         public String enzyme() {return name;}
         /** 
          * This methods is for convenience based on old code. Use Enzyme.initialCutSiteRemnant
          * @deprecated 
          */
+        @Deprecated
         public String[] initialCutSiteRemnant() {return initialCutSiteRemnant;}
         /** 
          * This methods is for convenience based on old code. Use Enzyme.likelyReadEnd
          * @deprecated 
          */
+        @Deprecated
         public String[] likelyReadEnd() {return likelyReadEnd;}
         /** 
          * This methods is for convenience based on old code. Use Enzyme.readEndCutSiteRemnantLength
          * @deprecated 
          */
+        @Deprecated
         public int readEndCutSiteRemnantLength() {return readEndCutSiteRemnantLength;}
     }
 }
