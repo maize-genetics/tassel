@@ -36,8 +36,8 @@ public class StringNumberComparator implements Comparator {
 
   public int compare(Object o1, Object o2) {
     try{
-    Double d1=new Double(o1.toString());
-    Double d2=new Double(o2.toString());
+    Double d1=Double.valueOf(o1.toString());
+    Double d2=Double.valueOf(o2.toString());
     return d1.compareTo(d2);
     }
     catch(NumberFormatException e)

@@ -409,16 +409,16 @@ public class StepwiseAdditiveModelFitter {
         row[col++] = currentTraitName;
         row[col++] = myGenotype.positions().siteName(siteNumber);
         row[col++] = myGenotype.positions().chromosome(siteNumber).getName();
-        row[col++] = new Integer(myGenotype.positions().get(siteNumber).getPosition());
+        row[col++] = Integer.valueOf(myGenotype.positions().get(siteNumber).getPosition());
         row[col++] = action;
-        row[col++] = new Integer((int) siteSSdf[1]);
-        row[col++] = new Double(siteSSdf[0] / siteSSdf[1]);
-        row[col++] = new Double(F);
-        row[col++] = new Double(p);
-        row[col++] = new Double(aic(errorSSdf[0], N, modelSSdf[1]));
-        row[col++] = new Double(bic(errorSSdf[0], N, modelSSdf[1]));
-        row[col++] = new Double(mbic(errorSSdf[0], N, modelSSdf[1], nsites));
-        row[col++] = new Double(modelcfmSSdf[0] / (modelcfmSSdf[0] + errorSSdf[0]));
+        row[col++] = Integer.valueOf((int) siteSSdf[1]);
+        row[col++] = Double.valueOf(siteSSdf[0] / siteSSdf[1]);
+        row[col++] = Double.valueOf(F);
+        row[col++] = Double.valueOf(p);
+        row[col++] = Double.valueOf(aic(errorSSdf[0], N, modelSSdf[1]));
+        row[col++] = Double.valueOf(bic(errorSSdf[0], N, modelSSdf[1]));
+        row[col++] = Double.valueOf(mbic(errorSSdf[0], N, modelSSdf[1], nsites));
+        row[col++] = Double.valueOf(modelcfmSSdf[0] / (modelcfmSSdf[0] + errorSSdf[0]));
         stepsReportBuilder.add(row);
         myLogger.info(String.format("site %s, action = %s, p = %1.5e\n", myGenotype.positions().siteName(siteNumber), action, p));
     }
@@ -696,7 +696,7 @@ public class StepwiseAdditiveModelFitter {
 
         //add values to permutation report : "Trait","p-value"
         Arrays.stream(minP).forEach(d -> permutationReportBuilder.add(new Object[] {
-                currentTraitName, new Double(d) }));
+                currentTraitName, Double.valueOf(d) }));
     }
 
     private List<Phenotype> generateChromosomeResidualsFromCurrentModel() {
@@ -774,7 +774,7 @@ public class StepwiseAdditiveModelFitter {
                 AdditiveSite as = (AdditiveSite) id;
                 row[col++] = myGenotype.positions().siteName(as.siteNumber());
                 row[col++] = myGenotype.positions().chromosome(as.siteNumber());
-                row[col++] = new Integer(myGenotype.positions().get(as.siteNumber()).getPosition());
+                row[col++] = Integer.valueOf(myGenotype.positions().get(as.siteNumber()).getPosition());
             } else {
                 row[col++] = id.toString();
                 row[col++] = "--";
@@ -790,18 +790,18 @@ public class StepwiseAdditiveModelFitter {
             	p = Double.NaN;
             }
             
-            row[col++] = new Integer((int) ssdf[1]);
-            row[col++] = new Double(ssdf[0] / ssdf[1]);
-            row[col++] = new Double(F);
-            row[col++] = new Double(p);
-            row[col++] = new Double(ssdf[0] / totalSScfm);
+            row[col++] = Integer.valueOf((int) ssdf[1]);
+            row[col++] = Double.valueOf(ssdf[0] / ssdf[1]);
+            row[col++] = Double.valueOf(F);
+            row[col++] = Double.valueOf(p);
+            row[col++] = Double.valueOf(ssdf[0] / totalSScfm);
 
             if (intervalList.isPresent()) {
                 if (i >= numberOfBaseEffects) {
                     int markerNumber = i - numberOfBaseEffects;
                     int[] interval = intervalList.get().get(markerNumber);
-                    row[col++] = new Integer(myGenotype.positions().get(interval[1]).getPosition());
-                    row[col++] = new Integer(myGenotype.positions().get(interval[2]).getPosition());
+                    row[col++] = Integer.valueOf(myGenotype.positions().get(interval[1]).getPosition());
+                    row[col++] = Integer.valueOf(myGenotype.positions().get(interval[2]).getPosition());
                 } else {
                     row[col++] = "--";
                     row[col++] = "--";
@@ -823,8 +823,8 @@ public class StepwiseAdditiveModelFitter {
         row[col++] = "Error";
         row[col++] = "--";
         row[col++] = "--";
-        row[col++] = new Integer((int) errorSSdf[1]);
-        row[col++] = new Double(errorMS);
+        row[col++] = Integer.valueOf((int) errorSSdf[1]);
+        row[col++] = Double.valueOf(errorMS);
         row[col++] = "--";
         row[col++] = "--";
         row[col++] = "--";
@@ -860,7 +860,7 @@ public class StepwiseAdditiveModelFitter {
                     row[col++] = chr;
                     row[col++] = pos;
                     row[col++] = nestingFactorLevelNames.get(f);
-                    row[col++] = new Double(beta[estCounter++]);
+                    row[col++] = Double.valueOf(beta[estCounter++]);
                     if (CI)
                         markerEffectCIReportBuilder.add(row);
                     else
@@ -880,7 +880,7 @@ public class StepwiseAdditiveModelFitter {
                 row[col++] = myGenotype.positions().chromosomeName(site);
                 row[col++] = myGenotype.positions().get(site).getPosition();
                 row[col++] = "--";
-                row[col++] = new Double(beta[firstMarker + m]);
+                row[col++] = Double.valueOf(beta[firstMarker + m]);
                 if (CI)
                     markerEffectCIReportBuilder.add(row);
                     else

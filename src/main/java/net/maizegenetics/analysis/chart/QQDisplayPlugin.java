@@ -99,19 +99,19 @@ public class QQDisplayPlugin extends AbstractDisplayPlugin {
         for (int i = 0; i < numRows; i++) {
             if (!previousTrait.equals((String) table.getValueAt(i, 0))) {
                 if (!((String) table.getValueAt(i, 1)).equals("None")) {
-                    indexes.add(new Integer(i));
+                    indexes.add(Integer.valueOf(i));
                     previousTrait = (String) table.getValueAt(i, 0);
                     if (i > 1) {
-                        indexes.add(new Integer(i));
+                        indexes.add(Integer.valueOf(i));
                     }
                 } else if (i != 0) {
-                    indexes.add(new Integer(i));
-                    indexes.add(new Integer(i + 1));
+                    indexes.add(Integer.valueOf(i));
+                    indexes.add(Integer.valueOf(i + 1));
                     previousTrait = (String) table.getValueAt(i + 1, 0);
                 }
             }
         }
-        indexes.add(new Integer(numRows));
+        indexes.add(Integer.valueOf(numRows));
         return indexes;
     }
 

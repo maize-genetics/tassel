@@ -108,7 +108,7 @@ class ListPluginParameters(parentFrame: Frame? = null, isInteractive: Boolean = 
      * @return Name List
      */
     fun jarFiles(): List<String> {
-        return jarFiles.value() as List<String>
+        return jarFiles.value().map { it as String }
     }
 
     /**

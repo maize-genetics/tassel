@@ -82,8 +82,8 @@ public class SweepFastLinearModel {
     	}
     	
     	double previousErrorSS = sf.getResidualSS();
-    	incrementalss.add(new Double(totalSS - previousErrorSS));
-    	incrementaldf.add(new Double(thisdf));
+    	incrementalss.add(Double.valueOf(totalSS - previousErrorSS));
+    	incrementaldf.add(Double.valueOf(thisdf));
     	sf.setDminFromA();
     	
     	for (int i = 1; i < neffects; i++) {
@@ -95,8 +95,8 @@ public class SweepFastLinearModel {
     			}
     		}
     		double newErrorSS = sf.getResidualSS();
-    		incrementalss.add(new Double(previousErrorSS - newErrorSS));
-    		incrementaldf.add(new Double(thisdf));
+    		incrementalss.add(Double.valueOf(previousErrorSS - newErrorSS));
+    		incrementaldf.add(Double.valueOf(thisdf));
     		previousErrorSS = newErrorSS;
     	}
 	}

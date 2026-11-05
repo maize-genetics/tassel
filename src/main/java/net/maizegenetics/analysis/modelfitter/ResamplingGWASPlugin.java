@@ -189,7 +189,7 @@ public class ResamplingGWASPlugin extends AbstractPlugin {
             int[] levels = myFactor.allIntValues();
             factorLevelList = new ArrayList<>();
             Map<Integer, List<Integer>> factorGroups =
-                    IntStream.range(0, levels.length).boxed().collect(Collectors.groupingBy(i -> new Integer(levels[i])));
+                    IntStream.range(0, levels.length).boxed().collect(Collectors.groupingBy(i -> Integer.valueOf(levels[i])));
             for (int i = 0; i < factorGroups.size(); i++) {
                 List<Integer> factorMembers = factorGroups.get(i);
                 factorLevelList.add(factorMembers.stream().mapToInt(I -> I.intValue()).toArray());

@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
  * @deprecated This utility has been replaced. See KinshipPlugin. Please discuss
  * with Terry if something needs to be salvaged from this class.
  */
+@Deprecated
 public class Kinship {
 
     //scale the numeric matrix produced by the transform function or from probabilities which code phenotypes as {1,0.5,0}
@@ -37,6 +38,7 @@ public class Kinship {
      * @deprecated Replaced by {@link EndelmanDistanceMatrix#getInstance(net.maizegenetics.dna.snp.GenotypeTable, int, net.maizegenetics.util.ProgressListener)
      * }
      */
+    @Deprecated
     private static DistanceMatrix createKinship(GenotypeTable mar, KINSHIP_TYPE kinshipType, GENOTYPE_TABLE_COMPONENT dataType) {
         System.out.println("Starting Kinship.buildFromMarker().");
         long start = System.currentTimeMillis();

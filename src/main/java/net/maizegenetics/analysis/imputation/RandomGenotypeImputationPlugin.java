@@ -200,7 +200,7 @@ public class RandomGenotypeImputationPlugin extends AbstractPlugin {
         byte NN = GenotypeTable.UNKNOWN_DIPLOID_ALLELE;
         int n = genotypes.length;
         Map<Byte, Long> byteCounts = IntStream.range(0, n).filter(i -> genotypes[i] != NN).boxed()
-                .collect(Collectors.groupingBy(i -> new Byte(genotypes[i]), Collectors.counting()));
+                .collect(Collectors.groupingBy(i -> Byte.valueOf(genotypes[i]), Collectors.counting()));
         int mapSize = byteCounts.size();
         byte[] geno = new byte[mapSize];
         int[] genocount = new int[mapSize];

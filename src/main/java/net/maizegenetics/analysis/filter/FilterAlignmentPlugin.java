@@ -58,6 +58,7 @@ public class FilterAlignmentPlugin extends AbstractPlugin {
     /**
      * @deprecated Use FilterSiteBuilderPlugin
      */
+    @Deprecated
     public FilterAlignmentPlugin(Frame parentFrame, boolean isInteractive) {
         super(parentFrame, isInteractive);
     }

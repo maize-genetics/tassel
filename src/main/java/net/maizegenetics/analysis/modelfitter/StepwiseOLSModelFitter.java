@@ -1106,7 +1106,7 @@ public class StepwiseOLSModelFitter {
                 //Object[] pValueReportRow = new Object[numberOfPermutations];
                 for(int i=0; i < numberOfPermutations; i++){
                     Object[] pValueReportRow = new Object[1];
-                    pValueReportRow[0] = new Double(minPvalues[i]);          
+                    pValueReportRow[0] = Double.valueOf(minPvalues[i]);          
                     //System.out.println("minPvalues[i]" + minPvalues[i]);
                     pValueReportTable.add(pValueReportRow);
                 }
@@ -1182,16 +1182,16 @@ public class StepwiseOLSModelFitter {
 			} catch (Exception e) {
 				pval = Double.NaN;
 			}
-			reportRow[ptr++] = new Integer((int) effectSSdf[1]);
-			reportRow[ptr++] = new Double(effectSSdf[0]);
-			reportRow[ptr++] = new Double(ms);
-			reportRow[ptr++] = new Double(Fval);
-			reportRow[ptr++] = new Double(pval);
-			reportRow[ptr++] = new Double(bic);
-			reportRow[ptr++] = new Double(mbic);
-			reportRow[ptr++] = new Double(aic);
+			reportRow[ptr++] = Integer.valueOf((int) effectSSdf[1]);
+			reportRow[ptr++] = Double.valueOf(effectSSdf[0]);
+			reportRow[ptr++] = Double.valueOf(ms);
+			reportRow[ptr++] = Double.valueOf(Fval);
+			reportRow[ptr++] = Double.valueOf(pval);
+			reportRow[ptr++] = Double.valueOf(bic);
+			reportRow[ptr++] = Double.valueOf(mbic);
+			reportRow[ptr++] = Double.valueOf(aic);
 			double[] modelSSdf = sflm.getModelcfmSSdf();
-			reportRow[ptr++] = new Double(modelSSdf[0]/(modelSSdf[0] + residualSSdf[0]));
+			reportRow[ptr++] = Double.valueOf(modelSSdf[0]/(modelSSdf[0] + residualSSdf[0]));
 			reportTable.add(reportRow);
 			effectPtr++;
 		}
@@ -1201,11 +1201,11 @@ public class StepwiseOLSModelFitter {
 		reportRow[ptr++] = "Error";
 		reportRow[ptr++] = "--";
 		reportRow[ptr++] = "--";
-		reportRow[ptr++] = new Integer((int) residualSSdf[1]);
-		reportRow[ptr++] = new Double(residualSSdf[0]);
-		reportRow[ptr++] = new Double(residualSSdf[0]/residualSSdf[1]);
-		reportRow[ptr++] = new Double(Double.NaN);
-		reportRow[ptr++] = new Double(Double.NaN);
+		reportRow[ptr++] = Integer.valueOf((int) residualSSdf[1]);
+		reportRow[ptr++] = Double.valueOf(residualSSdf[0]);
+		reportRow[ptr++] = Double.valueOf(residualSSdf[0]/residualSSdf[1]);
+		reportRow[ptr++] = Double.valueOf(Double.NaN);
+		reportRow[ptr++] = Double.valueOf(Double.NaN);
 		reportTable.add(reportRow);
 
 		return reportTable;
@@ -1274,16 +1274,16 @@ public class StepwiseOLSModelFitter {
 			} catch (Exception e) {
 				pval = Double.NaN;
 			}
-			reportRow[ptr++] = new Integer((int) effectSSdf[1]);
-			reportRow[ptr++] = new Double(effectSSdf[0]);
-			reportRow[ptr++] = new Double(ms);
-			reportRow[ptr++] = new Double(Fval);
-			reportRow[ptr++] = new Double(pval);
-			reportRow[ptr++] = new Double(bic);
-			reportRow[ptr++] = new Double(mbic);
-			reportRow[ptr++] = new Double(aic);
+			reportRow[ptr++] = Integer.valueOf((int) effectSSdf[1]);
+			reportRow[ptr++] = Double.valueOf(effectSSdf[0]);
+			reportRow[ptr++] = Double.valueOf(ms);
+			reportRow[ptr++] = Double.valueOf(Fval);
+			reportRow[ptr++] = Double.valueOf(pval);
+			reportRow[ptr++] = Double.valueOf(bic);
+			reportRow[ptr++] = Double.valueOf(mbic);
+			reportRow[ptr++] = Double.valueOf(aic);
 			double[] modelSSdf = sflm.getModelcfmSSdf();
-			reportRow[ptr++] = new Double(modelSSdf[0]/(modelSSdf[0] + residualSSdf[0]));
+			reportRow[ptr++] = Double.valueOf(modelSSdf[0]/(modelSSdf[0] + residualSSdf[0]));
 
 			//System.out.println("The value of effectPtr is "+effectPtr);
 
@@ -1304,11 +1304,11 @@ public class StepwiseOLSModelFitter {
 		reportRow[ptr++] = "Error";
 		reportRow[ptr++] = "--";
 		reportRow[ptr++] = "--";
-		reportRow[ptr++] = new Integer((int) residualSSdf[1]);
-		reportRow[ptr++] = new Double(residualSSdf[0]);
-		reportRow[ptr++] = new Double(residualSSdf[0]/residualSSdf[1]);
-		reportRow[ptr++] = new Double(Double.NaN);
-		reportRow[ptr++] = new Double(Double.NaN);
+		reportRow[ptr++] = Integer.valueOf((int) residualSSdf[1]);
+		reportRow[ptr++] = Double.valueOf(residualSSdf[0]);
+		reportRow[ptr++] = Double.valueOf(residualSSdf[0]/residualSSdf[1]);
+		reportRow[ptr++] = Double.valueOf(Double.NaN);
+		reportRow[ptr++] = Double.valueOf(Double.NaN);
 		reportTable.add(reportRow);
 
 		return reportTable;
@@ -1400,9 +1400,9 @@ public class StepwiseOLSModelFitter {
 					rowValues[ptr++] = traitname;
 					rowValues[ptr++] = snp.name;
 					rowValues[ptr++] = snp.locus.getName();
-					rowValues[ptr++] = new Integer(snp.position);
+					rowValues[ptr++] = Integer.valueOf(snp.position);
 					rowValues[ptr++] = nestingFactorNames.get(i);
-					rowValues[ptr++] = new Double(beta[parameterIndex++]);
+					rowValues[ptr++] = Double.valueOf(beta[parameterIndex++]);
 					rowsSiteEffectTable.add(rowValues);
 				}
 			} else if (me instanceof CovariateModelEffect) {
@@ -1412,9 +1412,9 @@ public class StepwiseOLSModelFitter {
 				rowValues[ptr++] = traitname;
 				rowValues[ptr++] = snp.name;
 				rowValues[ptr++] = snp.locus.getName();
-				rowValues[ptr++] = new Integer(snp.position);
+				rowValues[ptr++] = Integer.valueOf(snp.position);
 				rowValues[ptr++] = "NA";
-				rowValues[ptr++] = new Double(beta[parameterIndex++]);
+				rowValues[ptr++] = Double.valueOf(beta[parameterIndex++]);
 				rowsSiteEffectTable.add(rowValues);
 			} else if (me instanceof FactorModelEffect) {
 
@@ -1446,9 +1446,9 @@ public class StepwiseOLSModelFitter {
 					rowValues[ptr++] = traitname;
 					rowValues[ptr++] = snp.name;
 					rowValues[ptr++] = snp.locus.getName();
-					rowValues[ptr++] = new Integer(snp.position);
+					rowValues[ptr++] = Integer.valueOf(snp.position);
 					rowValues[ptr++] = nestingFactorNames.get(i);
-					rowValues[ptr++] = new Double(beta[parameterIndex++]);
+					rowValues[ptr++] = Double.valueOf(beta[parameterIndex++]);
 					rowsSiteEffectTableWithCI.add(rowValues);
 				}
 			} else if (me instanceof CovariateModelEffect) {
@@ -1458,9 +1458,9 @@ public class StepwiseOLSModelFitter {
 				rowValues[ptr++] = traitname;
 				rowValues[ptr++] = snp.name;
 				rowValues[ptr++] = snp.locus.getName();
-				rowValues[ptr++] = new Integer(snp.position);
+				rowValues[ptr++] = Integer.valueOf(snp.position);
 				rowValues[ptr++] = "NA";
-				rowValues[ptr++] = new Double(beta[parameterIndex++]);
+				rowValues[ptr++] = Double.valueOf(beta[parameterIndex++]);
 				rowsSiteEffectTableWithCI.add(rowValues);
 			} else if (me instanceof FactorModelEffect) {
 

@@ -110,6 +110,7 @@ public class ImportUtils {
     /**
      * @deprecated Use ImportUtils.read()
      */
+    @Deprecated
     public static GenotypeTable readGuessFormat(String fileName) {
 
         if (fileName.endsWith(".h5")) {

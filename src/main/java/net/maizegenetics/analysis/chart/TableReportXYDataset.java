@@ -36,7 +36,7 @@ public class TableReportXYDataset extends DefaultTableXYDataset {
 
 
     public Number getX(int series, int item) {
-    Double x = new Double(theData[item][0]);
+    Double x = Double.valueOf(theData[item][0]);
     return x;
 //    throw new java.lang.UnsupportedOperationException("Method getXValue() not yet implemented.");
   }
@@ -48,7 +48,7 @@ public class TableReportXYDataset extends DefaultTableXYDataset {
 
 
     public Number getY(int series, int item) {
-    Double y = new Double(theData[item][1+series]);
+    Double y = Double.valueOf(theData[item][1+series]);
     return y;
 //    throw new java.lang.UnsupportedOperationException("Method getYValue() not yet implemented.");
   }

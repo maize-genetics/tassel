@@ -82,7 +82,7 @@ public class PluginProgressUnit extends JPanel implements PluginListener {
 
                 public void actionPerformed(ActionEvent e) {
                     if (!myPlugin.cancel()) {
-                        stopThread(myCancelPlugin);
+                        interruptThread(myCancelPlugin);
                     }
                     myCancelButton.setEnabled(false);
                     setProgress(100);
@@ -121,7 +121,12 @@ public class PluginProgressUnit extends JPanel implements PluginListener {
 
     }
 
-    private static void stopThread(Plugin plugin) {
+    /**
+     * Interrupts the thread running the plugin. Thread.stop() has thrown
+     * UnsupportedOperationException since JDK 20, so cancellation is cooperative:
+     * AbstractPlugin checks the interrupt flag whenever the plugin reports progress.
+     */
+    private static void interruptThread(Plugin plugin) {
         ThreadGroup root = Thread.currentThread().getThreadGroup().getParent();
         while (root.getParent() != null) {
             root = root.getParent();
@@ -142,11 +147,7 @@ public class PluginProgressUnit extends JPanel implements PluginListener {
             Thread thread = threads[i];
             if (thread instanceof ThreadedPluginListener) {
                 if (plugin == ((ThreadedPluginListener) thread).getPluginListener()) {
-                    try {
-                        thread.stop();
-                    } catch (Exception e) {
-                        // do nothing
-                    }
+                    thread.interrupt();
                     ProgressPanel.getInstance().cleanProgressUnit(plugin);
                 }
             }

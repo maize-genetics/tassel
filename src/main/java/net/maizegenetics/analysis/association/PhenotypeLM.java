@@ -189,14 +189,14 @@ public class PhenotypeLM {
 
             Object[] result = new Object[9];
             result[0] = currentTraitName;
-            result[1] = new Double(F);
-            result[2] = new Double(p);
-            result[3] = new Double(taxaSSdf[1]);
-            result[4] = new Double(taxaSSdf[0] / taxaSSdf[1]);
-            result[5] = new Double(errorSSdf[1]);
-            result[6] = new Double(errorSSdf[0] / errorSSdf[1]);
-            result[7] = new Double(modelSSdf[1]);
-            result[8] = new Double(modelSSdf[0] / modelSSdf[1]);
+            result[1] = Double.valueOf(F);
+            result[2] = Double.valueOf(p);
+            result[3] = Double.valueOf(taxaSSdf[1]);
+            result[4] = Double.valueOf(taxaSSdf[0] / taxaSSdf[1]);
+            result[5] = Double.valueOf(errorSSdf[1]);
+            result[6] = Double.valueOf(errorSSdf[0] / errorSSdf[1]);
+            result[7] = Double.valueOf(modelSSdf[1]);
+            result[8] = Double.valueOf(modelSSdf[0] / modelSSdf[1]);
             reportBuilder.add(result);
 
 		}
